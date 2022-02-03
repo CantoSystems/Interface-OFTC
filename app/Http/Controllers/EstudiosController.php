@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-class PrincipalController extends Controller
+use App\Imports\ReportesImport;
+
+use App\Estudiostemp;
+
+class EstudiosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -12,9 +17,16 @@ class PrincipalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('index');
+        return view('estudios.subirarchivo');
     }
 
+    public function importExcel(Request $request){
+        $file = $request->file('file');
+        Excel::import(new ReportesImport, $file);
+
+        return back()->with('message', 'Imoprtación completa');
+    }
+    
     /**
      * Show the form for creating a new resource.
      *

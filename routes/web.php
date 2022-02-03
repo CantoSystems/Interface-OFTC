@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PrincipalController;
+use App\Http\Controllers\EstudiosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
+
+//Importar Excel
+Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
+Route::post('/import-list-excel',[EstudiosController::class,'importExcel'])->name('subirReporte.import');
