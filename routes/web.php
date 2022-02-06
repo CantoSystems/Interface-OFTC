@@ -19,7 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
+
 
 //Importar Excel
 Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
