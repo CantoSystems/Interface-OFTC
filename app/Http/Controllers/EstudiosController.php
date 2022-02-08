@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Imports\ReportesImport;
 
-use App\Estudiostemp;
+use App\Models\Estudiostemp;
 
 class EstudiosController extends Controller
 {
@@ -23,8 +23,8 @@ class EstudiosController extends Controller
     public function importExcel(Request $request){
         $file = $request->file('file');
         Excel::import(new ReportesImport, $file);
-
-        return back()->with('message', 'Imoprtación completa');
+        $estudioCobranza = Estudiostemp::all();
+        return view('estudios.subirarchivo', compact('estudioCobranza'));
     }
     
     /**
@@ -34,7 +34,8 @@ class EstudiosController extends Controller
      */
     public function create()
     {
-        //
+        $estudioCobranza = Estudiostemp::all();
+        return view('estudios.reportecobranza', compact('estudioCobranza'));
     }
 
     /**

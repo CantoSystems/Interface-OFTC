@@ -1,8 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\CategoriaDoctor;
-use Illuminate\Support\Facades\DB;
 
 use Illuminate\Database\Seeder;
 
@@ -15,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-       
+       $this->call([
+            DoctorCategoriaSeeder::class,
+       ]);
     }
 }

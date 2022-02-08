@@ -23,6 +23,7 @@ Route::get('/', function () {
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
 
-//Importar Excel
+//Importar Excel COBRANZA
 Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
 Route::post('/import-list-excel',[EstudiosController::class,'importExcel'])->name('subirReporte.import');
+Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('mostarReporte.create');
