@@ -26,7 +26,7 @@
       </nav>
 
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <a href="../../index3.html" class="brand-link">
+        <a href="#" class="brand-link">
           <img src="{{ asset('/AdminLTE-master/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8"/>
           <span class="brand-text font-weight-light">Oftalmocenter</span>
         </a>
@@ -59,8 +59,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-            </ul>
+
+                
           </nav>
         </div>
       </aside>
@@ -94,5 +94,17 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script>
+      $(document).ready(function(){
+
+          $(function () {
+            $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false
+            });
+    
+          });        
+      });
+    </script>
   </body>
 </html>
