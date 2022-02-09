@@ -32,8 +32,7 @@
                         <th>Fecha</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
+                
             </table>
         </div>
     </div>
