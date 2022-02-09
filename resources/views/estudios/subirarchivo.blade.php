@@ -12,7 +12,7 @@
     
                   <div class="info-box-content">
                     <span class="info-box-text">Importar Reporte</span>
-                    <button id="cargarCobranza" type="button" data-toggle="modal" data-target="#exampleModal">
+                    <button id="cargarCobranza" class="btn-flat" type="button" data-toggle="modal" data-target="#exampleModal">
                         <span class="info-box-number">Subir</span>
                     </button>
                    

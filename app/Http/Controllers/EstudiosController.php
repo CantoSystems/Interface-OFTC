@@ -21,10 +21,15 @@ class EstudiosController extends Controller
     }
 
     public function importExcel(Request $request){
-        $file = $request->file('file');
-        Excel::import(new ReportesImport, $file);
-        $estudioCobranza = Estudiostemp::all();
-        return view('estudios.subirarchivo', compact('estudioCobranza'));
+
+        if($request->hasFile('file')){
+            $file = $request->file('file');
+            Excel::import(new ReportesImport, $file);
+            $estudioCobranza = Estudiostemp::all();
+            return view('estudios.subirarchivo', compact('estudioCobranza'));
+        }
+        return "No ha adjuntado ningun archivo";
+        
     }
     
     /**
@@ -34,8 +39,7 @@ class EstudiosController extends Controller
      */
     public function create()
     {
-        $estudioCobranza = Estudiostemp::all();
-        return view('estudios.reportecobranza', compact('estudioCobranza'));
+       //
     }
 
     /**
