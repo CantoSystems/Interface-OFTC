@@ -93,14 +93,39 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script>
       $(document).ready(function(){
-
+        //Datatables
           $(function () {
-            $("#example1").DataTable({
+            $("#reporteCobranza").DataTable({
             "responsive": true,
-            "autoWidth": false
+            "autoWidth": false,
+            language : {
+              "zeroRecords": " "             
+            },
             });
     
-          });        
+          });
+          
+          $.ajax({
+            url:"{{ route('extraerEstudio.create') }}",
+            method: "GET",
+            success: function(data){
+
+                data.forEach(element => {
+                  $('#reporteCobranza tbody').append('<tr>' +
+                                                          '<td style="text-align:center;">' + element.id+ '</td>' +
+                                                          '<td style="text-align:center;">' + element.folio + '</td>' +
+                                                          '<td style="text-align:center;">' + element.fecha + '</td>' +
+                                                          '<td style="text-align:center;">' + element.paciente + '</td>' +
+                                                      '</tr>');
+                });
+                
+            }, error: function(xhr, status, error) {
+              let err = JSON.parse(xhr.responseText);
+              console.log(err.Message);
+            }
+          });
+
+
       });
     </script>
   </body>

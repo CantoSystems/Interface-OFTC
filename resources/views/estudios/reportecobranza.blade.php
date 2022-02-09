@@ -23,7 +23,7 @@
                   </div>
                   <div class="col-md-8">
                       <br>
-                      <input type="file"  class="form-control" name="file">
+                      <input type="file" accept=".xlsx" class="form-control" name="file">
                   </div>
                   <div class="col-md-2">
 
