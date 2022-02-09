@@ -26,3 +26,4 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 //Importar Excel COBRANZA
 Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
 Route::post('/import-list-excel',[EstudiosController::class,'importExcel'])->name('subirReporte.import');
+Route::get('/extraer-data-cobranza',[EstudiosController::class,'create'])->name('extraerEstudio.create');
