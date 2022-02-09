@@ -27,6 +27,7 @@ class CreateEstudiostempsTable extends Migration
             $table->double('iva',10,2)->nullable();
             $table->double('total',10,2)->nullable();
             $table->timestamps();
+            $table->engine = 'InnoDB';
         });
     }
 

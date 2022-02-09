@@ -22,7 +22,7 @@ class PrincipalController extends Controller
      */
     public function create()
     {
-        //
+        return view('layouts.dashboard');
     }
 
     /**

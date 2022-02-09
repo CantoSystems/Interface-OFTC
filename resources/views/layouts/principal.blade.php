@@ -59,8 +59,8 @@
                     </a>
                   </li>
                 </ul>
-              </li>
-            </ul>
+
+                
           </nav>
         </div>
       </aside>
@@ -86,13 +86,24 @@
         All rights reserved.
       </footer>
     </div>
+    <script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+    <script>
+      $(document).ready(function(){
 
-    <script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+          $(function () {
+            $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false
+            });
+    
+          });        
+      });
+    </script>
   </body>
 </html>
