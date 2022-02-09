@@ -19,13 +19,12 @@
         <ul class="navbar-nav">
           <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"
-              ><i class="fas fa-bars"></i
-            ></a>
+              ><i class="fas fa-bars"></i></a>
           </li>
         </ul>
       </nav>
 
-      <aside class="main-sidebar sidebar-dark-info elevation-4" style="opacity: 0.7">
+      <aside class="main-sidebar sidebar-dark-info elevation-4" style="opacity: 0.6">
         <a href="#" class="brand-link">
           <img src="{{ asset('/AdminLTE-master/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 0.8"/>
           <span class="brand-text font-weight-light">Oftalmocenter</span>
@@ -59,8 +58,6 @@
                     </a>
                   </li>
                 </ul>
-
-                
           </nav>
         </div>
       </aside>
