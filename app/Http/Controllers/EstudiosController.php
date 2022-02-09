@@ -41,6 +41,7 @@ class EstudiosController extends Controller
     {
         $estudioCobranza = Estudiostemp::all();
         return $estudioCobranza;
+        //return response()->json($estudioCobranza);
     }
 
     /**

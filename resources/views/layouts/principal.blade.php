@@ -98,14 +98,21 @@
             $("#reporteCobranza").DataTable({
             "responsive": true,
             "autoWidth": false,
-            language : {
-              "zeroRecords": " "             
+            ajax:{
+                url:"{{ route('extraerEstudio.create') }}",
+                dataSrc: ''
             },
+            columns:[
+              {data: 'folio'},
+              {data: 'paciente'},
+              {data: 'servicio'},
+              {data: 'fecha'}
+            ]
             });
     
           });
           
-          $.ajax({
+          /*$.ajax({
             url:"{{ route('extraerEstudio.create') }}",
             method: "GET",
             success: function(data){
@@ -123,7 +130,7 @@
               let err = JSON.parse(xhr.responseText);
               console.log(err.Message);
             }
-          });
+          });*/
 
 
       });
