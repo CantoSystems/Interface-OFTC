@@ -21,15 +21,14 @@ class EstudiosController extends Controller
     }
 
     public function importExcel(Request $request){
-
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
+            $estudioDetalle = Estudiostemp::all();
             
-            return redirect()->route('subirEstudio.index');
+            return view('estudios.subirarchivo', compact('estudioDetalle'));
         }
         return "No ha adjuntado ningun archivo";
-        
     }
     
     /**
@@ -37,8 +36,7 @@ class EstudiosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request){
         $estudioCobranza = Estudiostemp::all();
         return $estudioCobranza;
         //return response()->json($estudioCobranza);

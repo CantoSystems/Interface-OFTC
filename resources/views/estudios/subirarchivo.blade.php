@@ -29,8 +29,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(isset($estudioCobranza))
-                                @foreach ($estudioCobranza as $cobranza)
+                            @if(isset($estudioDetalle))
+                                @foreach ($estudioDetalle as $cobranza)
                                     <tr>
                                         <td>{{ $cobranza->folio }}</td>
                                         <td>{{ $cobranza->paciente }}</td>

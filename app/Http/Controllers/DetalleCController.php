@@ -21,11 +21,15 @@ class DetalleCController extends Controller
     }
 
     public function importExcel(Request $request){
-        $file = $request->file('file');
-        Excel::import(new DetalleCImport, $file);
-        $estudioDetalle = DetalleTemp::all();
-        return view('detalleC.subirarchivoD', compact('estudioDetalle'));
-    }
+        if($request->hasFile('file')){
+            $file = $request->file('file');
+            Excel::import(new DetalleCImport, $file);
+            $estudioDetalle = DetalleTemp::all();
+
+            return view('detalleC.subirarchivoD', compact('estudioDetalle'));
+        }
+        return "No ha adjuntado ningun archivo";
+    }   
 
     /**
      * Show the form for creating a new resource.
