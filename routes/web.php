@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\EstudiosController;
+use App\Http\Controllers\DetalleCController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +23,12 @@ Route::get('/', function () {
 
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
-
-//Importar Excel COBRANZA
+//Importar Excel Cobranza
 Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
 Route::post('/import-list-excel',[EstudiosController::class,'importExcel'])->name('subirReporte.import');
+Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('mostarReporte.create');
+
+//Importar Excel Detalle de Consumo
+Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');
+Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->name('subirDetalle.import');
 Route::get('/extraer-data-cobranza',[EstudiosController::class,'create'])->name('extraerEstudio.create');

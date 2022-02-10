@@ -11,7 +11,7 @@
                             <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Importar Reporte</span>
-                                <button id="cargarCobranza" type="button" data-toggle="modal" data-target="#exampleModal">
+                                <button id="cargarCobranza" type="button" data-toggle="modal" data-target="#exampleModal_DC">
                                     <span class="info-box-number">Subir</span>
                                 </button>
                             </div>
@@ -22,10 +22,10 @@
                     <table id="example1" class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Folio</th>
-                                <th>Paciente</th>
-                                <th>Servicio</th>
-                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Importe</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,5 +44,5 @@
                 </div>
             </div>
         </div>
-        @include('estudios.reportecobranza');
+        @include('detalleC.detalleconsumo');
     @endsection
