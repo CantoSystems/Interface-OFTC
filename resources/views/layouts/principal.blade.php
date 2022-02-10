@@ -115,19 +115,52 @@
     <script>
       $(document).ready(function(){
         //Datatables
-        $(function () {
-          $("#example1").DataTable({
-          "responsive": true,
-          "autoWidth": false,
-          "language": {
+          $(function () {
+            $("#reporteCobranza").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "language": {
             "lengthMenu": "Mostrando _MENU_ registros por página",
             "zeroRecords": "No existen registros en la tabla",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "No existen registros en la tabla",
             "infoFiltered": "(filtrado por _MAX_ registros totales)"
-          }
+          },
+            ajax:{
+                url:"{{ route('extraerEstudio.create') }}",
+                dataSrc: ''
+            },
+            columns:[
+              {data: 'folio'},
+              {data: 'paciente'},
+              {data: 'servicio'},
+              {data: 'fecha'}
+            ]
+            });
+    
           });
-        });
+          
+          /*$.ajax({
+            url:"{{ route('extraerEstudio.create') }}",
+            method: "GET",
+            success: function(data){
+
+                data.forEach(element => {
+                  $('#reporteCobranza tbody').append('<tr>' +
+                                                          '<td style="text-align:center;">' + element.id+ '</td>' +
+                                                          '<td style="text-align:center;">' + element.folio + '</td>' +
+                                                          '<td style="text-align:center;">' + element.fecha + '</td>' +
+                                                          '<td style="text-align:center;">' + element.paciente + '</td>' +
+                                                      '</tr>');
+                });
+                
+            }, error: function(xhr, status, error) {
+              let err = JSON.parse(xhr.responseText);
+              console.log(err.Message);
+            }
+          });*/
+
+
       });
     </script>
   </body>
