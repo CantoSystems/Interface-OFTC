@@ -24,9 +24,7 @@ class EstudiosController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
-            $estudioDetalle = Estudiostemp::all();
-            
-            return view('estudios.subirarchivo', compact('estudioDetalle'));
+            return redirect()->route('subirEstudio.index');
         }
         return "No ha adjuntado ningun archivo";
     }
@@ -39,7 +37,6 @@ class EstudiosController extends Controller
     public function create(Request $request){
         $estudioCobranza = Estudiostemp::all();
         return $estudioCobranza;
-        //return response()->json($estudioCobranza);
     }
 
     /**
