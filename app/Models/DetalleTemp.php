@@ -10,5 +10,5 @@ class DetalleTemp extends Model{
         'codigo','descripcion','um','cantidad','precio_unitario','importe'
     ];
 
-    public $table = 'detalletemps';
+    protected $table = 'detalletemps';
 }
