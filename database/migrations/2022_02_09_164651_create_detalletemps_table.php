@@ -16,7 +16,7 @@ class CreateDetalletempsTable extends Migration
         Schema::create('detalletemps', function (Blueprint $table) {
             $table->id();
             $table->text('codigo',20)->nullable();
-            $table->text('descripcion',60)->nullable();
+            $table->string('descripcion',60)->nullable();
             $table->char('um',5)->nullable();
             $table->double('cantidad',10,2)->nullable();
             $table->double('precio_unitario',10,2)->nullable();

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetalleTemp extends Model{
     protected $fillable = [
-        'id','codigo','descripcion','um','cantidad','precio_unitario','importe'
+        'codigo','descripcion','um','cantidad','precio_unitario','importe'
     ];
 
-    protected $table = 'detalletemps';
+    public $table = 'detalletemps';
 }

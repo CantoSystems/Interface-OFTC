@@ -1,5 +1,5 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog  modal-sm">
+  <div class="modal-dialog  modal-ms">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Reporte de Cobranza</h5>
@@ -8,43 +8,32 @@
         </button>
       </div>
       <div class="modal-body">
-          <!--Contenido-->
-
-          <form action="{{ route('subirReporte.import') }}" method="post" enctype="multipart/form-data">
-              @csrf
-          
-              <div class="col-md-12">
-                  <h5 class="card-title modalPersonalizado">Selecciona el archivo Excel:</h5>
-              </div>
-              <br>
-              <div class="row">
-                  <div class="col-md-2">
-
-                  </div>
-                  <div class="col-md-8">
-                      <br>
-                      <input type="file" accept=".xlsx" class="form-control" name="file">
-                  </div>
-                  <div class="col-md-2">
-
-                  </div>
-                  <div class="col-md-2">
-
-                  </div>
-                  <div class="col-md-8">
-                      <br>
-                      <button class="btn btn-block btn-outline-secondary btn-xs" name="accion" value="importar">Importar Reporte</button>
-                  </div>
-                  <div class="col-md-2">
-
-                  </div>
-              </div>
-          </form>
-
+        <form action="{{ route('subirReporte.import') }}" method="post" enctype="multipart/form-data">
+          @csrf
+          <div class="col-md-12">
+              <h5 class="card-title modalPersonalizado">Selecciona el archivo Excel:</h5>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <br>
+                <input type="file" accept=".xlsx" class="form-control" name="file">
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <br>
+                <button class="btn btn-block btn-outline-secondary btn-xs" name="accion" value="importar">Importar Reporte</button>
+            </div>
+            <div class="col-md-2">
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="modal-footer">
-      </div>
-          </form>
     </div>
   </div>
 </div>

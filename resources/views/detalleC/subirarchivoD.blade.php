@@ -29,13 +29,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(isset($estudioCobranza))
-                                @foreach ($estudioCobranza as $cobranza)
+                            @if(isset($estudioDetalle))
+                                @foreach ($estudioDetalle as $detalle)
                                     <tr>
-                                        <td>{{ $cobranza->folio }}</td>
-                                        <td>{{ $cobranza->paciente }}</td>
-                                        <td>{{ $cobranza->servicio }}</td>
-                                        <td>{{ $cobranza->fecha}}</td>
+                                        <td>{{ $detalle->descripcion }}</td>
+                                        <td>{{ $detalle->cantidad }}</td>
+                                        <td>{{ $detalle->precio_unitario }}</td>
+                                        <td>{{ $detalle->importe}}</td>
                                     </tr>
                                 @endforeach
                             @endif
