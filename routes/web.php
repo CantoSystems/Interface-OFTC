@@ -27,8 +27,9 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 Route::get('/subir-archivo',[EstudiosController::class,'index'])->name('subirEstudio.index');
 Route::post('/import-list-excel',[EstudiosController::class,'importExcel'])->name('subirReporte.import');
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('mostarReporte.create');
+Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('botones.show');
 
 //Importar Excel Detalle de Consumo
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');
 Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->name('subirDetalle.import');
-Route::get('/extraer-data-cobranza',[EstudiosController::class,'create'])->name('extraerEstudio.create');
+Route::get('/extraer-data-consumo',[EstudiosController::class,'create'])->name('extraerEstudio.create');
