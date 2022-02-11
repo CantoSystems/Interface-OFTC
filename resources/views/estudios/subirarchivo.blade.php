@@ -11,7 +11,7 @@
                             <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">Importar Reporte</span>
-                                <button id="cargarCobranza" type="button" data-toggle="modal" data-target="#exampleModal">
+                                <button id="cargarCobranza" type="button" class="btn btn-block btn-outline-secondary btn-xs" data-toggle="modal" data-target="#exampleModal">
                                     <span class="info-box-number">Subir</span>
                                 </button>
                             </div>
@@ -26,6 +26,7 @@
                                 <th>Paciente</th>
                                 <th>Servicio</th>
                                 <th>Fecha</th>
+                                <th>Ver</th>
                             </tr>
                         </thead>
                     </table>

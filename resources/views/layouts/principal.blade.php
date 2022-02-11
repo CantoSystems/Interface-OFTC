@@ -128,13 +128,14 @@
           },
             ajax:{
                 url:"{{ route('extraerEstudio.create') }}",
-                dataSrc: ''
+                dataSrc: 'data'
             },
             columns:[
               {data: 'folio'},
               {data: 'paciente'},
               {data: 'servicio'},
-              {data: 'fecha'}
+              {data: 'fecha'},
+              {data: 'btn'}
             ]
             });
     
