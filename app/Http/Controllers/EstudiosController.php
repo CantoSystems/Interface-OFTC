@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
 use App\Imports\ReportesImport;
-
 use App\Models\Estudiostemp;
 
 class EstudiosController extends Controller
@@ -35,8 +34,13 @@ class EstudiosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
-        $estudioCobranza = Estudiostemp::all();
-        return $estudioCobranza;
+        //$estudioCobranza = Estudiostemp::all();
+        //return $estudioCobranza;
+        return datatables()
+                ->eloquent(Estudiostemp::query())
+                ->addColumn('btn','estudios.acciones')
+                ->rawColumns(['btn'])
+                ->toJson();
     }
 
     /**
@@ -58,7 +62,8 @@ class EstudiosController extends Controller
      */
     public function show($id)
     {
-        //
+        $datosPaciente = Estudiostemp::find($id);
+        return view('estudios.cobranza-paciente',compact('datosPaciente'));
     }
 
     /**
