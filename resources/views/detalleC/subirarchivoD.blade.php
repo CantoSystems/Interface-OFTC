@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-hover">
+                    <table id="tableDetalle" name="tableDetalle" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Descripción</th>
@@ -28,18 +28,6 @@
                                 <th>Importe</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if(isset($estudioDetalle))
-                                @foreach ($estudioDetalle as $detalle)
-                                    <tr>
-                                        <td>{{ $detalle->descripcion }}</td>
-                                        <td>{{ $detalle->cantidad }}</td>
-                                        <td>{{ $detalle->precio_unitario }}</td>
-                                        <td>{{ $detalle->importe}}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
                     </table>
                 </div>
             </div>

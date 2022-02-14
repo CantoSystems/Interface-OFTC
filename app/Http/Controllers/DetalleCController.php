@@ -24,9 +24,7 @@ class DetalleCController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new DetalleCImport, $file);
-            $estudioDetalle = DetalleTemp::all();
-
-            return view('detalleC.subirarchivoD', compact('estudioDetalle'));
+            return redirect()->route('subirarchivoD.index');
         }
         return "No ha adjuntado ningun archivo";
     }   
@@ -36,9 +34,9 @@ class DetalleCController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(){
+        $estudioDetalle = DetalleTemp::all();
+        return $estudioDetalle;
     }
 
     /**
