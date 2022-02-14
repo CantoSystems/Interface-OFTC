@@ -117,15 +117,15 @@
         //Datatables
           $(function () {
             $("#reporteCobranza").DataTable({
-            "responsive": true,
-            "autoWidth": false,
-            "language": {
-            "lengthMenu": "Mostrando _MENU_ registros por página",
-            "zeroRecords": "No existen registros en la tabla",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "No existen registros en la tabla",
-            "infoFiltered": "(filtrado por _MAX_ registros totales)"
-          },
+              "responsive": true,
+              "autoWidth": false,
+              "language": {
+              "lengthMenu": "Mostrando _MENU_ registros por página",
+              "zeroRecords": "No existen registros en la tabla",
+              "info": "Mostrando página _PAGE_ de _PAGES_",
+              "infoEmpty": "No existen registros en la tabla",
+              "infoFiltered": "(filtrado por _MAX_ registros totales)"
+            },
             ajax:{
                 url:"{{ route('extraerEstudio.create') }}",
                 dataSrc: ''
@@ -137,8 +137,31 @@
               {data: 'fecha'}
             ]
             });
-    
           });
+          $(function () {
+            $("#tableDetalle").DataTable({
+              "responsive": true,
+              "autoWidth": false,
+              "language": {
+              "lengthMenu": "Mostrando _MENU_ registros por página",
+              "zeroRecords": "No existen registros en la tabla",
+              "info": "Mostrando página _PAGE_ de _PAGES_",
+              "infoEmpty": "No existen registros en la tabla",
+              "infoFiltered": "(filtrado por _MAX_ registros totales)"
+            },
+            ajax:{
+                url:"{{ route('extraerDetalle.create') }}",
+                dataSrc: ''
+            },
+            columns:[
+              {data: 'folio'},
+              {data: 'paciente'},
+              {data: 'servicio'},
+              {data: 'fecha'}
+            ]
+            });
+          });
+
           
           /*$.ajax({
             url:"{{ route('extraerEstudio.create') }}",
