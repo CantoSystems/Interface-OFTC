@@ -15,8 +15,10 @@ class CreateEstudiosTable extends Migration
     {
         Schema::create('estudios', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_estudio_fk');
+            $table->unsignedBigInteger('id_ojo_fk');
             $table->string('dscrpMedicosPro',60)->nullable();
-            $table->string('descripcion',60)->nullable();
+            $table->foreign('id_ojo_fk')->references('id')->on('tipo_ojos');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

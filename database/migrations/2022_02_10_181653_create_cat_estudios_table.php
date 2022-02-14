@@ -11,8 +11,7 @@ class CreateCatEstudiosTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up(){
         Schema::create('cat_estudios', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',60)->nullable();

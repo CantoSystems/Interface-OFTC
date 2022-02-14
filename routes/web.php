@@ -32,4 +32,4 @@ Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->na
 //Importar Excel Detalle de Consumo
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');
 Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->name('subirDetalle.import');
-Route::get('/extraer-data-consumo',[EstudiosController::class,'create'])->name('extraerEstudio.create');
+Route::get('/extraer-data-consumo',[EstudiosController::class,'create'])->name('extraerDetalle.create');
