@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
 use App\Imports\DetalleCImport;
-
 use App\Models\DetalleTemp;
 
 class DetalleCController extends Controller
@@ -35,8 +34,9 @@ class DetalleCController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        $estudioDetalle = DetalleTemp::all();
-        return $estudioDetalle;
+        return datatables()
+               ->eloquent(DetalleTemp::query())
+               ->toJson();
     }
 
     /**
