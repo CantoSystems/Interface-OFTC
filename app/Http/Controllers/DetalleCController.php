@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
 use App\Imports\DetalleCImport;
-
 use App\Models\DetalleTemp;
 
 class DetalleCController extends Controller
@@ -24,9 +23,7 @@ class DetalleCController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new DetalleCImport, $file);
-            $estudioDetalle = DetalleTemp::all();
-
-            return view('detalleC.subirarchivoD', compact('estudioDetalle'));
+            return redirect()->route('subirarchivoD.index');
         }
         return "No ha adjuntado ningun archivo";
     }   
@@ -36,9 +33,10 @@ class DetalleCController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(){
+        return datatables()
+               ->eloquent(DetalleTemp::query())
+               ->toJson();
     }
 
     /**

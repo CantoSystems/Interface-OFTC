@@ -18,7 +18,7 @@ class CreateTipoOjosTable extends Migration
             $table->char('nombretipo_ojo',10);
             $table->timestamps();
             $table->engine = 'InnoDB';
-        });
+        }); 
     }
 
     /**
