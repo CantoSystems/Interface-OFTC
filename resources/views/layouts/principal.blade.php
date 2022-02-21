@@ -6,6 +6,7 @@
     <title>Interfaz | Oftalmocenter</title>
 
     <link rel="stylesheet" href="{{ asset('/AdminLTE-master/plugins/fontawesome-free/css/all.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('/AdminLTE-master/plugins/fontawesome-free/css/fontawesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('/AdminLTE-master/dist/css/adminlte.min.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
@@ -53,7 +54,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="{{ route('subirEstudio.index')}}" class="nav-link">
+                    <a href="{{ route('importarCobranza.index')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Subir archivo Excel</p>
                     </a>
@@ -138,7 +139,7 @@
             "infoFiltered": "(filtrado por _MAX_ registros totales)"
           },
           ajax:{
-              url:"{{ route('mostarReporte.create') }}",
+              url:"{{ route('importarCobranza.create') }}",
               dataSrc: 'data'
           },
           columns:[
@@ -146,6 +147,7 @@
             {data: 'paciente'},
             {data: 'servicio'},
             {data: 'fecha'},
+            {data: 'on-off'},
             {data: 'btn'}
           ]
           });

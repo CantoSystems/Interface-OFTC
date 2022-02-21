@@ -1,1 +1,0 @@
-<a class="btn btn-block btn-outline-secondary btn-xs" href="{{ route('botones.show',$id) }}">VER</a>
