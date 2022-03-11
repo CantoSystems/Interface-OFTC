@@ -18,7 +18,8 @@ class OjosSeeder extends Seeder
         $tipoOjo = Collect([
             ["nombretipo_ojo" => "AO"],
             ["nombretipo_ojo" => "OI"],
-            ["nombretipo_ojo" => "OD"]
+            ["nombretipo_ojo" => "OD"],
+            ["nombretipo_ojo" => "UO"]
         ]);
 
         $fechaInsert = now()->toDateString();
