@@ -1,0 +1,1 @@
+<a class="btn btn-block btn-outline-secondary btn-xs" href="{{ route('importarCobranza.show',$id) }}">VER</a>

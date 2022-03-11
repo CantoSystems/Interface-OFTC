@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('subirReporte.import') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('importarCobranza.import') }}" method="post" enctype="multipart/form-data">
           @csrf
           <div class="col-md-12">
               <h5 class="card-title modalPersonalizado">Selecciona el archivo Excel:</h5>
