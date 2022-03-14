@@ -46,20 +46,31 @@
                                 <div class="col-5">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere</label>
-                                        <input type="text" class="form-control" value="">
+                                        <select name="" id="" class="custom-select">
+                                            @foreach ($doctores as $dres)
+                                            <option value="{{ $dres->id }}">
+                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>PX INT. - EXT.</label>
                                         <select name="" id="" class="custom-select">
-
+                                            @foreach($tipoPac as $tpaciente)
+                                            <option value="{{ $tpaciente->id }}">
+                                                {{ $tpaciente->nombretipo_paciente }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Forma de pago</label>
+                                        <label>Forma de Pago</label>
                                         <input type="text" class="form-control" value="{{ $datosPaciente->met_pago }}"
                                             disabled>
                                     </div>
@@ -80,7 +91,14 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién realiza la transcripción</label>
-                                        <input type="text" class="form-control" value="">
+                                        <select name="" id="" class="custom-select">
+                                            @foreach($empTrans as $empT)
+                                            <option value="{{ $empT->id }}">
+                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                {{ $empT->empleado_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -99,7 +117,14 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién realiza la interpretación</label>
-                                        <input type="text" class="form-control" value="">
+                                        <select name="" id="" class="custom-select">
+                                            @foreach($doctorInter as $doc)
+                                            <option value="{{ $doc->id }}">
+                                                {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
+                                                {{ $doc->doctor_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
