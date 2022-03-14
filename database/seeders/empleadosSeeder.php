@@ -46,8 +46,4 @@ class empleadosSeeder extends Seeder
             ]);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> fade5fb3d6a8ef7a38ed2c2cfc8685a0e30c02ba
