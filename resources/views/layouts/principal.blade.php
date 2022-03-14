@@ -118,12 +118,19 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
-    <script>
+    <script type="text/javascript">
+      /*function selectTrans(){
+        if(document.getElementById('transRdS').checked){
+          $('#drTransc').prop('disabled', false);
+        }else{
+          $('#drTransc').prop('disabled', true);
+        }
+      }*/
+
       $(function () {
         bsCustomFileInput.init();
-
         $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-      })
+      });
 
       $(document).ready(function(){
         //Datatables

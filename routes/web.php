@@ -28,6 +28,7 @@ Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel']
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create');
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show');
 Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->name('importarCobranza.destroy');
+Route::get('/actualizar-data-cobranza',[EstudiosController::class,'update'])->name('importarCobranza.update');
 
 //Importar Excel Detalle de Consumo
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');

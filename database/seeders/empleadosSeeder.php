@@ -27,6 +27,10 @@ class empleadosSeeder extends Seeder
             ["empleado_nombre" => "Angélica",        "empleado_apellidop" => "Morales",   "empleado_apellidom" => "Torres",    "empleado_status" => "A", "puesto_id" => "7"],
             ["empleado_nombre" => "Maria del Pilar", "empleado_apellidop" => "Sánchez",   "empleado_apellidom" => "Vergara",   "empleado_status" => "A", "puesto_id" => "2"],
             ["empleado_nombre" => "Natalia Antonia", "empleado_apellidop" => "Velázquez", "empleado_apellidom" => "Valdéz",    "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Carlos",          "empleado_apellidop" => "Carrillo",  "empleado_apellidom" => "Salazar",   "empleado_status" => "A", "puesto_id" => "3"],
+            ["empleado_nombre" => "Rosa María",      "empleado_apellidop" => "Romero",    "empleado_apellidom" => "",          "empleado_status" => "A", "puesto_id" => "3"],
+            ["empleado_nombre" => "Gonzalo",         "empleado_apellidop" => "Padilla",   "empleado_apellidom" => "Valdéz",    "empleado_status" => "A", "puesto_id" => "3"]
+
         ]);
 
         $fechaInsert = now()->toDateString();

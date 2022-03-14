@@ -20,7 +20,7 @@ class CreateComisionesTable extends Migration
             $table->double('cantidad',10,2)->nullable();
             $table->double('porcentaje',10,2)->nullable();
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
-            $table->foreign('id_empleado_fk')->references('id')->on('empleados');
+            $table->foreign('id_empleado_fk')->references('id_emp')->on('empleados');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });
