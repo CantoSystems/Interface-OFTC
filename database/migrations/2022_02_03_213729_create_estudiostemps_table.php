@@ -26,6 +26,7 @@ class CreateEstudiostempsTable extends Migration
             $table->double('descuento',10,2)->nullable();
             $table->double('iva',10,2)->nullable();
             $table->double('total',10,2)->nullable();
+            $table->boolean('estudiostemps_status')->default(0)->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

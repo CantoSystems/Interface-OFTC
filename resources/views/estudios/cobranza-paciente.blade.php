@@ -1,62 +1,78 @@
 @extends('layouts.principal')
-    @section('content') 
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-2"></div>
-                <!--Inicio Card Información Paciente-->
-                <div class="col-md-8">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">Información paciente: {{ $datosPaciente->paciente }}</h3>
-                        </div>
-                        <form action="" method="POST">
-                            @csrf
+@section('content')
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <!--Inicio Card Información Paciente-->
+            <div class="col-md-8">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Información paciente: {{ $datosPaciente->paciente }}</h3>
+                    </div>
+                    <form action="" method="POST">
+                        @csrf
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Folio</label>
-                                        <input type="text" class="form-control" value="{{ $datosPaciente->folio }}" disabled>
+                                        <input type="text" class="form-control" value="{{ $datosPaciente->folio }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-5">
                                     <div class="form-group">
                                         <label>Paciente</label>
-                                        <input type="text" class="form-control" value="{{ $datosPaciente->paciente }}" disabled>
+                                        <input type="text" class="form-control" value="{{ $datosPaciente->paciente }}"
+                                            disabled>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Fecha</label>
-                                        <input type="date" class="form-control" value="{{ $datosPaciente->fecha }}" disabled>
+                                        <input type="date" class="form-control" value="{{ $datosPaciente->fecha }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Cantidad</label>
-                                        <input type="text" class="form-control" value="{{ $datosPaciente->total }}" disabled>
+                                        <input type="text" class="form-control" value="{{ $datosPaciente->total }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-5">
                                     <div class="form-group">
-                                        <label>Dr. que requiere</label>
-                                        <input type="text" class="form-control" value="">
+                                        <label>Dr. Que Requiere</label>
+                                        <select name="" id="" class="custom-select">
+                                            @foreach ($doctores as $dres)
+                                            <option value="{{ $dres->id }}">
+                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>PX INT. - EXT.</label>
                                         <select name="" id="" class="custom-select">
-
+                                            @foreach($tipoPac as $tpaciente)
+                                            <option value="{{ $tpaciente->id }}">
+                                                {{ $tpaciente->nombretipo_paciente }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Forma de pago</label>
-                                        <input type="text" class="form-control" value="{{ $datosPaciente->met_pago }}" disabled>
+                                        <label>Forma de Pago</label>
+                                        <input type="text" class="form-control" value="{{ $datosPaciente->met_pago }}"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -65,17 +81,24 @@
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" name="r1">
                                             <label>SI</label>
-                                          </div>
-                                          <div class="icheck-primary d-inline">
-                                            <input type="radio"  name="r1">
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" name="r1">
                                             <label>NO</label>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién realiza la transcripción</label>
-                                        <input type="text" class="form-control" value="">
+                                        <select name="" id="" class="custom-select">
+                                            @foreach($empTrans as $empT)
+                                            <option value="{{ $empT->id }}">
+                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                {{ $empT->empleado_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -84,17 +107,24 @@
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" name="r2">
                                             <label>SI</label>
-                                          </div>
-                                          <div class="icheck-primary d-inline">
-                                            <input type="radio"  name="r2">
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" name="r2">
                                             <label>NO</label>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién realiza la interpretación</label>
-                                        <input type="text" class="form-control" value="">
+                                        <select name="" id="" class="custom-select">
+                                            @foreach($doctorInter as $doc)
+                                            <option value="{{ $doc->id }}">
+                                                {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
+                                                {{ $doc->doctor_apellidom }}
+                                            </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -103,11 +133,11 @@
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" name="r3">
                                             <label>SI</label>
-                                          </div>
-                                          <div class="icheck-primary d-inline">
-                                            <input type="radio"  name="r3">
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" name="r3">
                                             <label>NO</label>
-                                          </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-10">
@@ -119,14 +149,15 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-block btn-outline-secondary btn-xs">Guardar registro</button>
+                            <button type="submit" class="btn btn-block btn-outline-secondary btn-xs">Guardar
+                                registro</button>
                         </div>
-                        </form>
-                    </div>
+                    </form>
                 </div>
-                <!--Fin Card Información Paciente-->
-                <div class="col-md-2"></div>
             </div>
+            <!--Fin Card Información Paciente-->
+            <div class="col-md-2"></div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection

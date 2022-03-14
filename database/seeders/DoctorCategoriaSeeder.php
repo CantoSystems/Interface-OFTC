@@ -17,6 +17,7 @@ class DoctorCategoriaSeeder extends Seeder
         $categoria = [
             ["nombre" => "Interno"],
             ["nombre" => "Externo"],
+            ["nombre" => "Ambos"],
         ];
 
         foreach($categoria as $cat){

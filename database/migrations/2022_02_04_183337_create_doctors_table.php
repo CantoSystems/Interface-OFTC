@@ -16,11 +16,11 @@ class CreateDoctorsTable extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('doctor_titulo',10);
-            $table->string('doctor_nombre',20)->nullable();
-            $table->string('doctor_apellidop',20)->nullable();
+            $table->string('doctor_nombre',20);
+            $table->string('doctor_apellidop',20);
             $table->string('doctor_apellidom',20);
             $table->string('doctor_email')->nullable();
-            $table->boolean('doctor_status');
+            $table->char('doctor_status',1);
             $table->unsignedBigInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categoria_doctors');
             $table->timestamps();

@@ -6,7 +6,13 @@ use DataTables;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ReportesImport;
+
 use App\Models\Estudiostemp;
+use App\Models\Doctor;
+use App\Models\TipoPaciente;
+use App\Models\Empleado;
+
+use App\Http\Requests\ImportCobranzaRequest;
 
 class EstudiosController extends Controller
 {
@@ -16,14 +22,14 @@ class EstudiosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('estudios.subirarchivo');
+        return view('estudios.import-cobranza');
     }
 
-    public function importExcel(Request $request){
+    public function importExcel(ImportCobranzaRequest $request){
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
-            return redirect()->route('subirEstudio.index');
+            return redirect()->route('importarCobranza.index');
         }
         return "No ha adjuntado ningun archivo";
     }
@@ -38,8 +44,9 @@ class EstudiosController extends Controller
         //return $estudioCobranza;
         return datatables()
                 ->eloquent(Estudiostemp::query())
-                ->addColumn('btn','estudios.acciones')
-                ->rawColumns(['btn'])
+                ->addColumn('btn','estudios.btnCobranza-ver')
+                ->addColumn('on-off','estudios.btnCobranza-status')
+                ->rawColumns(['btn','on-off'])
                 ->toJson();
     }
 
@@ -60,10 +67,17 @@ class EstudiosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $datosPaciente = Estudiostemp::find($id);
-        return view('estudios.cobranza-paciente',compact('datosPaciente'));
+        $doctores = Doctor::all();
+        $tipoPac = TipoPaciente::all();
+        $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
+                              ->select('empleado_nombre','empleado_apellidop','empleado_apellidom')
+                              ->where('puestos.actividad','=','TRANSCRIBE')
+                              ->get();
+        $doctorInter = Doctor::all();
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter'));
     }
 
     /**
@@ -95,8 +109,9 @@ class EstudiosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $dataCobranza = Estudiostemp::where('estudiostemps_status',1)->delete();
+        return redirect()->route('importarCobranza.index');
     }
 }

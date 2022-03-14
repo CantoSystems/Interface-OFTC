@@ -29,9 +29,14 @@ class puestosSeeder extends Seeder
         foreach($puestosTab as $puestos){
             DB::table('puestos')->insert([
                 'puestos_nombre' => $puestos['puestos_nombre'],
+                'actividad' => $puestos['actividad'],
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert,
             ]);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fade5fb3d6a8ef7a38ed2c2cfc8685a0e30c02ba

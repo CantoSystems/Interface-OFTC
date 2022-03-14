@@ -17,7 +17,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('empleado_nombre',20);
             $table->string('empleado_apellidop',20);
             $table->string('empleado_apellidom',20);
-            $table->boolean('empleado_status');
+            $table->char('empleado_status',1);
             $table->unsignedBigInteger('puesto_id');
             $table->foreign('puesto_id')->references('id')->on('puestos');
             $table->timestamps();
