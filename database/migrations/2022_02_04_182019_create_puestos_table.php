@@ -16,6 +16,7 @@ class CreatePuestosTable extends Migration
         Schema::create('puestos', function (Blueprint $table) {
             $table->id();
             $table->string('puestos_nombre',20);
+            $table->string('actividad',30);
             $table->timestamps();
             $table->engine = 'InnoDB';
         });
