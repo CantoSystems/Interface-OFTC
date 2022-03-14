@@ -6,7 +6,12 @@ use DataTables;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ReportesImport;
+
 use App\Models\Estudiostemp;
+use App\Models\Doctor;
+use App\Models\TipoPaciente;
+use App\Models\Empleado;
+
 use App\Http\Requests\ImportCobranzaRequest;
 
 class EstudiosController extends Controller
@@ -62,10 +67,17 @@ class EstudiosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $datosPaciente = Estudiostemp::find($id);
-        return view('estudios.cobranza-paciente',compact('datosPaciente'));
+        $doctores = Doctor::all();
+        $tipoPac = TipoPaciente::all();
+        $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
+                              ->select('empleado_nombre','empleado_apellidop','empleado_apellidom')
+                              ->where('puestos.actividad','=','TRANSCRIBE')
+                              ->get();
+        $doctorInter = Doctor::all();
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter'));
     }
 
     /**

@@ -20,7 +20,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
 //Importar Excel Cobranza
