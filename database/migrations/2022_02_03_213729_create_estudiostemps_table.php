@@ -14,11 +14,13 @@ class CreateEstudiostempsTable extends Migration
     public function up(){
         Schema::create('estudiostemps', function (Blueprint $table) {
             $table->id();
+            $table->char('id_doctor_fk',10)->nullable();
+            $table->char('id_empTrans_fk',10)->nullable();
+            $table->char('id_empInt_fk',10)->nullable();
             $table->date('fecha');
-            $table->char('serie',2)->nullable();
             $table->char('folio',10)->nullable();
-            $table->text('doctor')->nullable();
             $table->text('paciente')->nullable();
+            $table->text('tipoPaciente')->nullable();
             $table->text('servicio')->nullable();
             $table->text('met_pago')->nullable();
             $table->char('cfdi',10)->nullable();
@@ -26,6 +28,10 @@ class CreateEstudiostempsTable extends Migration
             $table->double('descuento',10,2)->nullable();
             $table->double('iva',10,2)->nullable();
             $table->double('total',10,2)->nullable();
+            $table->char('transcripcion',1)->nullable();
+            $table->char('interpretacion',1)->nullable();
+            $table->char('escaneado',1)->nullable();
+            $table->text('observaciones')->nullable();
             $table->boolean('estudiostemps_status')->default(0)->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';

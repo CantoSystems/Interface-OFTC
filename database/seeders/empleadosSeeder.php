@@ -34,13 +34,13 @@ class empleadosSeeder extends Seeder
         ]);
 
         $fechaInsert = now()->toDateString();
-        foreach($puestosTab as $puestos){
+        foreach($empleadosTab as $empleados){
             DB::table('empleados')->insert([
-                'empleado_nombre' => $puestos['empleado_nombre'],
-                'empleado_apellidop' => $puestos['empleado_apellidop'],
-                'empleado_apellidom' => $puestos['empleado_apellidom'],
-                'empleado_status' => $puestos['empleado_status'],
-                'puesto_id' => $puestos['puesto_id'],
+                'empleado_nombre' => $empleados['empleado_nombre'],
+                'empleado_apellidop' => $empleados['empleado_apellidop'],
+                'empleado_apellidom' => $empleados['empleado_apellidom'],
+                'empleado_status' => $empleados['empleado_status'],
+                'puesto_id' => $empleados['puesto_id'],
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert,
             ]);
