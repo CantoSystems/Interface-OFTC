@@ -24,6 +24,8 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
 //Importar Excel Cobranza
 Route::get('/importar-cobranza',[EstudiosController::class,'index'])->name('importarCobranza.index');
+Route::get('/reportes-cobranza',[EstudiosController::class,'verTabla'])->name('importarCobranza.verTabla');
+Route::get('/reportes-cobranza-info',[EstudiosController::class,'showData'])->name('importarCobranza.showData');
 Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import');
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create');
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show');
