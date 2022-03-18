@@ -12,13 +12,13 @@
                     @method('DELETE')
                     @csrf
 
-                    <p> ¿ Desea eliminar los registros con status: Actualizado?</p>
+                    <p>¿Desea eliminar los registros con status: Actualizado?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-outline-secondary btn-xs">Cancelar</button>
                 <button type="submit" class="btn btn-outline-info btn-xs">Continuar</button>
             </div>
-                </form>
+            </form>
         </div>
         <!--final content modal-->
     </div>

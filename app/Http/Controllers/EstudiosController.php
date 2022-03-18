@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ReportesImport;
+
 use App\Models\Estudiostemp;
 use App\Models\Doctor;
 use App\Models\TipoPaciente;
 use App\Models\Empleado;
 use App\Models\Estudios;
+use App\Models\Cobranza;
 
 use App\Http\Requests\ImportCobranzaRequest;
 
@@ -27,6 +29,36 @@ class EstudiosController extends Controller
      */
     public function index(){
         return view('estudios.import-cobranza');
+
+        $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                            ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->orderBy('estudios.id','ASC')
+                            ->get();
+        
+        return view('estudios.cobranzaTbl',compact('estudios'));
+    }
+
+    public function verTabla(){
+        $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                            ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->orderBy('estudios.id','ASC')
+                            ->get();
+        
+        return view('estudios.cobranzaTbl',compact('estudios'));
+    }
+
+    public function showData(Request $request){
+        $cobranza = Cobranza::join('estudios','estudios.id','=','id_estudio_fk')
+                            ->join('cat_estudios','cat_estudios.id','=','estudios.id')
+                            ->join('doctors','doctors.id','=','id_doctor_fk')
+                            ->select('cobranza.id','doctor_nombre','doctor_apellidop','descripcion','transcripcion','interpretado','interpretacion')
+                            ->orderBy('cobranza.fecha','ASC')
+                            ->get();
+        
+        dd($cobranza);
+        //return view('estudios.cobranzaTbl',compact('cobranza'));
     }
 
     public function importExcel(ImportCobranzaRequest $request){
@@ -47,7 +79,7 @@ class EstudiosController extends Controller
         //$estudioCobranza = Estudiostemp::all();
         //return $estudioCobranza;
         return datatables()
-                ->eloquent(Estudiostemp::query())
+                ->eloquent(Estudiostemp::where('estudiostemps_status',0))
                 ->addColumn('btn','estudios.btnCobranza-ver')
                 ->addColumn('on-off','estudios.btnCobranza-status')
                 ->rawColumns(['btn','on-off'])
@@ -103,70 +135,59 @@ class EstudiosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
+        //dd($request);
         $validator = Validator::make($request->all(),[
-            'drRequiere' => 'required',
-            'tipoPaciente' => 'required',
-            'transRd' => 'required',
-            'intRd' => 'required',
-            'escRd' => 'required'
+            'registroC' => 'required'
+        ],[
+            'registroC.required' => 'Selecciona si el registro ya está completo.'
         ]);
 
-        if($request['transRd'] == 'on'){
-            $transcripcion = 'S';
-        }else{
-            $transcripcion = 'N';
-        }
-
-        if($request['intRd'] == 'on'){
-            $interpretacion = 'S';
-        }else{
-            $interpretacion = 'N';
-        }
-
-        if($request['escRd'] == 'on'){
-            $escaneado = 'S';
-        }else{
-            $escaneado = 'N';
-        }
-
         if($validator->fails()){
-            $updateDataC = Estudiostemp::where('folio',$request['folioCbr'])
-                                         ->update(
-                                            ['id_doctor_fk' => $request['drRequiere']],
-                                            ['tipoPaciente' => $request['tipoPaciente']],
-                                            ['transcripcion' => $request['transRd']],
-                                            ['interpretacion' => $request['intRd']],
-                                            ['escaneado' => $request['escRd']],
-                                            ['observaciones' => $request['obsCobranza']]
-                                         );
+            return back()->withErrors($validator)->withInput();
         }else{
-            $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
+            if($request['registroC']=='S'){
+                $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
-            $fechaInsert = now()->toDateString();
-            DB::table('cobranza')->insert([
-                'id_estudio_fk' => $estUpd->id,
-                'id_doctor_fk' => $request["drRequiere"],
-                'id_empTrans_fk' => $request["drTransc"],
-                'id_empInt_fk' => $request["drInterpreta"],
-                'folio' => $request['folioCbr'],
-                'fecha' => $request['fchCbr'],
-                'paciente' => $request['pacienteCbr'],
-                'tipoPaciente' => $request['tipoPaciente'],
-                'formaPago' => $request['formaPago'],
-                'transcripcion' => $transcripcion,
-                'interpretacion' => $interpretacion,
-                'escaneado' => $escaneado,
-                'cantidadCbr' => $request['cantidadCbr'],
-                'observaciones' => $request['obsCobranza'],
-                'created_at' => $fechaInsert,
-                'updated_at' => $fechaInsert
-            ]);
+                $fechaInsert = now()->toDateString();
+                DB::table('cobranza')->insert([
+                    'id_estudio_fk' => $estUpd->id,
+                    'id_doctor_fk' => $request["drRequiere"],
+                    'id_empTrans_fk' => $request["drTransc"],
+                    'id_empInt_fk' => $request["drInterpreta"],
+                    'folio' => $request['folioCbr'],
+                    'fecha' => $request['fchCbr'],
+                    'paciente' => $request['pacienteCbr'],
+                    'tipoPaciente' => $request['tipoPaciente'],
+                    'formaPago' => $request['formaPago'],
+                    'transcripcion' => $request['transRd'],
+                    'interpretacion' => $request['intRd'],
+                    'escaneado' => $request['escRd'],
+                    'cantidadCbr' => $request['cantidadCbr'],
+                    'observaciones' => $request['obsCobranza'],
+                    'created_at' => $fechaInsert,
+                    'updated_at' => $fechaInsert
+                ]);
 
-            $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                                           ->update(
-                                              ['estudiostemps_status' => 1]
-                                           );
+                $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+                                            ->update(
+                                                ['estudiostemps_status' => 1]
+                                            );
+            }else{
+                $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+                                            ->update([
+                                                'id_empTrans_fk' => $request["drTransc"],                                                
+                                                'id_doctor_fk' => $request["drRequiere"],
+                                                'id_empInt_fk' => $request["drInterpreta"],
+                                                'tipoPaciente' => $request['tipoPaciente'],
+                                                'transcripcion' => $request['transRd'],
+                                                'interpretacion' => $request['intRd'],
+                                                'escaneado' => $request['escRd'],
+                                                'observaciones' => $request['observaciones']
+                                            ]);
+            }
         }
+
+        return redirect()->route('importarCobranza.index');
     }
 
     /**
