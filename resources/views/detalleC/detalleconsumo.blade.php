@@ -2,7 +2,8 @@
     <div class="modal-dialog  modal-ms">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Reporte de Detalle de Consumo</h5>
+                <h5 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Reporte de
+                    Detalle de Consumo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -27,7 +28,8 @@
                         </div>
                         <div class="col-md-8">
                             <br>
-                            <button class="btn btn-block btn-outline-secondary btn-xs" name="accion" value="importar">Importar Reporte</button>
+                            <button class="btn btn-block btn-outline-secondary btn-xs" name="accion"
+                                value="importar">Importar Reporte</button>
                         </div>
                         <div class="col-md-2">
                         </div>

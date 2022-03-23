@@ -74,6 +74,14 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Calcular Comisiones</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
@@ -187,6 +195,21 @@
                 ]
             });
         });
+
+        $(function() {
+            $("#genReportes").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+
         $(function() {
             $("#tableDetalle").DataTable({
                 "responsive": true,
@@ -203,16 +226,22 @@
                     dataSrc: 'data'
                 },
                 columns: [{
-                        data: 'folio'
+                        data: 'codigo'
                     },
                     {
-                        data: 'paciente'
+                        data: 'descripcion'
                     },
                     {
-                        data: 'servicio'
+                        data: 'um'
                     },
                     {
-                        data: 'fecha'
+                        data: 'cantidad'
+                    },
+                    {
+                        data: 'precio_unitario'
+                    },
+                    {
+                        data: 'importe'
                     }
                 ]
             });
