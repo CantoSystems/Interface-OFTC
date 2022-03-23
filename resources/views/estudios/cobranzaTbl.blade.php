@@ -33,6 +33,7 @@
                                     <option value="Interpretado">Interpretado</option>
                                     <option value="Transcrito">Transcrito</option>
                                     <option value="Entregado">Entregado</option>
+                                    <option value="Todos">Todos</option>
                                 </select>
                             </div>
                         </div>
@@ -47,6 +48,19 @@
                             </div>
                         </div>
                     </div>
+                    @if(!empty($cobranza))
+                    <div class="col-md-2 col-sm-4 col-6">
+                        <div class="info-box shadow">
+                            <div class="info-box-content">
+                                <button id="cargarCobranza" type="button"
+                                    class="btn btn-block btn-outline-success btn-xs">
+                                    <a href="{{ route('importarCobranza.export') }}" class="info-box-number">Exportar
+                                        a Excel</a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </form>
         </div>
@@ -55,13 +69,35 @@
                 <thead>
                     <tr>
                         <th>Folio</th>
-                        <th>Paciente</th>
-                        <th>Servicio</th>
                         <th>Fecha</th>
-                        <th>Status</th>
-                        <th>Ver</th>
+                        <th>Paciente</th>
+                        <th>Estudio</th>
+                        <th style="text-align: center;">Tipo Ojos</th>
+                        <th>Doctor</th>
+                        <th style="text-align: center;">Interpretado</th>
+                        <th style="text-align: center;">Transcrito</th>
+                        <th style="text-align: center;">Escaneado</th>
+                        <th style="text-align: center;">Cantidad</th>
                     </tr>
                 </thead>
+                <tbody>
+                    @if(!empty($cobranza))
+                    @foreach($cobranza as $cbr)
+                    <tr>
+                        <td>{{ $cbr->folio }}</td>
+                        <td>{{ $cbr->fecha }}</td>
+                        <td>{{ $cbr->paciente }}</td>
+                        <td>{{ $cbr->descripcion }}</td>
+                        <td style=" text-align: center;">{{ $cbr->nombretipo_ojo }}</td>
+                        <td>{{ $cbr->Doctor }}</td>
+                        <td style="text-align: center;">{{ $cbr->Transcripcion }}</td>
+                        <td style="text-align: center;">{{ $cbr->Interpretacion }}</td>
+                        <td style="text-align: center;">{{ $cbr->Escaneado }}</td>
+                        <td style="text-align: center;">$ {{ number_format($cbr->cantidadCbr,2) }}</td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
             </table>
         </div>
     </div>
