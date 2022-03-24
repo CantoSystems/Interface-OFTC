@@ -270,7 +270,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-primary btn-xs">Guardar
+                                        class="btn btn-block btn-outline-info btn-xs">Guardar
                                         Registro</button>
                                 </div>
                             </div>

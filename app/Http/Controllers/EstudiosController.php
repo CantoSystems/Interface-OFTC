@@ -50,7 +50,7 @@ class EstudiosController extends Controller
                             ->select('estudios.id','descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
-
+        
         switch($request->statusSelect){
             case 'Escaneado':
                 $cobranza = DB::table('cobranza')
