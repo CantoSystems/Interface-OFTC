@@ -3,17 +3,20 @@
 namespace App\Exports;
 
 use App\Models\Cobranza;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use DB;
 
-class CobranzaExport implements FromCollection
+class CobranzaExport implements FromView
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+    
+    use exportable;
+    
+    public function view(): View
     {
-        return DB::table('cobranza')
+        $dataCobranza = DB::table('cobranza')
                     ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
                     ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
                     ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
@@ -30,5 +33,11 @@ class CobranzaExport implements FromCollection
                             ,'cobranza.cantidadCbr')
                     ->orderBy('cobranza.fecha','ASC')
                     ->get();
+        
+                    return view('export-excel.cobranza-exports', [
+                        'data' => $dataCobranza
+                    ]);
     }
+
+
 }

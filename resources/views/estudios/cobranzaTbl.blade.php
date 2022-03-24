@@ -42,7 +42,7 @@
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <button id="cargarCobranza" type="submit"
-                                    class="btn btn-block btn-outline-primary btn-xs">
+                                    class="btn btn-block btn-outline-secondary btn-xs">
                                     <span class="info-box-number">Generar</span>
                                 </button>
                             </div>
@@ -53,7 +53,7 @@
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <button id="cargarCobranza" type="button"
-                                    class="btn btn-block btn-outline-success btn-xs">
+                                    class="btn btn-block btn-outline-info btn-xs">
                                     <a href="{{ route('importarCobranza.export') }}" class="info-box-number">Exportar
                                         a Excel</a>
                                 </button>
@@ -65,6 +65,7 @@
             </form>
         </div>
         <div class="card-body">
+            @if(!empty($cobranza))
             <table id="genReportes" name="genReportes" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -99,6 +100,7 @@
                     @endif
                 </tbody>
             </table>
+            @endif
         </div>
     </div>
 </div>
