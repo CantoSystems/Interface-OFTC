@@ -16,6 +16,7 @@ class puestosSeeder extends Seeder
      */
     public function run(){
         $puestosTab = Collect([
+            ["puestos_nombre" => "N/A", "actividad" => ""],
             ["puestos_nombre" => "OPTOMETRÍA", "actividad" => "TRANSCRIBE"],
             ["puestos_nombre" => "CAJA", "actividad" => "ESCANEA"],
             ["puestos_nombre" => "DOCTOR", "actividad" => "INTERPRETA"],

@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use DataTables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DetalleCImport;
 
 use App\Models\DetalleTemp;
+use App\Models\Doctor;
+use App\Mail\MessageReceived;
 
 class DetalleCController extends Controller
 {
@@ -18,7 +21,10 @@ class DetalleCController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('detalleC.subirarchivoD');
+        $doctores = Doctor::where('id','<>','1')
+                            ->get();
+
+        return view('detalleC.subirarchivoD', compact('doctores'));
     }
 
     public function importExcel(Request $request){
@@ -47,9 +53,12 @@ class DetalleCController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+        $prueba = 'Esta es una prueba';
+
+        Mail::to('jpomprime@gmail.com')->queue(new MessageReceived($prueba));
+
+        //return new MessageReceived($prueba);
     }
 
     /**

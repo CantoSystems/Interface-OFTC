@@ -24,9 +24,10 @@ class CreateCobranzaTable extends Migration
             $table->text('paciente');
             $table->text('tipoPaciente');
             $table->text('formaPago');
-            $table->char('transcripcion',1)->nullable();
-            $table->char('interpretacion',1)->nullable();
-            $table->char('escaneado',1)->nullable();
+            $table->char('transcripcion',1);
+            $table->char('interpretacion',1);
+            $table->char('escaneado',1);
+            $table->char('entregado',1);
             $table->double('cantidadCbr',10,2)->nullable();
             $table->text('observaciones')->nullable();
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');

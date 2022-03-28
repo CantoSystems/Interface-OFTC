@@ -37,3 +37,4 @@ Route::get('/actualizar-data-cobranza',[EstudiosController::class,'update'])->na
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');
 Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->name('subirDetalle.import');
 Route::get('/extraer-data-consumo',[DetalleCController::class,'create'])->name('extraerDetalle.create');
+Route::get('/enviar-detalle-consumo',[DetalleCController::class,'store'])->name('enviarEmail.store');

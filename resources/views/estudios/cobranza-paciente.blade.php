@@ -244,7 +244,40 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-10">
+                                <div class="col-2">
+                                    <label>Entregado</label>
+                                    <div class="form-group">
+                                        @if($datosPaciente->escaneado == 'S')
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="entRd">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="entRd">
+                                            <label>NO</label>
+                                        </div>
+                                        @elseif($datosPaciente->escaneado == 'N')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="entRd">
+                                            <label>NO</label>
+                                        </div>
+                                        @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="entRd">
+                                            <label>NO</label>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-8">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
