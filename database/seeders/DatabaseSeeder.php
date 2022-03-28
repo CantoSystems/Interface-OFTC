@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             puestosSeeder::class,
             empleadosSeeder::class,
             DoctorSeeder::class,
+            ActividadesSeeder::class,
        ]);
     }
 }

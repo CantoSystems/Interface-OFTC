@@ -219,13 +219,17 @@ class EstudiosController extends Controller
      */
     public function show($id){
         $datosPaciente = Estudiostemp::find($id);
-        $doctores = Doctor::all();
+        $doctores = Doctor::where('id','<>','1')
+                            ->get();
         $tipoPac = TipoPaciente::all();
         $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
                               ->select('id','empleado_nombre','empleado_apellidop','empleado_apellidom')
-                              ->where('puestos.actividad','=','TRANSCRIBE')
-                              ->get();
-        $doctorInter = Doctor::all();
+                              ->where([
+                                  ['puestos.actividad','=','TRANSCRIBE'],
+                                  ['empleados.id_emp','<>','1']
+                              ])->get();
+        $doctorInter = Doctor::where('id','<>','1')
+                               ->get();
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter'));
     }
@@ -251,10 +255,34 @@ class EstudiosController extends Controller
     public function update(Request $request){
         //dd($request);
         $validator = Validator::make($request->all(),[
-            'registroC' => 'required'
+            'registroC'  => 'required',
+            'drRequiere' => 'required',
+            'tipoPaciente' => 'required',
+            /*'transRd' => 'required',
+            'intRd' => 'required',
+            'escRd' => 'required',
+            'entRd' => 'required'*/
         ],[
-            'registroC.required' => 'Selecciona si el registro ya está completo.'
+            'registroC.required' => 'Selecciona si el registro ya está completo.',
+            'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
+            'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
+            /*'transRd.required' => 'Selecciona el status de transcripción del estudio.',
+            'intRd.required' => 'Selecciona el status de interpretación del estudio.',
+            'escRd.required' => 'Selecciona el status de escaneado del estudio.',
+            'entRd.required' => 'Selecciona el status de entregado del estudio.',*/
         ]);
+
+        if($request['transRd'] == 'N'){
+            $doctorTrans = '0';
+        }else{
+            $doctorTrans = $request["drTransc"];
+        }
+
+        if($request["drInterpreta"] == 'N'){
+            $doctorInter = '0';
+        }else{
+            $doctorInter = $request["drInterpreta"];
+        }
 
         if($validator->fails()){
             return back()->withErrors($validator)->withInput();
@@ -266,8 +294,8 @@ class EstudiosController extends Controller
                 DB::table('cobranza')->insert([
                     'id_estudio_fk' => $estUpd->id,
                     'id_doctor_fk' => $request["drRequiere"],
-                    'id_empTrans_fk' => $request["drTransc"],
-                    'id_empInt_fk' => $request["drInterpreta"],
+                    'id_empTrans_fk' => $doctorTrans,
+                    'id_empInt_fk' => $doctorInter,
                     'folio' => $request['folioCbr'],
                     'fecha' => $request['fchCbr'],
                     'paciente' => $request['pacienteCbr'],

@@ -16,6 +16,7 @@ class DoctorSeeder extends Seeder
      */
     public function run(){
         $doctoresTab = [    
+            ["doctor_titulo" => "N/A",  "doctor_nombre" => "N/A",        "doctor_apellidop" => "N/A",         "doctor_apellidom" => "N/A",      "doctor_email" => "",                                       "doctor_status" => "A", "categoria_id" => "1"],
             ["doctor_titulo" => "Dr.",  "doctor_nombre" => "Carlos",     "doctor_apellidop" => "Carrillo",    "doctor_apellidom" => "Salazar",  "doctor_email" => "",                                       "doctor_status" => "A", "categoria_id" => "1"],
             ["doctor_titulo" => "Dr.",  "doctor_nombre" => "Alfredo",    "doctor_apellidop" => "Morales",     "doctor_apellidom" => "Delgado",  "doctor_email" => "moda720112@yahoo.com.mx",                "doctor_status" => "A", "categoria_id" => "3"],
             ["doctor_titulo" => "Dra.", "doctor_nombre" => "Rosa María", "doctor_apellidop" => "Romero",      "doctor_apellidom" => "Castro",   "doctor_email" => "rromerocastro@yahoo.com",                "doctor_status" => "A", "categoria_id" => "3"],

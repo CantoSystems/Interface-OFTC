@@ -31,6 +31,7 @@ class CreateEstudiostempsTable extends Migration
             $table->char('transcripcion',1)->nullable();
             $table->char('interpretacion',1)->nullable();
             $table->char('escaneado',1)->nullable();
+            $table->char('entregado',1)->nullable();
             $table->text('observaciones')->nullable();
             $table->boolean('estudiostemps_status')->default(0)->nullable();
             $table->timestamps();
