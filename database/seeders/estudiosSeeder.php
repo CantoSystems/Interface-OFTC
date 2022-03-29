@@ -19,7 +19,7 @@ class estudiosSeeder extends Seeder
             ["id_estudio_fk" => "1", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR FAG AO"],
             ["id_estudio_fk" => "1", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR FAG OD"],
             ["id_estudio_fk" => "1", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR FAG OI"],
-            ["id_estudio_fk" => "2", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS FAG OCT AO"],
+            ["id_estudio_fk" => "2", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS FAGOCT AO"],
             ["id_estudio_fk" => "2", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS FAGOCT OD"],
             ["id_estudio_fk" => "2", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS FAGOCT OI"],
             ["id_estudio_fk" => "3", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR OCT PAQUETE 4"],

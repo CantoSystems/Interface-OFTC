@@ -29,6 +29,7 @@ class CreateCobranzaTable extends Migration
             $table->char('escaneado',1);
             $table->char('entregado',1);
             $table->double('cantidadCbr',10,2)->nullable();
+            $table->char('statusCita',15)->nullable();
             $table->text('observaciones')->nullable();
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
