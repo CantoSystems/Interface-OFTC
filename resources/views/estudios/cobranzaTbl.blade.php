@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-sm-4 col-6">
+                    <!--<div class="col-md-4 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <label class="info-box-text">Selecciona Status:</label>
@@ -37,7 +37,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
@@ -69,7 +69,7 @@
             <table id="genReportes" name="genReportes" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Folio</th>
+                        <th style="text-align: center;">Folio</th>
                         <th>Fecha</th>
                         <th>Paciente</th>
                         <th>Estudio</th>
@@ -85,11 +85,11 @@
                     @if(!empty($cobranza))
                     @foreach($cobranza as $cbr)
                     <tr>
-                        <td>{{ $cbr->folio }}</td>
+                        <td style="text-align: center;">{{ $cbr->folio }}</td>
                         <td>{{ $cbr->fecha }}</td>
                         <td>{{ $cbr->paciente }}</td>
                         <td>{{ $cbr->descripcion }}</td>
-                        <td style=" text-align: center;">{{ $cbr->nombretipo_ojo }}</td>
+                        <td style="text-align: center;">{{ $cbr->nombretipo_ojo }}</td>
                         <td>{{ $cbr->Doctor }}</td>
                         <td style="text-align: center;">{{ $cbr->Transcripcion }}</td>
                         <td style="text-align: center;">{{ $cbr->Interpretacion }}</td>

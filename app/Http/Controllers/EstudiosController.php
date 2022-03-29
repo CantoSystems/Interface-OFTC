@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ReportesImport;
+use App\Imports\CitasImport;
 use App\Exports\CobranzaExport;
 
 use App\Models\Estudiostemp;
@@ -33,6 +34,10 @@ class EstudiosController extends Controller
         return view('estudios.import-cobranza');
     }
 
+    public function indexC(){
+        return view('estudios.import-citas');
+    }
+
     public function verTabla(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
@@ -51,7 +56,7 @@ class EstudiosController extends Controller
                             ->orderBy('estudios.id','ASC')
                             ->get();
         
-        switch($request->statusSelect){
+        /*switch($request->statusSelect){
             case 'Escaneado':
                 $cobranza = DB::table('cobranza')
                         ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
@@ -166,7 +171,28 @@ class EstudiosController extends Controller
                         ->orderBy('cobranza.fecha','ASC')
                         ->get();
                 break;
-        }
+        }*/
+
+        $cobranza = DB::table('cobranza')
+                        ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
+                        ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
+                        ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
+                        ->join('doctors','doctors.id','=','cobranza.id_doctor_fk')
+                        ->select('cobranza.folio'
+                                ,'cobranza.fecha'
+                                ,'cobranza.paciente'
+                                ,'cat_estudios.descripcion'
+                                ,'tipo_ojos.nombretipo_ojo'
+                                ,DB::raw("UPPER(CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop)) AS Doctor")
+                                ,DB::raw('(CASE WHEN transcripcion = "S" THEN "SI" ELSE "NO" END) AS Transcripcion')
+                                ,DB::raw('(CASE WHEN interpretacion = "S" THEN "SI" ELSE "NO" END) AS Interpretacion')
+                                ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
+                                ,'cobranza.cantidadCbr')
+                        ->where([
+                            ['cobranza.id_estudio_fk','=',$request->estudioSelect]
+                        ])
+                        ->orderBy('cobranza.fecha','ASC')
+                        ->get();
         
         return view('estudios.cobranzaTbl', compact('cobranza','estudios'));
     }
@@ -178,6 +204,15 @@ class EstudiosController extends Controller
             return redirect()->route('importarCobranza.index');
         }
         return "No ha adjuntado ningun archivo";
+    }
+
+    public function importExcelCitas(Request $request){
+        //if($request->hasFile('file')){
+            $file = $request->file('file');
+            Excel::import(new CitasImport, $file);
+            //return redirect()->route('importarCobranza.index');
+        //}
+        //return "No ha adjuntado ningun archivo";
     }
 
     public function exportExcel(){
@@ -306,6 +341,7 @@ class EstudiosController extends Controller
                     'escaneado' => $request['escRd'],
                     'cantidadCbr' => $request['cantidadCbr'],
                     'observaciones' => $request['obsCobranza'],
+                    'entregado' => $request['entRd'],
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert
                 ]);
@@ -324,6 +360,7 @@ class EstudiosController extends Controller
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
                                                 'escaneado' => $request['escRd'],
+                                                'entregado' => $request['entRd'],
                                                 'observaciones' => $request['observaciones']
                                             ]);
             }
@@ -338,8 +375,7 @@ class EstudiosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request){
         $dataCobranza = Estudiostemp::where('estudiostemps_status',1)->delete();
         return redirect()->route('importarCobranza.index');
     }

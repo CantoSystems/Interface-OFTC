@@ -62,7 +62,15 @@
                                 <li class="nav-item">
                                     <a href="{{ route('importarCobranza.index')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Subir archivo Excel</p>
+                                        <p>Subir Archivo Cobranza</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('importarCitas.index')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Subir Archivo Citas</p>
                                     </a>
                                 </li>
                             </ul>

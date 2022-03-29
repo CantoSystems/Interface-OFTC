@@ -247,7 +247,7 @@
                                 <div class="col-2">
                                     <label>Entregado</label>
                                     <div class="form-group">
-                                        @if($datosPaciente->escaneado == 'S')
+                                        @if($datosPaciente->entregado == 'S')
                                         <div class="icheck-primary d-inline">
                                             <input checked type="radio" value="S" name="entRd">
                                             <label>SI</label>
@@ -256,7 +256,7 @@
                                             <input type="radio" value="N" name="entRd">
                                             <label>NO</label>
                                         </div>
-                                        @elseif($datosPaciente->escaneado == 'N')
+                                        @elseif($datosPaciente->entregado == 'N')
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" value="S" name="entRd">
                                             <label>SI</label>

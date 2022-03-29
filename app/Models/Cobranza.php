@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cobranza extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'statusCita'
+    ];
 }

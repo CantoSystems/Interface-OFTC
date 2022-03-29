@@ -22,16 +22,20 @@ Route::get('/', function () {
 
 Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
-//Importar Excel Cobranza
+//Rutas Cobranza
 Route::get('/importar-cobranza',[EstudiosController::class,'index'])->name('importarCobranza.index');
+Route::get('/importar-citas',[EstudiosController::class,'indexC'])->name('importarCitas.index');
 Route::get('/reportes-cobranza',[EstudiosController::class,'verTabla'])->name('importarCobranza.verTabla');
 Route::get('/reportes-cobranza-info',[EstudiosController::class,'showData'])->name('importarCobranza.showData');
-Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import');
-Route::get('/exportar-cobranza-excel',[EstudiosController::class,'exportExcel'])->name('importarCobranza.export');
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create');
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show');
 Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->name('importarCobranza.destroy');
 Route::get('/actualizar-data-cobranza',[EstudiosController::class,'update'])->name('importarCobranza.update');
+
+//Excel
+Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import');
+Route::post('/importar-citas-excel',[EstudiosController::class,'importExcelCitas'])->name('importarCitas.import');
+Route::get('/exportar-cobranza-excel',[EstudiosController::class,'exportExcel'])->name('importarCobranza.export');
 
 //Importar Excel Detalle de Consumo
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index');
