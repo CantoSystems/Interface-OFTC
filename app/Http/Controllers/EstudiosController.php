@@ -353,11 +353,11 @@ class EstudiosController extends Controller
             }else{
                 $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
                                             ->update([
-                                                'id_empTrans_fk' => $request["drTransc"],                                                
+                                                'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $request["drInterpreta"],
+                                                'id_empInt_fk' => $doctorInter,
                                                 'tipoPaciente' => $request['tipoPaciente'],
-                                                'transcripcion' => $request['transRd'],
+                                                'transcripcion' => $request['transcripcion'],
                                                 'interpretacion' => $request['intRd'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
