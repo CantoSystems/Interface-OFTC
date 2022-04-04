@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDetalleConsumosTable extends Migration
+class CreateComisionesDoctoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateDetalleConsumosTable extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_consumos', function (Blueprint $table) {
+        Schema::create('comisiones_doctores', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_doctor_fk');
-            $table->char('folio',10);
-            $table->date('fechaElaboracion');
-            $table->text('paciente');
-            $table->text('tipoPaciente');
-            $table->text('metodoPago');
-            $table->double('cantidadTotal',10,2);
+            $table->unsignedBigInteger('id_tipoPaciente_fk');
+            $table->unsignedBigInteger('id_metodoPago_fk');
+            $table->double('porcentaje',10,2);
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
+            $table->foreign('id_tipoPaciente_fk')->references('id')->on('tipo_pacientes');
+            $table->foreign('id_metodoPago_fk')->references('id')->on('cat_metodo_pago');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ class CreateDetalleConsumosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalle_consumos');
+        Schema::dropIfExists('comisiones_doctores');
     }
 }
