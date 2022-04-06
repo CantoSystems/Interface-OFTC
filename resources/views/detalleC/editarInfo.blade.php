@@ -78,8 +78,7 @@
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" id="btnGuardar" name="btnGuardar"
-                                class="btn btn-block btn-outline-info btn-xs">Guardar
-                                Registro</button>
+                                class="btn btn-block btn-outline-info btn-xs">Guardar y Enviar Detalle de Consumo</button>
                         </div>
                     </div>
                 </form>
