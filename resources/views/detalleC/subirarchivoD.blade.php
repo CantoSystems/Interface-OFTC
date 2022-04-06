@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                <div class="col-12 col-sm-6 col-md-4">
                     <div class="info-box shadow">
                         <span class="info-box-icon bg-info"><i class="fas fa-edit"></i></span>
                         <div class="info-box-content">
@@ -33,6 +33,14 @@
                 </div>
             </div>
         </div>
+        @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </div>
+        @endif
         <div class="card-body">
             <table id="tableDetalle" name="tableDetalle" class="table table-bordered table-hover">
                 <thead>

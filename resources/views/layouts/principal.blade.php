@@ -230,8 +230,8 @@
                     "infoFiltered": "(filtrado por _MAX_ registros totales)"
                 },
                 ajax: {
-                    url: "{{ route('extraerDetalle.create') }}",
-                    dataSrc: 'data'
+                    url: "{{ route('extraerDetalle.show') }}",
+                    dataSrc: 'data',
                 },
                 columns: [{
                         data: 'codigo'
