@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use DataTables;
 use DB;
+use Mail;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DetalleCImport;
@@ -79,7 +80,7 @@ class DetalleCController extends Controller
             $finalPorcentaje = (($datosDC * $porcentajeComision->porcentaje)/100) + $datosDC;
 
             //Insertar en la tabla principal
-            $fechaInsert = now()->toDateString();
+            /*$fechaInsert = now()->toDateString();
             DB::table('detalle_consumos')->insert([
                 'id_doctor_fk' => $request->doctorHoja,
                 'folio' => $request->folioHoja,
@@ -95,7 +96,7 @@ class DetalleCController extends Controller
             //Seleccionar datos de temporal
             $datosDC = DB::table('detalletemps')
                     ->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
-
+            */
             //Seleccionar ID de la principal
             $select2 = DB::table('detalle_consumos')
                     ->select('id')
@@ -103,7 +104,7 @@ class DetalleCController extends Controller
                     ->first();
 
             //Insertar datos de la temporal a la principal
-            foreach($datosDC as $datos){
+            /*foreach($datosDC as $datos){
                 DB::table('detalle_adicional')->insert([
                     'id_detalleConsumo_FK' => $select2->id,
                     'codigo' => $datos->codigo,
@@ -116,7 +117,36 @@ class DetalleCController extends Controller
                     'updated_at' => $fechaInsert
                 ]);
             }
-            DB::table('detalletemps')->truncate();
+            DB::table('detalletemps')->truncate();*/
+
+            $data = DB::table('detalle_consumos')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                ,'detalle_consumos.folio'
+                                ,'detalle_consumos.fechaElaboracion'
+                                ,'detalle_consumos.paciente'
+                                ,'tipo_pacientes.nombretipo_paciente'
+                                ,'cat_metodo_pago.descripcion')
+                        ->where('detalle_consumos.id','=',$select2->id)
+                        ->first();
+
+            $data2 = DB::table('detalle_adicional')
+                         ->where('id_detalleConsumo_FK','=',$select2->id)
+                         ->get();
+
+            $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','datosDC','finalPorcentaje'));
+        
+            $data3["email"] = "test@gmail.com";
+            $data3["title"] = "Welcome to Edinson";
+            $data3["body"] = "This is the email body.";
+
+            Mail::send('emails.messageReceived', $data3, function ($mail) use ($pdf) {
+                $mail->to('pablo.montoya@incretec.mx');
+                $mail->subject('Detalle de Consumo');
+                $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
+            });
         }
 
         return view('detalleC.subirarchivoD', compact('doctores','metodoPago','tipoPaciente'));
