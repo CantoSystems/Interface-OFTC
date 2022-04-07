@@ -3,9 +3,9 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
             <!--Inicio Card Información Paciente-->
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Paciente: {{ $datosPaciente->paciente }}</h3>
@@ -17,18 +17,18 @@
                         @endforeach
                     </div>
                     @endif
-                    <form action="{{ route('importarCobranza.update') }}" method="GET">
+                    <form action="{{ route('importarCobranza.update') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="form-group">
                                         <label>Folio</label>
                                         <input type="text" id="folioCbr" name="folioCbr" class="form-control"
                                             value="{{ $datosPaciente->folio }}" readonly>
                                     </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Paciente</label>
                                         <input type="text" id="pacienteCbr" name="pacienteCbr" class="form-control"
@@ -42,45 +42,17 @@
                                             value="{{ $datosPaciente->fecha }}" readonly>
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="form-group">
                                         <label>Cantidad</label>
                                         <input type="text" id="cantidadCbr" name="cantidadCbr" class="form-control"
                                             value="{{ $datosPaciente->total }}" readonly>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>Estudio</label>
-                                        <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
-                                            value="{{ $datosPaciente->servicio }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>Dr. Que Requiere</label>
-                                        <select name="drRequiere" id="drRequiere" class="custom-select">
-                                            <option selected disabled>-- Selecciona una opción --</option>
-                                            @foreach ($doctores as $dres)
-                                            @if($dres->id==$datosPaciente->id_doctor_fk)
-                                            <option selected value="{{ $dres->id }}">
-                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
-                                                {{ $dres->doctor_apellidom }}
-                                            </option>
-                                            @else
-                                            <option value="{{ $dres->id }}">
-                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
-                                                {{ $dres->doctor_apellidom }}
-                                            </option>
-                                            @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-6">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label>PX INT. - EXT.</label>
-                                        <select name="tipoPaciente" id="tipoPaciente" class="custom-select">
+                                        <select name="tipoPaciente" id="tipoPaciente" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($tipoPac as $tpaciente)
                                             @if($tpaciente->id==$datosPaciente->tipoPaciente)
@@ -98,6 +70,35 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
+                                        <label>Estudio</label>
+                                        <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
+                                            value="{{ $datosPaciente->servicio }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Dr. Que Requiere</label>
+                                        <select name="drRequiere" id="drRequiere" class="custom-select combos">
+                                            <option selected disabled >-- Selecciona una opción --</option>
+                                            @foreach ($doctores as $dres)
+                                            @if($dres->id==$datosPaciente->id_doctor_fk)
+                                            <option selected value="{{ $dres->id }}">
+                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_apellidom }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $dres->id }}">
+                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_apellidom }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-6">
+                                    <div class="form-group">
                                         <label>Forma de Pago</label>
                                         <input type="text" id="formaPago" name="formaPago" class="form-control"
                                             value="{{ $datosPaciente->met_pago }}" readonly>
@@ -108,29 +109,29 @@
                                     <div class="form-group">
                                         @if($datosPaciente->transcripcion == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="transRd" id="transRdS">
+                                            <input checked type="radio" value="S" name="transRd" class="transRdS">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="transRd" id="transRdN">
+                                            <input type="radio" value="N" name="transRd" class="transRdN">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->transcripcion == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="transRd" id="transRdS">
+                                            <input type="radio" value="S" name="transRd" class="transRdS">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="transRd" id="transRdN">
+                                            <input checked type="radio" value="N" name="transRd" class="transRdN">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="transRd" id="transRdS">
+                                            <input type="radio" value="S" name="transRd" class="transRdS">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="transRd" id="transRdN">
+                                            <input type="radio" value="N" name="transRd" class="transRdN">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -139,8 +140,8 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién Realiza la Transcripción</label>
-                                        <select name="drTransc" id="drTransc" class="custom-select">
-                                            <option disabled selected>-- Selecciona una opción --</option>
+                                        <select name="drTransc" id="drTransc" class="custom-select combos">
+                                            <option disabled selected id="NA"value="N/A">-- Selecciona una opción --</option>
                                             @foreach($empTrans as $empT)
                                             @if($empT->id==$datosPaciente->id_empTrans_fk)
                                             <option selected value="{{ $empT->id }}">
@@ -162,29 +163,29 @@
                                     <div class="form-group">
                                         @if($datosPaciente->interpretacion == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="intRd">
+                                            <input checked type="radio" value="S" name="intRd" class="interSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd">
+                                            <input type="radio" value="N" name="intRd" class="interNo">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->interpretacion == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd">
+                                            <input type="radio" value="S" name="intRd" class="interSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="intRd">
+                                            <input checked type="radio" value="N" name="intRd" class="interNo">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd">
+                                            <input type="radio" value="S" name="intRd" class="interSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd">
+                                            <input type="radio" value="N" name="intRd" class="interNo">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -193,7 +194,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién Realiza la Interpretación</label>
-                                        <select name="drInterpreta" id="drInterpreta" class="custom-select">
+                                        <select name="drInterpreta" id="drInterpreta" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($doctorInter as $doc)
                                             @if($doc->id==$datosPaciente->id_empInt_fk)
@@ -233,7 +234,7 @@
                                             <label>NO</label>
                                         </div>
                                         @else
-                                        <div class="icheck-primary d-inline">
+                                        <div class="icheck-info d-inline">
                                             <input type="radio" value="S" name="escRd">
                                             <label>SI</label>
                                         </div>
@@ -277,11 +278,12 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
                                             name="obsCobranza" class="form-control">
+                                        <input type="text" name="status" value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
                                 <div class="col-12" style="text-align: center;">
@@ -312,7 +314,6 @@
                 </div>
             </div>
             <!--Fin Card Información Paciente-->
-            <div class="col-md-2"></div>
         </div>
     </div>
 </section>
