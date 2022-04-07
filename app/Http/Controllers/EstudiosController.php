@@ -225,13 +225,12 @@ class EstudiosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
-        //$estudioCobranza = Estudiostemp::all();
-        //return $estudioCobranza;
         return datatables()
-                ->eloquent(Estudiostemp::where('estudiostemps_status',0))
+                ->eloquent(Estudiostemp::query())
+                ->addColumn('date','estudios.columnaFecha')
                 ->addColumn('btn','estudios.btnCobranza-ver')
                 ->addColumn('on-off','estudios.btnCobranza-status')
-                ->rawColumns(['btn','on-off'])
+                ->rawColumns(['date','btn','on-off'])
                 ->toJson();
     }
 
@@ -258,13 +257,16 @@ class EstudiosController extends Controller
                             ->get();
         $tipoPac = TipoPaciente::all();
         $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
-                              ->select('id','empleado_nombre','empleado_apellidop','empleado_apellidom')
+                              ->select('empleados.id_emp','empleado_nombre','empleado_apellidop','empleado_apellidom')
                               ->where([
                                   ['puestos.actividad','=','TRANSCRIBE'],
                                   ['empleados.id_emp','<>','1']
                               ])->get();
-        $doctorInter = Doctor::where('id','<>','1')
-                               ->get();
+
+        $doctorInter = Doctor::where([
+                                    ['id','<>','1'],
+                                    ['categoria_id',2]
+                                    ])->get();
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter'));
     }
@@ -288,85 +290,7 @@ class EstudiosController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
-        //dd($request);
-        $validator = Validator::make($request->all(),[
-            'registroC'  => 'required',
-            'drRequiere' => 'required',
-            'tipoPaciente' => 'required',
-            /*'transRd' => 'required',
-            'intRd' => 'required',
-            'escRd' => 'required',
-            'entRd' => 'required'*/
-        ],[
-            'registroC.required' => 'Selecciona si el registro ya está completo.',
-            'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
-            'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
-            /*'transRd.required' => 'Selecciona el status de transcripción del estudio.',
-            'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-            'escRd.required' => 'Selecciona el status de escaneado del estudio.',
-            'entRd.required' => 'Selecciona el status de entregado del estudio.',*/
-        ]);
-
-        if($request['transRd'] == 'N'){
-            $doctorTrans = '0';
-        }else{
-            $doctorTrans = $request["drTransc"];
-        }
-
-        if($request["drInterpreta"] == 'N'){
-            $doctorInter = '0';
-        }else{
-            $doctorInter = $request["drInterpreta"];
-        }
-
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }else{
-            if($request['registroC']=='S'){
-                $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
-
-                $fechaInsert = now()->toDateString();
-                DB::table('cobranza')->insert([
-                    'id_estudio_fk' => $estUpd->id,
-                    'id_doctor_fk' => $request["drRequiere"],
-                    'id_empTrans_fk' => $doctorTrans,
-                    'id_empInt_fk' => $doctorInter,
-                    'folio' => $request['folioCbr'],
-                    'fecha' => $request['fchCbr'],
-                    'paciente' => $request['pacienteCbr'],
-                    'tipoPaciente' => $request['tipoPaciente'],
-                    'formaPago' => $request['formaPago'],
-                    'transcripcion' => $request['transRd'],
-                    'interpretacion' => $request['intRd'],
-                    'escaneado' => $request['escRd'],
-                    'cantidadCbr' => $request['cantidadCbr'],
-                    'observaciones' => $request['obsCobranza'],
-                    'entregado' => $request['entRd'],
-                    'created_at' => $fechaInsert,
-                    'updated_at' => $fechaInsert
-                ]);
-
-                $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                                            ->update(
-                                                ['estudiostemps_status' => 1]
-                                            );
-            }else{
-                $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                                            ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
-                                                'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $doctorInter,
-                                                'tipoPaciente' => $request['tipoPaciente'],
-                                                'transcripcion' => $request['transcripcion'],
-                                                'interpretacion' => $request['intRd'],
-                                                'escaneado' => $request['escRd'],
-                                                'entregado' => $request['entRd'],
-                                                'observaciones' => $request['observaciones']
-                                            ]);
-            }
-        }
-
-        return redirect()->route('importarCobranza.index');
+        //
     }
 
     /**
