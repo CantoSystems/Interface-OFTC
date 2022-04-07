@@ -143,13 +143,13 @@
                                         <select name="drTransc" id="drTransc" class="custom-select combos">
                                             <option disabled selected id="NA"value="N/A">-- Selecciona una opción --</option>
                                             @foreach($empTrans as $empT)
-                                            @if($empT->id==$datosPaciente->id_empTrans_fk)
-                                            <option selected value="{{ $empT->id }}">
+                                            @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
+                                            <option selected value="{{ $empT->id_emp }}">
                                                 {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
                                                 {{ $empT->empleado_apellidom }}
                                             </option>
                                             @else
-                                            <option value="{{ $empT->id }}">
+                                            <option value="{{ $empT->id_emp }}">
                                                 {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
                                                 {{ $empT->empleado_apellidom }}
                                             </option>

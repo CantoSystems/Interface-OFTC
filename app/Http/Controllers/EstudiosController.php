@@ -257,11 +257,12 @@ class EstudiosController extends Controller
                             ->get();
         $tipoPac = TipoPaciente::all();
         $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
-                              ->select('id','empleado_nombre','empleado_apellidop','empleado_apellidom')
+                              ->select('empleados.id_emp','empleado_nombre','empleado_apellidop','empleado_apellidom')
                               ->where([
                                   ['puestos.actividad','=','TRANSCRIBE'],
                                   ['empleados.id_emp','<>','1']
                               ])->get();
+
         $doctorInter = Doctor::where([
                                     ['id','<>','1'],
                                     ['categoria_id',2]
