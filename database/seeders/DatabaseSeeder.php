@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             empleadosSeeder::class,
             DoctorSeeder::class,
             ActividadesSeeder::class,
+            metodoPagoSeeder::class,
+            ComisionesDoctoresSeeder::class
        ]);
     }
 }

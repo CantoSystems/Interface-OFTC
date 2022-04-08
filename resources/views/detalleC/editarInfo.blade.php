@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('enviarEmail.store') }}" method="get" enctype="multipart/form-data">
+                <form action="{{ route('guardarDetalle.create') }}" method="get" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-sm-6">
@@ -42,16 +42,43 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label>Seleccionar Método de Pago</label>
+                                <select class="custom-select rounded-0" id="metodoPagoHoja" name="metodoPagoHoja">
+                                    <option disabled selected>Seleccionar una opción...</option>
+                                    @foreach($metodoPago as $metP)
+                                    <option value="{{ $metP->id }}">
+                                        {{ $metP->descripcion }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label>Nombre Paciente</label>
                                 <input type="text" class="form-control" id="pacienteHoja" name="pacienteHoja">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Tipo Paciente</label>
+                                <select class="custom-select rounded-0" id="tipoPacienteHoja" name="tipoPacienteHoja">
+                                    <option disabled selected>Seleccionar una opción...</option>
+                                    @foreach($tipoPaciente as $tipoP)
+                                    <option value="{{ $tipoP->id }}">
+                                        {{ $tipoP->nombretipo_paciente }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" id="btnGuardar" name="btnGuardar"
-                                class="btn btn-block btn-outline-info btn-xs">Guardar
-                                Registro</button>
+                                class="btn btn-block btn-outline-info btn-xs">Guardar y Enviar Detalle de Consumo</button>
                         </div>
                     </div>
                 </form>

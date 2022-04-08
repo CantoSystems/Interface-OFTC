@@ -166,6 +166,7 @@
     });
 
     $(document).ready(function() {
+
         //Datatables
         $(function() {
             $("#reporteCobranza").DataTable({
@@ -192,7 +193,7 @@
                         data: 'servicio'
                     },
                     {
-                        data: 'fecha'
+                        data: 'date'
                     },
                     {
                         data: 'on-off'
@@ -230,8 +231,8 @@
                     "infoFiltered": "(filtrado por _MAX_ registros totales)"
                 },
                 ajax: {
-                    url: "{{ route('extraerDetalle.create') }}",
-                    dataSrc: 'data'
+                    url: "{{ route('extraerDetalle.show') }}",
+                    dataSrc: 'data',
                 },
                 columns: [{
                         data: 'codigo'
@@ -254,6 +255,33 @@
                 ]
             });
         });
+
+        $('.transRdS').click(function(){
+            $('#drTransc').attr("disabled", false);
+            $("option").remove(".nullable");
+            
+        });
+
+        $('.transRdN').click(function(){
+            if($(".transRdN").is(':checked')){
+            $('#drTransc').attr("disabled", true);
+            $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true).text("-- Selecciona una opción --"));
+            }
+        });
+
+        $('.interSi').click(function(){
+            $('#drInterpreta').attr("disabled",false);
+            $("option").remove(".nullableInterpreta");
+
+        });
+
+        $('.interNo').click(function(){
+            $('#drInterpreta').attr("disabled",true);
+            $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",true).text("-- Selecciona una opción --"));
+
+        });
+
+
     });
     </script>
 </body>
