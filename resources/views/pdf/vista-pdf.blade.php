@@ -87,7 +87,7 @@
             @endif
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total: </b></td>
-                <td>$ {{ number_format($datosDC,2) }}</td>
+                <td>$ {{ number_format($sumImporte,2) }}</td>
             </tr>
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total con Comisión: </b></td>

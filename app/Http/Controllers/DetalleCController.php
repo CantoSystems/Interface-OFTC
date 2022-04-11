@@ -19,8 +19,7 @@ use App\Models\Doctor;
 use App\Models\TipoPaciente;
 use App\Mail\MessageReceived;
 
-class DetalleCController extends Controller
-{
+class DetalleCController extends Controller{
     /**
      * Display a listing of the resource.
      *
@@ -85,8 +84,8 @@ class DetalleCController extends Controller
             if($contarFolio != 0){
                 return back()->withErrors('El folio ya se encuentra registrado.');
             }else{
-                $datosDC = DB::table('detalletemps')
-                           ->sum('importe');
+                $sumImporte = DB::table('detalletemps')
+                              ->sum('importe');
                 
                 $porcentajeComision = DB::table('comisiones_doctores')
                                     ->where([
@@ -97,7 +96,7 @@ class DetalleCController extends Controller
                                     ->select('porcentaje')
                                     ->first();
                 
-                $finalPorcentaje = (($datosDC * $porcentajeComision->porcentaje)/100) + $datosDC;
+                $finalPorcentaje = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
     
                 //Insertar en la tabla principal
                 $fechaInsert = now()->toDateString();
@@ -148,7 +147,8 @@ class DetalleCController extends Controller
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'tipo_pacientes.nombretipo_paciente'
-                                    ,'cat_metodo_pago.descripcion')
+                                    ,'cat_metodo_pago.descripcion'
+                                    ,'doctors.doctor_email')
                             ->where('detalle_consumos.id','=',$select2->id)
                             ->first();
     
@@ -156,10 +156,11 @@ class DetalleCController extends Controller
                              ->where('id_detalleConsumo_FK','=',$select2->id)
                              ->get();
     
-                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','datosDC','finalPorcentaje'));
-    
+                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','sumImporte','finalPorcentaje'));
+        
                 Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
                     $mail->to('jpomprime@gmail.com');
+                    //$mail->to($data->doctor_email);
                     $mail->subject('Detalle de Consumo');
                     $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
                 });
@@ -177,7 +178,7 @@ class DetalleCController extends Controller
      */
     public function show(Request $request){
         return datatables()
-                ->eloquent(DetalleTemp::where('codigo','!=','null'))
-                ->toJson();
+               ->eloquent(DetalleTemp::where('codigo','!=','null'))
+               ->toJson();
     }
 }
