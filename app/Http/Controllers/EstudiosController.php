@@ -253,6 +253,7 @@ class EstudiosController extends Controller
      */
     public function show($id){
         $datosPaciente = Estudiostemp::find($id);
+        $descripcionEstudios = Estudios::all();  
         $doctores = Doctor::where('id','<>','1')
                             ->get();
         $tipoPac = TipoPaciente::all();
@@ -268,7 +269,7 @@ class EstudiosController extends Controller
                                     ['categoria_id',2]
                                     ])->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios'));
     }
 
     /**

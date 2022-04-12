@@ -259,7 +259,6 @@
         $('.transRdS').click(function(){
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
-            
         });
 
         $('.transRdN').click(function(){
@@ -272,7 +271,6 @@
         $('.interSi').click(function(){
             $('#drInterpreta').attr("disabled",false);
             $("option").remove(".nullableInterpreta");
-
         });
 
         $('.interNo').click(function(){
