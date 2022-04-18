@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 
 use Maatwebsite\Excel\Facades\Excel;
+
+
 use App\Imports\ReportesImport;
 use App\Imports\CitasImport;
 use App\Exports\CobranzaExport;
@@ -200,7 +202,13 @@ class EstudiosController extends Controller
     public function importExcel(ImportCobranzaRequest $request){
         if($request->hasFile('file')){
             $file = $request->file('file');
-            Excel::import(new ReportesImport, $file);
+            
+            try {
+                Excel::import(new ReportesImport, $file);
+            } catch (\Illuminate\Database\QueryException $e) {
+                return "Folios duplicados";
+            }
+            
             return redirect()->route('importarCobranza.index');
         }
         return "No ha adjuntado ningun archivo";

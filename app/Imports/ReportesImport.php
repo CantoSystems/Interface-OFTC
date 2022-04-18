@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 
 
 
+
 class ReportesImport implements ToModel
 {
     /**
@@ -29,4 +30,6 @@ class ReportesImport implements ToModel
             'total'     => $row[11],
         ]);
     }
+
+
 }
