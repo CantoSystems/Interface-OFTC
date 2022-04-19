@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\PrincipalController;
 use App\Http\Controllers\EstudiosController;
 use App\Http\Controllers\DetalleCController;
@@ -25,7 +26,7 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index');
 
 //Rutas Estudios Temporales
 Route::get('/importar-cobranza',[EstudiosController::class,'index'])->name('importarCobranza.index');
-Route::get('/importar-citas',[EstudiosController::class,'indexC'])->name('importarCitas.index');
+
 Route::get('/reportes-cobranza',[EstudiosController::class,'verTabla'])->name('importarCobranza.verTabla');
 Route::get('/reportes-cobranza-info',[EstudiosController::class,'showData'])->name('importarCobranza.showData');
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create');
@@ -34,6 +35,9 @@ Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->
 
 //Reportes Cobranza
 Route::post('/actualizar-data-cobranza',[CobranzaController::class,'store'])->name('importarCobranza.update');
+
+//Citas
+Route::get('/importar-citas',[CitaController::class,'index'])->name('importarCitas.index');
 
 //Excel
 Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import');

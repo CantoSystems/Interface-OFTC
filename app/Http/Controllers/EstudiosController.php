@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 
 use App\Imports\ReportesImport;
-use App\Imports\CitasImport;
 use App\Exports\CobranzaExport;
 
 use App\Models\Estudiostemp;
@@ -35,11 +34,7 @@ class EstudiosController extends Controller
     public function index(){
         return view('estudios.import-cobranza');
     }
-
-    public function indexC(){
-        return view('estudios.import-citas');
-    }
-
+    
     public function verTabla(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')

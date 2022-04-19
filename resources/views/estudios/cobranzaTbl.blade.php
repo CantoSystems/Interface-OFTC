@@ -12,7 +12,7 @@
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <label class="info-box-text">Selecciona Estudio:</label>
-                                <select name="estudioSelect" id="estudioSelect" class="custom-select">
+                                <select name="estudioSelect[]" id="estudioSelect" multiple="multiple" class="custom-select">
                                     <option selected disabled>-- Selecciona una opción --</option>
                                     @foreach ($estudios as $est)
                                     <option value="{{ $est->id }}">
