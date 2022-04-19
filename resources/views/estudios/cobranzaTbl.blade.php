@@ -13,9 +13,8 @@
                             <div class="info-box-content">
                                 <label class="info-box-text">Selecciona Estudio:</label>
                                 <select name="estudioSelect[]" id="estudioSelect" multiple="multiple" class="custom-select">
-                                    <option selected disabled>-- Selecciona una opción --</option>
                                     @foreach ($estudios as $est)
-                                    <option value="{{ $est->id }}">
+                                    <option value="{{ $est->id }}" selected>
                                         {{ $est->descripcion }} ( {{ $est->nombretipo_ojo }} )
                                     </option>
                                     @endforeach
@@ -48,22 +47,31 @@
                             </div>
                         </div>
                     </div>
-                    @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                <button id="cargarCobranza" type="button"
-                                    class="btn btn-block btn-outline-info btn-xs">
-                                    <a href="{{ route('importarCobranza.export') }}" class="info-box-number">Exportar
-                                        a Excel</a>
-                                </button>
+                                {{-- <button id="cargarCobranza" type="button"
+                                    class="btn btn-block btn-outline-info btn-xs"> --}}
+
+                                   
+                                {{-- </button> --}}
                             </div>
                         </div>
                     </div>
-                    @endif
+  
                 </div>
             </form>
+            @if(!empty($cobranza))
+            <form action="{{ route('importarCobranza.export') }}" method="POST">
+                @csrf
+                {{-- <input type="text" name="criterios" > --}}
+                
+                <input type="hidden" name="aqui" value="{{ json_encode($busquedaEstudios, true) }}" />
+                <input type="submit" value=" Exportar a Excel">
+            </form>
+            @endif
         </div>
+
         <div class="card-body">
             @if(!empty($cobranza))
             <table id="genReportes" name="genReportes" class="table table-bordered table-hover">
@@ -86,7 +94,7 @@
                     @foreach($cobranza as $cbr)
                     <tr>
                         <td style="text-align: center;">{{ $cbr->folio }}</td>
-                        <td>{{ $cbr->fecha }}</td>
+                        <td>{{ date('d-m-Y',strtotime($cbr->fecha)) }}</td>
                         <td>{{ $cbr->paciente }}</td>
                         <td>{{ $cbr->descripcion }}</td>
                         <td style="text-align: center;">{{ $cbr->nombretipo_ojo }}</td>

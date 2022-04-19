@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CobranzaExport;
+
 use App\Models\Doctor;
 use App\Models\Empleado;
 use App\Models\Estudios;
@@ -241,9 +244,15 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                            ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->orderBy('estudios.id','ASC')
+                            ->get();
+        
+        return view('estudios.cobranzaTbl',compact('estudios'));
     }
 
     /**
@@ -252,9 +261,49 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function showCobranza(Request $request)
     {
-        //
+
+        if ( $request->estudioSelect === null) {
+            $busquedaEstudios = [];
+        }
+        $busquedaEstudios = $request->estudioSelect;
+    
+
+            $cobranza = DB::table('cobranza')
+                        ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
+                        ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
+                        ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
+                        ->join('doctors','doctors.id','=','cobranza.id_doctor_fk')
+                        ->select('cobranza.folio'
+                                ,'cobranza.fecha'
+                                ,'cobranza.paciente'
+                                ,'cat_estudios.descripcion'
+                                ,'tipo_ojos.nombretipo_ojo'
+                                ,DB::raw("UPPER(CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop)) AS Doctor")
+                                ,DB::raw('(CASE WHEN transcripcion = "S" THEN "SI" ELSE "NO" END) AS Transcripcion')
+                                ,DB::raw('(CASE WHEN interpretacion = "S" THEN "SI" ELSE "NO" END) AS Interpretacion')
+                                ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
+                                ,'cobranza.cantidadCbr')
+                        ->whereIn('cobranza.id_estudio_fk', [$busquedaEstudios])
+                        ->orderBy('cobranza.fecha','ASC')
+                        ->get();
+
+        
+        $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                            ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->orderBy('estudios.id','ASC')
+                            ->get();
+                            
+       
+        return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios'));
+       
+    }
+
+    public function exportExcel(Request $request){
+        $busqueda = json_decode($request->aqui);
+        return Excel::download(new CobranzaExport($busqueda), 'ReporteCobranza.xlsx');
     }
 
     /**
