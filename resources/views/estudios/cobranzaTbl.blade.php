@@ -47,29 +47,26 @@
                             </div>
                         </div>
                     </div>
+            </form>
+            @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                {{-- <button id="cargarCobranza" type="button"
-                                    class="btn btn-block btn-outline-info btn-xs"> --}}
-
-                                   
-                                {{-- </button> --}}
+                                <form action="{{ route('importarCobranza.export') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="aqui" value="{{ json_encode($busquedaEstudios, true) }}" />
+                                    <input  class="btn btn-block btn-outline-secondary btn-xs" type="submit" value="Exportar a Excel">
+                                </form>
                             </div>
                         </div>
                     </div>
   
                 </div>
-            </form>
-            @if(!empty($cobranza))
-            <form action="{{ route('importarCobranza.export') }}" method="POST">
-                @csrf
-                {{-- <input type="text" name="criterios" > --}}
-                
-                <input type="hidden" name="aqui" value="{{ json_encode($busquedaEstudios, true) }}" />
-                <input type="submit" value=" Exportar a Excel">
-            </form>
             @endif
+            
+            
+            
+            
         </div>
 
         <div class="card-body">
