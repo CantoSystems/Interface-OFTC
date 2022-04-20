@@ -53,10 +53,11 @@ class CobranzaController extends Controller
             'registroC'  => 'required',
             'drRequiere' => 'required',
             'tipoPaciente' => 'required',
-            'escRd' => 'required',
-            'entRd' => 'required',
             'transRd' => 'required',
             'intRd' => 'required',
+            'escRd' => 'required',
+            'entRd' => 'required',
+            
         ],[
             'registroC.required' => 'Selecciona si el registro ya está completo.',
             'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
@@ -285,7 +286,7 @@ class CobranzaController extends Controller
                                 ,DB::raw('(CASE WHEN interpretacion = "S" THEN "SI" ELSE "NO" END) AS Interpretacion')
                                 ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
                                 ,'cobranza.cantidadCbr')
-                        ->whereIn('cobranza.id_estudio_fk', [$busquedaEstudios])
+                        ->whereIn('cobranza.id_estudio_fk', $busquedaEstudios)
                         ->orderBy('cobranza.fecha','ASC')
                         ->get();
 
