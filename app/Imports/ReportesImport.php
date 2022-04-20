@@ -5,6 +5,9 @@ namespace App\Imports;
 use App\Models\Estudiostemp;
 use Maatwebsite\Excel\Concerns\ToModel;
 
+
+
+
 class ReportesImport implements ToModel
 {
     /**
@@ -13,6 +16,7 @@ class ReportesImport implements ToModel
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row){
+        
         return new Estudiostemp([
             'fecha'     => $row[0],
             'folio'     => $row[2],
@@ -26,4 +30,6 @@ class ReportesImport implements ToModel
             'total'     => $row[11],
         ]);
     }
+
+
 }

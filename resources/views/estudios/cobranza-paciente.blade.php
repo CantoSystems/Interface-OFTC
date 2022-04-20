@@ -73,6 +73,16 @@
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
                                             value="{{ $datosPaciente->servicio }}" readonly>
+                                            @if($datosPaciente->estudiostemps_status == 3)
+                                                <select name="estudioCorregido" id="estudioCorregido" class="custom-select combos">
+                                                    <option selected disabled >-- Selecciona una opción --</option>
+                                                    @foreach ($descripcionEstudios as $descripcion)
+                                                    <option selected value="{{ $descripcion->id }}">
+                                                        {{ $descripcion->dscrpMedicosPro }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -283,7 +293,7 @@
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
                                             name="obsCobranza" class="form-control">
-                                        <input type="text" name="status" value="{{$datosPaciente->estudiostemps_status}}">
+                                        <input type="hidden" name="status" value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
                                 <div class="col-12" style="text-align: center;">
