@@ -3,7 +3,7 @@
 <div class="col">
     <div class="card">
         <div class="card-header modalPersonalizado">
-            <h4>Hoja de Consumo</h4>
+            <h4>Detalle de Consumo</h4>
         </div>
         <div class="card-header">
             <div class="row">
