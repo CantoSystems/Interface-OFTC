@@ -13,11 +13,6 @@ class CobranzaExport implements FromView
 {
     
     use exportable;
-
-    public function __construct(array $arrayEstudios)
-    {
-        $this->arrayEstudios = $arrayEstudios;
-    }
     
     public function view(): View
     {

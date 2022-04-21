@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Informacion
-                    Adicional Detalle de Consumo</h1>
+                    Adicional Hoja de Consumo</h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -78,7 +78,8 @@
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" id="btnGuardar" name="btnGuardar"
-                                class="btn btn-block btn-outline-info btn-xs">Guardar y Enviar Detalle de Consumo</button>
+                                class="btn btn-block btn-outline-info btn-xs">Guardar y Enviar Detalle de
+                                Consumo</button>
                         </div>
                     </div>
                 </form>

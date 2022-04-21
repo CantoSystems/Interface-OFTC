@@ -98,7 +98,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Detalle de Consumo
+                                    Hoja de Consumo
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -107,6 +107,14 @@
                                     <a href="{{ route('subirarchivoD.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Subir archivo Excel</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('mostrarHojas.show') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ver Hojas de Consumo</p>
                                     </a>
                                 </li>
                             </ul>
@@ -220,6 +228,20 @@
         });
 
         $(function() {
+            $("#tableHojas").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+
+        $(function() {
             $("#tableDetalle").DataTable({
                 "responsive": true,
                 "autoWidth": false,
@@ -256,26 +278,30 @@
             });
         });
 
-        $('.transRdS').click(function(){
+        $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
+
         });
 
-        $('.transRdN').click(function(){
-            if($(".transRdN").is(':checked')){
-            $('#drTransc').attr("disabled", true);
-            $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true).text("-- Selecciona una opción --"));
+        $('.transRdN').click(function() {
+            if ($(".transRdN").is(':checked')) {
+                $('#drTransc').attr("disabled", true);
+                $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true)
+                    .text("-- Selecciona una opción --"));
             }
         });
 
-        $('.interSi').click(function(){
-            $('#drInterpreta').attr("disabled",false);
+        $('.interSi').click(function() {
+            $('#drInterpreta').attr("disabled", false);
             $("option").remove(".nullableInterpreta");
+
         });
 
-        $('.interNo').click(function(){
-            $('#drInterpreta').attr("disabled",true);
-            $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",true).text("-- Selecciona una opción --"));
+        $('.interNo').click(function() {
+            $('#drInterpreta').attr("disabled", true);
+            $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
+                true).text("-- Selecciona una opción --"));
 
         });
 
