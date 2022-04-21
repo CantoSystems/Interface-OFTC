@@ -26,7 +26,7 @@ class DetalleCController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $doctores = Doctor::where('id','<>','1')->get();
+        $doctores = Doctor::whereNotIn('id',[1,2])->get();
         $metodoPago = DB::table('cat_metodo_pago')->where('statusMetodoPago','=','A')->get();
         $tipoPaciente = TipoPaciente::all();
 
@@ -180,5 +180,54 @@ class DetalleCController extends Controller{
         return datatables()
                ->eloquent(DetalleTemp::where('codigo','!=','null'))
                ->toJson();
+    }
+
+    public function mostrarHojas(Request $request){
+        $hojasConsumo = DB::table('detalle_consumos')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.folio'
+                                    ,'detalle_consumos.fechaElaboracion'
+                                    ,'detalle_consumos.paciente'
+                                    ,'tipo_pacientes.nombretipo_paciente'
+                                    ,'cat_metodo_pago.descripcion'
+                                    ,'detalle_consumos.cantidadTotal'
+                                    ,'detalle_consumos.id as id_detalle')
+                        ->get();
+
+        return view('detalleC.mostrarhojasConsumo', compact('hojasConsumo'));
+    }
+
+    public function exportarPDF($id){
+        $data = DB::table('detalle_consumos')
+                    ->join('doctors','doctors.id','=','id_doctor_fk')
+                    ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                    ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
+                    ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                            ,'detalle_consumos.folio'
+                            ,'detalle_consumos.fechaElaboracion'
+                            ,'detalle_consumos.paciente'
+                            ,'tipo_pacientes.nombretipo_paciente'
+                            ,'cat_metodo_pago.descripcion'
+                            ,'doctors.doctor_email'
+                            ,'detalle_consumos.cantidadTotal')
+                    ->where('detalle_consumos.id','=',$id)
+                    ->first();
+    
+        $data2 = DB::table('detalle_adicional')
+                     ->where('id_detalleConsumo_FK','=',$id)
+                     ->get();
+
+        $sumImporte = DB::table('detalle_adicional')
+                          ->where('id_detalleConsumo_FK','=',$id)
+                          ->sum('importe');
+                          
+        $finalPorcentaje = $data->cantidadTotal;
+
+        $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','sumImporte','finalPorcentaje'));
+        
+        return $pdf->download('Hoja de Consumo.pdf');
     }
 }
