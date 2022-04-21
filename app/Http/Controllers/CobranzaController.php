@@ -57,7 +57,6 @@ class CobranzaController extends Controller
             'intRd' => 'required',
             'escRd' => 'required',
             'entRd' => 'required',
-            
         ],[
             'registroC.required' => 'Selecciona si el registro ya está completo.',
             'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
@@ -264,7 +263,10 @@ class CobranzaController extends Controller
      */
     public function showCobranza(Request $request)
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> fb1a66b2d5d457281460d50e5123e11b5fef144b
         if ( $request->estudioSelect === null) {
             $busquedaEstudios = [];
         }
