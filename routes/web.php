@@ -51,3 +51,4 @@ Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->
 Route::get('/extraer-data-consumo',[DetalleCController::class,'show'])->name('extraerDetalle.show');
 Route::get('/guardar-info-consumo',[DetalleCController::class,'create'])->name('guardarDetalle.create');
 Route::get('/ver-hojas-consumo',[DetalleCController::class,'mostrarHojas'])->name('mostrarHojas.show');
+Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF'])->name('exportPDF.create');
