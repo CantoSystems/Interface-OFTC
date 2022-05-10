@@ -45,7 +45,7 @@
             <table id="tableDetalle" name="tableDetalle" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Descripción</th>
                         <th>Unidad de Medida</th>
                         <th>Cantidad</th>
