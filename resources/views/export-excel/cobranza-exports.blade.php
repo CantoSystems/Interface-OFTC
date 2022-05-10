@@ -18,7 +18,6 @@
                 <th>Doctor</th>
                 <th>Interpretado</th>
                 <th>Transcrito</th>
-                <th>Quién Transcribio</th>
                 <th>Escaneado</th>
                 <th>Cantidad</th>
             </tr>
@@ -34,7 +33,6 @@
                 <td>{{ $dCobranza->Doctor}}</td>
                 <td>{{ $dCobranza->Transcripcion }}</td>
                 <td>{{ $dCobranza->Interpretacion}}</td>
-                <td>{{ $dCobranza->empleadoInter}}</td>
                 <td>{{ $dCobranza->Escaneado}}</td>
                 <td>{{ $dCobranza->cantidadCbr}}</td>
                 
