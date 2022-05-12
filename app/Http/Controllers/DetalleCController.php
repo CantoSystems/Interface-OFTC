@@ -166,7 +166,7 @@ class DetalleCController extends Controller{
                 });
             }
     
-            return view('detalleC.subirarchivoD', compact('doctores','metodoPago','tipoPaciente'));
+            return view('detalleC.subirarchivoD', compact('doctores','metodoPago','tipoPacien'));
         }
     }
 
