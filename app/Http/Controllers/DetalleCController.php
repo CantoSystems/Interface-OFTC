@@ -197,7 +197,7 @@ class DetalleCController extends Controller{
                                     ,'detalle_consumos.id as id_detalle')
                         ->get();
 
-        return view('detalleC.mostrarhojasConsumo', compact('hojasConsumo'));
+        return view('detalleC.mostrarHojasConsumo', compact('hojasConsumo'));
     }
 
     public function exportarPDF($id){
