@@ -39,6 +39,11 @@
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email"  name="usuario_email" class="form-control">
+                                @error('usuario_email')
+                                    <div class="alert alert-secondary">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-12">

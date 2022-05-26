@@ -63,6 +63,8 @@ class UserController extends Controller
             'usuario_nombre'    => 'required',
             'usuario_email'     => 'required|unique:users|email',
             'password'          => 'required|confirmed',
+        ],[
+            'usuario_email.unique:users' => 'El correo ya existe',
         ]);
 
         $usuario = new User;
