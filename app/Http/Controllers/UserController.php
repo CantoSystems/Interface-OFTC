@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class UserController extends Controller
 {
@@ -14,7 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('login.registro');
     }
 
     /**
@@ -22,9 +26,29 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+       
+        $credentials =  $request->validate([
+            'usuario_email' => ['required', 'email'],
+            'password' => ['required'],
+        ],[
+            'usuario_email.required' => 'Capture email',
+            'usuario_email.email'    => 'Formato de email no válido',
+            'password.required'      => 'Capture su contraseña'
+        ]);
+
+         //request()->only('usuario_email','password');
+  
+       if (Auth::attempt($credentials)) {
+            request()->session()->regenerate();
+ 
+            return redirect()->route('index');
+            //redirect()->intended('dashboard');
+        }else{
+            return back()->with('credenciales','Credenciales no existentes');
+        }
     }
 
     /**
@@ -35,7 +59,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'usuario_nombre'    => 'required',
+            'usuario_email'     => 'required|unique:users|email',
+            'password'          => 'required|confirmed',
+        ]);
+
+        $usuario = new User;
+        $usuario->usuario_nombre = $request->usuario_nombre;
+        $usuario->usuario_email = $request->usuario_email;
+        $usuario->password = Hash::make($request->password);
+        $usuario->save();
+        
+    
     }
 
     /**
@@ -44,9 +80,14 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show( Request $request)
     {
-        //
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+
+
     }
 
     /**

@@ -43,7 +43,13 @@
                             class="img-circle elevation-2" alt="User Image" />
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block">{{ Auth::user()->usuario_nombre }}</a>
+                        <form action="{{ route('usuarios.logout') }}" method="POST">
+                            @csrf
+                            <a href="#" 
+                            onclick="this.closest('form').submit()"
+                            class="d-block">Cerrar sesión</a> 
+                        </form>
                     </div>
                 </div>
 
