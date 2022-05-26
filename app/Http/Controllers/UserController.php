@@ -65,6 +65,11 @@ class UserController extends Controller
             'password'          => 'required|confirmed',
         ],[
             'usuario_email.unique:users' => 'El correo ya existe',
+            'usuario_nombre.required'    => 'Agregue un nombre de usuario',
+            'usuario_email.required'     => 'Agregue un email válido',
+            'password.required'          => 'Agregue una contraseña',
+            'password.confirmed'         => 'Las contraseñas no coinciden',
+
         ]);
 
         $usuario = new User;
@@ -72,7 +77,7 @@ class UserController extends Controller
         $usuario->usuario_email = $request->usuario_email;
         $usuario->password = Hash::make($request->password);
         $usuario->save();
-        
+        return redirect('/');
     
     }
 

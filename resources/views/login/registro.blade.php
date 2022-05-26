@@ -33,6 +33,11 @@
                             <div class="form-group">
                                 <label>Nombre de usuario</label>
                                 <input type="text"  name="usuario_nombre" class="form-control">
+                                @error('usuario_nombre')
+                                <div class="alert alert-secondary">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                             </div>
                         </div>
                         <div class="col-12">
@@ -50,6 +55,11 @@
                             <div class="form-group">
                                 <label>Contraseña</label>
                                 <input type="password"  name="password" class="form-control">
+                                @error('password')
+                                    <div class="alert alert-secondary">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-12">
