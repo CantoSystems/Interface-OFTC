@@ -22,38 +22,35 @@
         <!--Card login-->
         <div class="card card-outline card-info">
             <div class="card-header text-center">
-                <a href="#1" class="h1"><b>Login</b>Interfaz</a>
+                <a href="#1" class="h1"><b>Oftalmo</b>Center</a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
-                <form action="{{ route('usuarios.login') }}" method="POST">
+                <form action="{{ route('usuarios.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
+                                <label>Nombre de usuario</label>
+                                <input type="text"  name="usuario_nombre" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label>Email</label>
                                 <input type="email"  name="usuario_email" class="form-control">
-                                @error('usuario_email')
-                                    <div class="alert alert-secondary">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Contraseña</label>
                                 <input type="password"  name="password" class="form-control">
-                                @error('password')
-                                    <div class="alert alert-secondary">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                                @if(session()->has('credenciales'))
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ session('credenciales')}}
-                                    </div>
-                                @endif
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Confirmar contraseña</label>
+                                <input type="password"  name="password_confirmation" class="form-control">
                             </div>
                         </div>
                         <div class="col-12">
