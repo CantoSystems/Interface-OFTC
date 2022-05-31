@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Interfaz | Oftalmocenter</title>
-
     <link rel="stylesheet" href="{{ asset('/AdminLTE-master/plugins/fontawesome-free/css/all.min.css')}}">
     <link rel="stylesheet" href="{{ asset('/AdminLTE-master/plugins/fontawesome-free/css/fontawesome.min.css')}}">
     <link rel="stylesheet" href="{{ asset('/AdminLTE-master/dist/css/adminlte.min.css')}}">
@@ -46,9 +45,7 @@
                         <a href="#" class="d-block">{{ Auth::user()->usuario_nombre }}</a>
                         <form action="{{ route('usuarios.logout') }}" method="POST">
                             @csrf
-                            <a href="#" 
-                            onclick="this.closest('form').submit()"
-                            class="d-block">Cerrar sesión</a> 
+                            <a href="#" onclick="this.closest('form').submit()" class="d-block">Cerrar sesión</a>
                         </form>
                     </div>
                 </div>
@@ -88,14 +85,6 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Calcular Comisiones</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
@@ -121,6 +110,26 @@
                                     <a href="{{ route('mostrarHojas.show') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Ver Hojas de Consumo</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Comisiones
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Calcular Comisiones</p>
                                     </a>
                                 </li>
                             </ul>
