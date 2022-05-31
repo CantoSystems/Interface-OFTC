@@ -46,27 +46,7 @@ class CobranzaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //dd($request);
-        $validator = Validator::make($request->all(),[
-            'registroC'  => 'required',
-            'drRequiere' => 'required',
-            'tipoPaciente' => 'required',
-            'transRd' => 'required',
-            'intRd' => 'required',
-            'escRd' => 'required',
-            'entRd' => 'required',
-        ],[
-            'registroC.required' => 'Selecciona si el registro ya está completo.',
-            'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
-            'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
-            'escRd.required' => 'Selecciona el status de escaneado del estudio.',
-            'entRd.required' => 'Selecciona el status de entregado del estudio.',
-            'transRd.required' => 'Selecciona el status de transcripción del estudio.',
-            'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-        ]);
-
+    public function store(Request $request){
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
         }else{
@@ -86,6 +66,24 @@ class CobranzaController extends Controller
             return back()->withErrors($validator)->withInput();
         }else{
             if($request['registroC']=='S'){
+                $validator = Validator::make($request->all(),[
+                    'registroC'  => 'required',
+                    'drRequiere' => 'required',
+                    'tipoPaciente' => 'required',
+                    'transRd' => 'required',
+                    'intRd' => 'required',
+                    'escRd' => 'required',
+                    'entRd' => 'required',
+                ],[
+                    'registroC.required' => 'Selecciona si el registro ya está completo.',
+                    'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
+                    'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
+                    'escRd.required' => 'Selecciona el status de escaneado del estudio.',
+                    'entRd.required' => 'Selecciona el status de entregado del estudio.',
+                    'transRd.required' => 'Selecciona el status de transcripción del estudio.',
+                    'intRd.required' => 'Selecciona el status de interpretación del estudio.',
+                ]);
+                
                 //Primera condicional encontrar la coincidencia de la descripción del estudio
                 $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
