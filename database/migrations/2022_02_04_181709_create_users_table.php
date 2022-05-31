@@ -20,8 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
-            $table->boolean('usuario_status');
-            $table->unsignedBigInteger('role_id');
+            $table->boolean('usuario_status')->default(1);
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->foreign('role_id')->references('id')->on('roles');
             $table->timestamps();
             $table->engine = 'InnoDB';
