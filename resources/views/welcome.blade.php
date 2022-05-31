@@ -27,6 +27,11 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
+                @error('password')
+                <div class="alert alert-secondary">
+                    {{ $message }}
+                </div>
+                @enderror
                 <form action="{{ route('usuarios.login') }}" method="POST">
                     @csrf
                     <div class="row">
@@ -45,11 +50,6 @@
                             <div class="form-group">
                                 <label>Contraseña</label>
                                 <input type="password" name="password" class="form-control">
-                                @error('password')
-                                <div class="alert alert-secondary">
-                                    {{ $message }}
-                                </div>
-                                @enderror
                                 @if(session()->has('credenciales'))
                                 <div class="alert alert-danger" role="alert">
                                     {{ session('credenciales')}}
@@ -67,23 +67,22 @@
             </div>
         </div>
     </div>
-
-    <script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/daterangepicker/daterangepicker.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/moment/moment.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/inputmask/jquery.inputmask.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 </body>
-<footer class="main-footer">
+<!--<footer class="main-footer">
     <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
     <strong>Canto Contadores &copy; 2022</strong>
     All rights reserved.
-</footer>
+</footer>-->
+<script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/daterangepicker/daterangepicker.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/moment/moment.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/inputmask/jquery.inputmask.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 
 </html>
