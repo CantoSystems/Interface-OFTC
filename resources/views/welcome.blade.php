@@ -27,11 +27,11 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
-                @error('password')
-                <div class="alert alert-secondary">
-                    {{ $message }}
+                @if(session()->has('credenciales'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('credenciales')}}
                 </div>
-                @enderror
+                @endif
                 <form action="{{ route('usuarios.login') }}" method="POST">
                     @csrf
                     <div class="row">
@@ -50,11 +50,12 @@
                             <div class="form-group">
                                 <label>Contraseña</label>
                                 <input type="password" name="password" class="form-control">
-                                @if(session()->has('credenciales'))
-                                <div class="alert alert-danger" role="alert">
-                                    {{ session('credenciales')}}
+                                @error('password')
+                                <div class="alert alert-secondary">
+                                    {{ $message }}
                                 </div>
-                                @endif
+                                @enderror
+
                             </div>
                         </div>
                         <div class="col-12">
