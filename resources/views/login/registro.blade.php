@@ -79,11 +79,11 @@
             </div>
         </div>
     </div>
-    <footer class="main-footer">
+    <!--<footer class="main-footer">
         <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
         <strong>Canto Contadores &copy; 2022</strong>
         All rights reserved.
-    </footer>
+    </footer>-->
 
     <script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
