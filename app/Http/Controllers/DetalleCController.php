@@ -159,7 +159,7 @@ class DetalleCController extends Controller{
                 $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','sumImporte','finalPorcentaje'));
         
                 Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
-                    $mail->to('jpomprime@gmail.com');
+                    $mail->to('jpom_prime@hotmail.com');
                     //$mail->to($data->doctor_email);
                     $mail->subject('Detalle de Consumo');
                     $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
