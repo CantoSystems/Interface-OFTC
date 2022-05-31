@@ -60,30 +60,29 @@ class CobranzaController extends Controller
         }
 
         $fechaInsert = now();
-        //->toDateString();
+        
+        if($request['registroC']=='S'){
+            $validator = Validator::make($request->all(),[
+                'registroC'  => 'required',
+                'drRequiere' => 'required',
+                'tipoPaciente' => 'required',
+                'transRd' => 'required',
+                'intRd' => 'required',
+                'escRd' => 'required',
+                'entRd' => 'required',
+            ],[
+                'registroC.required' => 'Selecciona si el registro ya está completo.',
+                'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
+                'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
+                'escRd.required' => 'Selecciona el status de escaneado del estudio.',
+                'entRd.required' => 'Selecciona el status de entregado del estudio.',
+                'transRd.required' => 'Selecciona el status de transcripción del estudio.',
+                'intRd.required' => 'Selecciona el status de interpretación del estudio.',
+            ]);
 
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }else{
-            if($request['registroC']=='S'){
-                $validator = Validator::make($request->all(),[
-                    'registroC'  => 'required',
-                    'drRequiere' => 'required',
-                    'tipoPaciente' => 'required',
-                    'transRd' => 'required',
-                    'intRd' => 'required',
-                    'escRd' => 'required',
-                    'entRd' => 'required',
-                ],[
-                    'registroC.required' => 'Selecciona si el registro ya está completo.',
-                    'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
-                    'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
-                    'escRd.required' => 'Selecciona el status de escaneado del estudio.',
-                    'entRd.required' => 'Selecciona el status de entregado del estudio.',
-                    'transRd.required' => 'Selecciona el status de transcripción del estudio.',
-                    'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-                ]);
-                
+            if($validator->fails()){
+                return back()->withErrors($validator)->withInput();
+            }else{
                 //Primera condicional encontrar la coincidencia de la descripción del estudio
                 $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
@@ -211,28 +210,27 @@ class CobranzaController extends Controller
                                                 'estudiostemps_status' => 3,
                                                 'updated_at' => $fechaInsert
                                         ]);
-                    }
-                //REgistro no se encuentran coincidencias
+                    }//Registro no se encuentran coincidencias
                 }
-            //Fin registro contiene todos los datos          
-            }else{
-                //Registro faltante de datos 
-                $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                ->update([
-                    'id_empTrans_fk' => $doctorTrans,                                                
-                    'id_doctor_fk' => $request["drRequiere"],
-                    'id_empInt_fk' => $doctorInter,
-                    'tipoPaciente' => $request['tipoPaciente'],
-                    'transcripcion' => $request['transRd'],
-                    'interpretacion' => $request['intRd'],
-                    'escaneado' => $request['escRd'],
-                    'entregado' => $request['entRd'],
-                    'observaciones' => $request['obsCobranza'],
-                    'estudiostemps_status' => 2,
-                    'updated_at' => $fechaInsert
-                ]);
-            }//Fin contiene todos los datos
-        }//Fin validación request
+            }//Fin registro contiene todos los datos          
+        }else{
+            //Registro faltante de datos 
+            $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+            ->update([
+                'id_empTrans_fk' => $doctorTrans,                                                
+                'id_doctor_fk' => $request["drRequiere"],
+                'id_empInt_fk' => $doctorInter,
+                'tipoPaciente' => $request['tipoPaciente'],
+                'transcripcion' => $request['transRd'],
+                'interpretacion' => $request['intRd'],
+                'escaneado' => $request['escRd'],
+                'entregado' => $request['entRd'],
+                'observaciones' => $request['obsCobranza'],
+                'estudiostemps_status' => 2,
+                'updated_at' => $fechaInsert
+            ]);
+        }//Fin contiene todos los datos
+
         return redirect()->route('importarCobranza.index');
     }
 
