@@ -27,6 +27,11 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
+                @error('password')
+                <div class="alert alert-secondary">
+                    {{ $message }}
+                </div>
+                @enderror
                 <form action="{{ route('usuarios.login') }}" method="POST">
                     @csrf
                     <div class="row">
@@ -45,11 +50,6 @@
                             <div class="form-group">
                                 <label>Contraseña</label>
                                 <input type="password" name="password" class="form-control">
-                                @error('password')
-                                <div class="alert alert-secondary">
-                                    {{ $message }}
-                                </div>
-                                @enderror
                                 @if(session()->has('credenciales'))
                                 <div class="alert alert-danger" role="alert">
                                     {{ session('credenciales')}}
