@@ -58,9 +58,16 @@ Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.s
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
 Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
 
-//Catálogos (Estudios)
+//Catálogos (Estudios inviduales)
 Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');
 Route::get('/editar-estudio/{id}',[EstudiosController::class,'mostrarEstudio'])->name('editCatalogo.update')->middleware('auth');
 Route::post('/guardar-estudio',[EstudiosController::class,'updateEstudio'])->name('updateEstudio.update')->middleware('auth');
 Route::post('/agregar-estudio',[EstudiosController::class,'nvoEstudio'])->name('nvoEstudio.create')->middleware('auth');
 Route::delete('/eliminar-estudio',[EstudiosController::class,'deleteEstudio'])->name('dltEstudio.destroy')->middleware('auth');
+
+//Catálogos (Estudios Generales)
+Route::get('/catalogo-estudios-generales',[EstudiosController::class,'showEstudiosGrales'])->name('mostrarCatalogoGral.show')->middleware('auth');
+Route::post('/agregar-estudio-general',[EstudiosController::class,'nvoEstudioGral'])->name('nvoEstudioGral.create')->middleware('auth');
+Route::get('/editar-estudio-general/{id}',[EstudiosController::class,'mostrarEstudioGral'])->name('editCatalogoGral.update')->middleware('auth');
+Route::post('/guardar-estudio-general',[EstudiosController::class,'updateEstudioGral'])->name('updateEstudioGral.update')->middleware('auth');
+Route::delete('/eliminar-estudio-general',[EstudiosController::class,'deleteEstudioGral'])->name('dltEstudioGral.destroy')->middleware('auth');

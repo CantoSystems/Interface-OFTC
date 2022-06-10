@@ -136,7 +136,7 @@ class DetalleCController extends Controller{
                         'updated_at' => $fechaInsert
                     ]);
                 }
-                //DB::table('detalletemps')->truncate();
+                DB::table('detalletemps')->truncate();
     
                 $data = DB::table('detalle_consumos')
                             ->join('doctors','doctors.id','=','id_doctor_fk')
