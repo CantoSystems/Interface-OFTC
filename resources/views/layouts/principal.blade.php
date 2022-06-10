@@ -147,6 +147,14 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="{{ route('mostrarCatalogoGral.show') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Estudios Generales</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
                                     <a href="{{ route('mostrarCatalogo.show') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Estudios</p>

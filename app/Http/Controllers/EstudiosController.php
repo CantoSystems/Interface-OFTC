@@ -185,4 +185,43 @@ class EstudiosController extends Controller{
         $delEstudios = Estudios::find($request->idEstudioDel)->delete();
         return redirect()->route('mostrarCatalogo.show');
     }
+
+    //Funciones de catálogos generales
+    public function showEstudiosGrales(){
+        $listEstudiosGrales = CatEstudios::orderBy('id','asc')->get();
+        return view('catalogos.estudiosgenerales.catestudiosgrales',compact('listEstudiosGrales'));
+    }
+
+    public function nvoEstudioGral(Request $request){
+        $fechaInsert = now()->toDateString();
+        DB::table('cat_estudios')->insert([
+            'descripcion' => $request->descripcionGral,
+            'created_at' => $fechaInsert,
+            'updated_at' => $fechaInsert
+        ]);
+
+        $listEstudiosGrales = CatEstudios::orderBy('id','asc')->get();
+        return view('catalogos.estudiosgenerales.catestudiosgrales',compact('listEstudiosGrales'));
+    }
+
+    public function mostrarEstudioGral($id){
+        $estudio = CatEstudios::find($id);
+
+        return view('catalogos.estudiosgenerales.editestudiosgrales',compact('estudio'));
+    }
+
+    public function updateEstudioGral(Request $request){
+        $nvoEstudioGral = CatEstudios::find($request->idEstudio);
+        $nvoEstudioGral->descripcion = $request->descripcionGral;
+        $nvoEstudioGral->save();
+
+        $listEstudiosGrales = CatEstudios::orderBy('id','asc')->get();
+
+        return view('catalogos.estudiosgenerales.catestudiosgrales',compact('listEstudiosGrales'));
+    }
+
+    public function deleteEstudioGral(Request $request){
+        $delEstudios = CatEstudios::find($request->idEstudioDel)->delete();
+        return redirect()->route('mostrarCatalogoGral.show');
+    }
 }
