@@ -6,7 +6,10 @@ use DataTables;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+
 use App\Imports\CitasImport;
+
+use App\Http\Requests\imporCitasRequest;
 
 class CitaController extends Controller
 {
@@ -15,9 +18,23 @@ class CitaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         return view('citas.import-citas');
+    }
+
+    public function importExcel(imporCitasRequest $request){
+        if($request->hasFile('file')){
+            $file = $request->file('file');
+            
+            try {
+                Excel::import(new CitasImport, $file);
+            } catch (\Illuminate\Database\QueryException $e) {
+                return "Folios duplicados";
+            }
+            
+            return redirect()->route('importarCitas.index');
+        }
+        return "No ha adjuntado ningun archivo";
     }
 
     /**

@@ -41,5 +41,5 @@
         </div>
     </div>
 </div>
-@include('estudios.reporteCitas');
+@include('citas.reporteCitas');
 @endsection

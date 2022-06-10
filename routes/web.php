@@ -27,8 +27,6 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index')->middl
 
 //Rutas Estudios Temporales
 Route::get('/importar-cobranza',[EstudiosController::class,'index'])->name('importarCobranza.index')->middleware('auth');
-
-
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create')->middleware('auth');
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show')->middleware('auth');
 Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->name('importarCobranza.destroy')->middleware('auth');
@@ -39,11 +37,11 @@ Route::get('/reportes-cobranza',[CobranzaController::class,'show'])->name('impor
 Route::get('/reportes-cobranza-info',[CobranzaController::class,'showCobranza'])->name('importarCobranza.showData')->middleware('auth');
 
 //Citas
-Route::get('/importar-citas',[CitaController::class,'index'])->name('importarCitas.index')->middleware('auth');
+Route::get('/subir-citas',[CitaController::class,'index'])->name('importarCitas.index')->middleware('auth');
 
 //Excel
 Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import')->middleware('auth');
-Route::post('/importar-citas-excel',[EstudiosController::class,'importExcelCitas'])->name('importarCitas.import')->middleware('auth');
+Route::post('/importar-citas-excel',[CitaController::class,'importExcel'])->name('importarCitas.import')->middleware('auth');
 Route::post('/exportar-cobranza-excel',[CobranzaController::class,'exportExcel'])->name('importarCobranza.export')->middleware('auth');
 
 //Importar Excel Detalle de Consumo
@@ -54,9 +52,15 @@ Route::get('/guardar-info-consumo',[DetalleCController::class,'create'])->name('
 Route::get('/ver-hojas-consumo',[DetalleCController::class,'mostrarHojas'])->name('mostrarHojas.show')->middleware('auth');
 Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF'])->name('exportPDF.create')->middleware('auth');
 
-
 //Usuarios
 Route::get('/usuarios',[UserController::class,'index'])->name('usuarios.index');
 Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.store');
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
 Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
+
+//Catálogos (Estudios)
+Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');
+Route::get('/editar-estudio/{id}',[EstudiosController::class,'mostrarEstudio'])->name('editCatalogo.update')->middleware('auth');
+Route::post('/guardar-estudio',[EstudiosController::class,'updateEstudio'])->name('updateEstudio.update')->middleware('auth');
+Route::post('/agregar-estudio',[EstudiosController::class,'nvoEstudio'])->name('nvoEstudio.create')->middleware('auth');
+Route::delete('/eliminar-estudio',[EstudiosController::class,'deleteEstudio'])->name('dltEstudio.destroy')->middleware('auth');

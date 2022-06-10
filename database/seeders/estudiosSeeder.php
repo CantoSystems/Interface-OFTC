@@ -59,12 +59,12 @@ class estudiosSeeder extends Seeder
             ["id_estudio_fk" => "13", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA ANTERION MÁS CALCULO ANTERION UN OJO"],
             ["id_estudio_fk" => "13", "id_ojo_fk" => "1", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION AO"],
             ["id_estudio_fk" => "13", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION UN OJO"],
-            ["id_estudio_fk" => "14", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIIOS MEDICOS POR USB - B AO"],
-            ["id_estudio_fk" => "14", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB-B OI"],
-            ["id_estudio_fk" => "14", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB-B OD"],
-            ["id_estudio_fk" => "15", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB- A AO"],
-            ["id_estudio_fk" => "15", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB- A OD"],
-            ["id_estudio_fk" => "15", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB-A OI"],
+            ["id_estudio_fk" => "14", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIIOS MEDICOS POR USB  B AO"],
+            ["id_estudio_fk" => "14", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USBB OI"],
+            ["id_estudio_fk" => "14", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USBB OD"],
+            ["id_estudio_fk" => "15", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A AO"],
+            ["id_estudio_fk" => "15", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A OD"],
+            ["id_estudio_fk" => "15", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A OI"],
             ["id_estudio_fk" => "17", "id_ojo_fk" => "1", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION AO"],
             ["id_estudio_fk" => "17", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION UN OJO"]
         ]);
@@ -75,6 +75,7 @@ class estudiosSeeder extends Seeder
                 'id_estudio_fk' => $estudios['id_estudio_fk'],
                 'id_ojo_fk' => $estudios['id_ojo_fk'],
                 'dscrpMedicosPro' => $estudios['dscrpMedicosPro'],
+                'precioEstudio' => 0.00,
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert,
             ]);

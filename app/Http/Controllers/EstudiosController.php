@@ -11,21 +11,20 @@ use Illuminate\Support\Facades\Validator;
 
 use Maatwebsite\Excel\Facades\Excel;
 
-
 use App\Imports\ReportesImport;
 
-
 use App\Models\Estudiostemp;
+use App\Models\CatEstudios;
 use App\Models\Doctor;
 use App\Models\TipoPaciente;
 use App\Models\Empleado;
 use App\Models\Estudios;
 use App\Models\Cobranza;
+use App\Models\TipoOjo;
 
 use App\Http\Requests\ImportCobranzaRequest;
 
-class EstudiosController extends Controller
-{
+class EstudiosController extends Controller{
     /**
      * Display a listing of the resource.
      *
@@ -50,17 +49,6 @@ class EstudiosController extends Controller
         return "No ha adjuntado ningun archivo";
     }
 
-    public function importExcelCitas(Request $request){
-        //if($request->hasFile('file')){
-            $file = $request->file('file');
-            Excel::import(new CitasImport, $file);
-            //return redirect()->route('importarCobranza.index');
-        //}
-        //return "No ha adjuntado ningun archivo";
-    }
-
-    
-    
     /**
      * Show the form for creating a new resource.
      *
@@ -115,28 +103,6 @@ class EstudiosController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request){
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -145,5 +111,78 @@ class EstudiosController extends Controller
     public function destroy(Request $request){
         $dataCobranza = Estudiostemp::where('estudiostemps_status',1)->delete();
         return redirect()->route('importarCobranza.index');
+    }
+
+    //Funciones de Catálogos (Estudios Invididuales)
+    public function showCatalogo(){
+        $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                                ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.precioEstudio','estudios.precioEstudio')
+                                ->orderBy('estudios.id','asc')
+                                ->get();
+                                
+        $catEstudios = CatEstudios::all();
+        $catOjos = TipoOjo::all();
+
+        return view('catalogos.estudios.catestudios',compact('listEstudios','catEstudios','catOjos'));
+    }
+
+    public function mostrarEstudio($id){
+        $estudio = Estudios::orderBy('estudios.id','asc')
+                            ->where('estudios.id','=',$id)
+                            ->first();
+
+        $catEstudios = CatEstudios::all();
+        $catOjos = TipoOjo::all();
+
+        return view('catalogos.estudios.editestudios',compact('estudio','catEstudios','catOjos'));
+    }
+
+    public function updateEstudio(Request $request){
+        $nvoEstudio = Estudios::find($request->idEstudio);
+        $nvoEstudio->id_estudio_fk = $request->estudioGral;
+        $nvoEstudio->id_ojo_fk = $request->tipoOjo;
+        $nvoEstudio->precioEstudio = $request->precioEstudio;
+        $nvoEstudio->dscrpmedicosPro = $request->dscrpMedicosPro;
+        $nvoEstudio->save();
+
+        $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                                ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.precioEstudio')
+                                ->orderBy('estudios.id','asc')
+                                ->get();
+
+        $catEstudios = CatEstudios::all();
+        $catOjos = TipoOjo::all();
+
+        return view('catalogos.estudios.catestudios',compact('listEstudios','catEstudios','catOjos'));
+    }
+
+    public function nvoEstudio(Request $request){
+        $fechaInsert = now()->toDateString();
+        DB::table('estudios')->insert([
+            'id_estudio_fk' => $request->estudioGral,
+            'id_ojo_fk' => $request->tipoOjo,
+            'precioEstudio' => $request->precioEstudio,
+            'dscrpMedicosPro' => $request->dscrpMedicosPro,
+            'created_at' => $fechaInsert,
+            'updated_at' => $fechaInsert
+        ]);
+
+        $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
+                                ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.precioEstudio')
+                                ->orderBy('estudios.id','asc')
+                                ->get();
+                                
+        $catEstudios = CatEstudios::all();
+        $catOjos = TipoOjo::all();
+        
+        return view('catalogos.estudios.catestudios',compact('listEstudios','catEstudios','catOjos'));
+    }
+
+    public function deleteEstudio(Request $request){
+        $delEstudios = Estudios::find($request->idEstudioDel)->delete();
+        return redirect()->route('mostrarCatalogo.show');
     }
 }
