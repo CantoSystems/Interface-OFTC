@@ -29,9 +29,12 @@ class empleadosSeeder extends Seeder
             ["empleado_nombre" => "Maria del Pilar", "empleado_apellidop" => "Sánchez",   "empleado_apellidom" => "Vergara",   "empleado_status" => "A", "puesto_id" => "3"],
             ["empleado_nombre" => "Natalia Antonia", "empleado_apellidop" => "Velázquez", "empleado_apellidom" => "Valdéz",    "empleado_status" => "A", "puesto_id" => "5"],
             ["empleado_nombre" => "Carlos",          "empleado_apellidop" => "Carrillo",  "empleado_apellidom" => "Salazar",   "empleado_status" => "A", "puesto_id" => "4"],
-            ["empleado_nombre" => "Rosa María",      "empleado_apellidop" => "Romero",    "empleado_apellidom" => "",          "empleado_status" => "A", "puesto_id" => "4"],
-            ["empleado_nombre" => "Gonzalo",         "empleado_apellidop" => "Padilla",   "empleado_apellidom" => "Valdéz",    "empleado_status" => "A", "puesto_id" => "4"]
-
+            ["empleado_nombre" => "Rosa María",      "empleado_apellidop" => "Romero",    "empleado_apellidom" => "Castro",    "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Gonzalo",         "empleado_apellidop" => "Padilla",   "empleado_apellidom" => "Aguilar",   "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Alfredo",         "empleado_apellidop" => "Morales",   "empleado_apellidom" => "Delgado",   "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Alejandra",       "empleado_apellidop" => "Ocampo",    "empleado_apellidom" => "García",    "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Efren",           "empleado_apellidop" => "Muñoz",     "empleado_apellidom" => "Miranda",   "empleado_status" => "A", "puesto_id" => "4"],
+            ["empleado_nombre" => "Juan Carlos",     "empleado_apellidop" => "de la Luz", "empleado_apellidom" => "Osnaya",    "empleado_status" => "A", "puesto_id" => "4"]
         ]);
 
         $fechaInsert = now()->toDateString();
