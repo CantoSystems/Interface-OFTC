@@ -2,19 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+
 use App\Models\Empleado;
+use App\Models\Puesto;
+
 use Illuminate\Http\Request;
 
-class EmpleadoController extends Controller
-{
+class EmpleadoController extends Controller{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(){
+        $empleados = Empleado::join('puestos','puestos.id','=','puesto_id')
+                            ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
+                                    ,'puestos.puestos_nombre'
+                                    ,'empleados.id_emp')
+                            ->where([
+                                ['empleados.empleado_status','=','A'],
+                                ['empleados.id_emp','!=',1]
+                            ])
+                            ->get();
+
+        $listPuestos = Puesto::where('id','!=',1)->get();
+
+        return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 
     /**
@@ -22,9 +36,31 @@ class EmpleadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(Request $request){
+        $fechaInsert = now()->toDateString();
+        DB::table('empleados')->insert([
+            'empleado_nombre' => $request->nombreEmpleado,
+            'empleado_apellidop' => $request->appEmpleado,
+            'empleado_apellidom' => $request->apmEmpleado,
+            'empleado_status' => 'A',
+            'puesto_id' => $request->puestoEmp,
+            'created_at' => $fechaInsert,
+            'updated_at' => $fechaInsert
+        ]);
+
+        $empleados = Empleado::join('puestos','puestos.id','=','puesto_id')
+                            ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
+                                    ,'puestos.puestos_nombre'
+                                    ,'empleados.id_emp')
+                            ->where([
+                                ['empleados.empleado_status','=','A'],
+                                ['empleados.id_emp','!=',1]
+                            ])
+                            ->get();
+
+        $listPuestos = Puesto::where('id','!=',1)->get();
+
+        return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 
     /**
@@ -44,9 +80,18 @@ class EmpleadoController extends Controller
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
-    {
-        //
+    public function show($id){
+        $empleado = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
+                                    ,'empleado_nombre'
+                                    ,'empleado_apellidop'
+                                    ,'empleado_apellidom'
+                                    ,'id_emp'
+                                    ,'puesto_id')
+                                    ->where('id_emp','=',$id)->first();
+
+        $listPuestos = Puesto::where('id','!=',1)->get();
+
+        return view('catalogos.empleados.editempleado',compact('empleado','listPuestos'));
     }
 
     /**
