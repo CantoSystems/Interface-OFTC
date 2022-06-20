@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +18,6 @@
 <header>
     <h1 style="text-align: center;">Detalle de Consumo - {{ $data->folio }}</h1>
 </header>
-
 <body>
     <dd>
         <p>
@@ -55,25 +53,16 @@
             @endforeach
             @endif
             <tr>
-                <td style="text-align: right;" colspan="5"><b>Total: </b></td>
-                <td>$ {{ number_format($sumImporte,2) }}</td>
+                <td style="text-align: right;" colspan="5"><b>Total (Efectivo): </b></td>
+                <td>$ {{ number_format($totalEfectivo,2) }}</td>
             </tr>
             <tr>
-                <td style="text-align: right;" colspan="5"><b>Comisión: </b></td>
-                <td>$ {{ number_format($sumImporte,2) }}</td>
-            </tr>
-            <tr>
-                <td style="text-align: right;" colspan="5"><b>Total con Comisión (Efectivo): </b></td>
-                <td>$ {{ number_format($finalPorcentaje,2) }}</td>
-            </tr>
-            <tr>
-                <td style="text-align: right;" colspan="5"><b>Total con Comisión (Transferencia): </b></td>
-                <td>$ {{ number_format($finalPorcentaje,2) }}</td>
+                <td style="text-align: right;" colspan="5"><b>Total (Transferencia): </b></td>
+                <td>$ {{ number_format($totalTPV,2) }}</td>
             </tr>
         </tbody>
     </table>
 </body>
 <footer>
 </footer>
-
 </html>

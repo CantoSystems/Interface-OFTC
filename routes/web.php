@@ -86,3 +86,4 @@ Route::get('/catalogo-empleados',[EmpleadoController::class,'index'])->name('mos
 Route::post('/agregar-empleado',[EmpleadoController::class,'create'])->name('nvoEmpleado.create')->middleware('auth');
 Route::post('/guardar-empleado',[EmpleadoController::class,'update'])->name('updtEmpleado.update')->middleware('auth');
 Route::get('/editar-empleado/{id}',[EmpleadoController::class,'show'])->name('updtEmpleado.show')->middleware('auth');
+Route::delete('/eliminar-empleado',[EmpleadoController::class,'destroy'])->name('dltEmpleado.destroy')->middleware('auth');
