@@ -8,6 +8,7 @@ use App\Http\Controllers\EstudiosController;
 use App\Http\Controllers\DetalleCController;
 use App\Http\Controllers\CobranzaController;
 use App\Http\Controllers\ComisionesController;
+use App\Http\Controllers\EmpleadoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,3 +80,9 @@ Route::post('/agregar-comision',[ComisionesController::class,'create'])->name('n
 Route::post('/guardar-comision',[ComisionesController::class,'update'])->name('updtComision.update')->middleware('auth');
 Route::get('/editar-comision/{id}',[ComisionesController::class,'show'])->name('editComision.show')->middleware('auth');
 Route::delete('/eliminar-comision',[ComisionesController::class,'destroy'])->name('dltComision.delete')->middleware('auth');
+
+//Catalogo Empleados
+Route::get('/catalogo-empleados',[EmpleadoController::class,'index'])->name('mostrarEmpleados.index')->middleware('auth');
+Route::post('/agregar-empleado',[EmpleadoController::class,'create'])->name('nvoEmpleado.create')->middleware('auth');
+Route::post('/guardar-empleado',[EmpleadoController::class,'update'])->name('updtEmpleado.update')->middleware('auth');
+Route::get('/editar-empleado/{id}',[EmpleadoController::class,'show'])->name('updtEmpleado.show')->middleware('auth');
