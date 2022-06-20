@@ -112,9 +112,27 @@ class EmpleadoController extends Controller{
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleado $empleado)
-    {
-        //
+    public function update(Request $request){
+        $nvoEmpleado = Empleado::where('id_emp','=',$request->idEmpleado)
+                                ->update(['empleado_nombre' => $request->nombreEmpleado,
+                                         'empleado_apellidop' => $request->appEmpleado,
+                                         'empleado_apellidom' => $request->apmEmpleado,
+                                         'puesto_id' => $request->puestoEmp
+                                ]);
+
+        $empleados = Empleado::join('puestos','puestos.id','=','puesto_id')
+                                ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
+                                        ,'puestos.puestos_nombre'
+                                        ,'empleados.id_emp')
+                                ->where([
+                                    ['empleados.empleado_status','=','A'],
+                                    ['empleados.id_emp','!=',1]
+                                ])
+                                ->get();
+    
+        $listPuestos = Puesto::where('id','!=',1)->get();
+
+        return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 
     /**
@@ -123,8 +141,22 @@ class EmpleadoController extends Controller{
      * @param  \App\Models\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleado $empleado)
-    {
-        //
+    public function destroy(Request $request){
+        $delEmpleado = Empleado::where('id_emp','=',$request->idEmpleadoDel)
+                                ->update(['empleado_status' => 'N']);
+
+        $empleados = Empleado::join('puestos','puestos.id','=','puesto_id')
+                                ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
+                                        ,'puestos.puestos_nombre'
+                                        ,'empleados.id_emp')
+                                ->where([
+                                    ['empleados.empleado_status','=','A'],
+                                    ['empleados.id_emp','!=',1]
+                                ])
+                                ->get();
+    
+        $listPuestos = Puesto::where('id','!=',1)->get();
+
+        return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 }

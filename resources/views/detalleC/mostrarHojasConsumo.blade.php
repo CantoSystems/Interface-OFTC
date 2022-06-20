@@ -6,7 +6,7 @@
             <h4>Ver Hojas de Consumo</h4>
         </div>
         <div class="card-body">
-            <table id="tableHojas" name="tableHojas" class="table table-bordered table-hover">
+            <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Folio</th>

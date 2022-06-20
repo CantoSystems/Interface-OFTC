@@ -86,31 +86,68 @@ class DetalleCController extends Controller{
             }else{
                 $sumImporte = DB::table('detalletemps')
                               ->sum('importe');
-                
+
                 $porcentajeComision = DB::table('comisiones_doctores')
                                     ->where([
                                         ['id_doctor_fk','=',$request->doctorHoja],
                                         ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
-                                        ['id_metodoPago_fk','=',$request->metodoPagoHoja]
+                                        ['id_metodoPago_fk','=',1]
                                     ])
                                     ->select('porcentaje')
                                     ->first();
-                
-                $finalPorcentaje = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-    
-                //Insertar en la tabla principal
-                $fechaInsert = now()->toDateString();
-                DB::table('detalle_consumos')->insert([
-                    'id_doctor_fk' => $request->doctorHoja,
-                    'folio' => $request->folioHoja,
-                    'fechaElaboracion' => $request->fechaHoja,
-                    'paciente' => $request->pacienteHoja,
-                    'tipoPaciente' => $request->tipoPacienteHoja,
-                    'cantidadTotal' => $finalPorcentaje,
-                    'metodoPago' => $request->metodoPagoHoja,
-                    'created_at' => $fechaInsert,
-                    'updated_at' => $fechaInsert
-                ]);
+
+                $porcentajeAdicional = DB::table('comisiones_doctores')
+                                        ->where([
+                                            ['id_doctor_fk','=',$request->doctorHoja],
+                                            ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
+                                            ['id_metodoPago_fk','=',3]
+                                        ])
+                                        ->select('porcentaje')
+                                        ->first();
+
+                $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                if($totalEfectivo%100 > 50){
+                    $totalEfectivo = round($totalEfectivo,-2);
+                }else{
+                    $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+                }
+
+                $totalTPV = (($sumImporte * $porcentajeAdicional->porcentaje)/100) + $sumImporte;
+                if($totalTPV%100 > 50){
+                    $totalTPV = round($totalTPV,-2);
+                }else{
+                    $totalTPV = floor($totalTPV - ($totalTPV%100));
+                }
+
+                if($request->metodoPagpHoja == 1){
+                    //Insertar en la tabla principal
+                    $fechaInsert = now()->toDateString();
+                    DB::table('detalle_consumos')->insert([
+                        'id_doctor_fk' => $request->doctorHoja,
+                        'folio' => $request->folioHoja,
+                        'fechaElaboracion' => $request->fechaHoja,
+                        'paciente' => $request->pacienteHoja,
+                        'tipoPaciente' => $request->tipoPacienteHoja,
+                        'cantidadTotal' => $totalEfectivo,
+                        'metodoPago' => $request->metodoPagoHoja,
+                        'created_at' => $fechaInsert,
+                        'updated_at' => $fechaInsert
+                    ]);   
+                }else{
+                    //Insertar en la tabla principal
+                    $fechaInsert = now()->toDateString();
+                    DB::table('detalle_consumos')->insert([
+                        'id_doctor_fk' => $request->doctorHoja,
+                        'folio' => $request->folioHoja,
+                        'fechaElaboracion' => $request->fechaHoja,
+                        'paciente' => $request->pacienteHoja,
+                        'tipoPaciente' => $request->tipoPacienteHoja,
+                        'cantidadTotal' => $totalTPV,
+                        'metodoPago' => $request->metodoPagoHoja,
+                        'created_at' => $fechaInsert,
+                        'updated_at' => $fechaInsert
+                    ]);
+                }
     
                 //Seleccionar datos de temporal
                 $datosDC = DB::table('detalletemps')
@@ -156,14 +193,14 @@ class DetalleCController extends Controller{
                              ->where('id_detalleConsumo_FK','=',$select2->id)
                              ->get();
     
-                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','sumImporte','finalPorcentaje'));
+                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','totalEfectivo','totalTPV'));
         
-                Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
+                /*Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
                     $mail->to('jpom_prime@hotmail.com');
                     //$mail->to($data->doctor_email);
                     $mail->subject('Detalle de Consumo');
                     $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
-                });
+                });*/
             }
     
             return view('detalleC.subirarchivoD', compact('doctores','metodoPago','tipoPaciente'));
@@ -212,7 +249,8 @@ class DetalleCController extends Controller{
                             ,'tipo_pacientes.nombretipo_paciente'
                             ,'cat_metodo_pago.descripcion'
                             ,'doctors.doctor_email'
-                            ,'detalle_consumos.cantidadTotal')
+                            ,'detalle_consumos.id_doctor_fk'
+                            ,'detalle_consumos.tipoPaciente')
                     ->where('detalle_consumos.id','=',$id)
                     ->first();
     
@@ -221,12 +259,42 @@ class DetalleCController extends Controller{
                      ->get();
 
         $sumImporte = DB::table('detalle_adicional')
-                          ->where('id_detalleConsumo_FK','=',$id)
-                          ->sum('importe');
+                        ->where('id_detalleConsumo_FK','=',$id)
+                        ->sum('importe');
                           
-        $finalPorcentaje = $data->cantidadTotal;
+        $porcentajeComision = DB::table('comisiones_doctores')
+                            ->where([
+                                ['id_doctor_fk','=',$data->id_doctor_fk],
+                                ['id_tipoPaciente_fk','=',$data->tipoPaciente],
+                                ['id_metodoPago_fk','=',1]
+                            ])
+                            ->select('porcentaje')
+                            ->first();
 
-        $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','sumImporte','finalPorcentaje'));
+        $porcentajeAdicional = DB::table('comisiones_doctores')
+                                ->where([
+                                    ['id_doctor_fk','=',$data->id_doctor_fk],
+                                    ['id_tipoPaciente_fk','=',$data->tipoPaciente],
+                                    ['id_metodoPago_fk','=',3]
+                                ])
+                                ->select('porcentaje')
+                                ->first();
+
+        $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+        if($totalEfectivo%100 > 50){
+            $totalEfectivo = round($totalEfectivo,-2);
+        }else{
+            $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+        }
+
+        $totalTPV = (($sumImporte * $porcentajeAdicional->porcentaje)/100) + $sumImporte;
+        if($totalTPV%100 > 50){
+            $totalTPV = round($totalTPV,-2);
+        }else{
+            $totalTPV = floor($totalTPV - ($totalTPV%100));
+        }
+
+        $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','totalEfectivo','totalTPV'));
         
         return $pdf->download('Hoja de Consumo.pdf');
     }

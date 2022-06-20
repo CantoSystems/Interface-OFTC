@@ -25,6 +25,7 @@
                                         <label>Nombre(s)</label>
                                         <input type="text" value="{{ $empleado->empleado_nombre }}" id="nombreEmpleado"
                                             name="nombreEmpleado" class="form-control">
+                                            <input type="hidden" name="idEmpleado" id="idEmpleado" value="{{ $empleado->id_emp }}">
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -71,7 +72,7 @@
                                 </div>
                                 <div class="col-6">
                                     <button type="button" id="btnEliminar" name="btnEliminar"
-                                        class="btn btn-block btn-outline-danger btn-xs" data-target="#eliminar-estudio"
+                                        class="btn btn-block btn-outline-danger btn-xs" data-target="#eliminar-empleado"
                                         data-toggle="modal">Eliminar
                                         Registro</button>
                                 </div>
@@ -83,4 +84,5 @@
         </div>
     </div>
 </section>
+@include('catalogos.empleados.modaldelete')
 @endsection
