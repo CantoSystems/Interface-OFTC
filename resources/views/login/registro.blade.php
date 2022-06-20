@@ -23,18 +23,24 @@
     <div class="login-box">
         <div class="card card-outline card-info">
             <div class="card-header text-center">
-                <a href="#1" class="h1"><b>Login</b> | Interfaz</a>
+                <a href="#1" class="h1"><b>Oftalmo</b>Center</a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
-                @if(session()->has('credenciales'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('credenciales')}}
-                </div>
-                @endif
-                <form action="{{ route('usuarios.login') }}" method="POST">
+                <form action="{{ route('usuarios.store') }}" method="POST">
                     @csrf
                     <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Nombre de usuario</label>
+                                <input type="text" name="usuario_nombre" class="form-control">
+                                @error('usuario_nombre')
+                                <div class="alert alert-secondary">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Email</label>
@@ -55,7 +61,12 @@
                                     {{ $message }}
                                 </div>
                                 @enderror
-
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Confirmar contraseña</label>
+                                <input type="password" name="password_confirmation" class="form-control">
                             </div>
                         </div>
                         <div class="col-12">
@@ -68,22 +79,23 @@
             </div>
         </div>
     </div>
+    <!--<footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+        <strong>Canto Contadores &copy; 2022</strong>
+        All rights reserved.
+    </footer>-->
+
+    <script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/daterangepicker/daterangepicker.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/moment/moment.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/inputmask/jquery.inputmask.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+    <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 </body>
-<!--<footer class="main-footer">
-    <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
-    <strong>Canto Contadores &copy; 2022</strong>
-    All rights reserved.
-</footer>-->
-<script src="{{ asset('/AdminLTE-master/plugins/jquery/jquery.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/dist/js/adminlte.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/daterangepicker/daterangepicker.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/moment/moment.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/inputmask/jquery.inputmask.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
 
 </html>
