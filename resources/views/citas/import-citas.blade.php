@@ -17,7 +17,6 @@
                                 <span class="info-box-number">Subir</span>
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -26,7 +25,7 @@
         <div class="alert alert-danger">{{ $message }}</div>
         @enderror
         <div class="card-body">
-            <table id="reporteCobranza" name="reporteCobranza" class="table table-bordered table-hover">
+            <table id="reporteCitas" name="reporteCitas" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Folio</th>
