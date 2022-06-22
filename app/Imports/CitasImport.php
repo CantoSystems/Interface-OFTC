@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use DB;
-use App\Models\Cobranza;
+use App\Models\citasTemp;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class CitasImport implements ToModel
@@ -14,13 +14,11 @@ class CitasImport implements ToModel
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row){
-        foreach($row as $rw){
-            dd($rw);
-            /*if(DB::table('cobranza')->select('cobranza.paciente')->where('cobranza.paciente','=',$rw)->count() == '1'){
-                echo "Si";
-            }else{
-                echo "No";
-            }*/
-        }
+        return new citasTemp([
+            'paciente'          => $row[6],
+            'statusCita'        => $row[7],
+        ]);
+
+        //Aquí se checarán ambos registros
     }
 }

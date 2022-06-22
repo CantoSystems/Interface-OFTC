@@ -6,6 +6,9 @@ use DataTables;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Imports\CitasImport;
 
@@ -26,11 +29,11 @@ class CitaController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             
-            try {
+            //try {
                 Excel::import(new CitasImport, $file);
-            } catch (\Illuminate\Database\QueryException $e) {
+            /*} catch (\Illuminate\Database\QueryException $e) {
                 return "Folios duplicados";
-            }
+            }*/
             
             return redirect()->route('importarCitas.index');
         }

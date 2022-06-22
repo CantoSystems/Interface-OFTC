@@ -17,7 +17,6 @@ use App\Models\Cobranza;
 use App\Models\Estudiostemp;
 use App\Models\TipoPaciente;
 
-
 class CobranzaController extends Controller
 {
     /**
