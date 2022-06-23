@@ -15,6 +15,7 @@ class CreateCitasTempsTable extends Migration
     {
         Schema::create('citas_temps', function (Blueprint $table) {
             $table->id();
+            $table->text('fechaCita');
             $table->text('paciente');
             $table->text('statusCita');
             $table->timestamps();

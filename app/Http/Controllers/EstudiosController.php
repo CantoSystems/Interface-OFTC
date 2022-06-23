@@ -206,7 +206,6 @@ class EstudiosController extends Controller{
 
     public function mostrarEstudioGral($id){
         $estudio = CatEstudios::find($id);
-
         return view('catalogos.estudiosgenerales.editestudiosgrales',compact('estudio'));
     }
 

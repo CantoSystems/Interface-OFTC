@@ -15,10 +15,9 @@ class CitasImport implements ToModel
     */
     public function model(array $row){
         return new citasTemp([
+            'fechaCita'         => $row[1],
             'paciente'          => $row[6],
             'statusCita'        => $row[7],
         ]);
-
-        //Aquí se checarán ambos registros
     }
 }

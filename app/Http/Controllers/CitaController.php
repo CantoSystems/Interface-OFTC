@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Imports\CitasImport;
 
+use App\Models\Cobranza;
+
 use App\Http\Requests\imporCitasRequest;
 
 class CitaController extends Controller
@@ -22,7 +24,16 @@ class CitaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        return view('citas.import-citas');
+        $citasEstudios = DB::table('cobranza')
+                                    ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
+                                    ->select('cobranza.folio'
+                                            ,'cobranza.paciente'
+                                            ,'estudios.dscrpMedicosPro'
+                                            ,'cobranza.fecha'
+                                            ,'cobranza.statusCita')
+                                    ->get();
+
+        return view('citas.import-citas',compact('citasEstudios'));
     }
 
     public function importExcel(imporCitasRequest $request){
@@ -31,13 +42,56 @@ class CitaController extends Controller
             
             //try {
                 Excel::import(new CitasImport, $file);
+                $this->checkCitas();
+                $citasEstudios = DB::table('cobranza')
+                                    ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
+                                    ->select('cobranza.folio'
+                                            ,'cobranza.paciente'
+                                            ,'estudios.dscrpMedicosPro'
+                                            ,'cobranza.fecha'
+                                            ,'cobranza.statusCita')
+                                    ->get();
+
             /*} catch (\Illuminate\Database\QueryException $e) {
                 return "Folios duplicados";
             }*/
             
-            return redirect()->route('importarCitas.index');
+            return view('citas.import-citas',compact('citasEstudios'));
         }
-        return "No ha adjuntado ningun archivo";
+        //return "No ha adjuntado ningun archivo";
+    }
+
+    public function checkCitas(){
+        $cobranza = DB::table('cobranza')->select('paciente','fecha')->get();
+
+        foreach($cobranza as $cobro){
+            $fechaEstudio = date('d/M/Y',strtotime($cobro->fecha));
+            $citas = DB::table('citas_temps')
+                        ->where([
+                            ['paciente','=',$cobro->paciente],
+                            ['fechaCita','=',$fechaEstudio]
+                        ])->count();
+
+            if($citas > 0){
+                $slctCitas = DB::table('citas_temps')
+                                ->select('statusCita','id')
+                                ->where([
+                                    ['paciente','=',$cobro->paciente],
+                                    ['fechaCita','=',$fechaEstudio]
+                                ])->first();
+
+                $fechaEstudio = date('Y-m-d',strtotime($cobro->fecha));
+
+                $updtCitas = DB::table('cobranza')
+                                ->where([
+                                    ['paciente','=',$cobro->paciente],
+                                    ['fecha','=',$fechaEstudio]
+                                ])
+                                ->update(['statusCita' => $slctCitas->statusCita]);
+
+                $dltCita = DB::table('citas_temps')->where('id','=',$slctCitas->id)->delete();
+            }
+        }
     }
 
     /**
