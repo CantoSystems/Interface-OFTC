@@ -32,10 +32,22 @@
                         <th>Paciente</th>
                         <th>Servicio</th>
                         <th>Fecha</th>
-                        <th>Status</th>
-                        <th>Ver</th>
+                        <th>Status Cita</th>
                     </tr>
                 </thead>
+                @if($citasEstudios != null)
+                <tbody>
+                    @foreach($citasEstudios as $citas)
+                    <tr>
+                        <td>{{ $citas->folio }}</td>
+                        <td>{{ $citas->paciente }}</td>
+                        <td>{{ $citas->dscrpMedicosPro }}</td>
+                        <td>{{ date('d-m-Y',strtotime($citas->fecha)) }}</td>
+                        <td>{{ $citas->statusCita }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                @endif
             </table>
         </div>
     </div>
