@@ -60,6 +60,10 @@ Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.s
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
 Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
 
+//Calculo de Comisiones
+Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index');
+Route::get('/generar-comisiones',[ComisionesController::class,'calcularComision'])->name('comisiones.show');
+
 //Catálogo Estudios inviduales
 Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');
 Route::get('/editar-estudio/{id}',[EstudiosController::class,'mostrarEstudio'])->name('editCatalogo.update')->middleware('auth');

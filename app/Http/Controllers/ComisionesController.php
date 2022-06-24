@@ -7,11 +7,98 @@ use DB;
 use App\Models\Comisiones;
 use App\Models\Empleado;
 use App\Models\Estudios;
+use App\Models\Cobranza;
 
 use Illuminate\Http\Request;
 
 class ComisionesController extends Controller
 {
+    public function showComisiones(){
+        $empleados = DB::table('empleados')
+                        ->join('puestos','puestos.id','=','puesto_id')
+                        ->select('id_emp',
+                                 DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
+                                 'puestos.puestos_nombre')
+                        ->where('id_emp','!=',1)
+                        ->get();
+
+        $estudios = DB::table('estudios')
+                        ->select('id','dscrpMedicosPro')
+                        ->get();
+
+        return view('comisiones.showComisiones',compact('empleados','estudios'));
+    }
+
+    public function calcularComision(Request $request){
+        DB::table('comisiones_Temps')->truncate();
+
+        $comisionEmp = Comisiones::select('cantidad','porcentaje')
+                                ->where([
+                                    ['id_estudio_fk','=',$request->slctEstudio],
+                                    ['id_empleado_fk','=',$request->slctEmpleado]
+                                ])->first();
+                                
+        $selectEstudios = DB::table('cobranza')
+                            ->select('fecha','paciente')
+                            ->where('id_estudio_fk','=',$request->slctEstudio)
+                            ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
+                            ->get();
+
+        $fechaInsert = now()->toDateString();
+        foreach($selectEstudios as $estudios){
+            if($comisionEmp->cantidad != null){        
+                DB::table('comisiones_temps')->insert([
+                    'id_emp_fk' => $request->slctEmpleado,
+                    'paciente' => $estudios->paciente,
+                    'id_estudio_fk' => $request->slctEstudio,
+                    'fechaEstudio' => $estudios->fecha,
+                    'cantidad' => $comisionEmp->cantidad,
+                    'created_at' => $fechaInsert,
+                    'updated_at' => $fechaInsert
+                ]);
+            }else{
+                DB::table('comisiones_temps')->insert([
+                    'id_emp_fk' => $request->slctEmpleado,
+                    'id_estudio_fk' => $request->slctEstudio,
+                    'paciente' => $estudios->paciente,
+                    'fechaEstudio' => $estudios->fecha,
+                    'cantidad' => $comisionEmp->porcentaje,
+                    'created_at' => $fechaInsert,
+                    'updated_at' => $fechaInsert
+                ]);
+            }
+        }
+
+        $comisiones = DB::table('comisiones_temps')
+                        ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
+                        ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
+                        ->select('estudios.dscrpMedicosPro','fechaEstudio','cantidad','paciente')
+                        ->where([
+                            ['comisiones_temps.id_estudio_fk','=',$request->slctEstudio],
+                            ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
+                        ])->get();
+
+        $totalComisiones = DB::table('comisiones_temps')
+                                ->where([
+                                    ['comisiones_temps.id_estudio_fk','=',$request->slctEstudio],
+                                    ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
+                                ])->sum('cantidad');
+
+        $empleados = DB::table('empleados')
+                        ->join('puestos','puestos.id','=','puesto_id')
+                        ->select('id_emp',
+                                 DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
+                                 'puestos.puestos_nombre')
+                        ->where('id_emp','!=',1)
+                        ->get();
+
+        $estudios = DB::table('estudios')
+                        ->select('id','dscrpMedicosPro')
+                        ->get();
+
+        return view('comisiones.showComisiones',compact('empleados','estudios','comisiones','totalComisiones'));
+    }
+    
     /**
      * Display a listing of the resource.
      *
