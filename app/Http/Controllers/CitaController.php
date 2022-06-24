@@ -40,7 +40,7 @@ class CitaController extends Controller
         if($request->hasFile('file')){
             $file = $request->file('file');
             
-            //try {
+            try {
                 Excel::import(new CitasImport, $file);
                 $this->checkCitas();
                 $citasEstudios = DB::table('cobranza')
@@ -51,14 +51,13 @@ class CitaController extends Controller
                                             ,'cobranza.fecha'
                                             ,'cobranza.statusCita')
                                     ->get();
-
-            /*} catch (\Illuminate\Database\QueryException $e) {
+            } catch (\Illuminate\Database\QueryException $e) {
                 return "Folios duplicados";
-            }*/
+            }
             
             return view('citas.import-citas',compact('citasEstudios'));
         }
-        //return "No ha adjuntado ningun archivo";
+        return "No ha adjuntado ningun archivo";
     }
 
     public function checkCitas(){
