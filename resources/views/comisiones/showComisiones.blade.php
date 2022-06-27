@@ -66,10 +66,10 @@
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                <button id="cargarCobranza" type="submit"
+                                <a id="cargarCobranza" type="button" href="{{ route('exportarComisiones.export') }}"
                                     class="btn btn-block btn-outline-secondary btn-xs">
                                     <span class="info-box-number">Generar Excel</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

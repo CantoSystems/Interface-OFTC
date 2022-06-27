@@ -45,6 +45,7 @@ Route::get('/subir-citas',[CitaController::class,'index'])->name('importarCitas.
 Route::post('/importar-cobranza-excel',[EstudiosController::class,'importExcel'])->name('importarCobranza.import')->middleware('auth');
 Route::post('/importar-citas-excel',[CitaController::class,'importExcel'])->name('importarCitas.import')->middleware('auth');
 Route::post('/exportar-cobranza-excel',[CobranzaController::class,'exportExcel'])->name('importarCobranza.export')->middleware('auth');
+Route::get('/exportar-comisiones-excel',[ComisionesController::class,'exportExcel'])->name('exportarComisiones.export')->middleware('auth');
 
 //Importar Excel Detalle de Consumo
 Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('subirarchivoD.index')->middleware('auth');

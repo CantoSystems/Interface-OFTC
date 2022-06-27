@@ -9,10 +9,13 @@ use App\Models\Empleado;
 use App\Models\Estudios;
 use App\Models\Cobranza;
 
+use App\Exports\ComisionesExport;
+
 use Illuminate\Http\Request;
 
-class ComisionesController extends Controller
-{
+use Maatwebsite\Excel\Facades\Excel;
+
+class ComisionesController extends Controller{
     public function showComisiones(){
         $empleados = DB::table('empleados')
                         ->join('puestos','puestos.id','=','puesto_id')
@@ -125,7 +128,6 @@ class ComisionesController extends Controller
                                     ->where([
                                         ['empleados.empleado_status','=','A'],
                                         ['puestos.id','!=','1']
-
                                     ])
                                     ->orderBy('puestos.id','asc')
                                     ->get();
@@ -170,7 +172,6 @@ class ComisionesController extends Controller
                                     ->where([
                                         ['empleados.empleado_status','=','A'],
                                         ['puestos.id','!=','1']
-
                                     ])
                                     ->orderBy('puestos.id','asc')
                                     ->get();
@@ -216,7 +217,6 @@ class ComisionesController extends Controller
                                     ->where([
                                         ['empleados.empleado_status','=','A'],
                                         ['puestos.id','!=','1']
-
                                     ])
                                     ->orderBy('puestos.id','asc')
                                     ->get();
@@ -269,7 +269,6 @@ class ComisionesController extends Controller
                                     ->where([
                                         ['empleados.empleado_status','=','A'],
                                         ['puestos.id','!=','1']
-
                                     ])
                                     ->orderBy('puestos.id','asc')
                                     ->get();
@@ -286,5 +285,9 @@ class ComisionesController extends Controller
     public function destroy(Request $request){
         $delEComision = Comisiones::find($request->idComision)->delete();
         return redirect()->route('mostrarComisiones.index');
+    }
+
+    public function exportExcel(){
+        return Excel::download(new ComisionesExport, 'Comision.xlsx');
     }
 }
