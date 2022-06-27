@@ -49,7 +49,7 @@ class ComisionesController extends Controller{
 
         $fechaInsert = now()->toDateString();
         foreach($selectEstudios as $estudios){
-            if($comisionEmp->cantidad != null){        
+            if($comisionEmp->cantidad != 0){        
                 DB::table('comisiones_temps')->insert([
                     'id_emp_fk' => $request->slctEmpleado,
                     'paciente' => $estudios->paciente,
@@ -60,12 +60,19 @@ class ComisionesController extends Controller{
                     'updated_at' => $fechaInsert
                 ]);
             }else{
+                $precioEstudio = DB::table('estudios')
+                                    ->select('precioEstudio')
+                                    ->where('id','=',$request->slctEstudio)
+                                    ->first();
+
+                $totalCantidad = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+
                 DB::table('comisiones_temps')->insert([
                     'id_emp_fk' => $request->slctEmpleado,
                     'id_estudio_fk' => $request->slctEstudio,
                     'paciente' => $estudios->paciente,
                     'fechaEstudio' => $estudios->fecha,
-                    'cantidad' => $comisionEmp->porcentaje,
+                    'cantidad' => $totalCantidad,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert
                 ]);

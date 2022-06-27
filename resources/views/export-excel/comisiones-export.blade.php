@@ -10,12 +10,23 @@
 
 <body>
     <table>
+        <tbody>
+            <tr>
+                <td><b>Empleado:</b></td>
+                <td>{{ $emp }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table>
         <thead>
             <tr>
                 <th><b>Estudio</b></th>
                 <th><b>Paciente</b></th>
-                <th><b>Fecha de Estudio</b></th>
-                <th><b>Cantidad</b></th>
+                <th style="text-align: center;"><b>Fecha de Estudio</b></th>
+                <th style="text-align: center;"><b>Cantidad</b></th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +34,8 @@
             <tr>
                 <td>{{ $dComisiones->dscrpMedicosPro }}</td>
                 <td>{{ $dComisiones->paciente }}</td>
-                <td>{{ date('d-m-Y',strtotime($dComisiones->fechaEstudio)) }}</td>
-                <td>$ {{ number_format($dComisiones->cantidad,2) }}</td>
+                <td style="text-align: center;">{{ date('d-M-Y',strtotime($dComisiones->fechaEstudio)) }}</td>
+                <td style="text-align: right;">$ {{ number_format($dComisiones->cantidad,2) }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -35,8 +46,8 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td><b>Total:</b></td>
-                <td>$ {{ number_format($total,2) }}</td>
+                <td style="text-align: right;"><b>Total:</b></td>
+                <td style="text-align: right;">$ {{ number_format($total,2) }}</td>
             </tr>
         </tbody>
     </table>
