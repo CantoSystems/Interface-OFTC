@@ -256,14 +256,12 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showCobranza(Request $request)
-    {
+    public function showCobranza(Request $request){
         if ( $request->estudioSelect === null) {
             $busquedaEstudios = [];
         }
         $busquedaEstudios = $request->estudioSelect;
     
-
             $cobranza = DB::table('cobranza')
                         ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
                         ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
@@ -283,16 +281,13 @@ class CobranzaController extends Controller
                         ->orderBy('cobranza.fecha','ASC')
                         ->get();
 
-        
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
                             ->select('estudios.id','descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
-                            
-       
+                                   
         return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios'));
-       
     }
 
     public function exportExcel(Request $request){
