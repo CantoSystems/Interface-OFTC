@@ -69,9 +69,6 @@ class estudiosSeeder extends Seeder
             ["id_estudio_fk" => "17", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION UN OJO", "precioEstudio" => 900]
         ]);
 
-
-
-        
         $fechaInsert = now()->toDateString();
         foreach($estudiosInfo as $estudios){
             DB::table('estudios')->insert([
