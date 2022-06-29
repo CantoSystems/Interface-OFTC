@@ -25,6 +25,9 @@ class comisionesEmpSeeder extends Seeder{
             ["id_estudio_fk" => "4", "id_empleado_fk" => "14", "cantidad" => "200", "porcentaje" => "0"],
             ["id_estudio_fk" => "5", "id_empleado_fk" => "14", "cantidad" => "125", "porcentaje" => "0"],
             ["id_estudio_fk" => "6", "id_empleado_fk" => "14", "cantidad" => "125", "porcentaje" => "0"],
+            ["id_estudio_fk" => "4", "id_empleado_fk" => "4", "cantidad" => "50", "porcentaje" => "0"],
+            ["id_estudio_fk" => "5", "id_empleado_fk" => "4", "cantidad" => "50", "porcentaje" => "0"],
+            ["id_estudio_fk" => "6", "id_empleado_fk" => "4", "cantidad" => "50", "porcentaje" => "0"],
             //OCT DE MACULA
             ["id_estudio_fk" => "20", "id_empleado_fk" => "14", "cantidad" => "250", "porcentaje" => "0"],
             ["id_estudio_fk" => "21", "id_empleado_fk" => "14", "cantidad" => "125", "porcentaje" => "0"],
