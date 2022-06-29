@@ -47,7 +47,7 @@ class ComisionesController extends Controller{
                             ['id_empleado_fk','=',$request->slctEmpleado]
                         ])->first();
 
-        if($puestoEmp->puesto_id != 4){
+        if(($puestoEmp->puesto_id == 2) || ($puestoEmp->puesto_id == 3)){
             switch($puestoEmp->puesto_id){
                 case 2:
                     $selectEstudios = DB::table('cobranza')
@@ -70,7 +70,7 @@ class ComisionesController extends Controller{
                                     ])
                                     ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
                                     ->get();
-                    break;
+                    break;             
             }
         }else{
             $selectEstudios = DB::table('cobranza')
