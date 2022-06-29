@@ -35,17 +35,50 @@ class ComisionesController extends Controller{
     public function calcularComision(Request $request){
         DB::table('comisiones_Temps')->truncate();
 
+        $puestoEmp = DB::table('empleados')
+                        ->join('puestos','puestos.id','=','empleados.puesto_id')
+                        ->select('puesto_id')
+                        ->where('empleados.id_emp','=',$request->slctEmpleado)
+                        ->first();
+
         $comisionEmp = Comisiones::select('cantidad','porcentaje')
-                                ->where([
-                                    ['id_estudio_fk','=',$request->slctEstudio],
-                                    ['id_empleado_fk','=',$request->slctEmpleado]
-                                ])->first();
-                                
-        $selectEstudios = DB::table('cobranza')
-                            ->select('fecha','paciente')
-                            ->where('id_estudio_fk','=',$request->slctEstudio)
-                            ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
-                            ->get();
+                        ->where([
+                            ['id_estudio_fk','=',$request->slctEstudio],
+                            ['id_empleado_fk','=',$request->slctEmpleado]
+                        ])->first();
+
+        if($puestoEmp->puesto_id != 4){
+            switch($puestoEmp->puesto_id){
+                case 2:
+                    $selectEstudios = DB::table('cobranza')
+                                    ->select('fecha','paciente')
+                                    ->where([
+                                        ['id_estudio_fk','=',$request->slctEstudio],
+                                        ['transcripcion','=','S'],
+                                        ['id_empTrans_fk','=',$request->slctEmpleado]
+                                    ])
+                                    ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
+                                    ->get();
+                    break;
+                case 3:
+                    $selectEstudios = DB::table('cobranza')
+                                    ->select('fecha','paciente')
+                                    ->where([
+                                        ['id_estudio_fk','=',$request->slctEstudio],
+                                        ['interpretacion','=','S'],
+                                        ['id_empTrans_fk','=',$request->slctEmpleado]
+                                    ])
+                                    ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
+                                    ->get();
+                    break;
+            }
+        }else{
+            $selectEstudios = DB::table('cobranza')
+                                ->select('fecha','paciente')
+                                ->where('id_estudio_fk','=',$request->slctEstudio)
+                                ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
+                                ->get();
+        }
 
         $fechaInsert = now()->toDateString();
         foreach($selectEstudios as $estudios){

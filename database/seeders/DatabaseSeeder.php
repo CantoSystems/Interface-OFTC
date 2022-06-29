@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             DoctorSeeder::class,
             ActividadesSeeder::class,
             metodoPagoSeeder::class,
-            ComisionesDoctoresSeeder::class
+            ComisionesDoctoresSeeder::class,
+            comisionesEmpSeeder::class
        ]);
     }
 }
