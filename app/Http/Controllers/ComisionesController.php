@@ -41,12 +41,6 @@ class ComisionesController extends Controller{
                         ->where('empleados.id_emp','=',$request->slctEmpleado)
                         ->first();
 
-        $comisionEmp = Comisiones::select('cantidad','porcentaje')
-                        ->where([
-                            ['id_estudio_fk','=',$request->slctEstudio],
-                            ['id_empleado_fk','=',$request->slctEmpleado]
-                        ])->first();
-
         if(($puestoEmp->puesto_id == 2) || ($puestoEmp->puesto_id == 3)){
             switch($puestoEmp->puesto_id){
                 case 2:
@@ -79,6 +73,12 @@ class ComisionesController extends Controller{
                                 ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
                                 ->get();
         }
+
+        $comisionEmp = Comisiones::select('cantidad','porcentaje')
+                        ->where([
+                            ['id_estudio_fk','=',$request->slctEstudio],
+                            ['id_empleado_fk','=',$request->slctEmpleado]
+                        ])->first();
 
         $fechaInsert = now()->toDateString();
         foreach($selectEstudios as $estudios){
