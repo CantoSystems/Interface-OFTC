@@ -74,7 +74,7 @@ class ComisionesController extends Controller{
                                 ->get();
         }
 
-        $comisionEmp = Comisiones::select('cantidad','porcentaje')
+        $comisionEmp = Comisiones::select('cantidadComision','porcentaje')
                         ->where([
                             ['id_estudio_fk','=',$request->slctEstudio],
                             ['id_empleado_fk','=',$request->slctEmpleado]
@@ -154,7 +154,7 @@ class ComisionesController extends Controller{
                                     ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
                                     ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
                                              DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
-                                                    ,'comisiones.cantidad'
+                                                    ,'comisiones.cantidadComision'
                                                     ,'comisiones.porcentaje'
                                                     ,'comisiones.id')
                                     ->get();
@@ -185,7 +185,7 @@ class ComisionesController extends Controller{
         DB::table('comisiones')->insert([
             'id_estudio_fk' => $request->estudioGral,
             'id_empleado_fk' => $request->empleadoComision,
-            'cantidad' => $request->cantidadComision,
+            'cantidadCantidad' => $request->cantidadComision,
             'porcentaje' => $request->porcentajeComision,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
@@ -242,7 +242,7 @@ class ComisionesController extends Controller{
                                                 ,'estudios.dscrpMedicosPro'
                                                 ,'comisiones.id_estudio_fk'
                                                 ,'comisiones.id_empleado_fk'
-                                                ,'comisiones.cantidad'
+                                                ,'comisiones.cantidadComision'
                                                 ,'comisiones.porcentaje'
                                                 ,'comisiones.id')
                               ->where('comisiones.id','=',$id)
@@ -285,7 +285,7 @@ class ComisionesController extends Controller{
     public function update(Request $request){
         $editComision = Comisiones::find($request->idComision);
         $editComision->id_estudio_fk = $request->estudioGral;
-        $editComision->cantidad = $request->cantidadComision;
+        $editComision->cantidadComision = $request->cantidadComision;
         $editComision->porcentaje = $request->porcentajeComision;
         $editComision->save();
 
@@ -295,7 +295,7 @@ class ComisionesController extends Controller{
                                     ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
                                     ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
                                              DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
-                                                    ,'comisiones.cantidad'
+                                                    ,'comisiones.cantidadComision'
                                                     ,'comisiones.porcentaje'
                                                     ,'comisiones.id')
                                     ->get();

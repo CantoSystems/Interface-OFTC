@@ -19,7 +19,8 @@ class CreateComisionesTempsTable extends Migration
             $table->unsignedBigInteger('id_estudio_fk');
             $table->text('paciente');
             $table->date('fechaEstudio');
-            $table->double('cantidad',10,2);
+            $table->double('cantidadComision',10,2);
+            $table->double('cantidadUtilidad',10,2)->nulleable();
             $table->foreign('id_emp_fk')->references('id_emp')->on('empleados');
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->timestamps();

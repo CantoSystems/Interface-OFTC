@@ -90,7 +90,8 @@ class comisionesEmpSeeder extends Seeder{
             DB::table('comisiones')->insert([
                 'id_estudio_fk' => $comisiones['id_estudio_fk'],
                 'id_empleado_fk' => $comisiones['id_empleado_fk'],
-                'cantidad' => $comisiones['cantidad'],
+                'cantidadComision' => $comisiones['cantidad'],
+                'cantidadUtilidad' => 0,
                 'porcentaje' => $comisiones['porcentaje'],
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert,
