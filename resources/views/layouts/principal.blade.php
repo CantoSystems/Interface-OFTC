@@ -217,13 +217,16 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script type="text/javascript">
-    $(function() {
-        bsCustomFileInput.init();
-        $('#datemask').inputmask('dd/mm/yyyy', {
-            'placeholder': 'dd/mm/yyyy'
-        })
-    });
     $(document).ready(function() {
+        $("#empleadoComision").change(function() {
+            var texto = $(this).find('option:selected').text();
+            if(texto.includes('DOCTOR')){
+                $("#divComision").css("display", "block");
+            }else{
+                $("#divComision").css("display", "none");
+            }
+        });
+
         //Datatables
         $(function() {
             $("#reporteCobranza").DataTable({
