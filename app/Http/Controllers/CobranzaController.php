@@ -59,7 +59,7 @@ class CobranzaController extends Controller
         }
 
         $fechaInsert = now();
-        
+        //Se verifica si el estudio está completo
         if($request['registroC']=='S'){
             $validator = Validator::make($request->all(),[
                 'registroC'  => 'required',
@@ -69,6 +69,7 @@ class CobranzaController extends Controller
                 'intRd' => 'required',
                 'escRd' => 'required',
                 'entRd' => 'required',
+                'empRealiza' => 'required'
             ],[
                 'registroC.required' => 'Selecciona si el registro ya está completo.',
                 'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
@@ -77,6 +78,7 @@ class CobranzaController extends Controller
                 'entRd.required' => 'Selecciona el status de entregado del estudio.',
                 'transRd.required' => 'Selecciona el status de transcripción del estudio.',
                 'intRd.required' => 'Selecciona el status de interpretación del estudio.',
+                'empRealiza.required' => 'Selecciona el empleado que realizó el estudio.'
             ]);
 
             if($validator->fails()){
@@ -92,6 +94,7 @@ class CobranzaController extends Controller
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
                             'id_empInt_fk' => $doctorInter,
+                            'id_empRea_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
                             'paciente' => $request['pacienteCbr'],
@@ -112,6 +115,7 @@ class CobranzaController extends Controller
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
@@ -120,7 +124,22 @@ class CobranzaController extends Controller
                                                 'observaciones' => $request['obsCobranza'],
                                                 'estudiostemps_status' => 1,
                                                 'updated_at' => $fechaInsert
-                                       ]);
+                                            ]);
+
+                        $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+                                            ->update([
+                                                'id_empTrans_fk' => $doctorTrans,                                                
+                                                'id_doctor_fk' => $request["drRequiere"],
+                                                'id_empInt_fk' => $doctorInter,
+                                                'id_empRea_fk' => $request['empRealiza'],
+                                                'tipoPaciente' => $request['tipoPaciente'],
+                                                'transcripcion' => $request['transRd'],
+                                                'interpretacion' => $request['intRd'],
+                                                'escaneado' => $request['escRd'],
+                                                'entregado' => $request['entRd'],
+                                                'observaciones' => $request['obsCobranza'],
+                                                'updated_at' => $fechaInsert
+                                            ]);
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
                         $updateCobranza = DB::table('cobranza')->where('folio',$request->folioCbr)
@@ -128,6 +147,7 @@ class CobranzaController extends Controller
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
@@ -143,6 +163,7 @@ class CobranzaController extends Controller
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
                                             'id_empInt_fk' => $doctorInter,
+                                            'id_empRea_fk' => $request['empRealiza'],
                                             'tipoPaciente' => $request['tipoPaciente'],
                                             'transcripcion' => $request['transRd'],
                                             'interpretacion' => $request['intRd'],
@@ -161,6 +182,7 @@ class CobranzaController extends Controller
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
                             'id_empInt_fk' => $doctorInter,
+                            'id_empRealiza_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
                             'paciente' => $request['pacienteCbr'],
@@ -175,6 +197,7 @@ class CobranzaController extends Controller
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
+
                         $descripcion = Estudios::select('dscrpMedicosPro')
                                             ->where('id',$request->estudioCorregido)
                                             ->first();
@@ -184,6 +207,7 @@ class CobranzaController extends Controller
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'servicio' => $descripcion->dscrpMedicosPro,
                                                 'transcripcion' => $request['transRd'],
@@ -200,6 +224,7 @@ class CobranzaController extends Controller
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
@@ -215,19 +240,20 @@ class CobranzaController extends Controller
         }else{
             //Registro faltante de datos 
             $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-            ->update([
-                'id_empTrans_fk' => $doctorTrans,                                                
-                'id_doctor_fk' => $request["drRequiere"],
-                'id_empInt_fk' => $doctorInter,
-                'tipoPaciente' => $request['tipoPaciente'],
-                'transcripcion' => $request['transRd'],
-                'interpretacion' => $request['intRd'],
-                'escaneado' => $request['escRd'],
-                'entregado' => $request['entRd'],
-                'observaciones' => $request['obsCobranza'],
-                'estudiostemps_status' => 2,
-                'updated_at' => $fechaInsert
-            ]);
+                                ->update([
+                                    'id_empTrans_fk' => $doctorTrans,                                                
+                                    'id_doctor_fk' => $request["drRequiere"],
+                                    'id_empInt_fk' => $doctorInter,
+                                    'id_empRea_fk' => $request['empRealiza'],
+                                    'tipoPaciente' => $request['tipoPaciente'],
+                                    'transcripcion' => $request['transRd'],
+                                    'interpretacion' => $request['intRd'],
+                                    'escaneado' => $request['escRd'],
+                                    'entregado' => $request['entRd'],
+                                    'observaciones' => $request['obsCobranza'],
+                                    'estudiostemps_status' => 2,
+                                    'updated_at' => $fechaInsert
+                                ]);
         }//Fin contiene todos los datos
 
         return redirect()->route('importarCobranza.index');

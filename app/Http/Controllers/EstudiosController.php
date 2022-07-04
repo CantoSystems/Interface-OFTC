@@ -93,13 +93,15 @@ class EstudiosController extends Controller{
                                   ['puestos.actividad','=','TRANSCRIBE'],
                                   ['empleados.id_emp','<>','1']
                               ])->get();
-
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
         $doctorInter = Doctor::where([
                                     ['id','<>','1'],
                                     ['categoria_id',2]
                                     ])->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza'));
     }
 
     /**
