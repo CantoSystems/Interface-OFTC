@@ -129,7 +129,15 @@
                                 <li class="nav-item">
                                     <a href="{{ route('comisiones.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Calcular Comisiones</p>
+                                        <p>Calcular Comisiones Generales</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('comisiones.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Calcular Comisiones Individuales</p>
                                     </a>
                                 </li>
                             </ul>
@@ -279,6 +287,19 @@
         });
         $(function() {
             $("#catComisiones").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#reporteCitas").DataTable({
                 "responsive": true,
                 "autoWidth": false,
                 "language": {
