@@ -31,7 +31,9 @@ class CatEstudiosSeeder extends Seeder
             ["descripcion" => "TOPOGRAFIA"],
             ["descripcion" => "ULTRASONIDO MODO B"],
             ["descripcion" => "ULTRASONIDO MODO A"],
-            ["descripcion" => "PAQUIMETRIA"]
+            ["descripcion" => "PAQUIMETRIA"],
+            ["descripcion" => "FOTOS CLINICAS"],
+            ["descripcion" => "ANTERION"]
         ]);
 
         $fechaInsert = now()->toDateString();

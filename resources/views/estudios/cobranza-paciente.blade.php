@@ -68,7 +68,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
@@ -86,7 +86,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere</label>
                                         <select name="drRequiere" id="drRequiere" class="custom-select combos">
@@ -107,8 +107,26 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="col-6">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Quién Realizó el Estudio</label>
+                                        <select name="empRealiza" id="empRealiza" class="custom-select combos">
+                                            <option disabled selected>-- Selecciona una opción --</option>
+                                            @foreach($empRealiza as $empRe)
+                                            @if($empRe->id_emp==$datosPaciente->id_empRea_fk)
+                                            <option selected value="{{ $empRe->id_emp }}">
+                                                {{ $empRe->empleado }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $empRe->id_emp }}">
+                                                {{ $empRe->empleado }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Forma de Pago</label>
                                         <input type="text" id="formaPago" name="formaPago" class="form-control"
@@ -148,9 +166,9 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
-                                        <label>Quién Realiza la Transcripción</label>
+                                        <label>Quién Realizó la Transcripción</label>
                                         <select name="drTransc" id="drTransc" class="custom-select combos">
                                             <option disabled selected id="NA" value="N/A">-- Selecciona una opción --
                                             </option>
@@ -205,7 +223,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Quién Realiza la Interpretación</label>
+                                        <label>Quién Realizó la Interpretación</label>
                                         <select name="drInterpreta" id="drInterpreta" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($doctorInter as $doc)

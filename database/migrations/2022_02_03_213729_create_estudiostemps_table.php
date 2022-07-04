@@ -17,6 +17,7 @@ class CreateEstudiostempsTable extends Migration
             $table->char('id_doctor_fk',10)->nullable();
             $table->char('id_empTrans_fk',10)->nullable();
             $table->char('id_empInt_fk',10)->nullable();
+            $table->char('id_empRea_fk',10)->nullable();
             $table->date('fecha');
             $table->char('folio',10)->unique();
             $table->text('paciente')->nullable();

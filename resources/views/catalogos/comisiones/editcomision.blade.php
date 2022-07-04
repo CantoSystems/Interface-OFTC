@@ -20,9 +20,9 @@
                     @endif
                     <form action="{{ route('updtComision.update') }}" method="POST">
                         @csrf
-                        <div class="card-body" style="text-align: center;">
+                        <div class="card-body">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Estudio</label>
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
@@ -41,14 +41,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <label>Cantidad</label>
-                                        <input type="number" step="0.01" value="{{ $comision->cantidad }}"
+                                        <input type="number" step="0.01" value="{{ $comision->cantidadComision }}"
                                             id="cantidadComision" name="cantidadComision" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <label>Porcentaje</label>
                                         <input type="number" step="0.01" value="{{ $comision->porcentaje }}"
@@ -57,6 +57,17 @@
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
+                                @if($comision->cantidadUtilidad != 0)
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label>Utilidad</label>
+                                        <input type="number" step="0.01" value="{{ $comision->cantidadUtilidad }}"
+                                            id="cantidadUtilidad" name="cantidadUtilidad" class="form-control">
+                                        <input type="hidden" name="idComision" id="idComision"
+                                            value="{{ $comision->id }}">
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                         <div class="card-footer">
