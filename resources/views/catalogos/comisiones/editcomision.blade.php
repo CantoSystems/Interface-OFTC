@@ -57,7 +57,6 @@
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
-                                @if($comision->cantidadUtilidad != 0)
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Utilidad</label>
@@ -67,7 +66,6 @@
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
-                                @endif
                             </div>
                         </div>
                         <div class="card-footer">
