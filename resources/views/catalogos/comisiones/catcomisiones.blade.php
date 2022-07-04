@@ -25,6 +25,7 @@
                         <th>Estudio</th>
                         <th>Cantidad</th>
                         <th>Porcentaje</th>
+                        <th>Utilidad</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -36,6 +37,7 @@
                         <td>{{ $list->Estudio }}</td>
                         <td>$ {{ number_format($list->cantidadComision,2) }}</td>
                         <td>{{ number_format($list->porcentaje,2) }} %</td>
+                        <td>$ {{ number_format($list->cantidadUtilidad,2) }}</td>
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('editComision.show',$list->id) }}">VER</a></th>
                     </tr>

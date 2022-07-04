@@ -156,6 +156,7 @@ class ComisionesController extends Controller{
                                              DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
                                                     ,'comisiones.cantidadComision'
                                                     ,'comisiones.porcentaje'
+                                                    ,'comisiones.cantidadUtilidad'
                                                     ,'comisiones.id')
                                     ->get();
 
@@ -284,21 +285,12 @@ class ComisionesController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
-        if($request->cantidadUtilidad != null){
-            $editComision = Comisiones::find($request->idComision);
-            $editComision->id_estudio_fk = $request->estudioGral;
-            $editComision->cantidadComision = $request->cantidadComision;
-            $editComision->cantidadUtilidad = $request->cantidadUtilidad;
-            $editComision->porcentaje = $request->porcentajeComision;
-            $editComision->save();
-        }else{
-            $editComision = Comisiones::find($request->idComision);
-            $editComision->id_estudio_fk = $request->estudioGral;
-            $editComision->cantidadComision = $request->cantidadComision;
-            $editComision->cantidadUtilidad = 0;
-            $editComision->porcentaje = $request->porcentajeComision;
-            $editComision->save();
-        }
+        $editComision = Comisiones::find($request->idComision);
+        $editComision->id_estudio_fk = $request->estudioGral;
+        $editComision->cantidadComision = $request->cantidadComision;
+        $editComision->cantidadUtilidad = $request->cantidadUtilidad;
+        $editComision->porcentaje = $request->porcentajeComision;
+        $editComision->save();
         
         $lisComisiones = Comisiones::join('estudios','estudios.id','=','comisiones.id_estudio_fk')
                                     ->join('empleados','empleados.id_emp','=','comisiones.id_empleado_fk')
@@ -308,6 +300,7 @@ class ComisionesController extends Controller{
                                              DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
                                                     ,'comisiones.cantidadComision'
                                                     ,'comisiones.porcentaje'
+                                                    ,'comisiones.cantidadUtilidad'
                                                     ,'comisiones.id')
                                     ->get();
 

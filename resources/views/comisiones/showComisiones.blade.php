@@ -78,7 +78,7 @@
             </form>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-hover">
+            <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Fecha</th>

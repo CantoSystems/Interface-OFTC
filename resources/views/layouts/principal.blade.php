@@ -218,14 +218,14 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-        $("#empleadoComision").change(function() {
+        /*$("#empleadoComision").change(function() {
             var texto = $(this).find('option:selected').text();
             if(texto.includes('DOCTOR')){
                 $("#divComision").css("display", "block");
             }else{
                 $("#divComision").css("display", "none");
             }
-        });
+        });*/
 
         //Datatables
         $(function() {
@@ -266,6 +266,32 @@
         });
         $(function() {
             $("#genReportes").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#catComisiones").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#catComisionesGral").DataTable({
                 "responsive": true,
                 "autoWidth": false,
                 "language": {
