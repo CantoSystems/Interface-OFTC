@@ -32,8 +32,20 @@ class ComisionesController extends Controller{
         return view('comisiones.showComisiones',compact('empleados','estudios'));
     }
 
+    public function showComisionesGral(){
+        $empleados = DB::table('empleados')
+                        ->join('puestos','puestos.id','=','puesto_id')
+                        ->select('id_emp',
+                                 DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
+                                 'puestos.puestos_nombre')
+                        ->where('id_emp','!=',1)
+                        ->get();
+
+        return view('comisiones.showComisionesGral',compact('empleados'));
+    }
+
     public function calcularComision(Request $request){
-        DB::table('comisiones_Temps')->truncate();
+        DB::table('comisiones_Tenmps')->truncate();
 
         $puestoEmp = DB::table('empleados')
                         ->join('puestos','puestos.id','=','empleados.puesto_id')
@@ -77,10 +89,10 @@ class ComisionesController extends Controller{
         $comisionEmp = Comisiones::select('cantidadComision as cantidad'
                                          ,'porcentaje'
                                          ,'cantidadUtilidad as utilidad')
-                        ->where([
-                            ['id_estudio_fk','=',$request->slctEstudio],
-                            ['id_empleado_fk','=',$request->slctEmpleado]
-                        ])->first();
+                                    ->where([
+                                        ['id_estudio_fk','=',$request->slctEstudio],
+                                        ['id_empleado_fk','=',$request->slctEmpleado]
+                                    ])->first();
 
         $fechaInsert = now()->toDateString();
         $totalComisiones = 0;
@@ -193,6 +205,12 @@ class ComisionesController extends Controller{
                         ->get();
 
         return view('comisiones.showComisiones',compact('empleados','estudios','comisiones','totalComisiones'));
+    }
+
+    public function calcularComisionGral(Request $request){
+        DB::table('comisiones_Temps')->truncate();
+
+        //return view('comisiones.showComisiones',compact('empleados','estudios','comisiones','totalComisiones'));*/
     }
     
     /**
