@@ -64,6 +64,8 @@ Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
 //Calculo de Comisiones
 Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index');
 Route::get('/generar-comisiones',[ComisionesController::class,'calcularComision'])->name('comisiones.show');
+Route::get('/comisiones-generales',[ComisionesController::class,'showComisionesGral'])->name('comisionesGral.index');
+Route::get('/generar-comisiones-gral',[ComisionesController::class,'calcularComisionGral'])->name('comisionesGral.show');
 
 //Catálogo Estudios inviduales
 Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');
