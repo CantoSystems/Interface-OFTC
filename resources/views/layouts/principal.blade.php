@@ -127,17 +127,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('comisionesGral.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Calcular Comisiones Generales</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
                                     <a href="{{ route('comisiones.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Calcular Comisiones Individuales</p>
+                                        <p>Calcular Comisiones</p>
                                     </a>
                                 </li>
                             </ul>
