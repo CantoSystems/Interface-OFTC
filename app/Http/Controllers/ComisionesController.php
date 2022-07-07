@@ -67,11 +67,11 @@ class ComisionesController extends Controller{
                 $totalComisiones = 0;
                 foreach($selectEstudios as $estudios){
                     if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
-                        $totalComisiones = $totalComisiones + ($comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100));
+                        $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
                     }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        $totalComisiones = $totalComisiones + $comisionEmp->cantidad;
+                        $totalComisiones = $comisionEmp->cantidad;
                     }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        $totalComisiones = $totalComisiones + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
+                        $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
                     }else{
                         $estudios++;
                     }
@@ -92,10 +92,10 @@ class ComisionesController extends Controller{
                 $comisionEmp = Comisiones::select('cantidadComision as cantidad'
                                                  ,'porcentaje'
                                                  ,'cantidadUtilidad as utilidad')
-                                        ->where([
-                                            ['id_estudio_fk','=',$request->slctEstudio],
-                                            ['id_empleado_fk','=',$request->slctEmpleado]
-                                        ])->first();
+                                            ->where([
+                                                ['id_estudio_fk','=',$request->slctEstudio],
+                                                ['id_empleado_fk','=',$request->slctEmpleado]
+                                            ])->first();
 
                 foreach($selectEstudios as $estudios){
                     if($comisionEmp->cantidad != 0){
@@ -177,16 +177,16 @@ class ComisionesController extends Controller{
                                                 ])->first();
 
                     $precioEstudio = DB::table('estudios')
-                                            ->select('precioEstudio')
-                                            ->where('id','=',$estudios->id_estudio_fk)
-                                            ->first();
+                                        ->select('precioEstudio')
+                                        ->where('id','=',$estudios->id_estudio_fk)
+                                        ->first();
 
                     if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
-                        $totalComisiones = $totalComisiones + ($comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100));
+                        $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
                     }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        $totalComisiones = $totalComisiones + $comisionEmp->cantidad;
+                        $totalComisiones = $comisionEmp->cantidad;
                     }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        $totalComisiones = $totalComisiones + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
+                        $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
                     }else{
                         $estudios++;
                     }
@@ -200,6 +200,7 @@ class ComisionesController extends Controller{
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert
                     ]);
+
                     $totalComisiones = 0;
                 }
             }else{
@@ -213,9 +214,9 @@ class ComisionesController extends Controller{
                                                 ])->first();
 
                     $precioEstudio = DB::table('estudios')
-                                            ->select('precioEstudio')
-                                            ->where('id','=',$estudios->id_estudio_fk)
-                                            ->first();
+                                        ->select('precioEstudio')
+                                        ->where('id','=',$estudios->id_estudio_fk)
+                                        ->first();
 
                     if($comisionEmp->cantidad != 0){
                         $totalCantidad = $comisionEmp->cantidad;
