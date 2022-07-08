@@ -22,7 +22,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label>Estudio</label>
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
@@ -45,14 +45,14 @@
                                     <div class="form-group">
                                         <label>Cantidad</label>
                                         <input type="number" step="0.01" value="{{ $comision->cantidadComision }}"
-                                            id="cantidadComision" name="cantidadComision" class="form-control">
+                                         name="cantidadComision" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Porcentaje</label>
                                         <input type="number" step="0.01" value="{{ $comision->porcentaje }}"
-                                            id="porcentajeComision" name="porcentajeComision" class="form-control">
+                                             name="porcentajeComision" class="form-control" required>
                                         <input type="hidden" name="idComision" id="idComision"
                                             value="{{ $comision->id }}">
                                     </div>
@@ -61,7 +61,7 @@
                                     <div class="form-group">
                                         <label>Utilidad</label>
                                         <input type="number" step="0.01" value="{{ $comision->cantidadUtilidad }}"
-                                            id="cantidadUtilidad" name="cantidadUtilidad" class="form-control">
+                                            id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
                                         <input type="hidden" name="idComision" id="idComision"
                                             value="{{ $comision->id }}">
                                     </div>

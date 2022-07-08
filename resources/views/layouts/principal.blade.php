@@ -226,14 +226,19 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-        /*$("#empleadoComision").change(function() {
-            var texto = $(this).find('option:selected').text();
+        $('#porcentajeComision').val(0);
+        $('#cantidadComision').val(0);
+        $('#utilidadComision').val(0);
+        $('#precioEstudio').val(0);
+
+        $("#empleadoComision").change(function() {
+            let texto = $(this).find('option:selected').text();
             if(texto.includes('DOCTOR')){
                 $("#divComision").css("display", "block");
             }else{
                 $("#divComision").css("display", "none");
             }
-        });*/
+        });
 
         //Datatables
         $(function() {
@@ -395,6 +400,12 @@
         });
     });
     </script>
+    <script>
+        //Función para convertir en texto en mayusculas
+        function mayus(e) {
+          e.value = e.value.toUpperCase();
+        }
+      </script>
 </body>
 
 </html>

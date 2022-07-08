@@ -14,6 +14,7 @@ use App\Exports\ComisionesExport;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class ComisionesController extends Controller{
     public function showComisiones(){
@@ -235,6 +236,31 @@ class ComisionesController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
+        $validator = Validator::make($request->all(),[
+            'estudioGral' => 'required',
+            'empleadoComision' => 'required',
+            'cantidadComision' => 'required',
+            'porcentajeComision'      => 'required',
+        ],[
+            'estudioGral.required' => 'Seleccciona el Estudio',
+            'empleadoComision.required' => 'Selecciona el Empleado',
+            'cantidadComison.required' => 'Ingresa la cantidad de Comisión',
+            'porcentajeComision.required' => 'Ingresa el porcentaje',
+        ]);
+        
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $duplicados = Comisiones::where([
+            ['id_estudio_fk',$request->estudioGral],
+            ['id_empleado_fk',$request->empleadoComision]
+        ])->get();
+
+        if($duplicados->count() >= 1){
+            return back()->with('duplicados','El registro ingresado ya existe');
+        }
+
         $fechaInsert = now()->toDateString();
         DB::table('comisiones')->insert([
             'id_estudio_fk' => $request->estudioGral,
@@ -245,32 +271,7 @@ class ComisionesController extends Controller{
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
         ]);
-
-        $lisComisiones = Comisiones::join('estudios','estudios.id','=','comisiones.id_estudio_fk')
-                                    ->join('empleados','empleados.id_emp','=','comisiones.id_empleado_fk')
-                                    ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
-                                    ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
-                                    ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
-                                             DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
-                                                    ,'comisiones.cantidadComision'
-                                                    ,'comisiones.porcentaje'
-                                                    ,'comisiones.id')             
-                                    ->get();
-
-        $listEstudios = Estudios::select('id','dscrpMedicosPro')
-                                ->orderBy('estudios.id','asc')
-                                ->get();
-
-        $listEmpleados = Empleado::join('puestos','puestos.id','=','puesto_id')
-                                    ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom,' (',puestos.puestos_nombre,')') AS Empleado"),'id_emp')
-                                    ->where([
-                                        ['empleados.empleado_status','=','A'],
-                                        ['puestos.id','!=','1']
-                                    ])
-                                    ->orderBy('puestos.id','asc')
-                                    ->get();
-
-        return view('catalogos.comisiones.catcomisiones',compact('lisComisiones','listEstudios','listEmpleados'));
+        return redirect()->route('mostrarComisiones.index');
     }
 
     /**
@@ -338,39 +339,14 @@ class ComisionesController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
+        
         $editComision = Comisiones::find($request->idComision);
         $editComision->id_estudio_fk = $request->estudioGral;
         $editComision->cantidadComision = $request->cantidadComision;
         $editComision->cantidadUtilidad = $request->cantidadUtilidad;
         $editComision->porcentaje = $request->porcentajeComision;
         $editComision->save();
-        
-        $lisComisiones = Comisiones::join('estudios','estudios.id','=','comisiones.id_estudio_fk')
-                                    ->join('empleados','empleados.id_emp','=','comisiones.id_empleado_fk')
-                                    ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
-                                    ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
-                                    ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
-                                             DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
-                                                    ,'comisiones.cantidadComision'
-                                                    ,'comisiones.porcentaje'
-                                                    ,'comisiones.cantidadUtilidad'
-                                                    ,'comisiones.id')
-                                    ->get();
-
-        $listEstudios = Estudios::select('id','dscrpMedicosPro')
-                                ->orderBy('estudios.id','asc')
-                                ->get();
-
-        $listEmpleados = Empleado::join('puestos','puestos.id','=','puesto_id')
-                                    ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom,' (',puestos.puestos_nombre,')') AS Empleado"),'id_emp')
-                                    ->where([
-                                        ['empleados.empleado_status','=','A'],
-                                        ['puestos.id','!=','1']
-                                    ])
-                                    ->orderBy('puestos.id','asc')
-                                    ->get();
-
-        return view('catalogos.comisiones.catcomisiones',compact('lisComisiones','listEstudios','listEmpleados'));
+        return redirect()->route('mostrarComisiones.index');
     }
 
     /**
