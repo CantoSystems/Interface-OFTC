@@ -62,14 +62,14 @@
                                     <div class="form-group">
                                         <label>Descripción</label>
                                         <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro"
-                                            class="form-control" value="{{ $estudio->dscrpMedicosPro }}">
+                                            class="form-control" value="{{ $estudio->dscrpMedicosPro }}" required  onkeyup="mayus(this);">
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Precio</label>
-                                        <input type="number" step="0.01" id="precioEstudio" name="precioEstudio"
-                                            class="form-control" value="{{ $estudio->precioEstudio }}">
+                                        <input type="number" step="0.01" name="precioEstudio"
+                                            class="form-control" value="{{ $estudio->precioEstudio }}" required>
                                         <input type="hidden" id="idEstudio" name="idEstudio" value="{{ $estudio->id }}">
                                     </div>
                                 </div>

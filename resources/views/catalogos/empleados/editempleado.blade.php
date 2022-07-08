@@ -24,7 +24,7 @@
                                     <div class="form-group">
                                         <label>Nombre(s)</label>
                                         <input type="text" value="{{ $empleado->empleado_nombre }}" id="nombreEmpleado"
-                                            name="nombreEmpleado" class="form-control">
+                                            name="nombreEmpleado" class="form-control" required>
                                             <input type="hidden" name="idEmpleado" id="idEmpleado" value="{{ $empleado->id_emp }}">
                                     </div>
                                 </div>
@@ -32,14 +32,14 @@
                                     <div class="form-group">
                                         <label>Apellido Paterno</label>
                                         <input type="text" value="{{ $empleado->empleado_apellidop }}" id="appEmpleado"
-                                            name="appEmpleado" class="form-control">
+                                            name="appEmpleado" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Apellido Materno</label>
                                         <input type="text" value="{{ $empleado->empleado_apellidom }}" id="apmEmpleado"
-                                            name="apmEmpleado" class="form-control">
+                                            name="apmEmpleado" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
