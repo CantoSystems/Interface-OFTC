@@ -5,11 +5,7 @@ namespace App\Imports;
 use App\Models\Estudiostemp;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-
-
-
-class ReportesImport implements ToModel
-{
+class ReportesImport implements ToModel{
     /**
     * @param array $row
     *
@@ -30,6 +26,4 @@ class ReportesImport implements ToModel
             'total'     => $row[11],
         ]);
     }
-
-
 }
