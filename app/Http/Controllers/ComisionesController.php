@@ -37,6 +37,23 @@ class ComisionesController extends Controller{
         DB::table('comisiones_temps')->truncate();
         $fechaInsert = now()->toDateString();
 
+       $validator = Validator::make($request->all(),[
+            'slctEmpleado' => 'required',
+            'slctEstudio'  => 'required',
+            'fechaInicio'  => 'required',
+            'fechaFin'     => 'required',
+       ],[
+            'slctEmpleado.required' => 'Selecciona el empleado',
+            'slctEstudio.required'  => 'Selecciona el estudio',
+            'fechaInicio.required'  => 'Selecciona la fecha de inicio',
+            'fechaFin.required'     => 'Selecciona la fecha fin',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+
         $puestoEmp = DB::table('empleados')
                         ->join('puestos','puestos.id','=','empleados.puesto_id')
                         ->select('puesto_id')

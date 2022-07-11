@@ -41,7 +41,7 @@ class EstudiosController extends Controller{
             try {
                 Excel::import(new ReportesImport, $file);
             } catch (\Illuminate\Database\QueryException $e) {
-                return "Folios duplicados";
+                return back()->with('duplicados','Los Folios ya existen');
             }
             
             return redirect()->route('importarCobranza.index');
