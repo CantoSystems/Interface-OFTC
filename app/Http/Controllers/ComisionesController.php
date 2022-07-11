@@ -34,7 +34,7 @@ class ComisionesController extends Controller{
     }
 
     public function calcularComision(Request $request){
-        DB::table('comisiones_Temps')->truncate();
+        DB::table('comisiones_temps')->truncate();
         $fechaInsert = now()->toDateString();
 
         $puestoEmp = DB::table('empleados')
