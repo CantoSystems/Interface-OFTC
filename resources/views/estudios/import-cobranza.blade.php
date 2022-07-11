@@ -7,6 +7,11 @@
         </div>
         <div class="card-header">
             <div class="row">
+                @if(session()->has('duplicados'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('duplicados')}}
+                </div>
+            @endif
                 <div class="col-md-3 col-sm-4 col-8">
                     <div class="info-box shadow">
                         <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
