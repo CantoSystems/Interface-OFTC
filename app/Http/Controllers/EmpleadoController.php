@@ -8,6 +8,7 @@ use App\Models\Empleado;
 use App\Models\Puesto;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EmpleadoController extends Controller{
     /**
@@ -37,6 +38,34 @@ class EmpleadoController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'nombreEmpleado' => 'required',
+            'appEmpleado'  => 'required',
+            'apmEmpleado' => 'required',
+            'puestoEmp' => 'required',
+           ],[
+            'nombreEmpleado.required' => 'Ingrese el nombre del empleado',
+            'appEmpleado.required'  => 'Ingrese el apellido paterno del empleado',
+            'apmEmpleado.required' => 'Ingrese el apellido materno del empleado',
+            'puestoEmp.required' => 'Seleccione el puesto del empleado',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $duplicados = Empleado::where([
+            ['empleado_nombre',$request->nombreEmpleado],
+            ['empleado_apellidop',$request->appEmpleado],
+            ['empleado_apellidom',$request->apmEmpleado],
+         ])->get();
+
+         
+        if($duplicados->count() >= 1){
+            return back()->with('duplicados','El registro ingresado ya existe');
+        }
+
         $fechaInsert = now()->toDateString();
         DB::table('empleados')->insert([
             'empleado_nombre' => $request->nombreEmpleado,
@@ -48,19 +77,8 @@ class EmpleadoController extends Controller{
             'updated_at' => $fechaInsert
         ]);
 
-        $empleados = Empleado::join('puestos','puestos.id','=','puesto_id')
-                            ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
-                                    ,'puestos.puestos_nombre'
-                                    ,'empleados.id_emp')
-                            ->where([
-                                ['empleados.empleado_status','=','A'],
-                                ['empleados.id_emp','!=',1]
-                            ])
-                            ->get();
+       return $this->index();
 
-        $listPuestos = Puesto::where('id','!=',1)->get();
-
-        return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 
     /**
@@ -81,6 +99,7 @@ class EmpleadoController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function show($id){
+        
         $empleado = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
                                     ,'empleado_nombre'
                                     ,'empleado_apellidop'

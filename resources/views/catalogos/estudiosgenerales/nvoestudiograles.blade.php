@@ -16,7 +16,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Descripción</label>
-                                <input type="text" id="descripcionGral" name="descripcionGral" class="form-control">
+                                <input type="text" id="descripcionGral" name="descripcionGral" class="form-control" required  onkeyup="mayus(this);">
                             </div>
                         </div>
                     </div>

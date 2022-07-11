@@ -18,6 +18,19 @@
             </div>
         </div>
         <div class="card-body">
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
+            @if(session()->has('duplicados'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('duplicados')}}
+                </div>
+            @endif
             <table id="catComisiones" name="catComisiones" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -25,6 +38,7 @@
                         <th>Estudio</th>
                         <th>Cantidad</th>
                         <th>Porcentaje</th>
+                        <th>Utilidad</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -34,8 +48,9 @@
                     <tr>
                         <td>{{ $list->Empleado }}</td>
                         <td>{{ $list->Estudio }}</td>
-                        <td>$ {{ number_format($list->cantidad,2) }}</td>
+                        <td>$ {{ number_format($list->cantidadComision,2) }}</td>
                         <td>{{ number_format($list->porcentaje,2) }} %</td>
+                        <td>$ {{ number_format($list->cantidadUtilidad,2) }}</td>
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('editComision.show',$list->id) }}">VER</a></th>
                     </tr>

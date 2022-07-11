@@ -46,7 +46,7 @@ class EstudiosController extends Controller{
             
             return redirect()->route('importarCobranza.index');
         }
-        return "No ha adjuntado ningun archivo";
+        
     }
 
     /**
@@ -93,13 +93,15 @@ class EstudiosController extends Controller{
                                   ['puestos.actividad','=','TRANSCRIBE'],
                                   ['empleados.id_emp','<>','1']
                               ])->get();
-
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
         $doctorInter = Doctor::where([
                                     ['id','<>','1'],
                                     ['categoria_id',2]
                                     ])->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza'));
     }
 
     /**
@@ -159,6 +161,31 @@ class EstudiosController extends Controller{
     }
 
     public function nvoEstudio(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'estudioGral' => 'required',
+            'tipoOjo' => 'required',
+            'precioEstudio' => 'required',
+            'dscrpMedicosPro' => 'required',
+        ],[
+            'estudioGral.required' => 'Selecccione el estudio',
+            'tipoOjo.required' => 'Seleccione el tipo de ojo',
+            'precioEstudio.required' => 'Ingrese el precio del estudio',
+            'dscrpMedicosPro.required' => 'Ingrese la descripción del estudio',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $duplicados = Estudios::where([
+            ['id_estudio_fk',$request->estudioGral],
+            ['id_ojo_fk',$request->tipoOjo]
+        ])->get();
+
+        if($duplicados->count() >= 1){
+            return back()->with('duplicados','El registro ingresado ya existe');
+        }
         $fechaInsert = now()->toDateString();
         DB::table('estudios')->insert([
             'id_estudio_fk' => $request->estudioGral,
@@ -193,6 +220,21 @@ class EstudiosController extends Controller{
     }
 
     public function nvoEstudioGral(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'descripcionGral' => 'Required',
+        ],[
+            'descripcionGral.required' => 'Ingrese la descripción del estudio'
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+        $duplicados = CatEstudios::where('descripcion',$request->descripcionGral)->get();
+        if($duplicados->count() >= 1){
+            return back()->with('duplicados','El registro ingresado ya existe');
+        }
+       
         $fechaInsert = now()->toDateString();
         DB::table('cat_estudios')->insert([
             'descripcion' => $request->descripcionGral,

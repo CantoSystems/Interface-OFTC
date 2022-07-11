@@ -65,8 +65,12 @@ class estudiosSeeder extends Seeder
             ["id_estudio_fk" => "15", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A AO", "precioEstudio" => 1200],
             ["id_estudio_fk" => "15", "id_ojo_fk" => "3", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A OD", "precioEstudio" => 700],
             ["id_estudio_fk" => "15", "id_ojo_fk" => "2", "dscrpMedicosPro" => "HONORARIOS MEDICOS POR USB A OI", "precioEstudio" => 700],
-            ["id_estudio_fk" => "17", "id_ojo_fk" => "1", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION AO", "precioEstudio" => 1500],
-            ["id_estudio_fk" => "17", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION UN OJO", "precioEstudio" => 900]
+            ["id_estudio_fk" => "18", "id_ojo_fk" => "1", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION AO", "precioEstudio" => 1500],
+            ["id_estudio_fk" => "18", "id_ojo_fk" => "4", "dscrpMedicosPro" => "TOPOGRAFIA POR OCT ANTERION UN OJO", "precioEstudio" => 900],
+            ["id_estudio_fk" => "17", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS FOTO DE NERVIO OPTICO AO", "precioEstudio" => 950],
+            ["id_estudio_fk" => "17", "id_ojo_fk" => "4", "dscrpMedicosPro" => "HONORARIOS FOTO DE NERVIO OPTICO UO", "precioEstudio" => 750],
+            ["id_estudio_fk" => "17", "id_ojo_fk" => "1", "dscrpMedicosPro" => "HONORARIOS FOTOS CLINICAS AO", "precioEstudio" => 950],
+            ["id_estudio_fk" => "17", "id_ojo_fk" => "4", "dscrpMedicosPro" => "HONORARIOS FOTOS CLINICAS UO", "precioEstudio" => 750]
         ]);
 
         $fechaInsert = now()->toDateString();

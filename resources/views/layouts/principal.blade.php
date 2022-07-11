@@ -217,13 +217,21 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script type="text/javascript">
-    $(function() {
-        bsCustomFileInput.init();
-        $('#datemask').inputmask('dd/mm/yyyy', {
-            'placeholder': 'dd/mm/yyyy'
-        })
-    });
     $(document).ready(function() {
+        $('#porcentajeComision').val(0);
+        $('#cantidadComision').val(0);
+        $('#utilidadComision').val(0);
+        $('#precioEstudio').val(0);
+
+        $("#empleadoComision").change(function() {
+            let texto = $(this).find('option:selected').text();
+            if(texto.includes('DOCTOR')){
+                $("#divComision").css("display", "block");
+            }else{
+                $("#divComision").css("display", "none");
+            }
+        });
+
         //Datatables
         $(function() {
             $("#reporteCobranza").DataTable({
@@ -263,6 +271,45 @@
         });
         $(function() {
             $("#genReportes").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#catComisiones").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#reporteCitas").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
+                    "zeroRecords": "No existen registros en la tabla",
+                    "info": "Mostrando página _PAGE_ de _PAGES_",
+                    "infoEmpty": "No existen registros en la tabla",
+                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
+                }
+            });
+        });
+        $(function() {
+            $("#catComisionesGral").DataTable({
                 "responsive": true,
                 "autoWidth": false,
                 "language": {
@@ -345,6 +392,12 @@
         });
     });
     </script>
+    <script>
+        //Función para convertir en texto en mayusculas
+        function mayus(e) {
+          e.value = e.value.toUpperCase();
+        }
+      </script>
 </body>
 
 </html>

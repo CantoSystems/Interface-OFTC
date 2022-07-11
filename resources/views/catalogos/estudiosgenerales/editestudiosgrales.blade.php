@@ -24,7 +24,7 @@
                                     <div class="form-group">
                                         <label>Descripción</label>
                                         <input type="text" id="descripcionGral" name="descripcionGral"
-                                            class="form-control" value="{{ $estudio->descripcion }}">
+                                            class="form-control" value="{{ $estudio->descripcion }}" required  onkeyup="mayus(this);">
                                         <input type="hidden" name="idEstudio" id="idEstudio" value="{{ $estudio->id }}">
                                     </div>
                                 </div>

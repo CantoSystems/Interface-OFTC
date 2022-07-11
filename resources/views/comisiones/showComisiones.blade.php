@@ -28,6 +28,7 @@
                                 <label class="info-box-text">Selecciona Estudio:</label>
                                 <select class="form-control" name="slctEstudio" id="slctEstudio">
                                     <option selected disabled>-- Selecciona una opción --</option>
+                                    <option value="TODOS">TODOS LOS ESTUDIOS</option>
                                     @foreach($estudios as $est)
                                     <option value="{{ $est->id }}">{{ $est->dscrpMedicosPro }}
                                     </option>
@@ -78,7 +79,7 @@
             </form>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-hover">
+            <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Fecha</th>

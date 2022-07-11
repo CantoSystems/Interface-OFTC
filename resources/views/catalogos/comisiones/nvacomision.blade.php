@@ -12,7 +12,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Estudio</label>
                                     <select name="estudioGral" id="estudioGral" class="custom-select combos">
@@ -25,7 +25,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Empleado</label>
                                     <select name="empleadoComision" id="empleadoComision" class="custom-select combos">
@@ -38,17 +38,24 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Cantidad</label>
                                     <input type="number" step="0.01" id="cantidadComision" name="cantidadComision"
                                         class="form-control">
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-4">
                                 <div class="form-group">
                                     <label>Porcentaje</label>
                                     <input type="number" step="0.01" id="porcentajeComision" name="porcentajeComision"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-4" id="divComision" name="divComision" style="display: none">
+                                <div class="form-group">
+                                    <label>Utilidad</label>
+                                    <input type="number" step="0.01" id="utilidadComision" name="utilidadComision"
                                         class="form-control">
                                 </div>
                             </div>

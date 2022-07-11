@@ -41,7 +41,7 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro" class="form-control">
+                                    <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro" class="form-control"  onkeyup="mayus(this);">
                                 </div>
                             </div>
                             <div class="col-2">
