@@ -25,6 +25,7 @@ class ComisionesExport implements FromView, ShouldAutoSize{
                                                 ,'comisiones_temps.paciente'
                                                 ,'comisiones_temps.fechaEstudio'
                                                 ,'comisiones_temps.cantidad')
+                                        ->where('comisiones_temps.cantidad','!=',0)
                                         ->get();
 
         $totalComisiones = comisionesTemps::sum('cantidad');
