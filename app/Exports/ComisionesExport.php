@@ -19,16 +19,19 @@ class ComisionesExport implements FromView, ShouldAutoSize{
                                         ->groupBy('empleado')
                                         ->first();
 
-        $dataComisiones = comisionesTemps::join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
-                                        ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
+        $dataComisiones = comisionesTemps::join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
                                         ->select('estudios.dscrpMedicosPro'
+                                                ,'estudios.precioEstudio'
                                                 ,'comisiones_temps.paciente'
                                                 ,'comisiones_temps.fechaEstudio'
-                                                ,'comisiones_temps.cantidad')
-                                        ->where('comisiones_temps.cantidad','!=',0)
+                                                ,'comisiones_temps.cantidad'
+                                                ,'comisiones_temps.porcentaje'
+                                                ,'comisiones_temps.total'
+                                                ,DB::raw('(estudios.precioEstudio*comisiones_temps.porcentaje)/100 AS importe'))
+                                        ->where('comisiones_temps.total','!=',0)
                                         ->get();
 
-        $totalComisiones = comisionesTemps::sum('cantidad');
+        $totalComisiones = comisionesTemps::sum('total');
         
         return view('export-excel.comisiones-export', [
             'emp' => $dataEmpleado->empleado,
