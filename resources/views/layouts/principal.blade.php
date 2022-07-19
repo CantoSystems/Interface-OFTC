@@ -51,6 +51,7 @@
                 </div>
 
                 <nav class="mt-2">
+                    @canany(['comisionesAdministrador','cobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -87,6 +88,9 @@
                             </ul>
                         </li>
                     </ul>
+                    @endcanany
+
+                    @canany(['comisionesAdministrador','detalleConsumo'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -115,6 +119,9 @@
                             </ul>
                         </li>
                     </ul>
+                    @endcanany
+
+                    @can('comisionesAdministrador')
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -135,6 +142,9 @@
                             </ul>
                         </li>
                     </ul>
+                    @endcan
+
+                    @canany(['comisionesAdministrador','cobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -157,7 +167,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('mostrarCatalogo.show') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Estudios</p>
+                                        <p>Estudios Especificos</p>
                                     </a>
                                 </li>
                             </ul>
@@ -179,6 +189,7 @@
                             </ul>
                         </li>
                     </ul>
+                    @endcan
                 </nav>
             </div>
         </aside>

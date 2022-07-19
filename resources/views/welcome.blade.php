@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <button class="btn btn-block btn-outline-info btn-xs">Guardar</button>
+                                <button class="btn btn-block btn-outline-info btn-xs">Iniciar Sesión</button>
                             </div>
                         </div>
                     </div>
