@@ -103,7 +103,7 @@
                         <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
                         <td>{{ $com->paciente }}</td>
                         <td>{{ $com->dscrpMedicosPro }}</td>
-                        <td>$ {{ number_format($com->cantidad,2) }}</td>
+                        <td>$ {{ number_format($com->total,2) }}</td>
                     </tr>
                     @endforeach
                     @endif
