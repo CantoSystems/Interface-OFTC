@@ -81,15 +81,23 @@ class ComisionesController extends Controller{
                                         ->select('precioEstudio')
                                         ->where('id','=',$request->slctEstudio)
                                         ->first();
-
+                
                 $totalComisiones = 0;
                 foreach($selectEstudios as $estudios){
                     if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
                         $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
                     }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        $totalComisiones = $comisionEmp->cantidad;
+                        if($comisionEmp->cantidad != null){
+                            $totalComisiones = $comisionEmp->cantidad;
+                        }else{
+                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        }
                     }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        if($comisionEmp->cantidad != null){
+                            $totalComisiones = $comisionEmp->cantidad;
+                        }else{
+                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        }
                     }else{
                         $estudios++;
                     }
@@ -99,7 +107,9 @@ class ComisionesController extends Controller{
                         'id_estudio_fk' => $request->slctEstudio,
                         'paciente' => $estudios->paciente,
                         'fechaEstudio' => $estudios->fecha,
-                        'cantidad' => $totalComisiones,
+                        'cantidad' => $comisionEmp->cantidad,
+                        'porcentaje' => $comisionEmp->porcentaje,
+                        'total' => $totalComisiones,
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert
                     ]);
@@ -138,7 +148,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $request->slctEstudio,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -156,7 +168,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $request->slctEstudio,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -169,7 +183,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $request->slctEstudio,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -198,13 +214,21 @@ class ComisionesController extends Controller{
                                         ->select('precioEstudio')
                                         ->where('id','=',$estudios->id_estudio_fk)
                                         ->first();
-
+                    
                     if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
                         $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
                     }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        $totalComisiones = $comisionEmp->cantidad;
+                        if($comisionEmp->cantidad != null){
+                            $totalComisiones = $comisionEmp->cantidad;
+                        }else{
+                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        }
                     }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        if($comisionEmp->cantidad != null){
+                            $totalComisiones = $comisionEmp->cantidad;
+                        }else{
+                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        }
                     }else{
                         $estudios++;
                     }
@@ -214,7 +238,9 @@ class ComisionesController extends Controller{
                         'id_estudio_fk' => $estudios->id_estudio_fk,
                         'paciente' => $estudios->paciente,
                         'fechaEstudio' => $estudios->fecha,
-                        'cantidad' => $totalComisiones,
+                        'cantidad' => $comisionEmp->cantidad,
+                        'porcentaje' => $comisionEmp->porcentaje,
+                        'total' => $totalComisiones,
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert
                     ]);
@@ -258,7 +284,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $estudios->id_estudio_fk,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -276,7 +304,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $estudios->id_estudio_fk,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -289,7 +319,9 @@ class ComisionesController extends Controller{
                             'id_estudio_fk' => $estudios->id_estudio_fk,
                             'paciente' => $estudios->paciente,
                             'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $totalComisiones,
+                            'cantidad' => $comisionEmp->cantidad,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $totalComisiones,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert
                         ]);
@@ -301,16 +333,16 @@ class ComisionesController extends Controller{
         $comisiones = DB::table('comisiones_temps')
                             ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
                             ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
-                            ->select('estudios.dscrpMedicosPro','fechaEstudio','cantidad','paciente')
+                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente')
                             ->where([
                                 ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado],
-                                ['cantidad','!=',0]
+                                ['total','!=',0]
                             ])->get();
 
         $totalComisiones = DB::table('comisiones_temps')
                                 ->where([
                                     ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
-                                ])->sum('cantidad');
+                                ])->sum('total');
 
         $empleados = DB::table('empleados')
                             ->join('puestos','puestos.id','=','puesto_id')
