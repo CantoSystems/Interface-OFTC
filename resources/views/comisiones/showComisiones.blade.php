@@ -86,7 +86,7 @@
                 <li>{{ $error }}</li>
                 @endforeach
             </div>
-        @endif
+            @endif
             <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
