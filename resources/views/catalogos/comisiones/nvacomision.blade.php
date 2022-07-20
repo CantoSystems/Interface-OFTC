@@ -14,7 +14,9 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Estudio</label>
+                                    <label>Estudio
+                                        <strong style="color:red">*</strong>
+                                    </label>
                                     <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                         <option disabled selected>-- Selecciona una opción --</option>
                                         @foreach($listEstudios as $listEstudios)
@@ -27,7 +29,9 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Empleado</label>
+                                    <label>Empleado
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <select name="empleadoComision" id="empleadoComision" class="custom-select combos">
                                         <option disabled selected>-- Selecciona una opción --</option>
                                         @foreach($listEmpleados as $listEmpleados)
@@ -40,21 +44,27 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label>Cantidad</label>
+                                    <label>Cantidad en MXN
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="number" step="0.01" id="cantidadComision" name="cantidadComision"
                                         class="form-control">
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label>Porcentaje</label>
+                                    <label>Porcentaje Comisión
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="number" step="0.01" id="porcentajeComision" name="porcentajeComision"
                                         class="form-control">
                                 </div>
                             </div>
                             <div class="col-4" id="divComision" name="divComision" style="display: none">
                                 <div class="form-group">
-                                    <label>Utilidad</label>
+                                    <label>Utilidad
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="number" step="0.01" id="utilidadComision" name="utilidadComision"
                                         class="form-control">
                                 </div>

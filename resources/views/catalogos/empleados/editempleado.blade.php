@@ -22,7 +22,9 @@
                             <div class="row">
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Nombre(s)</label>
+                                        <label>Nombre(s)
+                                            <strong style="color:red">*</strong>
+                                        </label>
                                         <input type="text" value="{{ $empleado->empleado_nombre }}" id="nombreEmpleado"
                                             name="nombreEmpleado" class="form-control" required>
                                             <input type="hidden" name="idEmpleado" id="idEmpleado" value="{{ $empleado->id_emp }}">
@@ -30,21 +32,27 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Apellido Paterno</label>
+                                        <label>Apellido Paterno
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <input type="text" value="{{ $empleado->empleado_apellidop }}" id="appEmpleado"
                                             name="appEmpleado" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Apellido Materno</label>
+                                        <label>Apellido Materno
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <input type="text" value="{{ $empleado->empleado_apellidom }}" id="apmEmpleado"
                                             name="apmEmpleado" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Puesto</label>
+                                        <label>Puesto
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <select name="puestoEmp" id="puestoEmp" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($listPuestos as $listPuestos)
@@ -67,7 +75,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
+                                        class="btn btn-block btn-outline-info btn-xs">Actualizar
                                         Registro</button>
                                 </div>
                                 <div class="col-6">

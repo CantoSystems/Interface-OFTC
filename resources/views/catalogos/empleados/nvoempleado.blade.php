@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title modalPersonalizado">Agregar Empleado</h2>
+                <h2 class="modal-title modalPersonalizado">Agregar</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -14,25 +14,33 @@
                         <div class="row">
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label>Nombre(s)</label>
+                                    <label>Nombre(s)
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="text" id="nombreEmpleado" name="nombreEmpleado" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label>Apellido Paterno</label>
+                                    <label>Apellido Paterno
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="text" id="appEmpleado" name="appEmpleado" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label>Apellido Materno</label>
+                                    <label>Apellido Materno
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <input type="text" id="apmEmpleado" name="apmEmpleado" class="form-control">
                                 </div>
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label>Puesto</label>
+                                    <label>Puesto
+                                    <strong style="color:red">*</strong>
+                                    </label>
                                     <select name="puestoEmp" id="puestoEmp" class="custom-select combos">
                                         <option disabled selected>-- Selecciona una opción --</option>
                                         @foreach($listPuestos as $listPuestos)

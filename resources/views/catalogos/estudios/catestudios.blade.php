@@ -12,7 +12,7 @@
                     <span class="info-box-text"></span>
                     <button id="cargarCobranza" type="button" class="btn btn-block btn-outline-secondary btn-xs"
                         data-toggle="modal" data-target="#nvoestudio">
-                        <span class="info-box-number">Agregar Estudio</span>
+                        <span class="info-box-number">Agregar</span>
                     </button>
                 </div>
             </div>

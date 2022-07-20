@@ -51,7 +51,9 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>PX INT. - EXT.</label>
+                                        <label>PX INT. - EXT.
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <select name="tipoPaciente" id="tipoPaciente" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($tipoPac as $tpaciente)
@@ -88,7 +90,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Dr. Que Requiere</label>
+                                        <label>Dr. Que Requiere <strong style="color:red">*</strong></label>
                                         <select name="drRequiere" id="drRequiere" class="custom-select combos">
                                             <option selected disabled>-- Selecciona una opción --</option>
                                             @foreach ($doctores as $dres)
@@ -109,7 +111,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Quién Realizó el Estudio</label>
+                                        <label>Quién Realizó el Estudio <strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empRealiza as $empRe)
