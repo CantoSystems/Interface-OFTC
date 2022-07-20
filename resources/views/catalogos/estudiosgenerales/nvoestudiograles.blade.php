@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Descripción</label>
+                                <label>Nombre del Estudio <strong style="color:red">*</strong></label>
                                 <input type="text" id="descripcionGral" name="descripcionGral" class="form-control" required  onkeyup="mayus(this);">
                             </div>
                         </div>

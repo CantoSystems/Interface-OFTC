@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
+                                        class="btn btn-block btn-outline-info btn-xs">Actualizar
                                         Registro</button>
                                 </div>
                                 <div class="col-6">

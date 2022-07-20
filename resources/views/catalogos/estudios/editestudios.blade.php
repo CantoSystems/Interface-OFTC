@@ -22,7 +22,9 @@
                             <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Estudio</label>
+                                        <label>Estudio General
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($catEstudios as $catEstudios)
@@ -41,7 +43,9 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <label>Tipo de Ojo</label>
+                                        <label>Tipo de Ojo
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <select name="tipoOjo" id="tipoOjo" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($catOjos as $catOjos)
@@ -60,7 +64,9 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Descripción</label>
+                                        <label>Descripción Medicos Pro
+                                        <strong style="color:red">*</strong>
+                                        </label>
                                         <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro"
                                             class="form-control" value="{{ $estudio->dscrpMedicosPro }}" required  onkeyup="mayus(this);">
                                     </div>
@@ -79,7 +85,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
+                                        class="btn btn-block btn-outline-info btn-xs">Actualizar
                                         Registro</button>
                                 </div>
                                 <div class="col-6">
