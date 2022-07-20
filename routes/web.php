@@ -92,3 +92,10 @@ Route::post('/agregar-empleado',[EmpleadoController::class,'create'])->name('nvo
 Route::post('/guardar-empleado',[EmpleadoController::class,'update'])->name('updtEmpleado.update')->middleware('auth');
 Route::get('/editar-empleado/{id}',[EmpleadoController::class,'show'])->name('updtEmpleado.show')->middleware('auth');
 Route::delete('/eliminar-empleado',[EmpleadoController::class,'destroy'])->name('dltEmpleado.destroy')->middleware('auth');
+
+//Catálogo Porcentajes
+Route::get('/catalogo-porcentajes',[DetalleCController::class,'showPorcentajes'])->name('mostrarPorcentajes.show')->middleware('auth');
+Route::post('/agregar-porcentaje',[DetalleCController::class,'createPorcentaje'])->name('nvoPorcentaje.create')->middleware('auth');
+Route::post('/guardar-porcentaje',[DetalleCController::class,'updtPorcentaje'])->name('updtPorcentaje.update')->middleware('auth');
+Route::get('/editar-porcentaje/{id}',[DetalleCController::class,'showPorcentaje'])->name('updtPorcentaje.show')->middleware('auth');
+Route::delete('/eliminar-porcentaje',[DetalleCController::class,'deletePorcentaje'])->name('dltPorcentaje.destroy')->middleware('auth');

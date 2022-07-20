@@ -24,10 +24,12 @@ class ComisionesController extends Controller{
                                  DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
                                  'puestos.puestos_nombre')
                         ->where('id_emp','!=',1)
+                        ->orderBy('empleado','asc')
                         ->get();
 
         $estudios = DB::table('estudios')
                         ->select('id','dscrpMedicosPro')
+                        ->orderBy('dscrpMedicosPro','asc')
                         ->get();
 
         return view('comisiones.showComisiones',compact('empleados','estudios'));
@@ -37,12 +39,12 @@ class ComisionesController extends Controller{
         DB::table('comisiones_temps')->truncate();
         $fechaInsert = now()->toDateString();
 
-       $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(),[
             'slctEmpleado' => 'required',
             'slctEstudio'  => 'required',
             'fechaInicio'  => 'required',
             'fechaFin'     => 'required',
-       ],[
+        ],[
             'slctEmpleado.required' => 'Selecciona el empleado',
             'slctEstudio.required'  => 'Selecciona el estudio',
             'fechaInicio.required'  => 'Selecciona la fecha de inicio',
@@ -52,7 +54,6 @@ class ComisionesController extends Controller{
         if($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }
-
 
         $puestoEmp = DB::table('empleados')
                         ->join('puestos','puestos.id','=','empleados.puesto_id')
@@ -70,8 +71,8 @@ class ComisionesController extends Controller{
 
             if($puestoEmp->puesto_id == 2){
                 $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                 ,'porcentaje'
-                                                 ,'cantidadUtilidad as utilidad')
+                                                ,'porcentaje'
+                                                ,'cantidadUtilidad as utilidad')
                                             ->where([
                                                 ['id_estudio_fk','=',$request->slctEstudio],
                                                 ['id_empleado_fk','=',$request->slctEmpleado]
@@ -87,16 +88,16 @@ class ComisionesController extends Controller{
                     if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
                         $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
                     }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        if($comisionEmp->cantidad != null){
+                        if($comisionEmp->cantidad != 0){
                             $totalComisiones = $comisionEmp->cantidad;
                         }else{
                             $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
                         }
                     }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        if($comisionEmp->cantidad != null){
-                            $totalComisiones = $comisionEmp->cantidad;
-                        }else{
+                        if($comisionEmp->porcentaje != 0){
                             $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
+                        }else{
+                            $totalComisiones = $comisionEmp->cantidad;
                         }
                     }else{
                         $estudios++;
@@ -118,8 +119,8 @@ class ComisionesController extends Controller{
                 }
             }else{
                 $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                 ,'porcentaje'
-                                                 ,'cantidadUtilidad as utilidad')
+                                                ,'porcentaje'
+                                                ,'cantidadUtilidad as utilidad')
                                             ->where([
                                                 ['id_estudio_fk','=',$request->slctEstudio],
                                                 ['id_empleado_fk','=',$request->slctEmpleado]
@@ -203,8 +204,8 @@ class ComisionesController extends Controller{
                 $totalComisiones = 0;
                 foreach($selectEstudios as $estudios){
                     $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                     ,'porcentaje'
-                                                     ,'cantidadUtilidad as utilidad')
+                                                    ,'porcentaje'
+                                                    ,'cantidadUtilidad as utilidad')
                                                 ->where([
                                                     ['id_estudio_fk','=',$estudios->id_estudio_fk],
                                                     ['id_empleado_fk','=',$request->slctEmpleado]
@@ -250,8 +251,8 @@ class ComisionesController extends Controller{
             }else{
                 foreach($selectEstudios as $estudios){
                     $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                     ,'porcentaje'
-                                                     ,'cantidadUtilidad as utilidad')
+                                                    ,'porcentaje'
+                                                    ,'cantidadUtilidad as utilidad')
                                                 ->where([
                                                     ['id_estudio_fk','=',$estudios->id_estudio_fk],
                                                     ['id_empleado_fk','=',$request->slctEmpleado]
@@ -375,6 +376,7 @@ class ComisionesController extends Controller{
                                                     ,'comisiones.porcentaje'
                                                     ,'comisiones.cantidadUtilidad'
                                                     ,'comisiones.id')
+                                    ->orderBy('empleados.empleado_nombre','asc')
                                     ->get();
 
         $listEstudios = Estudios::select('id','dscrpMedicosPro')
@@ -481,13 +483,13 @@ class ComisionesController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
-        
         $editComision = Comisiones::find($request->idComision);
-        $editComision->id_estudio_fk = $request->estudioGral;
+        $editComision->id_doctor_fk = $request->estudioGral;
         $editComision->cantidadComision = $request->cantidadComision;
         $editComision->cantidadUtilidad = $request->cantidadUtilidad;
         $editComision->porcentaje = $request->porcentajeComision;
         $editComision->save();
+        
         return redirect()->route('mostrarComisiones.index');
     }
 

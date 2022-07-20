@@ -18,7 +18,7 @@
                         @endforeach
                     </div>
                     @endif
-                    <form action="{{ route('updtComision.update') }}" method="POST">
+                    <form action="{{ route('updtPorcentaje.update') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row">
@@ -45,14 +45,14 @@
                                     <div class="form-group">
                                         <label>Cantidad</label>
                                         <input type="number" step="0.01" value="{{ $comision->cantidadComision }}"
-                                         name="cantidadComision" class="form-control" required>
+                                            name="cantidadComision" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Porcentaje</label>
                                         <input type="number" step="0.01" value="{{ $comision->porcentaje }}"
-                                             name="porcentajeComision" class="form-control" required>
+                                            name="porcentajeComision" class="form-control" required>
                                         <input type="hidden" name="idComision" id="idComision"
                                             value="{{ $comision->id }}">
                                     </div>
