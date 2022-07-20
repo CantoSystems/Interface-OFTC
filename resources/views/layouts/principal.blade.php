@@ -117,6 +117,14 @@
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('mostrarPorcentajes.show') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Porcentajes Doctores</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     @endcanany
@@ -236,9 +244,9 @@
 
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
-            if(texto.includes('DOCTOR')){
+            if (texto.includes('DOCTOR')) {
                 $("#divComision").css("display", "block");
-            }else{
+            } else {
                 $("#divComision").css("display", "none");
             }
         });
@@ -404,11 +412,11 @@
     });
     </script>
     <script>
-        //Función para convertir en texto en mayusculas
-        function mayus(e) {
-          e.value = e.value.toUpperCase();
-        }
-      </script>
+    //Función para convertir en texto en mayusculas
+    function mayus(e) {
+        e.value = e.value.toUpperCase();
+    }
+    </script>
 </body>
 
 </html>

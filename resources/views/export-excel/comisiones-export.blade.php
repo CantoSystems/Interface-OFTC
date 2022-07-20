@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,12 +12,7 @@
     <table>
         <tbody>
             <tr>
-                <td>Oftalmo<b>Center</b></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td style="text-align: center; font-size: 30px;" colspan="8">Oftalmo<b>Center</b></td>
             </tr>
             <tr>
                 <td><b>Empleado:</b></td>
@@ -29,8 +24,7 @@
             </tr>
         </tbody>
     </table>
-    <br>
-    <table>
+    <table cellspacing="0" cellpadding="0">
         <thead>
             <tr>
                 <th><b>Estudio</b></th>
@@ -58,7 +52,6 @@
             @endforeach
         </tbody>
     </table>
-    <br>
     <table>
         <tbody>
             <tr>

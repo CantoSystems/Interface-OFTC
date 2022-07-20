@@ -298,4 +298,168 @@ class DetalleCController extends Controller{
         
         return $pdf->download('Hoja de Consumo.pdf');
     }
+
+    public function showPorcentajes(){
+        $porcentajeDoctores = DB::table('comisiones_doctores')
+                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
+                                ->join('tipo_pacientes','tipo_pacientes.id','=','comisiones_doctores.id_tipoPaciente_fk')
+                                ->join('cat_metodo_pago','cat_metodo_pago.id','=','comisiones_doctores.id_metodoPago_fk')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'tipo_pacientes.nombretipo_paciente'
+                                        ,'cat_metodo_pago.descripcion'
+                                        ,'comisiones_doctores.porcentaje'
+                                        ,'comisiones_doctores.id')
+                                ->get();
+        
+        $catMetodoPago = DB::table('cat_metodo_pago')
+                            ->get();
+                            
+        $catTipoPaciente = DB::table('tipo_pacientes')
+                                ->get();
+
+        $catDoctores = DB::table('doctors')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'id')
+                            ->where([
+                                ['doctor_status','=','A'],
+                                ['id','!=',1]
+                            ])
+                            ->get();
+
+        return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
+    }
+
+    public function createPorcentaje(Request $request){
+        $validator = Validator::make($request->all(),[
+            'doctorId' => 'required',
+            'metodoPago' => 'required',
+            'tipoPaciente' => 'required',
+            'porcentajeDoctor' => 'required',
+        ],[
+            'doctorId.required' => 'Seleccciona un Doctor',
+            'metodoPago.required' => 'Selecciona un Método de Pago',
+            'tipoPaciente.required' => 'Selecciona el Tipo de Paciente',
+            'porcentajeDoctor.required' => 'Ingresa el Porcentaje',
+        ]);
+        
+        $fechaInsert = now()->toDateString();
+        DB::table('comisiones_doctores')->insert([
+            'id_doctor_fk' => $request->doctorId,
+            'id_tipoPaciente_fk' => $request->metodoPago,
+            'id_metodoPago_fk' => $request->tipoPaciente,
+            'porcentaje' => $request->porcentajeDoctor,
+            'created_at' => $fechaInsert,
+            'updated_at' => $fechaInsert
+        ]);
+
+        $porcentajeDoctores = DB::table('comisiones_doctores')
+                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
+                                ->join('tipo_pacientes','tipo_pacientes.id','=','comisiones_doctores.id_tipoPaciente_fk')
+                                ->join('cat_metodo_pago','cat_metodo_pago.id','=','comisiones_doctores.id_metodoPago_fk')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'tipo_pacientes.nombretipo_paciente'
+                                        ,'cat_metodo_pago.descripcion'
+                                        ,'comisiones_doctores.porcentaje')
+                                ->get();
+        
+        $catMetodoPago = DB::table('cat_metodo_pago')
+                            ->get();
+                            
+        $catTipoPaciente = DB::table('tipo_pacientes')
+                                ->get();
+
+        $catDoctores = DB::table('doctors')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'id')
+                            ->where([
+                                ['doctor_status','=','A'],
+                                ['id','!=',1]
+                            ])
+                            ->get();
+        
+        return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
+    }
+
+    public function showPorcentaje($id){
+        $porcentajeDoctores = DB::table('comisiones_doctores')
+                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
+                                ->join('tipo_pacientes','tipo_pacientes.id','=','comisiones_doctores.id_tipoPaciente_fk')
+                                ->join('cat_metodo_pago','cat_metodo_pago.id','=','comisiones_doctores.id_metodoPago_fk')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'tipo_pacientes.nombretipo_paciente'
+                                        ,'cat_metodo_pago.descripcion'
+                                        ,'comisiones_doctores.porcentaje')
+                                ->get();
+        
+        $catMetodoPago = DB::table('cat_metodo_pago')
+                            ->get();
+                            
+        $catTipoPaciente = DB::table('tipo_pacientes')
+                                ->get();
+
+        $catDoctores = DB::table('doctors')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'id')
+                            ->where([
+                                ['doctor_status','=','A'],
+                                ['id','!=',1]
+                            ])
+                            ->get();
+
+        $porcentajeInfo = DB::table('comisiones_doctores')
+                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'comisiones_doctores.id_doctor_fk'
+                                        ,'comisiones_doctores.id_tipoPaciente_fk'
+                                        ,'comisiones_doctores.id_metodoPago_fk'
+                                        ,'comisiones_doctores.porcentaje'
+                                        ,'comisiones_doctores.id')
+                                ->where('comisiones_doctores.id','=',$id)
+                                ->first();
+
+        return view('catalogos.porcentajes.editporcentaje', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores','porcentajeInfo'));
+    }
+
+    public function updtPorcentaje(Request $request){
+        $nvoEmpleado = DB::table('comisiones_doctores')
+                            ->where('id','=',$request->idComision)
+                            ->update(['id_doctor_fk' => $request->doctorId,
+                                    'id_tipoPaciente_fk' => $request->tipoPaciente,
+                                    'id_metodoPago_fk' => $request->metodoPago,
+                                    'porcentaje' => $request->porcentajeDoctor
+                            ]);
+
+        $porcentajeDoctores = DB::table('comisiones_doctores')
+                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
+                                ->join('tipo_pacientes','tipo_pacientes.id','=','comisiones_doctores.id_tipoPaciente_fk')
+                                ->join('cat_metodo_pago','cat_metodo_pago.id','=','comisiones_doctores.id_metodoPago_fk')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'tipo_pacientes.nombretipo_paciente'
+                                        ,'cat_metodo_pago.descripcion'
+                                        ,'comisiones_doctores.porcentaje'
+                                        ,'comisiones_doctores.id')
+                                ->get();
+        
+        $catMetodoPago = DB::table('cat_metodo_pago')
+                            ->get();
+                            
+        $catTipoPaciente = DB::table('tipo_pacientes')
+                                ->get();
+
+        $catDoctores = DB::table('doctors')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'id')
+                            ->where([
+                                ['doctor_status','=','A'],
+                                ['id','!=',1]
+                            ])
+                            ->get();
+
+        return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
+    }
+
+    public function deletePorcentaje(Request $request){
+        $delEComision = DB::table('comisiones_doctores')->where('id','=',$request->idComision)->delete();
+        return redirect()->route('mostrarPorcentajes.show');
+    }
 }
