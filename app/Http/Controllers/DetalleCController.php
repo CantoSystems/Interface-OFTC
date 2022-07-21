@@ -345,8 +345,8 @@ class DetalleCController extends Controller{
         $fechaInsert = now()->toDateString();
         DB::table('comisiones_doctores')->insert([
             'id_doctor_fk' => $request->doctorId,
-            'id_tipoPaciente_fk' => $request->metodoPago,
-            'id_metodoPago_fk' => $request->tipoPaciente,
+            'id_tipoPaciente_fk' => $request->tipoPaciente,
+            'id_metodoPago_fk' => $request->metodoPago,
             'porcentaje' => $request->porcentajeDoctor,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
@@ -359,14 +359,13 @@ class DetalleCController extends Controller{
                                 ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                         ,'tipo_pacientes.nombretipo_paciente'
                                         ,'cat_metodo_pago.descripcion'
-                                        ,'comisiones_doctores.porcentaje')
+                                        ,'comisiones_doctores.porcentaje'
+                                        ,'comisiones_doctores.id')
                                 ->get();
-        
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
+
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
                             
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -374,8 +373,7 @@ class DetalleCController extends Controller{
                             ->where([
                                 ['doctor_status','=','A'],
                                 ['id','!=',1]
-                            ])
-                            ->get();
+                            ])->get();
         
         return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
     }
