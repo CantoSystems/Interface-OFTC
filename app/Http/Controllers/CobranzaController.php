@@ -318,6 +318,7 @@ class CobranzaController extends Controller
 
     public function exportExcel(Request $request){
         $busqueda = json_decode($request->aqui);
+    
         return Excel::download(new CobranzaExport($busqueda), 'ReporteCobranza.xlsx');
     }
 
