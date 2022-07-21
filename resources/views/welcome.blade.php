@@ -23,7 +23,7 @@
     <div class="login-box">
         <div class="card card-outline card-info">
             <div class="card-header text-center">
-                <a href="#1" class="h1"><b>Login</b> | Interfaz</a>
+                <a href="#1" class="h1"><b>Oftalmocenter</b> </a>
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>

@@ -6,6 +6,9 @@
             <h4>Generar Reporte</h4>
         </div>
         <div class="card-header col-12">
+            <!--
+                Siempre revisar que los formularios no estén anidados :) gracias!
+            -->
             <form action="{{ route('importarCobranza.showData') }}" method="GET">
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-6">
@@ -48,7 +51,11 @@
                             </div>
                         </div>
                     </div>
-                    @if(!empty($cobranza))
+               
+            </form>
+
+
+            @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
@@ -61,9 +68,8 @@
                             </div>
                         </div>
                     </div>
-                    @endif
-                </div>
-            </form>
+            @endif
+            </div>
         </div>
         <div class="card-body">
             @if(!empty($cobranza))
