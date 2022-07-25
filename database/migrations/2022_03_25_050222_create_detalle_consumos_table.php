@@ -20,8 +20,11 @@ class CreateDetalleConsumosTable extends Migration
             $table->date('fechaElaboracion');
             $table->text('paciente');
             $table->text('tipoPaciente');
-            $table->text('metodoPago');
-            $table->double('cantidadTotal',10,2);
+            $table->text('cirugia');
+            $table->double('cantidadEfe',10,2);
+            $table->double('cantidadTrans',10,2);
+            $table->double('TPV',10,2);
+            $table->text('statusHoja');
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
             $table->timestamps();
         });

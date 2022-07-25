@@ -105,15 +105,15 @@
                                 <li class="nav-item">
                                     <a href="{{ route('subirarchivoD.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Subir archivo Excel</p>
+                                        <p>Subir Archivo Excel</p>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('mostrarHojas.show') }}" class="nav-link">
+                                    <a href="{{ route('viewHojas.show') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Ver Hojas de Consumo</p>
+                                        <p>Historial Hojas de Consumo</p>
                                     </a>
                                 </li>
                             </ul>
