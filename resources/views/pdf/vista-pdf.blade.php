@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,13 +19,14 @@
 <header>
     <h1 style="text-align: center;">Detalle de Consumo - {{ $data->folio }}</h1>
 </header>
+
 <body>
     <dd>
         <p>
             <b>Fecha de Elaboración: </b>{{ $data->fechaElaboracion }}
             <br><b>Doctor: </b>{{ $data->Doctor }}
             <br><b>Paciente: </b>{{ $data->paciente }} ({{ $data->nombretipo_paciente }})
-            <br><b>Método de Pago: </b>{{ $data->descripcion }}
+            <br><b>Tipo de Cirugía: </b>{{ $data->cirugia }}
         </p>
     </dd>
     <br>
@@ -54,15 +56,20 @@
             @endif
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total (Efectivo): </b></td>
-                <td>$ {{ number_format($totalEfectivo,2) }}</td>
+                <td>$ {{ number_format($data->cantidadEfe,2) }}</td>
             </tr>
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total (Transferencia): </b></td>
-                <td>$ {{ number_format($totalTPV,2) }}</td>
+                <td>$ {{ number_format($data->cantidadTrans,2) }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: right;" colspan="5"><b>Total (TPV): </b></td>
+                <td>$ {{ number_format($data->TPV,2) }}</td>
             </tr>
         </tbody>
     </table>
 </body>
 <footer>
 </footer>
+
 </html>

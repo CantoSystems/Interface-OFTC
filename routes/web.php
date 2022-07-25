@@ -52,7 +52,10 @@ Route::get('/subir-detalle-consumo',[DetalleCController::class,'index'])->name('
 Route::post('/import-detalle-excel',[DetalleCController::class,'importExcel'])->name('subirDetalle.import')->middleware('auth');
 Route::get('/extraer-data-consumo',[DetalleCController::class,'show'])->name('extraerDetalle.show')->middleware('auth');
 Route::get('/guardar-info-consumo',[DetalleCController::class,'create'])->name('guardarDetalle.create')->middleware('auth');
+Route::get('/historico-hojas-consumo',[DetalleCController::class,'viewHojas'])->name('viewHojas.show')->middleware('auth');
 Route::get('/ver-hojas-consumo',[DetalleCController::class,'mostrarHojas'])->name('mostrarHojas.show')->middleware('auth');
+Route::get('/editar-hoja-consumo/{id}',[DetalleCController::class,'editHojaConsumo'])->name('editHojaConsumo.edit')->middleware('auth');
+Route::post('/guardar-hoja-consumo',[DetalleCController::class,'updtHoja'])->name('updtHoja.edit')->middleware('auth');
 Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF'])->name('exportPDF.create')->middleware('auth');
 
 //Usuarios
