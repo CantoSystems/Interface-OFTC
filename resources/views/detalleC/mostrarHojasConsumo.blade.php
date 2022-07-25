@@ -49,18 +49,6 @@
                             </div>
                         </div>
                     </div>
-                    @if(isset($comisiones) && !empty($totalComisiones))
-                    <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <a id="cargarCobranza" type="button" href="{{ route('exportarComisiones.export') }}"
-                                    class="btn btn-block btn-outline-secondary btn-xs">
-                                    <span class="info-box-number">Generar Excel</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
                 </div>
             </form>
         </div>
@@ -99,8 +87,15 @@
                                     </div>
                                     <div class="form-group">
                                         <a href="{{ route('exportPDF.create',$hojas->id_detalle) }}">
-                                            <button type="button" class="btn btn-danger btn-sm">
+                                            <button type="button" class="btn btn-primary btn-sm">
                                                 <i class="far fa-file-pdf"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="form-group">
+                                        <a href="{{ route('exportPDF.create',$hojas->id_detalle) }}">
+                                            <button type="button" class="btn btn-danger btn-sm">
+                                                <i class="far fa-trash-alt"></i>
                                             </button>
                                         </a>
                                     </div>
