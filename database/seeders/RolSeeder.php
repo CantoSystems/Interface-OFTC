@@ -16,15 +16,18 @@ class RolSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ["descripcion" => "comisionesAdministrador"],
-            ["descripcion" => "cobranzaReportes"],
-            ["descripcion" => "detalleConsumo"],
+            ["clave" => "comisionesAdministrador", "descripcion" => "ADMINISTRADOR GENERAL"],
+            ["clave" => "cobranzaReportes","descripcion" => "ADMINISTRATIVO ESTUDIOS COBRANZA"],
+            ["clave" => "detalleConsumo", "descripcion" => "ADMINISTRATIVO DETALLE DE CONSUMO"],
+            ["clave" => "auxiliarCobranzaReportes", "descripcion" => "AUXILIAR ESTUDIOS COBRANZA"],
+            ["clave" => "auxiliardetalleConsumo", "descripcion" => "AUXILIAR DETALLE DE CONSUMO"],
         ];
 
         $fechaInsert = now()->toDateString();
         foreach($roles as $rol){
             DB::table('roles')->insert([
-                'nombre_rol' => $rol["descripcion"],
+                'clave_rol' => $rol["clave"],
+                'descripcion_rol' => $rol["descripcion"],
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert
             ]);

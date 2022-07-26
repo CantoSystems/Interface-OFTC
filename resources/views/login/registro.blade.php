@@ -27,13 +27,13 @@
             </div>
             <div class="card-body">
                 <p class="login-box-msg">Ingresar sus datos de usuario:</p>
-                <form action="{{ route('usuarios.store') }}" method="POST">
+                <form action="{{ route('usuarios.store') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Nombre de usuario</label>
-                                <input type="text" name="usuario_nombre" class="form-control">
+                                <input type="text" name="usuario_nombre" class="form-control" onkeypress="return validar(event)">
                                 @error('usuario_nombre')
                                 <div class="alert alert-secondary">
                                     {{ $message }}
