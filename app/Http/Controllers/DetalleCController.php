@@ -282,7 +282,6 @@ class DetalleCController extends Controller{
                             ->first();
     
         $data2 = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$id)->get();
-
         $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
         
         return $pdf->download('Hoja de Consumo.pdf');
@@ -300,11 +299,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.id')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -353,7 +349,6 @@ class DetalleCController extends Controller{
                                 ->get();
 
         $catMetodoPago = DB::table('cat_metodo_pago')->get();
-                            
         $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
@@ -378,11 +373,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.porcentaje')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -427,11 +419,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.id')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -447,7 +436,15 @@ class DetalleCController extends Controller{
 
     public function deletePorcentaje(Request $request){
         $delEComision = DB::table('comisiones_doctores')->where('id','=',$request->idComision)->delete();
-        
         return redirect()->route('mostrarPorcentajes.show');
+    }
+
+    public function deleteHoja(Request $request){
+        $deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$request->idHojaConsumo)->delete();
+        $deleteHoja2 = DB::table('detalle_consumos')->where('id','=',$request->idHojaConsumo)->delete();
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
+        
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
     }
 }

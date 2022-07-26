@@ -409,6 +409,10 @@
             $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
+        $('#btnDlt').click(function() {
+            $('#modalDoctor').append($('#doctorHoja').val());
+            $('#idHojaConsumo').val($('#idHojaDlt').val());
+        });
     });
     </script>
     <script>

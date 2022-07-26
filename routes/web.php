@@ -56,6 +56,7 @@ Route::get('/historico-hojas-consumo',[DetalleCController::class,'viewHojas'])->
 Route::get('/ver-hojas-consumo',[DetalleCController::class,'mostrarHojas'])->name('mostrarHojas.show')->middleware('auth');
 Route::get('/editar-hoja-consumo/{id}',[DetalleCController::class,'editHojaConsumo'])->name('editHojaConsumo.edit')->middleware('auth');
 Route::post('/guardar-hoja-consumo',[DetalleCController::class,'updtHoja'])->name('updtHoja.edit')->middleware('auth');
+Route::delete('/eliminar-hoja-estudio',[DetalleCController::class,'deleteHoja'])->name('deleteHoja.destroy')->middleware('auth');
 Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF'])->name('exportPDF.create')->middleware('auth');
 
 //Usuarios

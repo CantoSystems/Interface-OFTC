@@ -93,8 +93,13 @@
                                         </a>
                                     </div>
                                     <div class="form-group">
-                                        <a href="{{ route('exportPDF.create',$hojas->id_detalle) }}">
-                                            <button type="button" class="btn btn-danger btn-sm">
+                                        <input type="hidden" name="idHojaDlt" id="idHojaDlt"
+                                            value="{{ $hojas->id_detalle }}">
+                                        <input type="hidden" name="doctorHoja" id="doctorHoja"
+                                            value="{{ $hojas->Doctor }}">
+                                        <a>
+                                            <button type="button" id="btnDlt" name="btnDlt" data-target="#eliminar-hoja"
+                                                data-toggle="modal" class="btn btn-danger btn-sm">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </a>
@@ -110,4 +115,5 @@
         </div>
     </div>
 </div>
+@include('detalleC.modaldeletehoja');
 @endsection
