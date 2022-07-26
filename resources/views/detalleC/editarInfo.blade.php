@@ -20,7 +20,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Fecha de Elaboración</label>
+                                <label>Fecha de Cirugía</label>
                                 <input type="date" class="form-control" id="fechaHoja" name="fechaHoja">
                             </div>
                         </div>
@@ -42,15 +42,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Seleccionar Método de Pago</label>
-                                <select class="custom-select rounded-0" id="metodoPagoHoja" name="metodoPagoHoja">
-                                    <option disabled selected>Seleccionar una opción...</option>
-                                    @foreach($metodoPago as $metP)
-                                    <option value="{{ $metP->id }}">
-                                        {{ $metP->descripcion }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                <label>Tipo de Cirugía</label>
+                                <input class="form-control" type="text" name="cirugia" id="cirugia">
                             </div>
                         </div>
                     </div>
@@ -78,7 +71,7 @@
                     <div class="row">
                         <div class="col-12">
                             <button type="submit" id="btnGuardar" name="btnGuardar"
-                                class="btn btn-block btn-outline-info btn-xs">Guardar y Enviar Detalle de Consumo</button>
+                                class="btn btn-block btn-outline-info btn-xs">Guardar Registro</button>
                         </div>
                     </div>
                 </form>

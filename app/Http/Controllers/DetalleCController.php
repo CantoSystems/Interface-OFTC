@@ -58,14 +58,14 @@ class DetalleCController extends Controller{
             'folioHoja'  => 'required',
             'fechaHoja' => 'required',
             'doctorHoja' => 'required',
-            'metodoPagoHoja' => 'required',
+            'cirugia' => 'required',
             'pacienteHoja' => 'required',
             'tipoPacienteHoja' => 'required'
         ],[
             'folioHoja.required' => 'Ingresa el folio del detalle de consumo.',
-            'fechaHoja.required' => 'Selecciona la fecha de elaboración.',
+            'fechaHoja.required' => 'Selecciona la fecha de la cirugía.',
             'doctorHoja.required' => 'Selecciona el doctor que requiere el detalle de consumo.',
-            'metodoPagoHoja.required' => 'Selecciona el método de pago del doctor.',
+            'cirugia.required' => 'Selecciona el tipo de cirugía.',
             'pacienteHoja.required' => 'Ingresa el nombre del paciente.',
             'tipoPacienteHoja.required' => 'Selecciona el tipo de paciente (Interno o Externo).' 
         ]);
@@ -74,90 +74,71 @@ class DetalleCController extends Controller{
             return back()->withErrors($validator)->withInput();
         }else{
             $doctores = Doctor::where('id','<>','1')->get();
-            $metodoPago = DB::table('cat_metodo_pago')->where('statusMetodoPago','=','A')->get();
             $tipoPaciente = TipoPaciente::all();
             
             $contarFolio = DB::table('detalle_consumos')
-                           ->where('folio','=',$request->folioHoja)
-                           ->count();
+                            ->where('folio','=',$request->folioHoja)
+                            ->count();
     
             if($contarFolio != 0){
                 return back()->withErrors('El folio ya se encuentra registrado.');
             }else{
-                $sumImporte = DB::table('detalletemps')
-                              ->sum('importe');
+                $sumImporte = DB::table('detalletemps')->sum('importe');
 
                 $porcentajeComision = DB::table('comisiones_doctores')
                                     ->where([
                                         ['id_doctor_fk','=',$request->doctorHoja],
-                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
-                                        ['id_metodoPago_fk','=',1]
+                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
                                     ])
-                                    ->select('porcentaje')
-                                    ->first();
+                                    ->select('porcentaje','id_metodoPago_fk')
+                                    ->get();
 
-                $porcentajeAdicional = DB::table('comisiones_doctores')
-                                        ->where([
-                                            ['id_doctor_fk','=',$request->doctorHoja],
-                                            ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
-                                            ['id_metodoPago_fk','=',3]
-                                        ])
-                                        ->select('porcentaje')
-                                        ->first();
-
-                $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-                if($totalEfectivo%100 > 50){
-                    $totalEfectivo = round($totalEfectivo,-2);
-                }else{
-                    $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+                foreach($porcentajeComision as $porcentajeComision){
+                    if($porcentajeComision->id_metodoPago_fk == 1){
+                        $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                        if($totalEfectivo%100 > 50){
+                            $totalEfectivo = round($totalEfectivo,-2);
+                        }else{
+                            $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+                        }
+                    }else if($porcentajeComision->id_metodoPago_fk == 2){
+                        $totalTrans = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                        if($totalTrans%100 > 50){
+                            $totalTrans = round($totalTrans,-2);
+                        }else{
+                            $totalTrans = floor($totalTrans - ($totalTrans%100));
+                        }
+                    }else{
+                        $totalTPV = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                        if($totalTPV%100 > 50){
+                            $totalTPV = round($totalTPV,-2);
+                        }else{
+                            $totalTPV = floor($totalTPV - ($totalTPV%100));
+                        }
+                    }
                 }
-
-                $totalTPV = (($sumImporte * $porcentajeAdicional->porcentaje)/100) + $sumImporte;
-                if($totalTPV%100 > 50){
-                    $totalTPV = round($totalTPV,-2);
-                }else{
-                    $totalTPV = floor($totalTPV - ($totalTPV%100));
-                }
-
-                if($request->metodoPagpHoja == 1){
-                    //Insertar en la tabla principal
-                    $fechaInsert = now()->toDateString();
-                    DB::table('detalle_consumos')->insert([
-                        'id_doctor_fk' => $request->doctorHoja,
-                        'folio' => $request->folioHoja,
-                        'fechaElaboracion' => $request->fechaHoja,
-                        'paciente' => $request->pacienteHoja,
-                        'tipoPaciente' => $request->tipoPacienteHoja,
-                        'cantidadTotal' => $totalEfectivo,
-                        'metodoPago' => $request->metodoPagoHoja,
-                        'created_at' => $fechaInsert,
-                        'updated_at' => $fechaInsert
-                    ]);   
-                }else{
-                    //Insertar en la tabla principal
-                    $fechaInsert = now()->toDateString();
-                    DB::table('detalle_consumos')->insert([
-                        'id_doctor_fk' => $request->doctorHoja,
-                        'folio' => $request->folioHoja,
-                        'fechaElaboracion' => $request->fechaHoja,
-                        'paciente' => $request->pacienteHoja,
-                        'tipoPaciente' => $request->tipoPacienteHoja,
-                        'cantidadTotal' => $totalTPV,
-                        'metodoPago' => $request->metodoPagoHoja,
-                        'created_at' => $fechaInsert,
-                        'updated_at' => $fechaInsert
-                    ]);
-                }
+                
+                $fechaInsert = now()->toDateString();
+                DB::table('detalle_consumos')->insert([
+                    'id_doctor_fk' => $request->doctorHoja,
+                    'folio' => $request->folioHoja,
+                    'fechaElaboracion' => $request->fechaHoja,
+                    'paciente' => $request->pacienteHoja,
+                    'tipoPaciente' => $request->tipoPacienteHoja,
+                    'cantidadEfe' => $totalEfectivo,
+                    'cantidadTrans' => $totalTrans,
+                    'TPV' => $totalTPV,
+                    'cirugia' => $request->cirugia,
+                    'statusHoja' => 'Pendiente',
+                    'created_at' => $fechaInsert,
+                    'updated_at' => $fechaInsert
+                ]);
     
                 //Seleccionar datos de temporal
-                $datosDC = DB::table('detalletemps')
-                        ->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
+                $datosDC = DB::table('detalletemps')->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
                 
                 //Seleccionar ID de la principal
-                $select2 = DB::table('detalle_consumos')
-                        ->select('id')
-                        ->orderBy('id','desc')
-                        ->first();
+                $select2 = DB::table('detalle_consumos')->select('id')->orderBy('id','desc')->first();
     
                 //Insertar datos de la temporal a la principal
                 foreach($datosDC as $datos){
@@ -178,22 +159,24 @@ class DetalleCController extends Controller{
                 $data = DB::table('detalle_consumos')
                             ->join('doctors','doctors.id','=','id_doctor_fk')
                             ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
-                            ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                     ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'tipo_pacientes.nombretipo_paciente'
-                                    ,'cat_metodo_pago.descripcion'
-                                    ,'doctors.doctor_email')
+                                    ,'doctors.doctor_email'
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.cirugia')
                             ->where('detalle_consumos.id','=',$select2->id)
                             ->first();
     
                 $data2 = DB::table('detalle_adicional')
-                             ->where('id_detalleConsumo_FK','=',$select2->id)
-                             ->get();
+                            ->where('id_detalleConsumo_FK','=',$select2->id)
+                            ->get();
     
-                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','totalEfectivo','totalTPV'));
+                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
         
                 /*Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
                     $mail->to('jpom_prime@hotmail.com');
@@ -203,7 +186,7 @@ class DetalleCController extends Controller{
                 });*/
             }
     
-            return view('detalleC.subirarchivoD', compact('doctores','metodoPago','tipoPaciente'));
+            return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
         }
     }
 
@@ -214,87 +197,92 @@ class DetalleCController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request){
-        return datatables()
-               ->eloquent(DetalleTemp::where('codigo','!=','null'))
-               ->toJson();
+        return datatables()->eloquent(DetalleTemp::where('codigo','!=','null'))->toJson();
     }
 
-    public function mostrarHojas(Request $request){
+    public function viewHojas(Request $request){
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
         $hojasConsumo = DB::table('detalle_consumos')
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
-                        ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                     ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'tipo_pacientes.nombretipo_paciente'
-                                    ,'cat_metodo_pago.descripcion'
-                                    ,'detalle_consumos.cantidadTotal'
-                                    ,'detalle_consumos.id as id_detalle')
-                        ->get();
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.cirugia')->get();
+                        
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente','hojasConsumo'));
+    }
 
-        return view('detalleC.mostrarHojasConsumo', compact('hojasConsumo'));
+    public function mostrarHojas(Request $request){
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
+        $hojasConsumo = DB::table('detalle_consumos')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.folio'
+                                    ,'detalle_consumos.fechaElaboracion'
+                                    ,'detalle_consumos.paciente'
+                                    ,'tipo_pacientes.nombretipo_paciente'
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.cirugia')
+                        ->where('doctors.id','=',$request->slctDoctor)
+                        ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
+                        ->get();
+        
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo','tipoPaciente'));
+    }
+
+    public function editHojaConsumo($id){
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
+        $data = DB::table('detalle_consumos')->where('detalle_consumos.id','=',$id)->first();
+
+        return view('detalleC.edithojaconsumo', compact('data','doctores','tipoPaciente'));
+    }
+
+    public function updtHoja(Request $request){
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
+        $nvoEmpleado = DB::table('detalle_consumos')
+                            ->where('id','=',$request->idHoja)
+                            ->update(['id_doctor_fk' => $request->doctorHoja,
+                                    'fechaElaboracion' => $request->fechaHoja,
+                                    'folio' => $request->folioHoja,
+                                    'paciente' => $request->pacienteHoja,
+                                    'tipoPaciente' => $request->tipoPacienteHoja,
+                                    'cirugia' => $request->cirugia,
+                                    'statusHoja' => $request->statusHoja
+                            ]);
+
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
     }
 
     public function exportarPDF($id){
         $data = DB::table('detalle_consumos')
-                    ->join('doctors','doctors.id','=','id_doctor_fk')
-                    ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
-                    ->join('cat_metodo_pago','cat_metodo_pago.id','=','metodoPago')
-                    ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                            ,'detalle_consumos.folio'
-                            ,'detalle_consumos.fechaElaboracion'
-                            ,'detalle_consumos.paciente'
-                            ,'tipo_pacientes.nombretipo_paciente'
-                            ,'cat_metodo_pago.descripcion'
-                            ,'doctors.doctor_email'
-                            ,'detalle_consumos.id_doctor_fk'
-                            ,'detalle_consumos.tipoPaciente')
-                    ->where('detalle_consumos.id','=',$id)
-                    ->first();
-    
-        $data2 = DB::table('detalle_adicional')
-                     ->where('id_detalleConsumo_FK','=',$id)
-                     ->get();
-
-        $sumImporte = DB::table('detalle_adicional')
-                        ->where('id_detalleConsumo_FK','=',$id)
-                        ->sum('importe');
-                          
-        $porcentajeComision = DB::table('comisiones_doctores')
-                            ->where([
-                                ['id_doctor_fk','=',$data->id_doctor_fk],
-                                ['id_tipoPaciente_fk','=',$data->tipoPaciente],
-                                ['id_metodoPago_fk','=',1]
-                            ])
-                            ->select('porcentaje')
+                            ->join('doctors','doctors.id','=','id_doctor_fk')
+                            ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.folio'
+                                    ,'detalle_consumos.fechaElaboracion'
+                                    ,'detalle_consumos.paciente'
+                                    ,'tipo_pacientes.nombretipo_paciente'
+                                    ,'doctors.doctor_email'
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.cirugia')
+                            ->where('detalle_consumos.id','=',$id)
                             ->first();
-
-        $porcentajeAdicional = DB::table('comisiones_doctores')
-                                ->where([
-                                    ['id_doctor_fk','=',$data->id_doctor_fk],
-                                    ['id_tipoPaciente_fk','=',$data->tipoPaciente],
-                                    ['id_metodoPago_fk','=',3]
-                                ])
-                                ->select('porcentaje')
-                                ->first();
-
-        $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-        if($totalEfectivo%100 > 50){
-            $totalEfectivo = round($totalEfectivo,-2);
-        }else{
-            $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
-        }
-
-        $totalTPV = (($sumImporte * $porcentajeAdicional->porcentaje)/100) + $sumImporte;
-        if($totalTPV%100 > 50){
-            $totalTPV = round($totalTPV,-2);
-        }else{
-            $totalTPV = floor($totalTPV - ($totalTPV%100));
-        }
-
-        $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2','totalEfectivo','totalTPV'));
+    
+        $data2 = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$id)->get();
+        $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
         
         return $pdf->download('Hoja de Consumo.pdf');
     }
@@ -311,11 +299,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.id')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -364,7 +349,6 @@ class DetalleCController extends Controller{
                                 ->get();
 
         $catMetodoPago = DB::table('cat_metodo_pago')->get();
-                            
         $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
@@ -389,11 +373,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.porcentaje')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -438,11 +419,8 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.id')
                                 ->get();
         
-        $catMetodoPago = DB::table('cat_metodo_pago')
-                            ->get();
-                            
-        $catTipoPaciente = DB::table('tipo_pacientes')
-                                ->get();
+        $catMetodoPago = DB::table('cat_metodo_pago')->get();
+        $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
         $catDoctores = DB::table('doctors')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -459,5 +437,14 @@ class DetalleCController extends Controller{
     public function deletePorcentaje(Request $request){
         $delEComision = DB::table('comisiones_doctores')->where('id','=',$request->idComision)->delete();
         return redirect()->route('mostrarPorcentajes.show');
+    }
+
+    public function deleteHoja(Request $request){
+        $deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$request->idHojaConsumo)->delete();
+        $deleteHoja2 = DB::table('detalle_consumos')->where('id','=',$request->idHojaConsumo)->delete();
+        $doctores = Doctor::where('id','!=',1)->get();
+        $tipoPaciente = TipoPaciente::all();
+        
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
     }
 }
