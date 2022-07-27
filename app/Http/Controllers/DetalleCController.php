@@ -79,21 +79,32 @@ class DetalleCController extends Controller{
             }else{
                 $doctores = Doctor::where('id','<>','1')->get();
                 $tipoPaciente = TipoPaciente::all();
-                
+
                 $contarFolio = DB::table('detalle_consumos')->where('folio','=',$request->folioHoja)->count();
-        
+
                 if($contarFolio != 0){
                     return back()->withErrors('El folio ya se encuentra registrado.');
                 }else{
-                    $sumImporte = DB::table('detalletemps')->sum('importe');
+                    if($request->registroC == "S"){
+                        $porcentajeComision = DB::table('comisiones_doctores')
+                                                ->where([
+                                                    ['id_doctor_fk','=',$request->doctorHoja],
+                                                    ['tipoPorcentaje','=','S'],
+                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                                ])
+                                                ->select('porcentaje','id_metodoPago_fk')
+                                                ->get();
+                    }else{
+                        $porcentajeComision = DB::table('comisiones_doctores')
+                                                ->where([
+                                                    ['id_doctor_fk','=',$request->doctorHoja],
+                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                                ])
+                                                ->select('porcentaje','id_metodoPago_fk')
+                                                ->get();
+                    }
 
-                    $porcentajeComision = DB::table('comisiones_doctores')
-                                        ->where([
-                                            ['id_doctor_fk','=',$request->doctorHoja],
-                                            ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
-                                        ])
-                                        ->select('porcentaje','id_metodoPago_fk')
-                                        ->get();
+                    $sumImporte = DB::table('detalletemps')->sum('importe');
 
                     foreach($porcentajeComision as $porcentajeComision){
                         if($porcentajeComision->id_metodoPago_fk == 1){
@@ -188,7 +199,7 @@ class DetalleCController extends Controller{
                         $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
                     });*/
                 }
-        
+                
                 return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
             }
         }else{
@@ -302,7 +313,8 @@ class DetalleCController extends Controller{
                                         ,'tipo_pacientes.nombretipo_paciente'
                                         ,'cat_metodo_pago.descripcion'
                                         ,'comisiones_doctores.porcentaje'
-                                        ,'comisiones_doctores.id')
+                                        ,'comisiones_doctores.id'
+                                        ,'comisiones_doctores.tipoPorcentaje')
                                 ->get();
         
         $catMetodoPago = DB::table('cat_metodo_pago')->get();
@@ -326,11 +338,13 @@ class DetalleCController extends Controller{
             'metodoPago' => 'required',
             'tipoPaciente' => 'required',
             'porcentajeDoctor' => 'required',
+            'registroC' => 'required'
         ],[
-            'doctorId.required' => 'Seleccciona un Doctor',
-            'metodoPago.required' => 'Selecciona un Método de Pago',
-            'tipoPaciente.required' => 'Selecciona el Tipo de Paciente',
-            'porcentajeDoctor.required' => 'Ingresa el Porcentaje',
+            'doctorId.required' => 'Seleccciona un Doctor.',
+            'metodoPago.required' => 'Selecciona un Método de Pago.',
+            'tipoPaciente.required' => 'Selecciona el Tipo de Paciente.',
+            'porcentajeDoctor.required' => 'Ingresa el Porcentaje.',
+            'registroC' => 'Selecciona si el Porcentaje es especial o no.'
         ]);
         
         $fechaInsert = now()->toDateString();
@@ -339,6 +353,7 @@ class DetalleCController extends Controller{
             'id_tipoPaciente_fk' => $request->tipoPaciente,
             'id_metodoPago_fk' => $request->metodoPago,
             'porcentaje' => $request->porcentajeDoctor,
+            'tipoPorcentaje' => $request->registroC,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
         ]);
@@ -369,16 +384,6 @@ class DetalleCController extends Controller{
     }
 
     public function showPorcentaje($id){
-        $porcentajeDoctores = DB::table('comisiones_doctores')
-                                ->join('doctors','doctors.id','=','comisiones_doctores.id_doctor_fk')
-                                ->join('tipo_pacientes','tipo_pacientes.id','=','comisiones_doctores.id_tipoPaciente_fk')
-                                ->join('cat_metodo_pago','cat_metodo_pago.id','=','comisiones_doctores.id_metodoPago_fk')
-                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                        ,'tipo_pacientes.nombretipo_paciente'
-                                        ,'cat_metodo_pago.descripcion'
-                                        ,'comisiones_doctores.porcentaje')
-                                ->get();
-        
         $catMetodoPago = DB::table('cat_metodo_pago')->get();
         $catTipoPaciente = DB::table('tipo_pacientes')->get();
 
@@ -398,20 +403,22 @@ class DetalleCController extends Controller{
                                         ,'comisiones_doctores.id_tipoPaciente_fk'
                                         ,'comisiones_doctores.id_metodoPago_fk'
                                         ,'comisiones_doctores.porcentaje'
-                                        ,'comisiones_doctores.id')
+                                        ,'comisiones_doctores.id'
+                                        ,'comisiones_doctores.tipoPorcentaje')
                                 ->where('comisiones_doctores.id','=',$id)
                                 ->first();
 
-        return view('catalogos.porcentajes.editporcentaje', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores','porcentajeInfo'));
+        return view('catalogos.porcentajes.editporcentaje', compact('catMetodoPago','catTipoPaciente','catDoctores','porcentajeInfo'));
     }
 
     public function updtPorcentaje(Request $request){
-        $nvoEmpleado = DB::table('comisiones_doctores')
+        $nvoPorcentaje = DB::table('comisiones_doctores')
                             ->where('id','=',$request->idComision)
                             ->update(['id_doctor_fk' => $request->doctorId,
                                     'id_tipoPaciente_fk' => $request->tipoPaciente,
                                     'id_metodoPago_fk' => $request->metodoPago,
-                                    'porcentaje' => $request->porcentajeDoctor
+                                    'porcentaje' => $request->porcentajeDoctor,
+                                    'tipoPorcentaje' => $request->registroC
                             ]);
 
         $porcentajeDoctores = DB::table('comisiones_doctores')
@@ -434,8 +441,7 @@ class DetalleCController extends Controller{
                             ->where([
                                 ['doctor_status','=','A'],
                                 ['id','!=',1]
-                            ])
-                            ->get();
+                            ])->get();
 
         return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
     }
@@ -454,8 +460,8 @@ class DetalleCController extends Controller{
         return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
     }
 
-    public function exportPDFGral(Request $request){
+    /*public function exportPDFGral(Request $request){
         dd($request);
         //$pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('data','data2'));
-    }
+    }*/
 }

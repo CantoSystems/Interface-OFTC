@@ -353,9 +353,7 @@ class ComisionesController extends Controller{
                             ->where('id_emp','!=',1)
                             ->get();
 
-        $estudios = DB::table('estudios')
-                        ->select('id','dscrpMedicosPro')
-                        ->get();
+        $estudios = DB::table('estudios')->select('id','dscrpMedicosPro')->get();
 
         return view('comisiones.showComisiones',compact('empleados','estudios','comisiones','totalComisiones'));
     }
@@ -379,9 +377,7 @@ class ComisionesController extends Controller{
                                     ->orderBy('empleados.empleado_nombre','asc')
                                     ->get();
 
-        $listEstudios = Estudios::select('id','dscrpMedicosPro')
-                                ->orderBy('estudios.id','asc')
-                                ->get();
+        $listEstudios = Estudios::select('id','dscrpMedicosPro')->orderBy('estudios.id','asc')->get();
 
         $listEmpleados = Empleado::join('puestos','puestos.id','=','puesto_id')
                                     ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom,' (',puestos.puestos_nombre,')') AS Empleado"),'id_emp')

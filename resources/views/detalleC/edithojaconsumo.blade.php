@@ -44,7 +44,7 @@
                                             <option disabled selected>Seleccionar una opción...</option>
                                             @foreach($doctores as $doc)
                                             @if($doc->id == $data->id_doctor_fk)
-                                            <option selected value="{{ $doc->id }}">
+                                            <option selected value="{{ $doc->id }}">{{ $doc->doctor_titulo }}
                                                 {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
                                                 {{ $doc->doctor_apellidom }}
                                             </option>
