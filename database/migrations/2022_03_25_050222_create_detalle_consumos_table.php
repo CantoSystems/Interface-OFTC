@@ -21,6 +21,7 @@ class CreateDetalleConsumosTable extends Migration
             $table->text('paciente');
             $table->text('tipoPaciente');
             $table->text('cirugia');
+            $table->char('tipoCirugia',2);
             $table->double('cantidadEfe',10,2);
             $table->double('cantidadTrans',10,2);
             $table->double('TPV',10,2);
