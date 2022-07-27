@@ -19,6 +19,7 @@ class CreateComisionesDoctoresTable extends Migration
             $table->unsignedBigInteger('id_tipoPaciente_fk');
             $table->unsignedBigInteger('id_metodoPago_fk');
             $table->double('porcentaje',10,2);
+            $table->char('tipoPorcentaje',2)->nullable();
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
             $table->foreign('id_tipoPaciente_fk')->references('id')->on('tipo_pacientes');
             $table->foreign('id_metodoPago_fk')->references('id')->on('cat_metodo_pago');

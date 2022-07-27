@@ -54,139 +54,145 @@ class DetalleCController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
-        $validator = Validator::make($request->all(),[
-            'folioHoja'  => 'required',
-            'fechaHoja' => 'required',
-            'doctorHoja' => 'required',
-            'cirugia' => 'required',
-            'pacienteHoja' => 'required',
-            'tipoPacienteHoja' => 'required'
-        ],[
-            'folioHoja.required' => 'Ingresa el folio del detalle de consumo.',
-            'fechaHoja.required' => 'Selecciona la fecha de la cirugía.',
-            'doctorHoja.required' => 'Selecciona el doctor que requiere el detalle de consumo.',
-            'cirugia.required' => 'Selecciona el tipo de cirugía.',
-            'pacienteHoja.required' => 'Ingresa el nombre del paciente.',
-            'tipoPacienteHoja.required' => 'Selecciona el tipo de paciente (Interno o Externo).' 
-        ]);
+        $checkAdicional = DB::table('detalletemps')->count();
+        if($checkAdicional != 0){
+            $validator = Validator::make($request->all(),[
+                'folioHoja'  => 'required',
+                'fechaHoja' => 'required',
+                'doctorHoja' => 'required',
+                'cirugia' => 'required',
+                'pacienteHoja' => 'required',
+                'tipoPacienteHoja' => 'required',
+                'registroC' => 'required'
+            ],[
+                'folioHoja.required' => 'Ingresa el folio del detalle de consumo.',
+                'fechaHoja.required' => 'Selecciona la fecha de la cirugía.',
+                'doctorHoja.required' => 'Selecciona el doctor que requiere el detalle de consumo.',
+                'cirugia.required' => 'Ingresa el tipo de cirugía.',
+                'pacienteHoja.required' => 'Ingresa el nombre del paciente.',
+                'tipoPacienteHoja.required' => 'Selecciona el tipo de paciente (Interno o Externo).',
+                'registroC.required' => 'Selecciona si la cirugía es especial o no.'
+            ]);
 
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }else{
-            $doctores = Doctor::where('id','<>','1')->get();
-            $tipoPaciente = TipoPaciente::all();
-            
-            $contarFolio = DB::table('detalle_consumos')
-                            ->where('folio','=',$request->folioHoja)
-                            ->count();
-    
-            if($contarFolio != 0){
-                return back()->withErrors('El folio ya se encuentra registrado.');
+            if($validator->fails()){
+                return back()->withErrors($validator)->withInput();
             }else{
-                $sumImporte = DB::table('detalletemps')->sum('importe');
+                $doctores = Doctor::where('id','<>','1')->get();
+                $tipoPaciente = TipoPaciente::all();
+                
+                $contarFolio = DB::table('detalle_consumos')->where('folio','=',$request->folioHoja)->count();
+        
+                if($contarFolio != 0){
+                    return back()->withErrors('El folio ya se encuentra registrado.');
+                }else{
+                    $sumImporte = DB::table('detalletemps')->sum('importe');
 
-                $porcentajeComision = DB::table('comisiones_doctores')
-                                    ->where([
-                                        ['id_doctor_fk','=',$request->doctorHoja],
-                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
-                                    ])
-                                    ->select('porcentaje','id_metodoPago_fk')
-                                    ->get();
+                    $porcentajeComision = DB::table('comisiones_doctores')
+                                        ->where([
+                                            ['id_doctor_fk','=',$request->doctorHoja],
+                                            ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                        ])
+                                        ->select('porcentaje','id_metodoPago_fk')
+                                        ->get();
 
-                foreach($porcentajeComision as $porcentajeComision){
-                    if($porcentajeComision->id_metodoPago_fk == 1){
-                        $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-                        if($totalEfectivo%100 > 50){
-                            $totalEfectivo = round($totalEfectivo,-2);
+                    foreach($porcentajeComision as $porcentajeComision){
+                        if($porcentajeComision->id_metodoPago_fk == 1){
+                            $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                            if($totalEfectivo%100 > 50){
+                                $totalEfectivo = round($totalEfectivo,-2);
+                            }else{
+                                $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+                            }
+                        }else if($porcentajeComision->id_metodoPago_fk == 2){
+                            $totalTrans = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                            if($totalTrans%100 > 50){
+                                $totalTrans = round($totalTrans,-2);
+                            }else{
+                                $totalTrans = floor($totalTrans - ($totalTrans%100));
+                            }
                         }else{
-                            $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
-                        }
-                    }else if($porcentajeComision->id_metodoPago_fk == 2){
-                        $totalTrans = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-                        if($totalTrans%100 > 50){
-                            $totalTrans = round($totalTrans,-2);
-                        }else{
-                            $totalTrans = floor($totalTrans - ($totalTrans%100));
-                        }
-                    }else{
-                        $totalTPV = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
-                        if($totalTPV%100 > 50){
-                            $totalTPV = round($totalTPV,-2);
-                        }else{
-                            $totalTPV = floor($totalTPV - ($totalTPV%100));
+                            $totalTPV = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                            if($totalTPV%100 > 50){
+                                $totalTPV = round($totalTPV,-2);
+                            }else{
+                                $totalTPV = floor($totalTPV - ($totalTPV%100));
+                            }
                         }
                     }
-                }
-                
-                $fechaInsert = now()->toDateString();
-                DB::table('detalle_consumos')->insert([
-                    'id_doctor_fk' => $request->doctorHoja,
-                    'folio' => $request->folioHoja,
-                    'fechaElaboracion' => $request->fechaHoja,
-                    'paciente' => $request->pacienteHoja,
-                    'tipoPaciente' => $request->tipoPacienteHoja,
-                    'cantidadEfe' => $totalEfectivo,
-                    'cantidadTrans' => $totalTrans,
-                    'TPV' => $totalTPV,
-                    'cirugia' => $request->cirugia,
-                    'statusHoja' => 'Pendiente',
-                    'created_at' => $fechaInsert,
-                    'updated_at' => $fechaInsert
-                ]);
-    
-                //Seleccionar datos de temporal
-                $datosDC = DB::table('detalletemps')->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
-                
-                //Seleccionar ID de la principal
-                $select2 = DB::table('detalle_consumos')->select('id')->orderBy('id','desc')->first();
-    
-                //Insertar datos de la temporal a la principal
-                foreach($datosDC as $datos){
-                    DB::table('detalle_adicional')->insert([
-                        'id_detalleConsumo_FK' => $select2->id,
-                        'codigo' => $datos->codigo,
-                        'descripcion' => $datos->descripcion,
-                        'um' => $datos->um,
-                        'cantidad' => $datos->cantidad,
-                        'precio_unitario' => $datos->precio_unitario,
-                        'importe' => $datos->importe,
+                    
+                    $fechaInsert = now()->toDateString();
+                    DB::table('detalle_consumos')->insert([
+                        'id_doctor_fk' => $request->doctorHoja,
+                        'folio' => $request->folioHoja,
+                        'fechaElaboracion' => $request->fechaHoja,
+                        'paciente' => $request->pacienteHoja,
+                        'tipoPaciente' => $request->tipoPacienteHoja,
+                        'cantidadEfe' => $totalEfectivo,
+                        'cantidadTrans' => $totalTrans,
+                        'TPV' => $totalTPV,
+                        'cirugia' => $request->cirugia,
+                        'tipoCirugia' => $request->registroC,
+                        'statusHoja' => 'Pendiente',
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert
                     ]);
-                }
-                DB::table('detalletemps')->truncate();
-    
-                $data = DB::table('detalle_consumos')
-                            ->join('doctors','doctors.id','=','id_doctor_fk')
-                            ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
-                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                    ,'detalle_consumos.folio'
-                                    ,'detalle_consumos.fechaElaboracion'
-                                    ,'detalle_consumos.paciente'
-                                    ,'tipo_pacientes.nombretipo_paciente'
-                                    ,'doctors.doctor_email'
-                                    ,'detalle_consumos.cantidadEfe'
-                                    ,'detalle_consumos.cantidadTrans'
-                                    ,'detalle_consumos.TPV'
-                                    ,'detalle_consumos.cirugia')
-                            ->where('detalle_consumos.id','=',$select2->id)
-                            ->first();
-    
-                $data2 = DB::table('detalle_adicional')
-                            ->where('id_detalleConsumo_FK','=',$select2->id)
-                            ->get();
-    
-                $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
         
-                /*Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
-                    $mail->to('jpom_prime@hotmail.com');
-                    //$mail->to($data->doctor_email);
-                    $mail->subject('Detalle de Consumo');
-                    $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
-                });*/
+                    //Seleccionar datos de temporal
+                    $datosDC = DB::table('detalletemps')->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
+                    
+                    //Seleccionar ID de la principal
+                    $select2 = DB::table('detalle_consumos')->select('id')->orderBy('id','desc')->first();
+        
+                    //Insertar datos de la temporal a la principal
+                    foreach($datosDC as $datos){
+                        DB::table('detalle_adicional')->insert([
+                            'id_detalleConsumo_FK' => $select2->id,
+                            'codigo' => $datos->codigo,
+                            'descripcion' => $datos->descripcion,
+                            'um' => $datos->um,
+                            'cantidad' => $datos->cantidad,
+                            'precio_unitario' => $datos->precio_unitario,
+                            'importe' => $datos->importe,
+                            'created_at' => $fechaInsert,
+                            'updated_at' => $fechaInsert
+                        ]);
+                    }
+                    DB::table('detalletemps')->truncate();
+        
+                    $data = DB::table('detalle_consumos')
+                                ->join('doctors','doctors.id','=','id_doctor_fk')
+                                ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                                ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'detalle_consumos.folio'
+                                        ,'detalle_consumos.fechaElaboracion'
+                                        ,'detalle_consumos.paciente'
+                                        ,'tipo_pacientes.nombretipo_paciente'
+                                        ,'doctors.doctor_email'
+                                        ,'detalle_consumos.cantidadEfe'
+                                        ,'detalle_consumos.cantidadTrans'
+                                        ,'detalle_consumos.TPV'
+                                        ,'detalle_consumos.cirugia')
+                                ->where('detalle_consumos.id','=',$select2->id)
+                                ->first();
+        
+                    $data2 = DB::table('detalle_adicional')
+                                ->where('id_detalleConsumo_FK','=',$select2->id)
+                                ->get();
+        
+                    $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
+            
+                    /*Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
+                        $mail->to('jpom_prime@hotmail.com');
+                        //$mail->to($data->doctor_email);
+                        $mail->subject('Detalle de Consumo');
+                        $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
+                    });*/
+                }
+        
+                return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
             }
-    
-            return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
+        }else{
+            return back()->withErrors('No se ha importado ninguna hoja de consumo.');
         }
     }
 
@@ -446,5 +452,10 @@ class DetalleCController extends Controller{
         $tipoPaciente = TipoPaciente::all();
         
         return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
+    }
+
+    public function exportPDFGral(Request $request){
+        dd($request);
+        //$pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('data','data2'));
     }
 }

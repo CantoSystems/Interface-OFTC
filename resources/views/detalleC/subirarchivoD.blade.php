@@ -57,6 +57,6 @@
         </div>
     </div>
 </div>
-@include('detalleC.detalleconsumo');
-@include('detalleC.editarInfo');
+@include('detalleC.detalleconsumo')
+@include('detalleC.editarInfo')
 @endsection

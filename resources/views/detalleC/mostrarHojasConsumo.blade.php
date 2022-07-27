@@ -49,6 +49,16 @@
                             </div>
                         </div>
                     </div>
+                    <!--<div class="col-md-2 col-sm-4 col-6">
+                        <div class="info-box shadow">
+                            <div class="info-box-content">
+                                <a id="cargarCobranza" type="button" href="{{ route('exportPDFGral.create') }}"
+                                    class="btn btn-block btn-outline-secondary btn-xs">
+                                    <span class="info-box-number">Generar PDF</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
                 </div>
             </form>
         </div>
@@ -115,5 +125,5 @@
         </div>
     </div>
 </div>
-@include('detalleC.modaldeletehoja');
+@include('detalleC.modaldeletehoja')
 @endsection
