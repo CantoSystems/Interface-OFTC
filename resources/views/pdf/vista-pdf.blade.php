@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -23,7 +23,7 @@
 <body>
     <dd>
         <p>
-            <b>Fecha de Elaboración: </b>{{ $data->fechaElaboracion }}
+            <b>Fecha de Elaboración: </b>{{ date('d-M-Y',strtotime($data->fechaElaboracion)) }}
             <br><b>Doctor: </b>{{ $data->Doctor }}
             <br><b>Paciente: </b>{{ $data->paciente }} ({{ $data->nombretipo_paciente }})
             <br><b>Tipo de Cirugía: </b>{{ $data->cirugia }}
@@ -54,6 +54,8 @@
             </tr>
             @endforeach
             @endif
+            <tr></tr>
+            <tr></tr>
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total (Efectivo): </b></td>
                 <td>$ {{ number_format($data->cantidadEfe,2) }}</td>

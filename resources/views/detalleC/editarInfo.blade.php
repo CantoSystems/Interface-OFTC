@@ -27,10 +27,10 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Seleccionar Doctor</label>
-                                <select class="custom-select rounded-0" id="doctorHoja" name="doctorHoja">
+                                <select class="custom-select rounded-0 combos" id="doctorHoja" name="doctorHoja">
                                     <option disabled selected>Seleccionar una opción...</option>
                                     @foreach($doctores as $doc)
-                                    <option value="{{ $doc->id }}">
+                                    <option value="{{ $doc->id }}">{{ $doc->doctor_titulo }}
                                         {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
                                         {{ $doc->doctor_apellidom }}
                                     </option>
@@ -55,7 +55,8 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Tipo Paciente</label>
-                                <select class="custom-select rounded-0" id="tipoPacienteHoja" name="tipoPacienteHoja">
+                                <select class="custom-select rounded-0 combos" id="tipoPacienteHoja"
+                                    name="tipoPacienteHoja">
                                     <option disabled selected>Seleccionar una opción...</option>
                                     @foreach($tipoPaciente as $tipoP)
                                     <option value="{{ $tipoP->id }}">

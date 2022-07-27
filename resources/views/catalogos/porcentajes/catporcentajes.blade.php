@@ -38,6 +38,7 @@
                         <th>Tipo Paciente</th>
                         <th>Método Pago</th>
                         <th>Porcentaje</th>
+                        <th>Tipo Porcentaje</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -49,6 +50,11 @@
                         <td>{{ $porDoc->nombretipo_paciente }}</td>
                         <td>{{ $porDoc->descripcion }}</td>
                         <td>{{ number_format($porDoc->porcentaje,2) }} %</td>
+                        <td>@if($porDoc->tipoPorcentaje == "S")
+                            Especial
+                            @else
+                            Normal
+                            @endif</td>
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('updtPorcentaje.show',$porDoc->id) }}">VER</a></th>
                     </tr>
