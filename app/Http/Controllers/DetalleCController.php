@@ -218,40 +218,86 @@ class DetalleCController extends Controller{
     }
 
     public function viewHojas(Request $request){
+        DB::table('historico_detalle_consumo')->truncate();
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
         $hojasConsumo = DB::table('detalle_consumos')
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.id_doctor_fk'
                                     ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
-                                    ,'tipo_pacientes.nombretipo_paciente'
+                                    ,'detalle_consumos.cirugia'
+                                    ,'detalle_consumos.tipoCirugia'
+                                    ,'detalle_consumos.tipoPaciente'
                                     ,'detalle_consumos.cantidadEfe'
-                                    ,'detalle_consumos.id as id_detalle'
-                                    ,'detalle_consumos.cirugia')->get();
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')->get();
+
+        foreach($hojasConsumo as $hojas){
+            DB::table('historico_detalle_consumo')->insert([
+                'id_doctor_fk' => $hojas->id_doctor_fk,
+                'folio' => $hojas->folio,
+                'fechaElaboracion' => $hojas->fechaElaboracion,
+                'paciente' => $hojas->paciente,
+                'cirugia' => $hojas->cirugia,
+                'tipoCirugia' => $hojas->tipoCirugia,
+                'tipoPaciente' => $hojas->tipoPaciente,
+                'cantidadEfe' => $hojas->cantidadEfe,
+                'cantidadTrans' => $hojas->cantidadTrans,
+                'TPV' => $hojas->TPV,
+                'statusHoja' => $hojas->statusHoja
+            ]);
+        }
                         
         return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente','hojasConsumo'));
     }
 
     public function mostrarHojas(Request $request){
+        DB::table('historico_detalle_consumo')->truncate();
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
         $hojasConsumo = DB::table('detalle_consumos')
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.id_doctor_fk'
                                     ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
-                                    ,'tipo_pacientes.nombretipo_paciente'
+                                    ,'detalle_consumos.cirugia'
+                                    ,'detalle_consumos.tipoCirugia'
+                                    ,'detalle_consumos.tipoPaciente'
                                     ,'detalle_consumos.cantidadEfe'
-                                    ,'detalle_consumos.id as id_detalle'
-                                    ,'detalle_consumos.cirugia')
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')
                         ->where('doctors.id','=',$request->slctDoctor)
                         ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                         ->get();
+
+        foreach($hojasConsumo as $hojas){
+            DB::table('historico_detalle_consumo')->insert([
+                'id_doctor_fk' => $hojas->id_doctor_fk,
+                'folio' => $hojas->folio,
+                'fechaElaboracion' => $hojas->fechaElaboracion,
+                'paciente' => $hojas->paciente,
+                'cirugia' => $hojas->cirugia,
+                'tipoCirugia' => $hojas->tipoCirugia,
+                'tipoPaciente' => $hojas->tipoPaciente,
+                'cantidadEfe' => $hojas->cantidadEfe,
+                'cantidadTrans' => $hojas->cantidadTrans,
+                'TPV' => $hojas->TPV,
+                'statusHoja' => $hojas->statusHoja
+            ]);
+        }
         
         return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo','tipoPaciente'));
     }
@@ -460,8 +506,30 @@ class DetalleCController extends Controller{
         return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
     }
 
-    /*public function exportPDFGral(Request $request){
-        dd($request);
-        //$pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('data','data2'));
-    }*/
+    public function exportPDFGral(){
+        $hojasConsumo = DB::table('historico_detalle_consumo')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'historico_detalle_consumo.folio'
+                                    ,'historico_detalle_consumo.fechaElaboracion'
+                                    ,'historico_detalle_consumo.paciente'
+                                    ,'historico_detalle_consumo.cirugia'
+                                    ,'historico_detalle_consumo.cantidadEfe'
+                                    ,'historico_detalle_consumo.cantidadTrans'
+                                    ,'historico_detalle_consumo.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')->get();
+
+        $sumPendiente = DB::table('historico_detalle_consumo')
+                            ->where('statusHoja','=','Pendiente')
+                            ->sum('cantidadEfe');
+
+        $sumPagado = DB::table('historico_detalle_consumo')
+                        ->where('statusHoja','=','Pagado')
+                        ->sum('cantidadEfe');
+
+        $pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('hojasConsumo','sumPendiente','sumPagado'));
+
+        return $pdf->download('Historico Hoja de Consumo.pdf');
+    }
 }

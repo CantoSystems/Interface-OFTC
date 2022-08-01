@@ -3,7 +3,7 @@
 <div class="col">
     <div class="card">
         <div class="card-header modalPersonalizado">
-            <h4>Historial Hojas de Consumo</h4>
+            <h4>Histórico Hojas de Consumo</h4>
         </div>
         <div class="card-header col-12">
             <form action="{{ route('mostrarHojas.show') }}" method="GET">
@@ -49,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-md-2 col-sm-4 col-6">
+                    <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <a id="cargarCobranza" type="button" href="{{ route('exportPDFGral.create') }}"
@@ -58,7 +58,7 @@
                                 </a>
                             </div>
                         </div>
-                    </div>-->
+                    </div>
                 </div>
             </form>
         </div>
@@ -66,12 +66,12 @@
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Folio</th>
-                        <th>Fecha de Cirugía</th>
+                        <th style="text-align: center;">Folio</th>
+                        <th style="text-align: center;">Fecha de Cirugía</th>
                         <th>Doctor</th>
                         <th>Paciente</th>
                         <th>Tipo de Cirugía</th>
-                        <th>Importe</th>
+                        <th style="text-align: center;">Importe</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -79,12 +79,12 @@
                     @if(!empty($hojasConsumo))
                     @foreach($hojasConsumo as $hojas)
                     <tr vertical-align="middle">
-                        <td>{{ $hojas->folio }}</td>
-                        <td>{{ date('d-M-Y',strtotime($hojas->fechaElaboracion)) }}</td>
+                        <td style="text-align: center;">{{ $hojas->folio }}</td>
+                        <td style="text-align: center;">{{ date('d-M-Y',strtotime($hojas->fechaElaboracion)) }}</td>
                         <td>{{ $hojas->Doctor }}</td>
                         <td>{{ $hojas->paciente }} ({{ $hojas->nombretipo_paciente }})</td>
                         <td>{{ $hojas->cirugia }}</td>
-                        <td>$ {{ number_format($hojas->cantidadEfe,2) }}</td>
+                        <td style="text-align: center;">$ {{ number_format($hojas->cantidadEfe,2) }}</td>
                         <td>
                             <center>
                                 <div class="btn-group">
