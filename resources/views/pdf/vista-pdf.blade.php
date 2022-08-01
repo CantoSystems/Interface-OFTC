@@ -6,14 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de Consumo - {{ $data->folio }}</title>
+
     <style>
-    body {
-        background-image: url("../resources/views/pdf/images/HOJA-OFTALMOCLINIC.jpg");
-        background-size: cover;
-        margin: 0px;
-        padding: 0px;
-        background-position: center center;
-    }
+        body {
+            background-image: url("../resources/views/pdf/images/HOJA-OFTALMOCLINIC.jpg");
+            background-size: cover;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            margin: -15px;
+            padding: -15px;
+            background-position: center center;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: #b2b2b2 1px solid;
+        }
+
+        td, th {
+            border: black 1px solid;
+        }
     </style>
 </head>
 <header>
@@ -30,7 +41,7 @@
         </p>
     </dd>
     <br>
-    <table>
+    <table width="100%">
         <thead>
             <tr>
                 <th style="text-align: center;">Código</th>
