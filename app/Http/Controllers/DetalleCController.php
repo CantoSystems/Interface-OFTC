@@ -520,7 +520,16 @@ class DetalleCController extends Controller{
                                     ,'historico_detalle_consumo.statusHoja'
                                     ,'tipo_pacientes.nombretipo_paciente')->get();
 
-        $pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('hojasConsumo'));
+        $sumPendiente = DB::table('historico_detalle_consumo')
+                            ->where('statusHoja','=','Pendiente')
+                            ->sum('cantidadEfe');
+
+        $sumPagado = DB::table('historico_detalle_consumo')
+                        ->where('statusHoja','=','Pagado')
+                        ->sum('cantidadEfe');
+
+        $pdf = \PDF::loadView('pdf.vista-gral-pdf', compact('hojasConsumo','sumPendiente','sumPagado'));
+
         return $pdf->download('Historico Hoja de Consumo.pdf');
     }
 }

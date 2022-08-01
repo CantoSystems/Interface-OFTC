@@ -60,8 +60,8 @@
                 <td>{{ $productos->descripcion }}</td>
                 <td style="text-align: center;">{{ $productos->um }}</td>
                 <td style="text-align: center;">{{ number_format($productos->cantidad,2) }}</td>
-                <td style="text-align: center;">$ {{ number_format($productos->precio_unitario,2) }}</td>
-                <td style="text-align: center;">$ {{ number_format($productos->importe,2) }}</td>
+                <td style="text-align: center;">${{ number_format($productos->precio_unitario,2) }}</td>
+                <td style="text-align: center;">${{ number_format($productos->importe,2) }}</td>
             </tr>
             @endforeach
             @endif
