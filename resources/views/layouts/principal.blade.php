@@ -82,7 +82,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('importarCobranza.verTabla')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Generar Reporte</p>
+                                        <p>Historial Cobranza de Estudios</p>
                                     </a>
                                 </li>
                             </ul>
@@ -421,6 +421,16 @@
         e.value = e.value.toUpperCase();
     }
     </script>
+    <script type="text/javascript">
+  //Permite solo caracteres excluyendo números
+  function validar(e) { 
+    tecla = (document.all) ? e.keyCode : e.which; 
+    if (tecla==8) return true; 
+    patron =/[A-Za-z\s]/; 
+    te = String.fromCharCode(tecla); 
+    return patron.test(te); 
+  }
+</script>
 </body>
 
 </html>

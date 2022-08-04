@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('login.registro');
+        $roles = Role::all();
+        return view('login.registro',compact('roles'));
     }
 
     /**
@@ -62,6 +64,7 @@ class UserController extends Controller
         $request->validate([
             'usuario_nombre'    => 'required',
             'usuario_email'     => 'required|unique:users|email',
+            'role_usuario'      => 'required',
             'password'          => 'required|confirmed',
         ],[
             'usuario_email.unique:users' => 'El correo ya existe',
@@ -75,6 +78,7 @@ class UserController extends Controller
         $usuario = new User;
         $usuario->usuario_nombre = $request->usuario_nombre;
         $usuario->usuario_email = $request->usuario_email;
+        $usuario->role_id = $request->role_usuario;
         $usuario->password = Hash::make($request->password);
         $usuario->save();
         return redirect('/');
@@ -97,15 +101,32 @@ class UserController extends Controller
 
     }
 
+    public function adminUser()
+    {
+        $roles = Role::all();
+        $usuarios = User::all();
+        return view('login.administrar',compact('roles','usuarios'));
+        
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $roles = Role::all();
+        $usuarios = User::all();
+        $usuRol = User::join('roles','roles.id','=','users.role_id')
+                            ->select('users.id as identificadorUsuario','roles.id as identificadorRol','users.usuario_nombre',
+                                    'users.usuario_email','roles.descripcion_rol')
+                            ->where('users.id',$id)
+                            ->first();
+        
+        return view('login.administrar',compact('roles','usuarios','usuRol'));
+        
     }
 
     /**
@@ -115,9 +136,65 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
-    {
-        //
+    public function update(Request $request, $id)
+    {   
+        $request->validate([
+            'usuario_nombre'    => 'required',
+            'usuario_email'     => 'required|email',
+            'role_usuario'      => 'required',
+            'password'          => 'confirmed',
+        ],[
+            'usuario_email.unique:users' => 'El correo ya existe',
+            'usuario_nombre.required'    => 'Agregue un nombre de usuario',
+            'usuario_email.required'     => 'Agregue un email válido',
+            'password.confirmed'         => 'Las contraseñas no coinciden',
+
+        ]);
+        $fechaInsert = now();
+
+        $email = User::where('usuario_email',$request->usuario_email)->get();
+
+        if($email->count() > 1){
+            if(is_null($request->password)){
+                User::where('id',$id)
+                    ->update([
+                    'usuario_nombre' => $request->usuario_nombre,                                                
+                    'role_id' => $request->role_usuario,
+                    'updated_at' => $fechaInsert
+                ]);
+            }else{
+                User::where('id',$id)
+                    ->update([
+                    'usuario_nombre' => $request->usuario_nombre,                                                
+                    'role_id' => $request->role_usuario,
+                    'password' => Hash::make($request->password),
+                    'updated_at' => $fechaInsert
+                ]);
+            }
+        }else{
+            if(is_null($request->password)){
+                User::where('id',$id)
+                ->update([
+                    'usuario_nombre' => $request->usuario_nombre,                                                
+                    'usuario_email' =>$request->usuario_email,
+                    'role_id' => $request->role_usuario,
+                    'updated_at' => $fechaInsert
+                ]);
+            }else{
+                User::where('id',$id)
+                ->update([
+                    'usuario_nombre' => $request->usuario_nombre,                                                
+                    'usuario_email' =>$request->usuario_email,
+                    'role_id' => $request->role_usuario,
+                    'password' => Hash::make($request->password),
+                    'updated_at' => $fechaInsert
+                ]);
+            }
+           
+        }
+
+        return redirect()->route('index');
+        
     }
 
     /**
@@ -126,8 +203,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('usuarios.administrar');
     }
 }
