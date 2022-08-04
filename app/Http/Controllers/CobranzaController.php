@@ -287,7 +287,9 @@ class CobranzaController extends Controller
             $busquedaEstudios = [];
         }
         $busquedaEstudios = $request->estudioSelect;
-    
+        $inicio = $request->historialInicio;
+        $fin    = $request->historialFinal;
+
             $cobranza = DB::table('cobranza')
                         ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
                         ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
@@ -304,6 +306,7 @@ class CobranzaController extends Controller
                                 ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
                                 ,'cobranza.cantidadCbr')
                         ->whereIn('cobranza.id_estudio_fk', $busquedaEstudios)
+                        ->whereBetween('cobranza.fecha',[$inicio,$fin])
                         ->orderBy('cobranza.fecha','ASC')
                         ->get();
 
@@ -313,13 +316,15 @@ class CobranzaController extends Controller
                             ->orderBy('estudios.id','ASC')
                             ->get();
                                    
-        return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios'));
+        return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios','inicio','fin'));
     }
 
     public function exportExcel(Request $request){
-        $busqueda = json_decode($request->aqui);
+        $busqueda = json_decode($request->clvEstudios);
+        $incio = $request->inicio;
+        $fin = $request->fin;
     
-        return Excel::download(new CobranzaExport($busqueda), 'ReporteCobranza.xlsx');
+        return Excel::download(new CobranzaExport($busqueda,$incio,$fin), 'ReporteCobranza.xlsx');
     }
 
     /**

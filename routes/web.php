@@ -60,10 +60,14 @@ Route::delete('/eliminar-hoja-estudio',[DetalleCController::class,'deleteHoja'])
 Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF'])->name('exportPDF.create')->middleware('auth');
 
 //Usuarios
-Route::get('/usuarios',[UserController::class,'index'])->name('usuarios.index');
+//Route::get('/usuarios',[UserController::class,'index'])->name('usuarios.index');
 Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.store');
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
 Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
+Route::get('/administrar-usuarios',[UserController::class,'adminUser'])->name('usuarios.administrar');
+Route::get('/administrar/{id}',[UserController::class,'edit'])->name('usuarios.edit');
+Route::patch('/administrar-modificar/{id}',[UserController::class,'update'])->name('usuarios.update');
+Route::delete('/delete-usuarios/{id}',[UserController::class,'destroy'])->name('usuarios.destroy');
 
 //Calculo de Comisiones
 Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index')->middleware('auth');

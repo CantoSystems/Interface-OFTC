@@ -12,8 +12,10 @@ use DB;
 class CobranzaExport implements FromView{
     use exportable;
 
-    public function __construct(array $arrayEstudios){
+    public function __construct(array $arrayEstudios, $inicio, $fin){
         $this->arrayEstudios = $arrayEstudios;
+        $this->inicio = $inicio;
+        $this->fin = $fin;
     }
     
     public function view(): View{
@@ -37,6 +39,7 @@ class CobranzaExport implements FromView{
                                         ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
                                         ,'cobranza.cantidadCbr')
                                 ->whereIn('cobranza.id_estudio_fk',$this->arrayEstudios)
+                                ->whereBetween('cobranza.fecha',[$this->inicio, $this->fin])
                                 ->orderBy('cobranza.fecha','ASC')
                                 ->get();
         

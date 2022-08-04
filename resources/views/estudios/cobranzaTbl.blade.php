@@ -26,26 +26,27 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-md-4 col-sm-4 col-6">
+                    <div class="col-md-3 col-sm-3 col-3">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Status:</label>
-                                <select name="statusSelect" id="statusSelect" class="custom-select">
-                                    <option selected disabled>-- Selecciona una opción --</option>
-                                    <option value="Escaneado">Escaneado</option>
-                                    <option value="Interpretado">Interpretado</option>
-                                    <option value="Transcrito">Transcrito</option>
-                                    <option value="Entregado">Entregado</option>
-                                    <option value="Todos">Todos</option>
-                                </select>
+                                <label class="info-box-text">Fecha Inicio:</label>
+                                <input type="date" name="historialInicio" class="form-control">
                             </div>
                         </div>
-                    </div>-->
-                    <div class="col-md-2 col-sm-4 col-6">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-3">
+                        <div class="info-box shadow">
+                            <div class="info-box-content">
+                                <label class="info-box-text">Fecha Fin:</label>
+                                <input type="date" name="historialFinal" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-3 col-3">
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <button id="cargarCobranza" type="submit"
-                                    class="btn btn-block btn-outline-secondary btn-xs">
+                                    class="btn btn-block btn-outline-secondary btn-xs" required>
                                     <span class="info-box-number">Generar</span>
                                 </button>
                             </div>
@@ -61,7 +62,9 @@
                             <div class="info-box-content">
                                 <form action="{{ route('importarCobranza.export') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="aqui" value="{{ json_encode($busquedaEstudios, true) }}" />
+                                    <input type="hidden" name="clvEstudios" value="{{ json_encode($busquedaEstudios, true) }}" />
+                                    <input type="hidden" name="inicio" value="{{$inicio}}">
+                                    <input type="hidden" name="fin" value="{{$fin}}">
                                     <input class="btn btn-block btn-outline-secondary btn-xs" type="submit"
                                         value="Exportar a Excel">
                                 </form>

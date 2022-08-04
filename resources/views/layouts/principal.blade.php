@@ -82,7 +82,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('importarCobranza.verTabla')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Generar Reporte</p>
+                                        <p>Historial Cobranza de Estudios</p>
                                     </a>
                                 </li>
                             </ul>
