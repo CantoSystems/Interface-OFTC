@@ -88,6 +88,30 @@
                                             name="idComision">
                                     </div>
                                 </div>
+                                <div class="col-12" style="text-align: center;">
+                                    <label>¿El porcentaje es especial?</label>
+                                    <div class="form-group">
+                                        @if($porcentajeInfo->tipoPorcentaje == "S")
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="registroC">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="registroC">
+                                            <label>NO</label>
+                                        </div>
+                                        @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="registroC">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="registroC">
+                                            <label>NO</label>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer">

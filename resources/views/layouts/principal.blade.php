@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8" />
@@ -113,7 +113,7 @@
                                 <li class="nav-item">
                                     <a href="{{ route('viewHojas.show') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Historial Hojas de Consumo</p>
+                                        <p>Histórico Hojas de Consumo</p>
                                     </a>
                                 </li>
                             </ul>
