@@ -1,5 +1,5 @@
 <div class="modal fade bs-example-modal-sm" tabindex="-1" id="usuarios" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title modalPersonalizado">Usuarios</h6>
@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table  id="example1" class="table table-bordered table-striped"> 
+                <table  id="usuariosModal" name="usuarios" class="table table-bordered table-striped"> 
                     <thead>
                         <tr>
                             <th>Nombre de usuario</th>
@@ -29,7 +29,7 @@
                                         </button>
                                     </a>
                                 </td>
-                                </tr>
+                            </tr>
                             @endforeach
                         @endisset
                     </tbody>

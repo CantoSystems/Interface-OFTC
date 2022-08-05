@@ -121,7 +121,7 @@ class UserController extends Controller
         $usuarios = User::all();
         $usuRol = User::join('roles','roles.id','=','users.role_id')
                             ->select('users.id as identificadorUsuario','roles.id as identificadorRol','users.usuario_nombre',
-                                    'users.usuario_email','roles.descripcion_rol')
+                                    'users.usuario_email','roles.descripcion_rol','users.usuario_status')
                             ->where('users.id',$id)
                             ->first();
         
@@ -143,11 +143,13 @@ class UserController extends Controller
             'usuario_email'     => 'required|email',
             'role_usuario'      => 'required',
             'password'          => 'confirmed',
+            'usuario_status'    => 'required' 
         ],[
             'usuario_email.unique:users' => 'El correo ya existe',
             'usuario_nombre.required'    => 'Agregue un nombre de usuario',
             'usuario_email.required'     => 'Agregue un email válido',
             'password.confirmed'         => 'Las contraseñas no coinciden',
+            'usuario_status.required'    => 'Seleccione el status del suaurio',
 
         ]);
         $fechaInsert = now();
@@ -160,6 +162,7 @@ class UserController extends Controller
                     ->update([
                     'usuario_nombre' => $request->usuario_nombre,                                                
                     'role_id' => $request->role_usuario,
+                    'usuario_status' => $request->usuario_status,
                     'updated_at' => $fechaInsert
                 ]);
             }else{
@@ -168,6 +171,7 @@ class UserController extends Controller
                     'usuario_nombre' => $request->usuario_nombre,                                                
                     'role_id' => $request->role_usuario,
                     'password' => Hash::make($request->password),
+                    'usuario_status' => $request->usuario_status,
                     'updated_at' => $fechaInsert
                 ]);
             }
@@ -178,6 +182,7 @@ class UserController extends Controller
                     'usuario_nombre' => $request->usuario_nombre,                                                
                     'usuario_email' =>$request->usuario_email,
                     'role_id' => $request->role_usuario,
+                    'usuario_status' => $request->usuario_status,
                     'updated_at' => $fechaInsert
                 ]);
             }else{
@@ -187,6 +192,7 @@ class UserController extends Controller
                     'usuario_email' =>$request->usuario_email,
                     'role_id' => $request->role_usuario,
                     'password' => Hash::make($request->password),
+                    'usuario_status' => $request->usuario_status,
                     'updated_at' => $fechaInsert
                 ]);
             }
