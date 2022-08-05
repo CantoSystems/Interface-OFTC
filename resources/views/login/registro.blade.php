@@ -1,5 +1,5 @@
 <div class="modal fade bs-example-modal-md" tabindex="-1" id="nvoUsuario" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title modalPersonalizado">Usuarios</h6>
