@@ -42,14 +42,17 @@ class UserController extends Controller
         ]);
 
          //request()->only('usuario_email','password');
-  
-       if (Auth::attempt($credentials)) {
+        $status = User::select('usuario_status')
+                    ->where('usuario_email',$request->usuario_email)
+                    ->first();
+
+       if (Auth::attempt($credentials) && $status->usuario_status === 1) {
             request()->session()->regenerate();
  
             return redirect()->route('index');
             //redirect()->intended('dashboard');
         }else{
-            return back()->with('credenciales','Credenciales no existentes');
+            return back()->with('credenciales','Credenciales desactivadas ó no existentes');
         }
     }
 
