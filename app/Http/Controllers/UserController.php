@@ -106,7 +106,7 @@ class UserController extends Controller
 
     public function adminUser()
     {
-        $roles = Role::all();
+        $roles = Role::whereNotIn('id',[7])->get();
         $usuarios = User::all();
         return view('login.administrar',compact('roles','usuarios'));
         
