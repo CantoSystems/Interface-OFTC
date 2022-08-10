@@ -5,6 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Catálogo Estudios Generales</h4>
         </div>
+        @canany(['comisiones','cobranzaReportes'])
         <div class="col-md-3 col-sm-4 col-8">
             <div class="info-box shadow">
                 <span class="info-box-icon bg-info"><i class="fas fa-user-plus"></i></span>
@@ -56,4 +57,9 @@
     </div>
 </div>
 @include('catalogos.estudiosgenerales.nvoestudiograles')
+@elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+<div class="alert alert-danger" role="alert">
+    No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
+@endcan
 @endsection

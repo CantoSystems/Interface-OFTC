@@ -6,6 +6,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <div class="card card-info">
+    @canany('comisiones','detalleConsumo'])
                     <div class="card-header">
                         <h3 class="card-title">Información Porcentaje:
                             <b>{{ $porcentajeInfo->Doctor }}</b>
@@ -136,4 +137,9 @@
     </div>
 </section>
 @include('catalogos.porcentajes.modaldelete')
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+    <div class="alert alert-danger" role="alert">
+                    No cuenta con los privilegios para acceder a este módulo del sistema
+    </div>
+@endcanany
 @endsection

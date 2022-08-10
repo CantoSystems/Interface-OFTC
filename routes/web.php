@@ -61,14 +61,16 @@ Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF
 Route::get('/exportar-hojas-consumos',[DetalleCController::class,'exportPDFGral'])->name('exportPDFGral.create')->middleware('auth');
 
 //Usuarios
-//Route::get('/usuarios',[UserController::class,'index'])->name('usuarios.index');
-Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.store');
+
+Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.store')->middleware('auth');
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
-Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout');
+Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout')->middleware('auth');
 Route::get('/administrar-usuarios',[UserController::class,'adminUser'])->name('usuarios.administrar')->middleware('auth');
 Route::get('/administrar/{id}',[UserController::class,'edit'])->name('usuarios.edit')->middleware('auth');
 Route::patch('/administrar-modificar/{id}',[UserController::class,'update'])->name('usuarios.update')->middleware('auth');
 Route::delete('/delete-usuarios/{id}',[UserController::class,'destroy'])->name('usuarios.destroy')->middleware('auth');
+Route::get('/usuario',[UserController::class,'registroUsuario'])->name('usuarios.index');
+Route::post('/usuario-invitado',[UserController::class,'registroInvitado'])->name('usuario.invitado');
 
 //Calculo de Comisiones
 Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index')->middleware('auth');

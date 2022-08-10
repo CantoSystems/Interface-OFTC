@@ -5,6 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Detalle de Consumo</h4>
         </div>
+        @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
         <div class="card-header">
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
@@ -59,4 +60,9 @@
 </div>
 @include('detalleC.detalleconsumo')
 @include('detalleC.editarInfo')
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
+<div class="alert alert-danger" role="alert">
+    No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
+@endcanany
 @endsection

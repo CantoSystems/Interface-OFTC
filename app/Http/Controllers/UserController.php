@@ -23,6 +23,11 @@ class UserController extends Controller
         return view('login.registro',compact('roles'));
     }
 
+
+    public function registroUsuario()
+    {
+        return view('login.inicio');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -86,6 +91,30 @@ class UserController extends Controller
         $usuario->save();
         return redirect('/');
     
+    }
+
+    public function registroInvitado(Request $request)
+    {
+        $request->validate([
+            'usuario_nombre'    => 'required',
+            'usuario_email'     => 'required|unique:users|email',
+            'password'          => 'required|confirmed',
+        ],[
+            'usuario_email.unique:users' => 'El correo ya existe',
+            'usuario_nombre.required'    => 'Agregue un nombre de usuario',
+            'usuario_email.required'     => 'Agregue un email válido',
+            'password.required'          => 'Agregue una contraseña',
+            'password.confirmed'         => 'Las contraseñas no coinciden',
+
+        ]);
+
+        $usuario = new User;
+        $usuario->usuario_nombre = $request->usuario_nombre;
+        $usuario->usuario_email = $request->usuario_email;
+        $usuario->password = Hash::make($request->password);
+        $usuario->role_id = 6;
+        $usuario->save();
+        return redirect('/');
     }
 
     /**
