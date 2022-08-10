@@ -23,6 +23,11 @@ class UserController extends Controller
         return view('login.registro',compact('roles'));
     }
 
+
+    public function registroUsuario()
+    {
+        return view('login.inicio');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -42,14 +47,17 @@ class UserController extends Controller
         ]);
 
          //request()->only('usuario_email','password');
-  
-       if (Auth::attempt($credentials)) {
+        $status = User::select('usuario_status')
+                    ->where('usuario_email',$request->usuario_email)
+                    ->first();
+
+       if (Auth::attempt($credentials) && $status->usuario_status === 1) {
             request()->session()->regenerate();
  
             return redirect()->route('index');
             //redirect()->intended('dashboard');
         }else{
-            return back()->with('credenciales','Credenciales no existentes');
+            return back()->with('credenciales','Credenciales desactivadas ó no existentes');
         }
     }
 
@@ -85,6 +93,30 @@ class UserController extends Controller
     
     }
 
+    public function registroInvitado(Request $request)
+    {
+        $request->validate([
+            'usuario_nombre'    => 'required',
+            'usuario_email'     => 'required|unique:users|email',
+            'password'          => 'required|confirmed',
+        ],[
+            'usuario_email.unique:users' => 'El correo ya existe',
+            'usuario_nombre.required'    => 'Agregue un nombre de usuario',
+            'usuario_email.required'     => 'Agregue un email válido',
+            'password.required'          => 'Agregue una contraseña',
+            'password.confirmed'         => 'Las contraseñas no coinciden',
+
+        ]);
+
+        $usuario = new User;
+        $usuario->usuario_nombre = $request->usuario_nombre;
+        $usuario->usuario_email = $request->usuario_email;
+        $usuario->password = Hash::make($request->password);
+        $usuario->role_id = 6;
+        $usuario->save();
+        return redirect('/');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -103,7 +135,7 @@ class UserController extends Controller
 
     public function adminUser()
     {
-        $roles = Role::all();
+        $roles = Role::whereNotIn('id',[7])->get();
         $usuarios = User::all();
         return view('login.administrar',compact('roles','usuarios'));
         

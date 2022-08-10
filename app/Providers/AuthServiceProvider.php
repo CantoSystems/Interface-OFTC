@@ -25,10 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('comisionesAdministrador', fn($user) => $user->role_id === 1);
+        Gate::define('comisiones', fn($user) => $user->role_id === 1);
         Gate::define('cobranzaReportes', fn($user) => $user->role_id === 2);
         Gate::define('detalleConsumo', fn($user) => $user->role_id === 3);
         Gate::define('auxiliarCobranzaReportes', fn($user) => $user->role_id === 4);
         Gate::define('auxiliardetalleConsumo', fn($user) => $user->role_id === 5);
+        Gate::define('invitado', fn($user) => $user->role_id === 6);
+        Gate::define('administrador', fn($user) => $user->role_id === 7);
     }
 }

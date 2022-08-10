@@ -5,6 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Citas</h4>
         </div>
+        @canany(['comisiones','cobranzaReportes'])
         <div class="card-header">
             <div class="row">
                 <div class="col-md-3 col-sm-4 col-8">
@@ -53,4 +54,9 @@
     </div>
 </div>
 @include('citas.reporteCitas');
+    @elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+    <div class="alert alert-danger" role="alert">
+        No cuenta con los privilegios para acceder a este módulo del sistema
+    </div>
+    @endcan
 @endsection

@@ -5,6 +5,8 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
+
+            @canany(['comisiones','cobranzaReportes'])
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Estudio General: <b>{{ $estudio->descripcion }}</b></h3>
@@ -52,4 +54,9 @@
     </div>
 </section>
 @include('catalogos.estudiosgenerales.modaldeletegeneral')
+@elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+<div class="alert alert-danger" role="alert">
+    No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
+@endcanany
 @endsection

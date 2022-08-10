@@ -5,6 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Histórico Hojas de Consumo</h4>
         </div>
+        @canany(['comisiones','detalleConsumo'])
         <div class="card-header col-12">
             <form action="{{ route('mostrarHojas.show') }}" method="GET">
                 <div class="row">
@@ -126,4 +127,7 @@
     </div>
 </div>
 @include('detalleC.modaldeletehoja')
+<div class="alert alert-danger" role="alert">
+        No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
 @endsection

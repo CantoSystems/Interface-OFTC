@@ -51,7 +51,7 @@
                 </div>
 
                 <nav class="mt-2">
-                    @canany(['comisionesAdministrador','cobranzaReportes'])
+                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -72,25 +72,28 @@
                             </ul>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('importarCitas.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Subir Archivo Citas</p>
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
                                     <a href="{{ route('importarCobranza.verTabla')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Historial Cobranza de Estudios</p>
                                     </a>
                                 </li>
                             </ul>
+                    @endcanany
+                    @canany(['comisiones','cobranzaReportes'])
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('importarCitas.index')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Subir Archivo Citas</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            
                         </li>
                     </ul>
                     @endcanany
 
-                    @canany(['comisionesAdministrador','detalleConsumo'])
+                    @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -109,6 +112,8 @@
                                     </a>
                                 </li>
                             </ul>
+                    @endcanany
+                    @canany(['comisiones','detalleConsumo'])
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('viewHojas.show') }}" class="nav-link">
@@ -129,7 +134,7 @@
                     </ul>
                     @endcanany
 
-                    @can('comisionesAdministrador')
+                    @canany(['comisiones','cobranzaReportes','detalleConsumo','auxiliardetalleConsumo','auxiliarCobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -152,7 +157,7 @@
                     </ul>
                     @endcan
 
-                    @canany(['comisionesAdministrador','cobranzaReportes'])
+                    @canany(['comisiones','cobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -198,6 +203,29 @@
                         </li>
                     </ul>
                     @endcan
+
+                    @canany(['administrador'])
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
+                        data-accordion="false">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Administrar usuarios
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('usuarios.administrar')}}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roles</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    @endcanany
                 </nav>
             </div>
         </aside>
@@ -214,6 +242,11 @@
 
             <div class="content">
                 @yield('content')
+                @can('invitado')
+                <div class="alert alert-danger" role="alert">
+                    No cuenta con los privilegios para acceder a los módulos del sistema
+                </div>
+                @endcan
             </div>
         </div>
 

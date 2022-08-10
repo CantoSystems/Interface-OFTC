@@ -9,6 +9,7 @@
             <!--
                 Siempre revisar que los formularios no estén anidados :) gracias!
             -->
+            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
             <form action="{{ route('importarCobranza.showData') }}" method="GET">
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-6">
@@ -54,8 +55,9 @@
                     </div>
                
             </form>
+            @endcanany
 
-
+            @canany(['comisiones','auxiliarCobranzaReportes'])
             @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
@@ -72,8 +74,10 @@
                         </div>
                     </div>
             @endif
+            @endcanany
             </div>
         </div>
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
         <div class="card-body">
             @if(!empty($cobranza))
             <table id="genReportes" name="genReportes" class="table table-bordered table-hover">
@@ -111,6 +115,11 @@
                 </tbody>
             </table>
             @endif
+        @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
+            <div class="alert alert-danger" role="alert">
+                    No cuenta con los privilegios para acceder a este módulo del sistema
+            </div>
+        @endcanany
         </div>
     </div>
 </div>

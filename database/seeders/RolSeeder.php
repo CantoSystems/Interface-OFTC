@@ -16,11 +16,14 @@ class RolSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ["clave" => "comisionesAdministrador", "descripcion" => "ADMINISTRADOR GENERAL"],
+            ["clave" => "comisiones", "descripcion" => "ADMINISTRADOR COMISIONES"],
             ["clave" => "cobranzaReportes","descripcion" => "ADMINISTRATIVO ESTUDIOS COBRANZA"],
             ["clave" => "detalleConsumo", "descripcion" => "ADMINISTRATIVO DETALLE DE CONSUMO"],
             ["clave" => "auxiliarCobranzaReportes", "descripcion" => "AUXILIAR ESTUDIOS COBRANZA"],
             ["clave" => "auxiliardetalleConsumo", "descripcion" => "AUXILIAR DETALLE DE CONSUMO"],
+            ["clave" => "invitado", "descripcion" => "INVITADO"],
+            ["clave" => "administrador", "descripcion" => "ADMINISTRADOR USUARIOS"],
+            
         ];
 
         $fechaInsert = now()->toDateString();

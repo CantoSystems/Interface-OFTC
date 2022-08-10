@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <!--Inicio Card Información Paciente-->
+            @canany(['consumo','cobranzaReportes','auxiliarCobranzaReportes'])
             <div class="col-md-10">
                 <div class="card card-info">
                     <div class="card-header">
@@ -350,4 +351,9 @@
         </div>
     </div>
 </section>
+    @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
+    <div class="alert alert-danger" role="alert">
+                    No cuenta con los privilegios para acceder a este módulo del sistema
+    </div>
+    @endcanany
 @endsection
