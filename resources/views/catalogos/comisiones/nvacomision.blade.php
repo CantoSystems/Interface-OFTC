@@ -14,7 +14,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Estudio
+                                    <label>Estudio Específico 
                                         <strong style="color:red">*</strong>
                                     </label>
                                     <select name="estudioGral" id="estudioGral" class="custom-select combos">

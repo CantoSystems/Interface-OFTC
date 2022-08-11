@@ -127,7 +127,9 @@
     </div>
 </div>
 @include('detalleC.modaldeletehoja')
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
 <div class="alert alert-danger" role="alert">
-        No cuenta con los privilegios para acceder a este módulo del sistema
+    No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
+@endcanany
 @endsection

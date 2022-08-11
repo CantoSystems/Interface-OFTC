@@ -57,7 +57,7 @@
             </form>
             @endcanany
 
-            @canany(['comisiones','auxiliarCobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes'])
             @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
