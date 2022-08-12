@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <!--Inicio Card Información Paciente-->
-            @canany(['consumo','cobranzaReportes','auxiliarCobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
             <div class="col-md-10">
                 <div class="card card-info">
                     <div class="card-header">
