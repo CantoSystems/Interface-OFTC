@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     @method('DELETE')
                     @csrf
-                    <p>¿Estás seguro que deseas eliminar la comisión de <b>{{ $comision->empleado }}</b> por el estudio
+                    <p style="text-align: justify;">¿Estás seguro que deseas eliminar la comisión de <b>{{ $comision->empleado }}</b> por el estudio
                         <b>{{ $comision->dscrpMedicosPro }}</b>?
                     </p>
                     <input type="hidden" id="idComision" name="idComision" value="{{ $comision->id }}">

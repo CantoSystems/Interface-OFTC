@@ -480,7 +480,7 @@ class ComisionesController extends Controller{
      */
     public function update(Request $request){
         $editComision = Comisiones::find($request->idComision);
-        $editComision->id_doctor_fk = $request->estudioGral;
+        $editComision->id_estudio_fk = $request->estudioGral;
         $editComision->cantidadComision = $request->cantidadComision;
         $editComision->cantidadUtilidad = $request->cantidadUtilidad;
         $editComision->porcentaje = $request->porcentajeComision;

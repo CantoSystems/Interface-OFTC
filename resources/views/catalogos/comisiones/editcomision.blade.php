@@ -19,7 +19,7 @@
                         @endforeach
                     </div>
                     @endif
-                    <form action="{{ route('updtPorcentaje.update') }}" method="POST">
+                    <form action="{{ route('updtComision.update') }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <div class="row">
