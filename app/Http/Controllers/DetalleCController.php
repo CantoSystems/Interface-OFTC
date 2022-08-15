@@ -130,6 +130,10 @@ class DetalleCController extends Controller{
                             }
                         }
                     }
+
+                    if(!isset($totalEfectivo) || !isset($totalTPV) || !isset($totalTrans)){
+                        return back()->withErrors('El doctor no cuenta con un porcentaje configurado con las especificaciones ingresadas. Favor de verificar la información.');
+                    }
                     
                     $fechaInsert = now()->toDateString();
                     DB::table('detalle_consumos')->insert([
@@ -360,6 +364,10 @@ class DetalleCController extends Controller{
                     $totalTPV = floor($totalTPV - ($totalTPV%100));
                 }
             }
+        }
+
+        if(!isset($totalEfectivo) || !isset($totalTPV) || !isset($totalTrans)){
+            return back()->withErrors('El doctor no cuenta con un porcentaje configurado con las especificaciones ingresadas. Favor de verificar la información.');
         }
 
         $nvoEmpleado = DB::table('detalle_consumos')
