@@ -119,6 +119,32 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-6">
+                                    <div class="form-group" style="text-align: center;">
+                                        <label>¿La cirugía es especial?</label>
+                                        <div class="form-group">
+                                            @if($data->tipoCirugia == "S")
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="S" checked name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="N" name="registroC">
+                                                <label>NO</label>
+                                            </div>
+                                            @else
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="S" name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="N" checked name="registroC">
+                                                <label>NO</label>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row">

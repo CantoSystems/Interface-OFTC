@@ -303,7 +303,7 @@ class DetalleCController extends Controller{
     }
 
     public function editHojaConsumo($id){
-        $doctores = Doctor::where('id','!=',1)->get();
+        $doctores = Doctor::whereNotIn('id',[1,2])->get();
         $tipoPaciente = TipoPaciente::all();
         $data = DB::table('detalle_consumos')->where('detalle_consumos.id','=',$id)->first();
 
@@ -313,6 +313,55 @@ class DetalleCController extends Controller{
     public function updtHoja(Request $request){
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
+
+        if($request->registroC == "S"){
+            $porcentajeComision = DB::table('comisiones_doctores')
+                                    ->where([
+                                        ['id_doctor_fk','=',$request->doctorHoja],
+                                        ['tipoPorcentaje','=','S'],
+                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                    ])
+                                    ->select('porcentaje','id_metodoPago_fk')
+                                    ->get();
+        }else{
+            $porcentajeComision = DB::table('comisiones_doctores')
+                                    ->where([
+                                        ['id_doctor_fk','=',$request->doctorHoja],
+                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                    ])
+                                    ->select('porcentaje','id_metodoPago_fk')
+                                    ->get();
+        }
+
+        $sumImporte = DB::table('detalle_adicional')
+                            ->where('id_detalleConsumo_FK','=',$request->idHoja)
+                            ->sum('importe');
+
+        foreach($porcentajeComision as $porcentajeComision){
+            if($porcentajeComision->id_metodoPago_fk == 1){
+                $totalEfectivo = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                if($totalEfectivo%100 > 50){
+                    $totalEfectivo = round($totalEfectivo,-2);
+                }else{
+                    $totalEfectivo = floor($totalEfectivo - ($totalEfectivo%100));
+                }
+            }else if($porcentajeComision->id_metodoPago_fk == 2){
+                $totalTrans = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                if($totalTrans%100 > 50){
+                    $totalTrans = round($totalTrans,-2);
+                }else{
+                    $totalTrans = floor($totalTrans - ($totalTrans%100));
+                }
+            }else{
+                $totalTPV = (($sumImporte * $porcentajeComision->porcentaje)/100) + $sumImporte;
+                if($totalTPV%100 > 50){
+                    $totalTPV = round($totalTPV,-2);
+                }else{
+                    $totalTPV = floor($totalTPV - ($totalTPV%100));
+                }
+            }
+        }
+
         $nvoEmpleado = DB::table('detalle_consumos')
                             ->where('id','=',$request->idHoja)
                             ->update(['id_doctor_fk' => $request->doctorHoja,
@@ -321,10 +370,33 @@ class DetalleCController extends Controller{
                                     'paciente' => $request->pacienteHoja,
                                     'tipoPaciente' => $request->tipoPacienteHoja,
                                     'cirugia' => $request->cirugia,
-                                    'statusHoja' => $request->statusHoja
+                                    'statusHoja' => $request->statusHoja,
+                                    'cantidadEfe' => $totalEfectivo,
+                                    'cantidadTrans' => $totalTrans,
+                                    'TPV' => $totalTPV,
+                                    'tipoCirugia' => $request->registroC
                             ]);
 
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
+        $hojasConsumo = DB::table('detalle_consumos')
+                            ->join('doctors','doctors.id','=','id_doctor_fk')
+                            ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                        ,'detalle_consumos.id as id_detalle'
+                                        ,'detalle_consumos.id_doctor_fk'
+                                        ,'detalle_consumos.folio'
+                                        ,'detalle_consumos.fechaElaboracion'
+                                        ,'detalle_consumos.paciente'
+                                        ,'detalle_consumos.cirugia'
+                                        ,'detalle_consumos.tipoCirugia'
+                                        ,'detalle_consumos.tipoPaciente'
+                                        ,'detalle_consumos.cantidadEfe'
+                                        ,'detalle_consumos.cantidadTrans'
+                                        ,'detalle_consumos.TPV'
+                                        ,'detalle_consumos.statusHoja'
+                                        ,'tipo_pacientes.nombretipo_paciente')
+                            ->get();
+        
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente','hojasConsumo'));
     }
 
     public function exportarPDF($id){
