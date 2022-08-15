@@ -372,9 +372,8 @@ class DetalleCController extends Controller{
                             ->where([
                                 ['doctor_status','=','A'],
                                 ['id','!=',1]
-                            ])
-                            ->get();
-
+                            ])->get();
+        
         return view('catalogos.porcentajes.catporcentajes', compact('porcentajeDoctores','catMetodoPago','catTipoPaciente','catDoctores'));
     }
 
@@ -412,7 +411,8 @@ class DetalleCController extends Controller{
                                         ,'tipo_pacientes.nombretipo_paciente'
                                         ,'cat_metodo_pago.descripcion'
                                         ,'comisiones_doctores.porcentaje'
-                                        ,'comisiones_doctores.id')
+                                        ,'comisiones_doctores.id'
+                                        ,'comisiones_doctores.tipoPorcentaje')
                                 ->get();
 
         $catMetodoPago = DB::table('cat_metodo_pago')->get();
@@ -475,7 +475,8 @@ class DetalleCController extends Controller{
                                         ,'tipo_pacientes.nombretipo_paciente'
                                         ,'cat_metodo_pago.descripcion'
                                         ,'comisiones_doctores.porcentaje'
-                                        ,'comisiones_doctores.id')
+                                        ,'comisiones_doctores.id'
+                                        ,'comisiones_doctores.tipoPorcentaje')
                                 ->get();
         
         $catMetodoPago = DB::table('cat_metodo_pago')->get();

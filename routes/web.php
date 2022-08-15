@@ -61,7 +61,6 @@ Route::get('/exportar-hoja-consumo/{id}',[DetalleCController::class,'exportarPDF
 Route::get('/exportar-hojas-consumos',[DetalleCController::class,'exportPDFGral'])->name('exportPDFGral.create')->middleware('auth');
 
 //Usuarios
-
 Route::post('/store-usuarios',[UserController::class,'store'])->name('usuarios.store')->middleware('auth');
 Route::post('/login',[UserController::class,'create'])->name('usuarios.login');
 Route::post('/logout',[UserController::class,'show'])->name('usuarios.logout')->middleware('auth');
