@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Catálogo Porcentajes</h4>
         </div>
-        @canany(['comisiones','detalleConsumo'])
+    @canany(['comisiones','detalleConsumo'])
         <div class="col-md-3 col-sm-4 col-8">
             <div class="info-box shadow">
                 <span class="info-box-icon bg-info"><i class="fas fa-user-plus"></i></span>

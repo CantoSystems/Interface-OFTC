@@ -9,6 +9,8 @@
                     <div class="card-header">
                         <h3 class="card-title">Información Hoja Consumo</h3>
                     </div>
+
+    @canany(['comisiones','detalleConsumo'])
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         @foreach ($errors->all() as $error)
@@ -162,4 +164,10 @@
         </div>
     </div>
 </section>
+
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+    <div class="alert alert-danger" role="alert">
+                    No cuenta con los privilegios para acceder a este módulo del sistema
+    </div>
+@endcanany
 @endsection
