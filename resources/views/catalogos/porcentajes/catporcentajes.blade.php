@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Catálogo Porcentajes</h4>
         </div>
-    @canany(['comisiones','detalleConsumo'])
+    @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
         <div class="col-md-3 col-sm-4 col-8">
             <div class="info-box shadow">
                 <span class="info-box-icon bg-info"><i class="fas fa-user-plus"></i></span>
@@ -56,8 +56,11 @@
                             @else
                             Normal
                             @endif</td>
+                        @canany(['comisiones','detalleConsumo'])
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
-                                href="{{ route('updtPorcentaje.show',$porDoc->id) }}">VER</a></th>
+                                href="{{ route('updtPorcentaje.show',$porDoc->id) }}">VER</a>
+                        </th>
+                        @endcanany
                     </tr>
                     @endforeach
                     @endif
@@ -67,7 +70,7 @@
     </div>
 </div>
 @include('catalogos.porcentajes.nvoporcentaje');
-@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
 <div class="alert alert-danger" role="alert">
         No cuenta con los privilegios para acceder a este módulo del sistema
 </div>

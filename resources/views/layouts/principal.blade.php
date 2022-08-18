@@ -112,8 +112,7 @@
                                     </a>
                                 </li>
                             </ul>
-                    @endcanany
-                    @canany(['comisiones','detalleConsumo'])
+                
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('viewHojas.show') }}" class="nav-link">
@@ -134,7 +133,7 @@
                     </ul>
                     @endcanany
 
-                    @canany(['comisiones','cobranzaReportes','detalleConsumo','auxiliardetalleConsumo','auxiliarCobranzaReportes'])
+                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">

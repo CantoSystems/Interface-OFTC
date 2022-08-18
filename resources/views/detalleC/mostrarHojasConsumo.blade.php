@@ -5,14 +5,15 @@
         <div class="card-header modalPersonalizado">
             <h4>Histórico Hojas de Consumo</h4>
         </div>
-        @canany(['comisiones','detalleConsumo'])
+
         <div class="card-header col-12">
+            @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
             <form action="{{ route('mostrarHojas.show') }}" method="GET">
                 <div class="row">
                     <div class="col-md-2 col-sm-4 col-4">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Empleado:</label>
+                                <label class="info-box-text">Selecciona Dr. :</label>
                                 <select class="form-control" name="slctDoctor" id="slctDoctor">
                                     <option selected disabled>-- Selecciona una opción --</option>
                                     @foreach($doctores as $doc)
@@ -49,7 +50,10 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+</div>
+@endcanany
+@canany(['comisiones','detalleConsumo'])
+
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
@@ -60,10 +64,13 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
+@endcanany
             </form>
         </div>
         <div class="card-body">
+@canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -78,6 +85,7 @@
                 </thead>
                 <tbody>
                     @if(!empty($hojasConsumo))
+
                     @foreach($hojasConsumo as $hojas)
                     <tr vertical-align="middle">
                         <td style="text-align: center;">{{ $hojas->folio }}</td>
@@ -86,6 +94,7 @@
                         <td>{{ $hojas->paciente }} ({{ $hojas->nombretipo_paciente }})</td>
                         <td>{{ $hojas->cirugia }}</td>
                         <td style="text-align: center;">$ {{ number_format($hojas->cantidadEfe,2) }}</td>
+@canany(['comisiones','detalleConsumo'])
                         <td>
                             <center>
                                 <div class="btn-group">
@@ -118,16 +127,18 @@
                                 </div>
                             </center>
                         </td>
+@endcanany
                     </tr>
                     @endforeach
                     @endif
+                    @endcanany
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 @include('detalleC.modaldeletehoja')
-@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
+@canany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
 </div>

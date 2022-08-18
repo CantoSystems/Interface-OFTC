@@ -1,3 +1,4 @@
+@can(['administrador'])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -214,6 +215,5 @@
 @if(isset($usuRol))
     @include('login.delete-usuarios')
 @endif
-
-
 </html>
+@endcan

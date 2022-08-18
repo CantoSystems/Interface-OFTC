@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Calcular Comisiones</h4>
         </div>
-        @canany(['comisiones','cobranzaReportes','detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo'])
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
         <div class="card-header col-12">
             <form action="{{ route('comisiones.show') }}" method="GET">
                 <div class="row">
@@ -63,8 +63,11 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                </div>
+        @endcanany
+        
                     @if(isset($comisiones) && !empty($totalComisiones))
+                    @canany(['comisiones'])
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
@@ -75,11 +78,13 @@
                             </div>
                         </div>
                     </div>
+                    @endcanany
                     @endif
                 </div>
             </form>
         </div>
         <div class="card-body">
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
             @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -130,7 +135,7 @@
         </div>
     </div>
 </div>
-@elsecanany('invitado')
+@elsecanany('invitado','detalleConsumo','auxiliardetalleConsumo')
 <div class="alert alert-danger" role="alert">
         No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
