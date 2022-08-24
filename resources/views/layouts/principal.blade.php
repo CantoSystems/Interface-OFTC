@@ -401,9 +401,6 @@
                     dataSrc: 'data',
                 },
                 columns: [{
-                        data: 'codigo'
-                    },
-                    {
                         data: 'descripcion'
                     },
                     {

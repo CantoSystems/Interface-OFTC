@@ -14,7 +14,6 @@ class HistoricoDetalleConsumo extends Migration
     public function up(){
         Schema::create('historico_detalle_consumo', function (Blueprint $table) {
             $table->text('id_doctor_fk');
-            $table->char('folio',10);
             $table->date('fechaElaboracion');
             $table->text('paciente');
             $table->text('tipoPaciente');
