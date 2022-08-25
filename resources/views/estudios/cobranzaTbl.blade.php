@@ -53,7 +53,6 @@
                             </div>
                         </div>
                     </div>
-               
             </form>
             @endcanany
 
@@ -87,6 +86,7 @@
                         <th>Fecha</th>
                         <th>Paciente</th>
                         <th>Estudio</th>
+                        <th>Realizado Por</th>
                         <th style="text-align: center;">Tipo Ojos</th>
                         <th>Doctor</th>
                         <th style="text-align: center;">Interpretado</th>
@@ -103,6 +103,7 @@
                         <td>{{ date('d-m-Y',strtotime($cbr->fecha)) }}</td>
                         <td>{{ $cbr->paciente }}</td>
                         <td>{{ $cbr->descripcion }}</td>
+                        <td>{{ $cbr->EmpleadoRealiza }}</td>
                         <td style="text-align: center;">{{ $cbr->nombretipo_ojo }}</td>
                         <td>{{ $cbr->Doctor }}</td>
                         <td style="text-align: center;">{{ $cbr->Transcripcion }}</td>

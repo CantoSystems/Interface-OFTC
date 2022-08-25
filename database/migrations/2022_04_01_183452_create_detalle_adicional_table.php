@@ -15,7 +15,6 @@ class CreateDetalleAdicionalTable extends Migration
     {
         Schema::create('detalle_adicional', function (Blueprint $table) {
             $table->unsignedBigInteger('id_detalleConsumo_FK');
-            $table->text('codigo',20)->nullable();
             $table->string('descripcion',60)->nullable();
             $table->char('um',5)->nullable();
             $table->double('cantidad',10,2)->nullable();

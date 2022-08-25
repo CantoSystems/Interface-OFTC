@@ -18,7 +18,6 @@
                                 <span class="info-box-number">Subir</span>
                             </button>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-4 col-6">

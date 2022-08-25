@@ -36,7 +36,6 @@
     <table width="100%">
         <thead>
             <tr>
-                <th style="text-align: center;">Folio</th>
                 <th>Fecha Cirugía</th>
                 <th>Doctor</th>
                 <th style="text-align: center;">Paciente</th>
@@ -49,7 +48,6 @@
             @if(!empty($hojasConsumo))
             @foreach($hojasConsumo as $hojas)
             <tr>
-                <td style="text-align: center;">{{ $hojas->folio }}</td>
                 <td style="text-align: center;">{{ date('d-M-Y',strtotime($hojas->fechaElaboracion)) }}</td>
                 <td style="text-align: center;">{{ $hojas->Doctor }}</td>
                 <td style="text-align: center;">{{ $hojas->paciente }} ({{ $hojas->nombretipo_paciente }}) </td>

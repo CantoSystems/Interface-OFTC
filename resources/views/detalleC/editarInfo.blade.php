@@ -14,12 +14,6 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Folio Hoja de Consumo</label>
-                                <input type="number" class="form-control" id="folioHoja" name="folioHoja">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
                                 <label>Fecha de Cirugía</label>
                                 <input type="date" class="form-control" id="fechaHoja" name="fechaHoja">
                             </div>
@@ -38,14 +32,14 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Tipo de Cirugía</label>
                                 <input class="form-control " type="text" name="cirugia" id="cirugia">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Nombre Paciente</label>
