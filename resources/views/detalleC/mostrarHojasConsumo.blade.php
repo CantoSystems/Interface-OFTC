@@ -5,7 +5,6 @@
         <div class="card-header modalPersonalizado">
             <h4>Histórico Hojas de Consumo</h4>
         </div>
-
         <div class="card-header col-12">
             @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
             <form action="{{ route('mostrarHojas.show') }}" method="GET">
@@ -74,12 +73,14 @@
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th style="text-align: center;">Folio</th>
+                        <th style="text-align: center;">Id</th>
                         <th style="text-align: center;">Fecha de Cirugía</th>
                         <th>Doctor</th>
                         <th>Paciente</th>
                         <th>Tipo de Cirugía</th>
-                        <th style="text-align: center;">Importe</th>
+                        <th style="text-align: center;">Importe Efectivo</th>
+                        <th style="text-align: center;">Importe TPV</th>
+                        <th style="text-align: center;">Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -88,13 +89,15 @@
 
                     @foreach($hojasConsumo as $hojas)
                     <tr vertical-align="middle">
-                        <td style="text-align: center;">{{ $hojas->folio }}</td>
+                        <td style="text-align: center;">{{ $hojas->id_detalle }}</td>
                         <td style="text-align: center;">{{ date('d-M-Y',strtotime($hojas->fechaElaboracion)) }}</td>
                         <td>{{ $hojas->Doctor }}</td>
                         <td>{{ $hojas->paciente }} ({{ $hojas->nombretipo_paciente }})</td>
                         <td>{{ $hojas->cirugia }}</td>
                         <td style="text-align: center;">$ {{ number_format($hojas->cantidadEfe,2) }}</td>
-@canany(['comisiones','detalleConsumo'])
+                        <td style="text-align: center;">$ {{ number_format($hojas->TPV,2) }}</td>
+                        <td style="text-align: center;">{{ $hojas->statusHoja }}</td>
+                        @canany(['comisiones','detalleConsumo'])
                         <td>
                             <center>
                                 <div class="btn-group">

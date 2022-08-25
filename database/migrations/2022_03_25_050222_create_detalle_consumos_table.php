@@ -16,7 +16,6 @@ class CreateDetalleConsumosTable extends Migration
         Schema::create('detalle_consumos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_doctor_fk');
-            $table->char('folio',10);
             $table->date('fechaElaboracion');
             $table->text('paciente');
             $table->text('tipoPaciente');

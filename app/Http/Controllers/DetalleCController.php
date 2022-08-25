@@ -57,7 +57,6 @@ class DetalleCController extends Controller{
         $checkAdicional = DB::table('detalletemps')->count();
         if($checkAdicional != 0){
             $validator = Validator::make($request->all(),[
-                'folioHoja'  => 'required',
                 'fechaHoja' => 'required',
                 'doctorHoja' => 'required',
                 'cirugia' => 'required',
@@ -65,7 +64,6 @@ class DetalleCController extends Controller{
                 'tipoPacienteHoja' => 'required',
                 'registroC' => 'required'
             ],[
-                'folioHoja.required' => 'Ingresa el folio del detalle de consumo.',
                 'fechaHoja.required' => 'Selecciona la fecha de la cirugía.',
                 'doctorHoja.required' => 'Selecciona el doctor que requiere el detalle de consumo.',
                 'cirugia.required' => 'Ingresa el tipo de cirugía.',
@@ -80,7 +78,7 @@ class DetalleCController extends Controller{
                 $doctores = Doctor::where('id','<>','1')->get();
                 $tipoPaciente = TipoPaciente::all();
 
-                $contarFolio = DB::table('detalle_consumos')->where('folio','=',$request->folioHoja)->count();
+                $contarFolio = DB::table('detalle_consumos')->where('id','=',$request->folioHoja)->count();
 
                 if($contarFolio != 0){
                     return back()->withErrors('El folio ya se encuentra registrado.');
@@ -134,11 +132,10 @@ class DetalleCController extends Controller{
                     if(!isset($totalEfectivo) || !isset($totalTPV) || !isset($totalTrans)){
                         return back()->withErrors('El doctor no cuenta con un porcentaje configurado con las especificaciones ingresadas. Favor de verificar la información.');
                     }
-                    
+
                     $fechaInsert = now()->toDateString();
                     DB::table('detalle_consumos')->insert([
                         'id_doctor_fk' => $request->doctorHoja,
-                        'folio' => $request->folioHoja,
                         'fechaElaboracion' => $request->fechaHoja,
                         'paciente' => $request->pacienteHoja,
                         'tipoPaciente' => $request->tipoPacienteHoja,
@@ -153,7 +150,7 @@ class DetalleCController extends Controller{
                     ]);
         
                     //Seleccionar datos de temporal
-                    $datosDC = DB::table('detalletemps')->select('codigo','descripcion','um','cantidad','precio_unitario','importe')->get();
+                    $datosDC = DB::table('detalletemps')->select('descripcion','um','cantidad','precio_unitario','importe')->get();
                     
                     //Seleccionar ID de la principal
                     $select2 = DB::table('detalle_consumos')->select('id')->orderBy('id','desc')->first();
@@ -162,7 +159,6 @@ class DetalleCController extends Controller{
                     foreach($datosDC as $datos){
                         DB::table('detalle_adicional')->insert([
                             'id_detalleConsumo_FK' => $select2->id,
-                            'codigo' => $datos->codigo,
                             'descripcion' => $datos->descripcion,
                             'um' => $datos->um,
                             'cantidad' => $datos->cantidad,
@@ -178,8 +174,8 @@ class DetalleCController extends Controller{
                                 ->join('doctors','doctors.id','=','id_doctor_fk')
                                 ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                                 ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                        ,'detalle_consumos.folio'
                                         ,'detalle_consumos.fechaElaboracion'
+                                        ,'detalle_consumos.id'
                                         ,'detalle_consumos.paciente'
                                         ,'tipo_pacientes.nombretipo_paciente'
                                         ,'doctors.doctor_email'
@@ -218,7 +214,7 @@ class DetalleCController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request){
-        return datatables()->eloquent(DetalleTemp::where('codigo','!=','null'))->toJson();
+        return datatables()->eloquent(DetalleTemp::where('id','!=','null'))->toJson();
     }
 
     public function viewHojas(Request $request){
@@ -231,7 +227,6 @@ class DetalleCController extends Controller{
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                     ,'detalle_consumos.id as id_detalle'
                                     ,'detalle_consumos.id_doctor_fk'
-                                    ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'detalle_consumos.cirugia'
@@ -246,7 +241,6 @@ class DetalleCController extends Controller{
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
                 'id_doctor_fk' => $hojas->id_doctor_fk,
-                'folio' => $hojas->folio,
                 'fechaElaboracion' => $hojas->fechaElaboracion,
                 'paciente' => $hojas->paciente,
                 'cirugia' => $hojas->cirugia,
@@ -272,7 +266,6 @@ class DetalleCController extends Controller{
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                     ,'detalle_consumos.id as id_detalle'
                                     ,'detalle_consumos.id_doctor_fk'
-                                    ,'detalle_consumos.folio'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'detalle_consumos.cirugia'
@@ -290,7 +283,6 @@ class DetalleCController extends Controller{
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
                 'id_doctor_fk' => $hojas->id_doctor_fk,
-                'folio' => $hojas->folio,
                 'fechaElaboracion' => $hojas->fechaElaboracion,
                 'paciente' => $hojas->paciente,
                 'cirugia' => $hojas->cirugia,
@@ -374,7 +366,6 @@ class DetalleCController extends Controller{
                             ->where('id','=',$request->idHoja)
                             ->update(['id_doctor_fk' => $request->doctorHoja,
                                     'fechaElaboracion' => $request->fechaHoja,
-                                    'folio' => $request->folioHoja,
                                     'paciente' => $request->pacienteHoja,
                                     'tipoPaciente' => $request->tipoPacienteHoja,
                                     'cirugia' => $request->cirugia,
@@ -391,7 +382,6 @@ class DetalleCController extends Controller{
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
                                         ,'detalle_consumos.id as id_detalle'
                                         ,'detalle_consumos.id_doctor_fk'
-                                        ,'detalle_consumos.folio'
                                         ,'detalle_consumos.fechaElaboracion'
                                         ,'detalle_consumos.paciente'
                                         ,'detalle_consumos.cirugia'
@@ -412,7 +402,7 @@ class DetalleCController extends Controller{
                             ->join('doctors','doctors.id','=','id_doctor_fk')
                             ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                             ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                    ,'detalle_consumos.folio'
+                                    ,'detalle_consumos.id'
                                     ,'detalle_consumos.fechaElaboracion'
                                     ,'detalle_consumos.paciente'
                                     ,'tipo_pacientes.nombretipo_paciente'
@@ -592,7 +582,6 @@ class DetalleCController extends Controller{
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                    ,'historico_detalle_consumo.folio'
                                     ,'historico_detalle_consumo.fechaElaboracion'
                                     ,'historico_detalle_consumo.paciente'
                                     ,'historico_detalle_consumo.cirugia'

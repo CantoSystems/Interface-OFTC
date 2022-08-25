@@ -14,12 +14,11 @@ class DetalleCImport implements ToModel
     */
     public function model(array $row){
         return new DetalleTemp([
-            'codigo'            => $row[0],
-            'descripcion'       => $row[1],
-            'um'                => $row[2],
-            'cantidad'          => $row[3],
-            'precio_unitario'   => $row[4],
-            'importe'           => $row[5],
+            'descripcion'       => $row[0],
+            'um'                => $row[1],
+            'cantidad'          => $row[2],
+            'precio_unitario'   => $row[3],
+            'importe'           => $row[4],
         ]);
     }
 }
