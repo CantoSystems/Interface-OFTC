@@ -23,6 +23,7 @@ class RolSeeder extends Seeder
             ["clave" => "auxiliardetalleConsumo", "descripcion" => "AUXILIAR DETALLE DE CONSUMO"],
             ["clave" => "invitado", "descripcion" => "INVITADO"],
             ["clave" => "administrador", "descripcion" => "ADMINISTRADOR USUARIOS"],
+            ["clave" => "optometria", "descripcion" => "OPTOMETRIA"],
             
         ];
 

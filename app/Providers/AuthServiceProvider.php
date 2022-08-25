@@ -32,5 +32,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('auxiliardetalleConsumo', fn($user) => $user->role_id === 5);
         Gate::define('invitado', fn($user) => $user->role_id === 6);
         Gate::define('administrador', fn($user) => $user->role_id === 7);
+        Gate::define('optometria', fn($user) => $user->role_id === 8);
     }
 }
