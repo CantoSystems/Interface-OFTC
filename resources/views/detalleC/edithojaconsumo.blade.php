@@ -24,21 +24,12 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Folio Hoja de Consumo</label>
-                                        <input type="number" value="{{ $data->folio }}" class="form-control"
-                                            id="folioHoja" name="folioHoja">
-                                        <input type="hidden" value="{{ $data->id }}" name="idHoja" id="idHoja">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
                                         <label>Fecha de Cirugía</label>
                                         <input type="date" value="{{ $data->fechaElaboracion }}" class="form-control"
                                             id="fechaHoja" name="fechaHoja">
+                                        <input type="hidden" value="{{ $data->id }}" name="idHoja" id="idHoja">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Seleccionar Doctor</label>
@@ -67,8 +58,6 @@
                                             name="cirugia" id="cirugia">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Nombre Paciente</label>
@@ -76,6 +65,8 @@
                                             id="pacienteHoja" name="pacienteHoja">
                                     </div>
                                 </div>
+                                </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Tipo Paciente</label>
@@ -96,8 +87,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Status Hoja de Consumo</label>
@@ -121,7 +110,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-6">
+</div>
+                                <div class="col-12">
                                     <div class="form-group" style="text-align: center;">
                                         <label>¿La cirugía es especial?</label>
                                         <div class="form-group">
