@@ -59,7 +59,7 @@
 </div>
 @include('detalleC.detalleconsumo')
 @include('detalleC.editarInfo')
-@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
+@elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado','optometria','optometria'])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
 </div>

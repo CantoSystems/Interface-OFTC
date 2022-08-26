@@ -6,7 +6,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
 
-            @canany(['comisiones','cobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes','optometria'])
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Estudio General: <b>{{ $estudio->descripcion }}</b></h3>

@@ -9,7 +9,7 @@
             <!--
                 Siempre revisar que los formularios no estén anidados :) gracias!
             -->
-            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
             <form action="{{ route('importarCobranza.showData') }}" method="GET">
                 <div class="row">
                     <div class="col-md-4 col-sm-4 col-6">
@@ -56,7 +56,7 @@
             </form>
             @endcanany
 
-            @canany(['comisiones','cobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes','optometria'])
             @if(!empty($cobranza))
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
@@ -76,7 +76,7 @@
             @endcanany
             </div>
         </div>
-        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-body">
             @if(!empty($cobranza))
             <table id="genReportes" name="genReportes" class="table table-bordered table-hover">

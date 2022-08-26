@@ -97,21 +97,24 @@
                         <td style="text-align: center;">$ {{ number_format($hojas->cantidadEfe,2) }}</td>
                         <td style="text-align: center;">$ {{ number_format($hojas->TPV,2) }}</td>
                         <td style="text-align: center;">{{ $hojas->statusHoja }}</td>
-                        @canany(['comisiones','detalleConsumo'])
+                        @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
                         <td>
                             <center>
                                 <div class="btn-group">
-                                    <div class="form-group">
-                                        <a href="{{ route('editHojaConsumo.edit',$hojas->id_detalle) }}">
-                                            <button type="button" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                        </a>
-                                    </div>
+                                   
                                     <div class="form-group">
                                         <a href="{{ route('exportPDF.create',$hojas->id_detalle) }}">
                                             <button type="button" class="btn btn-primary btn-sm">
                                                 <i class="far fa-file-pdf"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                        @endcanany
+                        @canany(['comisiones','detalleConsumo'])
+                                    <div class="form-group">
+                                        <a href="{{ route('editHojaConsumo.edit',$hojas->id_detalle) }}">
+                                            <button type="button" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
                                             </button>
                                         </a>
                                     </div>
@@ -141,7 +144,7 @@
     </div>
 </div>
 @include('detalleC.modaldeletehoja')
-@canany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
+@canany(['cobranzaReportes','auxiliarCobranzaReportes','invitado',''])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
 </div>

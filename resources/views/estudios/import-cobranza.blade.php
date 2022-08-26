@@ -37,7 +37,7 @@
         @error('file')
         <div class="alert alert-danger">{{ $message }}</div>
         @enderror
-        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'.'optometria'])
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-body">
             @if(session()->has('duplicados'))
                 <div class="alert alert-danger" role="alert">

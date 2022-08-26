@@ -51,7 +51,7 @@
                 </div>
 
                 <nav class="mt-2">
-                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -133,7 +133,7 @@
                     </ul>
                     @endcanany
 
-                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+                    @canany(['comisiones'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -156,7 +156,7 @@
                     </ul>
                     @endcan
 
-                    @canany(['comisiones','cobranzaReportes'])
+                    @canany(['comisiones','cobranzaReportes','optometria'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">
@@ -167,6 +167,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                        
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('mostrarCatalogoGral.show') }}" class="nav-link">
@@ -183,6 +184,9 @@
                                     </a>
                                 </li>
                             </ul>
+                        @endcanany
+                        @canany(['comisiones','cobranzaReportes'])
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('mostrarEmpleados.index') }}" class="nav-link">

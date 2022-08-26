@@ -376,6 +376,8 @@ class DetalleCController extends Controller{
                                     'tipoCirugia' => $request->registroC
                             ]);
 
+
+
         $hojasConsumo = DB::table('detalle_consumos')
                             ->join('doctors','doctors.id','=','id_doctor_fk')
                             ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
