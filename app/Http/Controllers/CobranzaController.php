@@ -88,61 +88,81 @@ class CobranzaController extends Controller
                 $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
                 if(!is_null($estUpd)){
-                    if($request->status != 1){
-                        DB::table('cobranza')->insert([
-                            'id_estudio_fk' => $estUpd->id,
-                            'id_doctor_fk' => $request["drRequiere"],
-                            'id_empTrans_fk' => $doctorTrans,
-                            'id_empInt_fk' => $doctorInter,
-                            'id_empRea_fk' => $request['empRealiza'],
-                            'folio' => $request['folioCbr'],
-                            'fecha' => $request['fchCbr'],
-                            'paciente' => $request['pacienteCbr'],
-                            'tipoPaciente' => $request['tipoPaciente'],
-                            'formaPago' => $request['formaPago'],
-                            'transcripcion' => $request['transRd'],
-                            'interpretacion' => $request['intRd'],
-                            'escaneado' => $request['escRd'],
-                            'cantidadCbr' => $request['cantidadCbr'],
-                            'observaciones' => $request['obsCobranza'],
-                            'entregado' => $request['entRd'],
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    
-                        $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                                            ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
-                                                'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $doctorInter,
-                                                'id_empRea_fk' => $request['empRealiza'],
-                                                'tipoPaciente' => $request['tipoPaciente'],
-                                                'transcripcion' => $request['transRd'],
-                                                'interpretacion' => $request['intRd'],
-                                                'escaneado' => $request['escRd'],
-                                                'entregado' => $request['entRd'],
-                                                'observaciones' => $request['obsCobranza'],
-                                                'estudiostemps_status' => 1,
-                                                'updated_at' => $fechaInsert
-                                            ]);
 
-                        $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
-                                            ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
-                                                'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $doctorInter,
-                                                'id_empRea_fk' => $request['empRealiza'],
-                                                'tipoPaciente' => $request['tipoPaciente'],
-                                                'transcripcion' => $request['transRd'],
-                                                'interpretacion' => $request['intRd'],
-                                                'escaneado' => $request['escRd'],
-                                                'entregado' => $request['entRd'],
-                                                'observaciones' => $request['obsCobranza'],
-                                                'updated_at' => $fechaInsert
-                                            ]);
+                    if($request->status != 1){
+                        
+                        $cobranzaFolio =  DB::table('cobranza')->select('folio')
+                                        ->where('folio',$request['folioCbr'])->first();
+                        
+                        if($cobranzaFolio->folio == $request['folioCbr']){
+                            DB::table('cobranza')->where('folio',$request['folioCbr'])
+                            ->update([
+                                'id_estudio_fk' => $estUpd->id,
+                                'id_doctor_fk' => $request["drRequiere"],
+                                'id_empTrans_fk' => $doctorTrans,
+                                'id_empInt_fk' => $doctorInter,
+                                'id_empRea_fk' => $request['empRealiza'],
+                                'folio' => $request['folioCbr'],
+                                'fecha' => $request['fchCbr'],
+                                'paciente' => $request['pacienteCbr'],
+                                'tipoPaciente' => $request['tipoPaciente'],
+                                'formaPago' => $request['formaPago'],
+                                'transcripcion' => $request['transRd'],
+                                'interpretacion' => $request['intRd'],
+                                'escaneado' => $request['escRd'],
+                                'cantidadCbr' => $request['cantidadCbr'],
+                                'observaciones' => $request['obsCobranza'],
+                                'entregado' => $request['entRd'],
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert
+                            ]);
+
+                          
+                        }else{
+                            DB::table('cobranza')->insert([
+                                'id_estudio_fk' => $estUpd->id,
+                                'id_doctor_fk' => $request["drRequiere"],
+                                'id_empTrans_fk' => $doctorTrans,
+                                'id_empInt_fk' => $doctorInter,
+                                'id_empRea_fk' => $request['empRealiza'],
+                                'folio' => $request['folioCbr'],
+                                'fecha' => $request['fchCbr'],
+                                'paciente' => $request['pacienteCbr'],
+                                'tipoPaciente' => $request['tipoPaciente'],
+                                'formaPago' => $request['formaPago'],
+                                'transcripcion' => $request['transRd'],
+                                'interpretacion' => $request['intRd'],
+                                'escaneado' => $request['escRd'],
+                                'cantidadCbr' => $request['cantidadCbr'],
+                                'observaciones' => $request['obsCobranza'],
+                                'entregado' => $request['entRd'],
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert
+                            ]);
+                        
+                            
+                        }
+
+                        Estudiostemp::where('folio',$request['folioCbr'])
+                                                ->update([
+                                                    'id_empTrans_fk' => $doctorTrans,                                                
+                                                    'id_doctor_fk' => $request["drRequiere"],
+                                                    'id_empInt_fk' => $doctorInter,
+                                                    'id_empRea_fk' => $request['empRealiza'],
+                                                    'tipoPaciente' => $request['tipoPaciente'],
+                                                    'transcripcion' => $request['transRd'],
+                                                    'interpretacion' => $request['intRd'],
+                                                    'escaneado' => $request['escRd'],
+                                                    'entregado' => $request['entRd'],
+                                                    'observaciones' => $request['obsCobranza'],
+                                                    'estudiostemps_status' => 1,
+                                                    'updated_at' => $fechaInsert
+                                                ]);
+
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
-                        $updateCobranza = DB::table('cobranza')->where('folio',$request->folioCbr)
+                       
+                        DB::table('cobranza')->where('folio',$request->folioCbr)
                                         ->update([
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
@@ -158,7 +178,7 @@ class CobranzaController extends Controller
                                                 'updated_at' => $fechaInsert
                                         ]);
     
-                        $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+                      Estudiostemp::where('folio',$request['folioCbr'])
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
@@ -176,13 +196,16 @@ class CobranzaController extends Controller
                     }//Fin para insertar o actualizar datos
                 //Fin del registro cuando se encuentra el estudio
                 }else{
+              
+                    //No coincide el  estudio
                     if($request->status == 3 && $request->estudioCorregido != null){
+                       
                         DB::table('cobranza')->insert([
                             'id_estudio_fk' => $request->estudioCorregido,
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
                             'id_empInt_fk' => $doctorInter,
-                            'id_empRealiza_fk' => $request['empRealiza'],
+                            'id_empRea_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
                             'paciente' => $request['pacienteCbr'],
@@ -219,6 +242,7 @@ class CobranzaController extends Controller
                                                 'updated_at' => $fechaInsert
                                             ]);
                     }else{
+                       
                         $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
                                         ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                                
@@ -239,6 +263,7 @@ class CobranzaController extends Controller
             }//Fin registro contiene todos los datos          
         }else{
             //Registro faltante de datos 
+          
             $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
                                 ->update([
                                     'id_empTrans_fk' => $doctorTrans,                                                
@@ -261,7 +286,7 @@ class CobranzaController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     *update
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

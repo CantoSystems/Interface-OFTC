@@ -316,7 +316,7 @@
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
                                             name="obsCobranza" class="form-control">
-                                        <input type="hidden" name="status"
+                                        <input type="text" name="status"
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
