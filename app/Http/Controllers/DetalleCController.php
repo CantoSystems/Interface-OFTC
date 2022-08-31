@@ -240,6 +240,7 @@ class DetalleCController extends Controller{
 
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
+                'id_hoja' => $hojas->id_detalle,
                 'id_doctor_fk' => $hojas->id_doctor_fk,
                 'fechaElaboracion' => $hojas->fechaElaboracion,
                 'paciente' => $hojas->paciente,
@@ -282,6 +283,7 @@ class DetalleCController extends Controller{
 
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
+                'id_hoja' => $hojas->id_detalle,
                 'id_doctor_fk' => $hojas->id_doctor_fk,
                 'fechaElaboracion' => $hojas->fechaElaboracion,
                 'paciente' => $hojas->paciente,
@@ -376,8 +378,6 @@ class DetalleCController extends Controller{
                                     'tipoCirugia' => $request->registroC
                             ]);
 
-
-
         $hojasConsumo = DB::table('detalle_consumos')
                             ->join('doctors','doctors.id','=','id_doctor_fk')
                             ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
@@ -395,7 +395,21 @@ class DetalleCController extends Controller{
                                         ,'detalle_consumos.statusHoja'
                                         ,'tipo_pacientes.nombretipo_paciente')
                             ->get();
-        
+
+        $updtHistorico = DB::table('historico_detalle_consumo')
+                                ->where('id_hoja','=',$request->idHoja)
+                                ->update(['id_doctor_fk' => $request->doctorHoja,
+                                    'fechaElaboracion' => $request->fechaHoja,
+                                    'paciente' => $request->pacienteHoja,
+                                    'tipoPaciente' => $request->tipoPacienteHoja,
+                                    'cirugia' => $request->cirugia,
+                                    'statusHoja' => $request->statusHoja,
+                                    'cantidadEfe' => $totalEfectivo,
+                                    'cantidadTrans' => $totalTrans,
+                                    'TPV' => $totalTPV,
+                                    'tipoCirugia' => $request->registroC
+                        ]);
+
         return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente','hojasConsumo'));
     }
 
@@ -584,6 +598,7 @@ class DetalleCController extends Controller{
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'historico_detalle_consumo.id_hoja'
                                     ,'historico_detalle_consumo.fechaElaboracion'
                                     ,'historico_detalle_consumo.paciente'
                                     ,'historico_detalle_consumo.cirugia'
