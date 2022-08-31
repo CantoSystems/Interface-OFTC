@@ -69,6 +69,7 @@ class CobranzaController extends Controller
                 'intRd' => 'required',
                 'escRd' => 'required',
                 'entRd' => 'required',
+                'empEnt' => 'required',
                 'empRealiza' => 'required'
             ],[
                 'registroC.required' => 'Selecciona si el registro ya está completo.',
@@ -78,6 +79,7 @@ class CobranzaController extends Controller
                 'entRd.required' => 'Selecciona el status de entregado del estudio.',
                 'transRd.required' => 'Selecciona el status de transcripción del estudio.',
                 'intRd.required' => 'Selecciona el status de interpretación del estudio.',
+                'empEnt.required' => 'Selecciona el empleado que entregó el estudio.',
                 'empRealiza.required' => 'Selecciona el empleado que realizó el estudio.'
             ]);
 
@@ -88,9 +90,7 @@ class CobranzaController extends Controller
                 $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
                 if(!is_null($estUpd)){
-
                     if($request->status != 1){
-                        
                         $cobranzaFolio =  DB::table('cobranza')->select('folio')
                                         ->where('folio',$request['folioCbr'])->first();
                         
@@ -102,6 +102,7 @@ class CobranzaController extends Controller
                                 'id_empTrans_fk' => $doctorTrans,
                                 'id_empInt_fk' => $doctorInter,
                                 'id_empRea_fk' => $request['empRealiza'],
+                                'id_empEnt_fk' => $request['empEnt'],
                                 'folio' => $request['folioCbr'],
                                 'fecha' => $request['fchCbr'],
                                 'paciente' => $request['pacienteCbr'],
@@ -116,8 +117,6 @@ class CobranzaController extends Controller
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert
                             ]);
-
-                          
                         }else{
                             DB::table('cobranza')->insert([
                                 'id_estudio_fk' => $estUpd->id,
@@ -125,6 +124,7 @@ class CobranzaController extends Controller
                                 'id_empTrans_fk' => $doctorTrans,
                                 'id_empInt_fk' => $doctorInter,
                                 'id_empRea_fk' => $request['empRealiza'],
+                                'id_empEnt_fk' => $request['empEnt'],
                                 'folio' => $request['folioCbr'],
                                 'fecha' => $request['fchCbr'],
                                 'paciente' => $request['pacienteCbr'],
@@ -139,8 +139,6 @@ class CobranzaController extends Controller
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert
                             ]);
-                        
-                            
                         }
 
                         Estudiostemp::where('folio',$request['folioCbr'])
@@ -148,6 +146,7 @@ class CobranzaController extends Controller
                                                     'id_empTrans_fk' => $doctorTrans,                                                
                                                     'id_doctor_fk' => $request["drRequiere"],
                                                     'id_empInt_fk' => $doctorInter,
+                                                    'id_empEnt_fk' => $request['empEnt'],
                                                     'id_empRea_fk' => $request['empRealiza'],
                                                     'tipoPaciente' => $request['tipoPaciente'],
                                                     'transcripcion' => $request['transRd'],
@@ -161,12 +160,12 @@ class CobranzaController extends Controller
 
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
-                       
                         DB::table('cobranza')->where('folio',$request->folioCbr)
                                         ->update([
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
@@ -177,12 +176,13 @@ class CobranzaController extends Controller
                                                 'created_at' => $fechaInsert,
                                                 'updated_at' => $fechaInsert
                                         ]);
-    
-                      Estudiostemp::where('folio',$request['folioCbr'])
+
+                    Estudiostemp::where('folio',$request['folioCbr'])
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
                                             'id_empInt_fk' => $doctorInter,
+                                            'id_empEnt_fk' => $request['empEnt'],
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'tipoPaciente' => $request['tipoPaciente'],
                                             'transcripcion' => $request['transRd'],
@@ -196,15 +196,14 @@ class CobranzaController extends Controller
                     }//Fin para insertar o actualizar datos
                 //Fin del registro cuando se encuentra el estudio
                 }else{
-              
                     //No coincide el  estudio
                     if($request->status == 3 && $request->estudioCorregido != null){
-                       
                         DB::table('cobranza')->insert([
                             'id_estudio_fk' => $request->estudioCorregido,
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
                             'id_empInt_fk' => $doctorInter,
+                            'id_empEnt_fk' => $request['empEnt'],
                             'id_empRea_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
@@ -230,6 +229,7 @@ class CobranzaController extends Controller
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'servicio' => $descripcion->dscrpMedicosPro,
@@ -242,12 +242,12 @@ class CobranzaController extends Controller
                                                 'updated_at' => $fechaInsert
                                             ]);
                     }else{
-                       
                         $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
                                         ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empInt_fk' => $doctorInter,
+                                                'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
@@ -262,13 +262,13 @@ class CobranzaController extends Controller
                 }
             }//Fin registro contiene todos los datos          
         }else{
-            //Registro faltante de datos 
-          
+            //Registro faltante de datos
             $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
                                 ->update([
                                     'id_empTrans_fk' => $doctorTrans,                                                
                                     'id_doctor_fk' => $request["drRequiere"],
                                     'id_empInt_fk' => $doctorInter,
+                                    'id_empEnt_fk' => $request['empEnt'],
                                     'id_empRea_fk' => $request['empRealiza'],
                                     'tipoPaciente' => $request['tipoPaciente'],
                                     'transcripcion' => $request['transRd'],
@@ -290,8 +290,7 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
-    {
+    public function show(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
                             ->select('estudios.id','descripcion','nombretipo_ojo')

@@ -311,12 +311,31 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Entregado Por:</label>
+                                        <select name="empEnt" id="empEnt" class="custom-select combos">
+                                            <option disabled selected>-- Selecciona una opción --</option>
+                                            @foreach($empEnt as $empE)
+                                            @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
+                                            <option selected value="{{ $empE->id_emp }}">
+                                                {{ $empE->empleado }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $empE->id_emp }}">
+                                                {{ $empE->empleado }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-8">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
                                             name="obsCobranza" class="form-control">
-                                        <input type="text" name="status"
+                                        <input type="hidden" name="status"
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
@@ -328,7 +347,7 @@
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="registroC">
+                                            <input checked type="radio" value="N" name="registroC">
                                             <label>NO</label>
                                         </div>
                                     </div>
