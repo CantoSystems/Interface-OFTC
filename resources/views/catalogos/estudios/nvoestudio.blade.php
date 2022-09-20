@@ -45,13 +45,6 @@
                                         onkeyup="mayus(this);">
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <label>Precio en MXN <strong style="color:red">*</strong></label>
-                                    <input type="number" step="0.01" id="precioEstudio" name="precioEstudio"
-                                        class="form-control">
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="card-footer">

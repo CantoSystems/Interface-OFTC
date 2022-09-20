@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-            @canany(['comisiones','cobranzaReportes','optometria'])
+                @canany(['comisiones','cobranzaReportes','optometria'])
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Estudio: <b>{{ $estudio->dscrpMedicosPro }}</b></h3>
@@ -24,7 +24,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Estudio General
-                                        <strong style="color:red">*</strong>
+                                            <strong style="color:red">*</strong>
                                         </label>
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
@@ -45,7 +45,7 @@
                                 <div class="col-2">
                                     <div class="form-group">
                                         <label>Tipo de Ojo
-                                        <strong style="color:red">*</strong>
+                                            <strong style="color:red">*</strong>
                                         </label>
                                         <select name="tipoOjo" id="tipoOjo" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
@@ -66,18 +66,11 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Descripción Medicos Pro
-                                        <strong style="color:red">*</strong>
+                                            <strong style="color:red">*</strong>
                                         </label>
                                         <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro"
-                                            class="form-control" value="{{ $estudio->dscrpMedicosPro }}" required  onkeyup="mayus(this);">
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label>Precio</label>
-                                        <input type="number" step="0.01" name="precioEstudio"
-                                            class="form-control" value="{{ $estudio->precioEstudio }}" required>
-                                        <input type="hidden" id="idEstudio" name="idEstudio" value="{{ $estudio->id }}">
+                                            class="form-control" value="{{ $estudio->dscrpMedicosPro }}" required
+                                            onkeyup="mayus(this);">
                                     </div>
                                 </div>
                             </div>
