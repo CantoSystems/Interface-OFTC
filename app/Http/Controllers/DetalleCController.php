@@ -96,7 +96,8 @@ class DetalleCController extends Controller{
                         $porcentajeComision = DB::table('comisiones_doctores')
                                                 ->where([
                                                     ['id_doctor_fk','=',$request->doctorHoja],
-                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
+                                                    ['tipoPorcentaje','=','N']
                                                 ])
                                                 ->select('porcentaje','id_metodoPago_fk')
                                                 ->get();
