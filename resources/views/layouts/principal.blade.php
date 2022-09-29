@@ -447,7 +447,7 @@
 
         $('#btnDlt').click(function() {
             doctorAp = $('#doctorHoja').val();
-            alert(doctorAp);;
+            alert(doctorAp);
             /*$('#modalDoctor').append($('#doctorHoja').val());
             $('#idHojaConsumo').val($('#idHojaDlt').val());*/
         });
