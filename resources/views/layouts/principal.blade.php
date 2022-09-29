@@ -444,13 +444,6 @@
             $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
-
-        /*$('#btnDlt').click(function() {
-            doctorAp = $('#doctorHoja').val();
-            alert(doctorAp);
-            /*$('#modalDoctor').append($('#doctorHoja').val());
-            $('#idHojaConsumo').val($('#idHojaDlt').val());*/
-        //});
     });
     </script>
     <script>
@@ -460,9 +453,9 @@
     }
 
     function borrarHoja(){
-            doctorAp = $('#doctorHoja').val();
-            console.log(doctorAp);
-        }
+        $('#modalDoctor').append($('#doctorHoja').val());
+        $('#idHojaConsumo').val($('#idHojaDlt').val());
+    }
     </script>
     <script type="text/javascript">
   //Permite solo caracteres excluyendo números
