@@ -7,13 +7,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('deleteHoja.destroy',$hojas->id_detalle) }}" method="POST">
+            <form action="{{ route('deleteHoja.destroy') }}" method="POST">
                 <div class="modal-body">
                     @method('DELETE')
                     @csrf
                     <p>¿Estás seguro que deseas eliminar la hoja de consumo de <b id="modalDoctor"
                             name="modalDoctor"></b>?</p>
-                    <input type="hidden" id="idHojaConsumo" name="idHojaConsumo">
+                    <input type="text" id="idHojaConsumo" name="idHojaConsumo">
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal"
