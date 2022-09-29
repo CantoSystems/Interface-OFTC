@@ -35,7 +35,8 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Tipo de Cirugía</label>
-                                <input class="form-control " type="text" name="cirugia" id="cirugia">
+                                <input class="form-control " type="text" name="cirugia" id="cirugia" 
+                                onkeyup="mayus(this);">
                             </div>
                         </div>
                     </div>
@@ -43,7 +44,8 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Nombre Paciente</label>
-                                <input type="text" class="form-control" id="pacienteHoja" name="pacienteHoja">
+                                <input type="text" class="form-control" id="pacienteHoja" name="pacienteHoja" 
+                                onkeyup="mayus(this);">
                             </div>
                         </div>
                         <div class="col-sm-4">
