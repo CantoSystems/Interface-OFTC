@@ -124,7 +124,8 @@
                                         <input type="text" name="doctorHoja" id="doctorHoja"
                                             value="{{ $hojas->Doctor }}">
                                         <a>
-                                            <button type="button" id="btnDlt" name="btnDlt" onClick="borrarHoja();" class="btn btn-danger btn-sm">
+                                            <button type="button" id="btnDlt" name="btnDlt" data-target="#eliminar-hoja"
+                                                data-toggle="modal" onClick="borrarHoja();" class="btn btn-danger btn-sm">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </a>
