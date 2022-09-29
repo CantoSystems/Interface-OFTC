@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Catálogo Estudios</h4>
         </div>
-    @canany(['comisiones','cobranzaReportes','optometria'])
+        @canany(['comisiones','cobranzaReportes','optometria'])
         <div class="col-md-3 col-sm-4 col-8">
             <div class="info-box shadow">
                 <span class="info-box-icon bg-info"><i class="fas fa-user-plus"></i></span>
@@ -20,17 +20,17 @@
         </div>
         <div class="card-body">
             @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                </div>
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </div>
             @endif
             @if(session()->has('duplicados'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('duplicados')}}
-                </div>
+            <div class="alert alert-danger" role="alert">
+                {{ session('duplicados')}}
+            </div>
             @endif
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
@@ -39,7 +39,7 @@
                         <th>Estudio</th>
                         <th>Tipo de Ojo</th>
                         <th>Descripción</th>
-                        <th>Precio</th>
+                        <th>¿Es paquete?</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -51,7 +51,7 @@
                         <td>{{ $list->descripcion }}</td>
                         <td>{{ $list->nombretipo_ojo }}</td>
                         <td>{{ $list->dscrpMedicosPro }}</td>
-                        <td>$ {{ number_format($list->precioEstudio,2) }}</td>
+                        <td>@if($list->paquete == 'S') Si @else No @endif</td>
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('editCatalogo.update',$list->id) }}">VER</a></th>
                     </tr>
