@@ -224,9 +224,6 @@
                                         @endif
                                     </div>
                                 </div>
-                                @foreach($descripcionEstudios as $descripcion)
-                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                                ($descripcion->paquete == 'N'))
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Interpretación?</label>
@@ -240,7 +237,7 @@
                                             </option>
                                             @else
                                             <option value="{{ $doc->id }}">
-                                                {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
+                                                {{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
                                                 {{ $doc->doctor_apellidom }}
                                             </option>
                                             @endif
@@ -248,8 +245,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                @endif
-                                @endforeach
                                 <div class="col-2">
                                     <label>Escaneado</label>
                                     <div class="form-group">
@@ -359,24 +354,6 @@
                                 </div>
                             </div>
                         </div>
-                        @foreach($descripcionEstudios as $descripcion)
-                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                        ($descripcion->paquete == 'S'))
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-6">
-                                    <button type="submit" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
-                                        Registro</button>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-block btn-outline-secondary btn-xs"
-                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones</button>
-                                </div>
-                            </div>
-                        </div>
-                        @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                        ($descripcion->paquete == 'N'))
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-12">
@@ -386,8 +363,6 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
-                        @endforeach
                     </form>
                 </div>
             </div>
@@ -395,7 +370,6 @@
         </div>
     </div>
 </section>
-@include('estudios.modalInterpretaciones')
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
