@@ -585,14 +585,14 @@ class DetalleCController extends Controller{
     }
 
     public function deleteHoja($id_detalle){
-        
-        $deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$id_detalle)->delete();
+        dd($id_detalle);
+        /*$deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$id_detalle)->delete();
         $deleteHoja2 = DB::table('detalle_consumos')->where('id','=',$id_detalle)->delete();
         
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
         
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));*/
     }
 
     public function exportPDFGral(){
