@@ -445,11 +445,6 @@
                 true).text("-- Selecciona una opción --"));
         });
 
-        function borrarHoja(){
-            doctorAp = $('#doctorHoja').val();
-            console.log(doctorAp);
-        }
-
         /*$('#btnDlt').click(function() {
             doctorAp = $('#doctorHoja').val();
             alert(doctorAp);
@@ -463,6 +458,11 @@
     function mayus(e) {
         e.value = e.value.toUpperCase();
     }
+
+    function borrarHoja(){
+            doctorAp = $('#doctorHoja').val();
+            console.log(doctorAp);
+        }
     </script>
     <script type="text/javascript">
   //Permite solo caracteres excluyendo números
