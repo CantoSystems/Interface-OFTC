@@ -445,12 +445,17 @@
                 true).text("-- Selecciona una opción --"));
         });
 
-        $('#btnDlt').click(function() {
+        function borrarHoja(){
+            doctorAp = $('#doctorHoja').val();
+            console.log(doctorAp);
+        }
+
+        /*$('#btnDlt').click(function() {
             doctorAp = $('#doctorHoja').val();
             alert(doctorAp);
             /*$('#modalDoctor').append($('#doctorHoja').val());
             $('#idHojaConsumo').val($('#idHojaDlt').val());*/
-        });
+        //});
     });
     </script>
     <script>
