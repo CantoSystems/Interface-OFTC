@@ -13,7 +13,7 @@
                     @csrf
                     <p>¿Estás seguro que deseas eliminar la hoja de consumo de <b id="modalDoctor"
                             name="modalDoctor"></b>?</p>
-                    <input type="text" id="idHojaConsumo" name="idHojaConsumo">
+                    <input type="hidden" id="idHojaConsumo" name="idHojaConsumo">
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal"

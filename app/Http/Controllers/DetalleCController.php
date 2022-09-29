@@ -590,8 +590,27 @@ class DetalleCController extends Controller{
         
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
+        $hojasConsumo = DB::table('detalle_consumos')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.id_doctor_fk'
+                                    ,'detalle_consumos.fechaElaboracion'
+                                    ,'detalle_consumos.paciente'
+                                    ,'detalle_consumos.cirugia'
+                                    ,'detalle_consumos.tipoCirugia'
+                                    ,'detalle_consumos.tipoPaciente'
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')
+                        ->where('doctors.id','=',$request->slctDoctor)
+                        ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
+                        ->get();
         
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
+        return redirect()->route('viewHojas.show', compact('doctores','tipoPaciente','hojasConsumo'));
     }
 
     public function exportPDFGral(){

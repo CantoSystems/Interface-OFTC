@@ -119,7 +119,7 @@
                                         </a>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="idHojaDlt" id="idHojaDlt"
+                                        <input type="hidden" name="idHojaDlt" id="idHojaDlt"
                                             value="{{ $hojas->id_detalle }}">
                                         <input type="hidden" name="doctorHoja" id="doctorHoja"
                                             value="{{ $hojas->Doctor }}">
