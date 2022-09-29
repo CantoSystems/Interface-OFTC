@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title modalPersonalizado">Eliminar Hoja de Consumo</h1>
+                <h1 class="modal-title modalPersonalizado">Eliminar Hoja de Consumo </h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

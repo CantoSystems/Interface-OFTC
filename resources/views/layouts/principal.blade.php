@@ -487,11 +487,6 @@
             $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
-
-        $('#btnDlt').click(function() {
-            $('#modalDoctor').append($('#doctorHoja').val());
-            $('#idHojaConsumo').val($('#idHojaDlt').val());
-        });
     });
     </script>
 
@@ -499,6 +494,11 @@
     //Función para convertir en texto en mayusculas
     function mayus(e) {
         e.value = e.value.toUpperCase();
+    }
+
+    function borrarHoja() {
+        $('#modalDoctor').append($('#doctorHoja').val());
+        $('#idHojaConsumo').val($('#idHojaDlt').val());
     }
     </script>
 </body>

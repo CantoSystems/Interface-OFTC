@@ -68,9 +68,7 @@ class CobranzaController extends Controller
                 'transRd' => 'required',
                 'intRd' => 'required',
                 'escRd' => 'required',
-                'entRd' => 'required',
-                'empEnt' => 'required',
-                'empRealiza' => 'required'
+                'entRd' => 'required'
             ],[
                 'registroC.required' => 'Selecciona si el registro ya está completo.',
                 'drRequiere.required' => 'Selecciona el doctor al que requiere el estudio.',
@@ -79,8 +77,6 @@ class CobranzaController extends Controller
                 'entRd.required' => 'Selecciona el status de entregado del estudio.',
                 'transRd.required' => 'Selecciona el status de transcripción del estudio.',
                 'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-                'empEnt.required' => 'Selecciona el empleado que entregó el estudio.',
-                'empRealiza.required' => 'Selecciona el empleado que realizó el estudio.'
             ]);
 
             if($validator->fails()){

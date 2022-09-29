@@ -125,7 +125,7 @@
                                             value="{{ $hojas->Doctor }}">
                                         <a>
                                             <button type="button" id="btnDlt" name="btnDlt" data-target="#eliminar-hoja"
-                                                data-toggle="modal" class="btn btn-danger btn-sm">
+                                                data-toggle="modal" onClick="borrarHoja();" class="btn btn-danger btn-sm">
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </a>
@@ -133,8 +133,9 @@
                                 </div>
                             </center>
                         </td>
-@endcanany
+                    @endcanany
                     </tr>
+                    @include('detalleC.modaldeletehoja')
                     @endforeach
                     @endif
                     @endcanany
@@ -143,7 +144,7 @@
         </div>
     </div>
 </div>
-@include('detalleC.modaldeletehoja')
+
 @canany(['cobranzaReportes','auxiliarCobranzaReportes','invitado',''])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
