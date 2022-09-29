@@ -119,9 +119,9 @@
                                         </a>
                                     </div>
                                     <div class="form-group">
-                                        <input type="hidden" name="idHojaDlt" id="idHojaDlt"
+                                        <input type="text" name="idHojaDlt" id="idHojaDlt"
                                             value="{{ $hojas->id_detalle }}">
-                                        <input type="text" name="doctorHoja" id="doctorHoja"
+                                        <input type="hidden" name="doctorHoja" id="doctorHoja"
                                             value="{{ $hojas->Doctor }}">
                                         <a>
                                             <button type="button" id="btnDlt" name="btnDlt" data-target="#eliminar-hoja"
