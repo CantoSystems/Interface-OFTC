@@ -17,7 +17,8 @@ class CreateEstudiosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_estudio_fk');
             $table->unsignedBigInteger('id_ojo_fk');
-            $table->string('dscrpMedicosPro',60)->nullable();
+            $table->string('dscrpMedicosPro',60);
+            $table->string('paquete',2);
             $table->foreign('id_ojo_fk')->references('id')->on('tipo_ojos');
             $table->timestamps();
             $table->engine = 'InnoDB';

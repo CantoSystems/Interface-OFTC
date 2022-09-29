@@ -26,6 +26,7 @@
                                         <label>Estudio General
                                             <strong style="color:red">*</strong>
                                         </label>
+                                        <input type="hidden" value="" name="idEstudio">
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($catEstudios as $catEstudios)
@@ -71,6 +72,39 @@
                                         <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro"
                                             class="form-control" value="{{ $estudio->dscrpMedicosPro }}" required
                                             onkeyup="mayus(this);">
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <label>¿Es paquete?<strong style="color:red">*</strong></label>
+                                    <div class="form-group">
+                                        @if($estudio->paquete == 'S')
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="paqEst">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="paqEst">
+                                            <label>NO</label>
+                                        </div>
+                                        @elseif($estudio->paquete == 'N')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="paqEst">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="paqEst">
+                                            <label>NO</label>
+                                        </div>
+                                        @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="paqEst">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="paqEst">
+                                            <label>NO</label>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

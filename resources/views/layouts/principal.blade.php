@@ -78,8 +78,8 @@
                                     </a>
                                 </li>
                             </ul>
-                    @endcanany
-                    @canany(['comisiones','cobranzaReportes'])
+                            @endcanany
+                            @canany(['comisiones','cobranzaReportes'])
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('importarCitas.index')}}" class="nav-link">
@@ -88,7 +88,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            
+
                         </li>
                     </ul>
                     @endcanany
@@ -112,7 +112,7 @@
                                     </a>
                                 </li>
                             </ul>
-                
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('viewHojas.show') }}" class="nav-link">
@@ -167,7 +167,7 @@
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                        
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('mostrarCatalogoGral.show') }}" class="nav-link">
@@ -184,8 +184,8 @@
                                     </a>
                                 </li>
                             </ul>
-                        @endcanany
-                        @canany(['comisiones','cobranzaReportes'])
+                            @endcanany
+                            @canany(['comisiones','cobranzaReportes'])
 
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
@@ -272,12 +272,47 @@
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
     <script src="{{ asset('/AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
     <script type="text/javascript">
+    function validar(e) {
+        tecla = (document.all) ? e.keyCode : e.which;
+        if (tecla == 8) return true;
+        patron = /[A-Za-z\s]/;
+        te = String.fromCharCode(tecla);
+        return patron.test(te);
+    }
+
+    let i = 1;
+    $('#grdrInt').click(function(e) {
+        i++;
+        e.preventDefault();
+        let idEstudio = $('#estudioInt').val();
+        let idDoctor = $('#doctorInt').val();
+        let estudioInt = $('select[name="estudioInt"] option:selected').text();
+        let doctorInt = $('select[name="doctorInt"] option:selected').text();
+
+        if (idEstudio != "" && idDoctor != "" && estudioInt != "" && doctorInt != "" && estudioInt !=
+            "-- Selecciona una opción --" && doctorInt != "-- Selecciona una opción --") {
+            let htmlTags = '<tr>' +
+                '<td class="estudioI">' + estudioInt + '</td>' +
+                '<td class="doctorI">' + doctorInt + '</td>' +
+                '<td class="elimina" style="text-align: center; width:40px; height:25px;"><button class="borrar_ausencia" type="button" style="width:40px; height:25px"><i class="far fa-trash-alt"></i></button></td>' +
+                '</tr>'
+            $('#example13 tbody').append(htmlTags);
+            $('#estudioInt option').prop('selected', function() {
+                return this.defaultSelected;
+            });
+            $('#doctorInt option').prop('selected', function() {
+                return this.defaultSelected;
+            });
+        } else {
+            alert("Falta seleccionar estudio y/o doctor.");
+        }
+    });
+
     $(document).ready(function() {
         $('#porcentajeComision').val(0);
         $('#cantidadComision').val(0);
         $('#utilidadComision').val(0);
         $('#precioEstudio').val(0);
-
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
@@ -324,6 +359,7 @@
                 ]
             });
         });
+
         $(function() {
             $("#genReportes").DataTable({
                 "responsive": true,
@@ -337,6 +373,7 @@
                 }
             });
         });
+
         $(function() {
             $("#catComisiones").DataTable({
                 "responsive": true,
@@ -350,6 +387,7 @@
                 }
             });
         });
+
         $(function() {
             $("#reporteCitas").DataTable({
                 "responsive": true,
@@ -363,6 +401,7 @@
                 }
             });
         });
+
         $(function() {
             $("#catComisionesGral").DataTable({
                 "responsive": true,
@@ -376,6 +415,7 @@
                 }
             });
         });
+
         $(function() {
             $("#catEstudios").DataTable({
                 "responsive": true,
@@ -389,6 +429,7 @@
                 }
             });
         });
+
         $(function() {
             $("#tableDetalle").DataTable({
                 "responsive": true,
@@ -422,10 +463,12 @@
                 ]
             });
         });
+
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
         });
+
         $('.transRdN').click(function() {
             if ($(".transRdN").is(':checked')) {
                 $('#drTransc').attr("disabled", true);
@@ -433,37 +476,31 @@
                     .text("-- Selecciona una opción --"));
             }
         });
+
         $('.interSi').click(function() {
             $('#drInterpreta').attr("disabled", false);
             $("option").remove(".nullableInterpreta");
         });
+
         $('.interNo').click(function() {
             $('#drInterpreta').attr("disabled", true);
             $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
+
         $('#btnDlt').click(function() {
             $('#modalDoctor').append($('#doctorHoja').val());
             $('#idHojaConsumo').val($('#idHojaDlt').val());
         });
     });
     </script>
+
     <script>
     //Función para convertir en texto en mayusculas
     function mayus(e) {
         e.value = e.value.toUpperCase();
     }
     </script>
-    <script type="text/javascript">
-  //Permite solo caracteres excluyendo números
-  function validar(e) { 
-    tecla = (document.all) ? e.keyCode : e.which; 
-    if (tecla==8) return true; 
-    patron =/[A-Za-z\s]/; 
-    te = String.fromCharCode(tecla); 
-    return patron.test(te); 
-  }
-</script>
 </body>
 
 </html>
