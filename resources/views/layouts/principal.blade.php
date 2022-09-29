@@ -433,18 +433,23 @@
                     .text("-- Selecciona una opción --"));
             }
         });
+
         $('.interSi').click(function() {
             $('#drInterpreta').attr("disabled", false);
             $("option").remove(".nullableInterpreta");
         });
+
         $('.interNo').click(function() {
             $('#drInterpreta').attr("disabled", true);
             $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
+
         $('#btnDlt').click(function() {
-            $('#modalDoctor').append($('#doctorHoja').val());
-            $('#idHojaConsumo').val($('#idHojaDlt').val());
+            doctorAp = $('#doctorHoja').val();
+            alert(doctorAp);
+            /*$('#modalDoctor').append($('#doctorHoja').val());
+            $('#idHojaConsumo').val($('#idHojaDlt').val());*/
         });
     });
     </script>
