@@ -359,9 +359,22 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function storeInt(Request $request){
+        if (empty($request->all())) {
+            return response()->json(["error" => "Sin data"]);
+        }
+
+        foreach ($request->only('info') as $value) {
+            $data = json_decode($value);
+        }
+
+        foreach ($data as $value) {
+            DB::table('intEstudios')->insert([
+                'id_cobranza_fk' => $data->idCobranza,
+                'id_estudio_fk' => $data->estudioI,
+                'id_doctor_fk' => $data->doctorI
+            ]);
+        }
     }
 
     /**

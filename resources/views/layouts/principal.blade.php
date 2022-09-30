@@ -280,34 +280,6 @@
         return patron.test(te);
     }
 
-    let i = 1;
-    $('#grdrInt').click(function(e) {
-        i++;
-        e.preventDefault();
-        let idEstudio = $('#estudioInt').val();
-        let idDoctor = $('#doctorInt').val();
-        let estudioInt = $('select[name="estudioInt"] option:selected').text();
-        let doctorInt = $('select[name="doctorInt"] option:selected').text();
-
-        if (idEstudio != "" && idDoctor != "" && estudioInt != "" && doctorInt != "" && estudioInt !=
-            "-- Selecciona una opción --" && doctorInt != "-- Selecciona una opción --") {
-            let htmlTags = '<tr>' +
-                '<td class="estudioI">' + estudioInt + '</td>' +
-                '<td class="doctorI">' + doctorInt + '</td>' +
-                '<td class="elimina" style="text-align: center; width:40px; height:25px;"><button class="borrar_ausencia" type="button" style="width:40px; height:25px"><i class="far fa-trash-alt"></i></button></td>' +
-                '</tr>'
-            $('#example13 tbody').append(htmlTags);
-            $('#estudioInt option').prop('selected', function() {
-                return this.defaultSelected;
-            });
-            $('#doctorInt option').prop('selected', function() {
-                return this.defaultSelected;
-            });
-        } else {
-            alert("Falta seleccionar estudio y/o doctor.");
-        }
-    });
-
     $(document).ready(function() {
         $('#porcentajeComision').val(0);
         $('#cantidadComision').val(0);
@@ -488,8 +460,90 @@
                 true).text("-- Selecciona una opción --"));
         });
     });
-    </script>
 
+    let i = 1;
+    $('#grdrInt').click(function(e) {
+        i++;
+        e.preventDefault();
+        let idEstudio = $('#estudioInt').val();
+        let idDoctor = $('#doctorInt').val();
+        let folioEst = $('#folioCbr').val();
+        let estudioInt = $('select[name="estudioInt"] option:selected').text();
+        let doctorInt = $('select[name="doctorInt"] option:selected').text();
+
+        if (idEstudio != "" && idDoctor != "" && estudioInt != "" && doctorInt != "" && estudioInt !=
+            "-- Selecciona una opción --" && doctorInt != "-- Selecciona una opción --") {
+            let htmlTags = '<tr>' +
+                '<td>' +
+                    '<input type="hidden" class="estudioI" value="' + idEstudio + '">' +
+                    '<input type="hidden" class="folioEst" value="' + folioEst + '">' +
+                    estudioInt +
+                '</td>' +
+                '<td>' +
+                    '<input type="hidden" class="doctorI" value="' + idDoctor + '">' + 
+                    doctorInt + 
+                '</td>' +
+                '<td class="elimina" style="text-align: center; width:40px; height:25px;">' + 
+                    '<button class="borrar_int" type="button" style="width:40px; height:25px">' + 
+                        '<i class="far fa-trash-alt"></i>' +
+                    '</button>' +
+                '</td>' +
+                '</tr>'
+            $('#example13 tbody').append(htmlTags);
+            $('#estudioInt option').prop('selected', function() {
+                return this.defaultSelected;
+            });
+            $('#doctorInt option').prop('selected', function() {
+                return this.defaultSelected;
+            });
+        } else {
+            alert("Falta seleccionar estudio y/o doctor.");
+        }
+    });
+
+    $('#grdrCompleto').click(function (e){
+        let myTableArrayInt = [];
+        document.querySelectorAll('.example13 tbody tr').forEach(function(e){
+            let filas = {
+                estudioI: e.querySelector('.estudioI').innerText,
+                doctorI: e.querySelector('.doctorI').innerText,
+                folioE: e.querySelector('.folioEst').innerText
+            };
+            myTableArrayInt.push(filas);
+        });
+        let jsonStringa = JSON.stringify(myTableArrayInt);
+        $.ajax({
+            url: "{{ route('interpretaciones.store') }}",
+            method: "POST",
+            data: {
+                _token: $("meta[name='csrf-token']").attr("content"),
+                info : jsonStringa,
+            },
+            success: function(data){
+                console.log(data);
+                $(".example13 tbody tr").closest('tr').remove();
+            },
+            error: function(xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                console.log(err.Message);
+            }
+        });
+    });
+
+    $(document).on('click', '.borrar_int', function (event) {
+        event.preventDefault();
+        $(this).closest('tr').remove();
+        let fecha = new Date(); //Fecha actual
+        let mes = fecha.getMonth()+1; //obteniendo mes
+        let dia = fecha.getDate()-1; //obteniendo dia
+        let ano = fecha.getFullYear(); //obteniendo año
+        if(dia<10)
+            dia='0'+dia; //agrega cero si el menor de 10
+        if(mes<10)
+            mes='0'+mes //agrega cero si el menor de 10
+        document.getElementById('fecha_ausentismo').value=ano+"-"+mes+"-"+dia;
+    });
+    </script>
 
     <script>
     //Función para convertir en texto en mayusculas
