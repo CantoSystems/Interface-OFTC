@@ -118,7 +118,7 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <input type="hidden" name="idHojaDlt" id="idHojaDlt"
                                             value="{{ $hojas->id_detalle }}">
                                         <input type="hidden" name="doctorHoja" id="doctorHoja"
@@ -129,13 +129,12 @@
                                                 <i class="far fa-trash-alt"></i>
                                             </button>
                                         </a>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </center>
                         </td>
                     @endcanany
                     </tr>
-                    @include('detalleC.modaldeletehoja')
                     @endforeach
                     @endif
                     @endcanany

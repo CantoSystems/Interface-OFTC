@@ -11,9 +11,9 @@
                 <div class="modal-body">
                     @method('DELETE')
                     @csrf
-                    <p>¿Estás seguro que deseas eliminar la hoja de consumo de <b id="modalDoctor"
-                            name="modalDoctor"></b>?</p>
-                    <input type="hidden" id="idHojaConsumo" name="idHojaConsumo">
+                    <p>¿Estás seguro que deseas eliminar la hoja de consumo con folio <b id="modalDoctor"
+                            name="modalDoctor">{{ $data->id }}</b> de <b>{{ $data->paciente }}</b> ?</p>
+                    <input type="hidden" id="idHojaConsumo" value="{{ $data->id }}" name="idHojaConsumo">
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal"
