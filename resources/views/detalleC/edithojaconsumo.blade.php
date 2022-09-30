@@ -34,7 +34,7 @@
                                     <div class="form-group">
                                         <label>Seleccionar Doctor</label>
                                         <select class="custom-select rounded-0" id="doctorHoja" name="doctorHoja">
-                                            <option disabled selected>Seleccionar una opción...</option>
+                                            <option disabled selected>-- Seleccionar una opción --</option>
                                             @foreach($doctores as $doc)
                                             @if($doc->id == $data->id_doctor_fk)
                                             <option selected value="{{ $doc->id }}">{{ $doc->doctor_titulo }}
@@ -72,7 +72,7 @@
                                         <label>Tipo Paciente</label>
                                         <select class="custom-select rounded-0" id="tipoPacienteHoja"
                                             name="tipoPacienteHoja">
-                                            <option disabled selected>Seleccionar una opción...</option>
+                                            <option disabled selected>-- Seleccionar una opción --</option>
                                             @foreach($tipoPaciente as $tipoP)
                                             @if($tipoP->id == $data->tipoPaciente)
                                             <option selected value="{{ $tipoP->id }}">
@@ -91,7 +91,7 @@
                                     <div class="form-group">
                                         <label>Status Hoja de Consumo</label>
                                         <select class="custom-select rounded-0" id="statusHoja" name="statusHoja">
-                                            <option disabled selected>Seleccionar una opción...</option>
+                                            <option disabled selected>-- Seleccionar una opción --</option>
                                             @if($data->statusHoja == 'Pendiente')
                                             <option selected value="Pendiente">
                                                 Pendiente
@@ -140,9 +140,15 @@
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-6">
                                         <button type="submit" id="btnGuardar" name="btnGuardar"
                                             class="btn btn-block btn-outline-info btn-xs">Actualizar
+                                            Registro</button>
+                                    </div>
+                                    <div class="col-6">
+                                        <button type="button" data-target="#eliminar-hoja"
+                                                data-toggle="modal" id="btnGuardar" name="btnGuardar"
+                                            class="btn btn-block btn-outline-danger btn-xs">Eliminar
                                             Registro</button>
                                     </div>
                                 </div>
@@ -154,7 +160,7 @@
         </div>
     </div>
 </section>
-
+@include('detalleC.modaldeletehoja')
 @elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
     <div class="alert alert-danger" role="alert">
                     No cuenta con los privilegios para acceder a este módulo del sistema

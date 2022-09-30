@@ -550,12 +550,6 @@
     function mayus(e) {
         e.value = e.value.toUpperCase();
     }
-
-    function borrarHoja() {
-        $('#modalDoctor').append($('#doctorHoja').val());
-        $('#idHojaConsumo').val($('#idHojaDlt').val());
-        alert($('#idHojaConsumo').val());
-    }
     </script>
 </body>
 
