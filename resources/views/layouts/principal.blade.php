@@ -505,9 +505,9 @@
         let myTableArrayInt = [];
         document.querySelectorAll('.example13 tbody tr').forEach(function(e){
             let filas = {
-                estudioI: e.querySelector('.estudioI').innerText,
-                doctorI: e.querySelector('.doctorI').innerText,
-                folioE: e.querySelector('.folioEst').innerText
+                estudioI: e.querySelector('.estudioI').value,
+                doctorI: e.querySelector('.doctorI').value,
+                folioE: e.querySelector('.folioEst').value
             };
             myTableArrayInt.push(filas);
         });
@@ -520,7 +520,7 @@
                 info : jsonStringa,
             },
             success: function(data){
-                console.log(data);
+                //console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
             },
             error: function(xhr, status, error) {

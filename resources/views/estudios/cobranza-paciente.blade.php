@@ -19,7 +19,7 @@
                     </div>
                     @endif
                     <form action="{{ route('importarCobranza.update') }}" method="POST">
-                        @csrf
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-1">
