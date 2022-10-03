@@ -505,9 +505,9 @@
         let myTableArrayInt = [];
         document.querySelectorAll('.example13 tbody tr').forEach(function(e){
             let filas = {
-                estudioI: e.querySelector('.estudioI').innerText,
-                doctorI: e.querySelector('.doctorI').innerText,
-                folioE: e.querySelector('.folioEst').innerText
+                estudioI: e.querySelector('.estudioI').value,
+                doctorI: e.querySelector('.doctorI').value,
+                folioE: e.querySelector('.folioEst').value
             };
             myTableArrayInt.push(filas);
         });
@@ -520,7 +520,7 @@
                 info : jsonStringa,
             },
             success: function(data){
-                console.log(data);
+                //console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
             },
             error: function(xhr, status, error) {
@@ -542,6 +542,27 @@
         if(mes<10)
             mes='0'+mes //agrega cero si el menor de 10
         document.getElementById('fecha_ausentismo').value=ano+"-"+mes+"-"+dia;
+    });
+
+    $(document).on('click', '.dltInt', function (event) {
+        event.preventDefault();
+        console.log($(this).parents("tr").find(".inpDel").val());
+        $.ajax({
+            url: "{{ route('interpretaciones.delete') }}",
+            method: "POST",
+            data: {
+                _token: $("meta[name='csrf-token']").attr("content"),
+                idIntDel: $(this).parents("tr").find(".inpDel").val(),
+            },
+            success: function(data){
+                console.log(data);
+                $(this).closest('tr').remove();
+            },
+            error: function(xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                console.log(err.Message);
+            }
+        })
     });
     </script>
 
