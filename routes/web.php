@@ -38,6 +38,7 @@ Route::post('/actualizar-data-cobranza',[CobranzaController::class,'store'])->na
 Route::get('/reportes-cobranza',[CobranzaController::class,'show'])->name('importarCobranza.verTabla')->middleware('auth');
 Route::get('/reportes-cobranza-info',[CobranzaController::class,'showCobranza'])->name('importarCobranza.showData')->middleware('auth');
 Route::post('/agregar-interpretaciones',[CobranzaController::class,'storeInt'])->name('interpretaciones.store')->middleware('auth');
+Route::post('/eliminar-interpretacion',[CobranzaController::class,'delInt'])->name('interpretaciones.delete')->middleware('auth');
 
 //Citas
 Route::get('/subir-citas',[CitaController::class,'index'])->name('importarCitas.index')->middleware('auth');

@@ -106,7 +106,26 @@ class EstudiosController extends Controller{
                                         ['categoria_id',2]
                                     ])->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt'));
+        if($datosPaciente->estudiostemps_status == 0){
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('estudiostemps.id',$id)
+                            ->get();
+
+        }else{
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','id_estudio_fk')
+                            ->join('doctors','doctors.id','=','id_doctor_fk')
+                            ->join('cobranza','cobranza.folio','=','id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('cobranza.id',$id)
+                            ->get();
+        }
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
 
     /**

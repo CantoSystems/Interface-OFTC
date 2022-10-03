@@ -344,6 +344,37 @@
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>Tabla de Interpretaciones</label>
+                                    <table name="tablaInt" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Estudio</th>
+                                                <th>Doctor</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($doctoresInt as $dInt)
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="inpDel" id="idIntDel" name="idIntDel" value="{{ $dInt->id }}">
+                                                        {{ $dInt->dscrpMedicosPro }}
+                                                    </td>
+                                                    <td>{{ $dInt->doctor }}</td>
+                                                    <td class="elimina" style="text-align: center; width:40px; height:25px;">
+                                                        <button class="dltInt" type="button" style="width:40px; height:25px">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                @include('estudios.modaldeleteinterpretaciones')
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
                                     <div class="form-group">

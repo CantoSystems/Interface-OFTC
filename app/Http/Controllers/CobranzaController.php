@@ -340,7 +340,7 @@ class CobranzaController extends Controller
                             ->select('estudios.id','descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
-                                   
+                                
         return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios','inicio','fin'));
     }
 
@@ -383,8 +383,10 @@ class CobranzaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function delInt(Request $request){
+        $data = json_decode($request);
+        dd($data);
+        //$dltInterpretacion = DB::table('intestudios')->where('id',$request->idInt)->delete();
+        //return redirect()->route('importarCobranza.index');
     }
 }
