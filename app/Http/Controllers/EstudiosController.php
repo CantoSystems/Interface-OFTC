@@ -124,7 +124,7 @@ class EstudiosController extends Controller{
     public function showCatalogo(){
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.precioEstudio','estudios.precioEstudio')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
                                 
