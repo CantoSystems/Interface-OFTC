@@ -146,8 +146,7 @@ class EstudiosController extends Controller{
     }
 
     public function updateEstudio(Request $request){
-        dd($request);
-        /*$nvoEstudio = Estudios::find($request->idEstudio);
+        $nvoEstudio = Estudios::find($request->idEstudio);
         $nvoEstudio->id_estudio_fk = $request->estudioGral;
         $nvoEstudio->id_ojo_fk = $request->tipoOjo;
         $nvoEstudio->dscrpmedicosPro = $request->dscrpMedicosPro;
@@ -163,7 +162,7 @@ class EstudiosController extends Controller{
         $catEstudios = CatEstudios::all();
         $catOjos = TipoOjo::all();
 
-        return view('catalogos.estudios.catestudios',compact('listEstudios','catEstudios','catOjos'));*/
+        return view('catalogos.estudios.catestudios',compact('listEstudios','catEstudios','catOjos'));
     }
 
     public function nvoEstudio(Request $request){
