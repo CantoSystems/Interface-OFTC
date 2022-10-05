@@ -46,10 +46,16 @@
                                 </div>
                             </div>
                             <div class="col-2">
+                                <label>¿Es paquete?<strong style="color:red">*</strong></label>
                                 <div class="form-group">
-                                    <label>Precio en MXN <strong style="color:red">*</strong></label>
-                                    <input type="number" step="0.01" id="precioEstudio" name="precioEstudio"
-                                        class="form-control">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="radio" value="S" name="paqEst">
+                                        <label>SI</label>
+                                    </div>
+                                    <div class="icheck-primary d-inline">
+                                        <input checked type="radio" value="N" name="paqEst">
+                                        <label>NO</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>

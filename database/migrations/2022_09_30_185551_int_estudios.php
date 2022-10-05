@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstudiosTable extends Migration
+class IntEstudios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateEstudiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('estudios', function (Blueprint $table) {
+        Schema::create('intEstudios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_estudio_fk');
-            $table->unsignedBigInteger('id_ojo_fk');
-            $table->string('dscrpMedicosPro',60);
-            $table->string('paquete',2);
-            $table->foreign('id_ojo_fk')->references('id')->on('tipo_ojos');
+            $table->unsignedBigInteger('id_doctor_fk');
+            $table->text('id_cobranza_fk');
+            $table->foreign('id_estudio_fk')->references('id')->on('estudios');
+            $table->foreign('id_doctor_fk')->references('id')->on('doctors');
             $table->timestamps();
-            $table->engine = 'InnoDB';
         });
     }
 
@@ -32,6 +31,6 @@ class CreateEstudiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estudios');
+        //
     }
 }

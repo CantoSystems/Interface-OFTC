@@ -96,7 +96,8 @@ class DetalleCController extends Controller{
                         $porcentajeComision = DB::table('comisiones_doctores')
                                                 ->where([
                                                     ['id_doctor_fk','=',$request->doctorHoja],
-                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
+                                                    ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja],
+                                                    ['tipoPorcentaje','=','N']
                                                 ])
                                                 ->select('porcentaje','id_metodoPago_fk')
                                                 ->get();
@@ -584,15 +585,33 @@ class DetalleCController extends Controller{
         return redirect()->route('mostrarPorcentajes.show');
     }
 
-    public function deleteHoja($id_detalle){
-        
-        $deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$id_detalle)->delete();
-        $deleteHoja2 = DB::table('detalle_consumos')->where('id','=',$id_detalle)->delete();
+    public function deleteHoja(Request $request){
+        $deleteHoja = DB::table('detalle_adicional')->where('id_detalleConsumo_FK','=',$request->idHojaConsumo)->delete();
+        $deleteHoja2 = DB::table('detalle_consumos')->where('id','=',$request->idHojaConsumo)->delete();
         
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
+        $hojasConsumo = DB::table('detalle_consumos')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'detalle_consumos.id as id_detalle'
+                                    ,'detalle_consumos.id_doctor_fk'
+                                    ,'detalle_consumos.fechaElaboracion'
+                                    ,'detalle_consumos.paciente'
+                                    ,'detalle_consumos.cirugia'
+                                    ,'detalle_consumos.tipoCirugia'
+                                    ,'detalle_consumos.tipoPaciente'
+                                    ,'detalle_consumos.cantidadEfe'
+                                    ,'detalle_consumos.cantidadTrans'
+                                    ,'detalle_consumos.TPV'
+                                    ,'detalle_consumos.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')
+                        ->where('doctors.id','=',$request->slctDoctor)
+                        ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
+                        ->get();
         
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente'));
+        return redirect()->route('viewHojas.show', compact('doctores','tipoPaciente','hojasConsumo'));
     }
 
     public function exportPDFGral(){
