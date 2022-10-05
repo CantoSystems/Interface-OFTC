@@ -158,6 +158,7 @@ class CobranzaController extends Controller
                                                     'entregado' => $request['entRd'],
                                                     'observaciones' => $request['obsCobranza'],
                                                     'estudiostemps_status' => 1,
+                                                    'registroC' => $request['registroC'],
                                                     'updated_at' => $fechaInsert
                                                 ]);
 
@@ -193,6 +194,7 @@ class CobranzaController extends Controller
                                             'escaneado' => $request['escRd'],
                                             'entregado' => $request['entRd'],
                                             'observaciones' => $request['obsCobranza'],
+                                            'registroC' => $request['registroC'],
                                             'updated_at' => $fechaInsert
                                         ]);
                     //El registro se actualiza en estudiostemps y en cobranza 
@@ -242,6 +244,7 @@ class CobranzaController extends Controller
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
                                                 'estudiostemps_status' => 1,
+                                                'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
                                             ]);
                     }else{
@@ -259,6 +262,7 @@ class CobranzaController extends Controller
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
                                                 'estudiostemps_status' => 3,
+                                                'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
                                         ]);
                     }//Registro no se encuentran coincidencias
@@ -280,6 +284,7 @@ class CobranzaController extends Controller
                                     'entregado' => $request['entRd'],
                                     'observaciones' => $request['obsCobranza'],
                                     'estudiostemps_status' => 2,
+                                    'registroC' => $request['registroC'],
                                     'updated_at' => $fechaInsert
                                 ]);
         }//Fin contiene todos los datos

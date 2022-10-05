@@ -37,6 +37,7 @@ class CreateEstudiostempsTable extends Migration
             $table->char('statusCita',15)->nullable();
             $table->text('observaciones')->nullable();
             $table->boolean('estudiostemps_status')->default(0)->nullable();
+            $table->char('registroC')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

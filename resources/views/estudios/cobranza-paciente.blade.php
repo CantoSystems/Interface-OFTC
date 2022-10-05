@@ -341,35 +341,90 @@
                                 </div>
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
-                                    <div class="form-group">
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="registroC">
-                                            <label>SI</label>
+                                    @if($datosPaciente->estudiostemps_status == 0)
+                                        <div class="form-group">
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="S" name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input checked type="radio" value="N" name="registroC">
+                                                <label>NO</label>
+                                            </div>
                                         </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="registroC">
-                                            <label>NO</label>
+                                    @else
+                                        @if($datosPaciente->registroC == 'S')
+                                        <div class="form-group">
+                                            <div class="icheck-primary d-inline">
+                                                <input checked type="radio" value="S" name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input  type="radio" value="N" name="registroC">
+                                                <label>NO</label>
+                                            </div>
                                         </div>
-                                    </div>
+                                        @elseif($datosPaciente->registroC == 'N')
+                                        <div class="form-group">
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="S" name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input checked type="radio" value="N" name="registroC">
+                                                <label>NO</label>
+                                            </div>
+                                        </div>
+                                        @else
+                                        <div class="form-group">
+                                            <div class="icheck-primary d-inline">
+                                                <input type="radio" value="S" name="registroC">
+                                                <label>SI</label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input checked type="radio" value="N" name="registroC">
+                                                <label>NO</label>
+                                            </div>
+                                        </div>
+                                        @endif
+
+                                    @endif
+
+
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" id="btnGuardar" name="btnGuardar"
+                                <div class="col-6">
+                                    
+                                    <a href="{{ route('importarCobranza.index')}}">
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                        class="btn btn-block btn-outline-secondary btn-xs">Regresar</button>
+                                    </a>
+                                </div>
+                                
+                                <div class="col-6">
+
+                                    <a data-target="#modal-paciente"
+                                        data-toggle="modal">
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
                                         class="btn btn-block btn-outline-info btn-xs">Guardar
                                         Registro</button>
+                                    </a>
                                 </div>
+                                
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
             <!--Fin Card Información Paciente-->
         </div>
     </div>
 </section>
+    @include('estudios.modalpaciente')
+</form>
     @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
     <div class="alert alert-danger" role="alert">
                     No cuenta con los privilegios para acceder a este módulo del sistema
