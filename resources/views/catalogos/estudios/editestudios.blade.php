@@ -26,7 +26,7 @@
                                         <label>Estudio General
                                             <strong style="color:red">*</strong>
                                         </label>
-                                        <input type="hidden" value="" name="idEstudio">
+                                        <input type="hidden" value="{{ $estudio->id }}" name="idEstudio">
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($catEstudios as $catEstudios)
