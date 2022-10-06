@@ -310,7 +310,7 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showCobranza(Request $request){
-        if ( $request->estudioSelect === null) {
+        if ($request->estudioSelect === null) {
             $busquedaEstudios = [];
         }
         
