@@ -31,7 +31,7 @@ class CobranzaExport implements FromView, ShouldAutoSize{
                                 ->select('cobranza.folio'
                                         ,'cobranza.fecha'
                                         ,'cobranza.paciente'
-                                        ,'cat_estudios.descripcion'
+                                        ,'estudios.dscrpMedicosPro as descripcion'
                                         ,'tipo_ojos.nombretipo_ojo'
                                         ,DB::raw("UPPER(CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop)) AS Doctor")
                                         ,DB::raw('(CASE WHEN transcripcion = "S" THEN "SI" ELSE "NO" END) AS Transcripcion')
