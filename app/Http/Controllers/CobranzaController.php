@@ -296,7 +296,7 @@ class CobranzaController extends Controller
     public function show(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->select('estudios.id','estudios.dscrpMedicosPro as descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
         
