@@ -301,7 +301,7 @@ class CobranzaController extends Controller
     public function show(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->select('estudios.id','estudios.dscrpMedicosPro as descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
         
@@ -315,7 +315,7 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showCobranza(Request $request){
-        if ( $request->estudioSelect === null) {
+        if ($request->estudioSelect === null) {
             $busquedaEstudios = [];
         }
         $busquedaEstudios = $request->estudioSelect;

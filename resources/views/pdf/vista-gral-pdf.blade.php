@@ -41,7 +41,8 @@
                 <th style="text-align: center;">Paciente</th>
                 <th style="text-align: center;">Tipo Cirugía</th>
                 <th style="text-align: center;">Status</th>
-                <th style="text-align: center;">Importe</th>
+                <th style="text-align: center;">Importe Efectivo</th>
+                <th style="text-align: center;">Importe TPV</th>
             </tr>
         </thead>
         <tbody>
@@ -54,16 +55,19 @@
                 <td style="text-align: center;">{{ $hojas->cirugia }}</td>
                 <td style="text-align: center;">{{ $hojas->statusHoja }}</td>
                 <td style="text-align: center;">${{ number_format($hojas->cantidadEfe,2) }}</td>
+                <td style="text-align: center;">${{ number_format($hojas->cantidadTrans,2) }}</td>
             </tr>
             @endforeach
             @endif
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total Pendiente: </b></td>
-                <td style="text-align: right;" colspan="2">${{ number_format($sumPendiente,2) }}</td>
+                <td style="text-align: right;">${{ number_format($sumPendiente,2) }}</td>
+                <td style="text-align: right;">${{ number_format($sumPendienteT,2) }}</td>
             </tr>
             <tr>
                 <td style="text-align: right;" colspan="5"><b>Total Pagado: </b></td>
-                <td style="text-align: right;" colspan="2">${{ number_format($sumPagado,2) }}</td>
+                <td style="text-align: right;">${{ number_format($sumPagado,2) }}</td>
+                <td style="text-align: right;">${{ number_format($sumPagadoT,2) }}</td>
             </tr>
         </tbody>
     </table>
