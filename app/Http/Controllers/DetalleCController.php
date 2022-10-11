@@ -260,27 +260,64 @@ class DetalleCController extends Controller{
 
     public function mostrarHojas(Request $request){
         DB::table('historico_detalle_consumo')->truncate();
+
+        $validator = Validator::make($request->all(),[
+            'slctDoctor' => 'required',
+            'fechaInicio' => 'required',
+            'fechaFin' => 'required',
+        ],[
+            'slctDoctor.required' => 'Selecciona DR.',
+            'fechaInicio.required' => 'Selecciona fecha de inicio',
+            'fechaFin.required' => 'Selecciona fecha fin',
+        ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
-        $hojasConsumo = DB::table('detalle_consumos')
-                        ->join('doctors','doctors.id','=','id_doctor_fk')
-                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
-                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
-                                    ,'detalle_consumos.id as id_detalle'
-                                    ,'detalle_consumos.id_doctor_fk'
-                                    ,'detalle_consumos.fechaElaboracion'
-                                    ,'detalle_consumos.paciente'
-                                    ,'detalle_consumos.cirugia'
-                                    ,'detalle_consumos.tipoCirugia'
-                                    ,'detalle_consumos.tipoPaciente'
-                                    ,'detalle_consumos.cantidadEfe'
-                                    ,'detalle_consumos.cantidadTrans'
-                                    ,'detalle_consumos.TPV'
-                                    ,'detalle_consumos.statusHoja'
-                                    ,'tipo_pacientes.nombretipo_paciente')
-                        ->where('doctors.id','=',$request->slctDoctor)
-                        ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
-                        ->get();
+
+        if($request->slctDoctor != 'TODOS'){
+            $hojasConsumo = DB::table('detalle_consumos')
+            ->join('doctors','doctors.id','=','id_doctor_fk')
+            ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                        ,'detalle_consumos.id as id_detalle'
+                        ,'detalle_consumos.id_doctor_fk'
+                        ,'detalle_consumos.fechaElaboracion'
+                        ,'detalle_consumos.paciente'
+                        ,'detalle_consumos.cirugia'
+                        ,'detalle_consumos.tipoCirugia'
+                        ,'detalle_consumos.tipoPaciente'
+                        ,'detalle_consumos.cantidadEfe'
+                        ,'detalle_consumos.cantidadTrans'
+                        ,'detalle_consumos.TPV'
+                        ,'detalle_consumos.statusHoja'
+                        ,'tipo_pacientes.nombretipo_paciente')
+            ->where('doctors.id','=',$request->slctDoctor)
+            ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
+            ->get();
+        }else{
+            $hojasConsumo = DB::table('detalle_consumos')
+            ->join('doctors','doctors.id','=','id_doctor_fk')
+            ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+            ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                        ,'detalle_consumos.id as id_detalle'
+                        ,'detalle_consumos.id_doctor_fk'
+                        ,'detalle_consumos.fechaElaboracion'
+                        ,'detalle_consumos.paciente'
+                        ,'detalle_consumos.cirugia'
+                        ,'detalle_consumos.tipoCirugia'
+                        ,'detalle_consumos.tipoPaciente'
+                        ,'detalle_consumos.cantidadEfe'
+                        ,'detalle_consumos.cantidadTrans'
+                        ,'detalle_consumos.TPV'
+                        ,'detalle_consumos.statusHoja'
+                        ,'tipo_pacientes.nombretipo_paciente')
+            ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
+            ->get();
+        }
 
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
