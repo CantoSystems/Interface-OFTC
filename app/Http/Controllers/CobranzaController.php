@@ -69,7 +69,6 @@ class CobranzaController extends Controller
                 'intRd' => 'required',
                 'escRd' => 'required',
                 'entRd' => 'required',
-                'empEnt' => 'required',
                 'empRealiza' => 'required'
             ],[
                 'registroC.required' => 'Selecciona si el registro ya está completo.',
@@ -79,7 +78,6 @@ class CobranzaController extends Controller
                 'entRd.required' => 'Selecciona el status de entregado del estudio.',
                 'transRd.required' => 'Selecciona el status de transcripción del estudio.',
                 'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-                'empEnt.required' => 'Selecciona el empleado que entregó el estudio.',
                 'empRealiza.required' => 'Selecciona el empleado que realizó el estudio.'
             ]);
 
@@ -383,6 +381,7 @@ class CobranzaController extends Controller
     {
         //
     }
+<<<<<<< HEAD
 
     public function storeInt(Request $request){
         if (empty($request->all())) {
@@ -538,3 +537,6 @@ class CobranzaController extends Controller
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
 }
+=======
+}
+>>>>>>> 87e93fdf36446e86ad433155076f76dadeb82dd8
