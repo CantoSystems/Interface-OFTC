@@ -19,7 +19,7 @@
                     </div>
                     @endif
                     <form action="{{ route('importarCobranza.update') }}" method="POST">
-                        @csrf
+                        <meta name="csrf-token" content="{{ csrf_token() }}" />
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-1">
@@ -224,6 +224,9 @@
                                         @endif
                                     </div>
                                 </div>
+                                @foreach($descripcionEstudios as $descripcion)
+                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                                ($descripcion->paquete == 'N'))
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Quién Realizó la Interpretación</label>
@@ -245,6 +248,8 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
+                                @endforeach
                                 <div class="col-2">
                                     <label>Escaneado</label>
                                     <div class="form-group">
@@ -330,7 +335,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-8">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
@@ -339,6 +344,35 @@
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>Tabla de Interpretaciones</label>
+                                    <table name="tablaInt" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Estudio</th>
+                                                <th>Doctor</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($doctoresInt as $dInt)
+                                                <tr>
+                                                    <td>{{ $dInt->dscrpMedicosPro }}</td>
+                                                    <td>{{ $dInt->doctor }}</td>
+                                                    <td class="elimina" style="text-align: center; width:40px; height:25px;">
+                                                        <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>  
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
                                     @if($datosPaciente->estudiostemps_status == 0)
@@ -387,25 +421,22 @@
                                             </div>
                                         </div>
                                         @endif
-
                                     @endif
-
-
                                 </div>
                             </div>
                         </div>
+                        @foreach($descripcionEstudios as $descripcion)
+                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                        ($descripcion->paquete == 'S'))
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
-                                    
+                                <div class="col-4">
                                     <a href="{{ route('importarCobranza.index')}}">
                                         <button type="button" id="btnGuardar" name="btnGuardar"
                                         class="btn btn-block btn-outline-secondary btn-xs">Regresar</button>
                                     </a>
                                 </div>
-                                
-                                <div class="col-6">
-
+                                <div class="col-4">
                                     <a data-target="#modal-paciente"
                                         data-toggle="modal">
                                         <button type="button" id="btnGuardar" name="btnGuardar"
@@ -413,21 +444,43 @@
                                         Registro</button>
                                     </a>
                                 </div>
-                                
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-block btn-outline-warning btn-xs"
+                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones</button>
+                                </div>
                             </div>
                         </div>
-                    
+                        @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                        ($descripcion->paquete == 'N'))
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a data-target="#modal-paciente"
+                                        data-toggle="modal">
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                        class="btn btn-block btn-outline-info btn-xs">Guardar
+                                        Registro</button>
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-block btn-outline-secondary btn-xs"
+                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones</button>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
                 </div>
             </div>
             <!--Fin Card Información Paciente-->
         </div>
     </div>
 </section>
-    @include('estudios.modalpaciente')
+@include('estudios.modalpaciente')
+@include('estudios.modalInterpretaciones')
 </form>
-    @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
-    <div class="alert alert-danger" role="alert">
-                    No cuenta con los privilegios para acceder a este módulo del sistema
-    </div>
-    @endcanany
+@elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
+<div class="alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
+@endcanany
 @endsection

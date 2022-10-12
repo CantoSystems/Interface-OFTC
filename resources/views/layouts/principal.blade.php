@@ -522,6 +522,7 @@
             success: function(data){
                 //console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
+                location.reload();
             },
             error: function(xhr, status, error) {
                 var err = JSON.parse(xhr.responseText);
@@ -533,36 +534,6 @@
     $(document).on('click', '.borrar_int', function (event) {
         event.preventDefault();
         $(this).closest('tr').remove();
-        let fecha = new Date(); //Fecha actual
-        let mes = fecha.getMonth()+1; //obteniendo mes
-        let dia = fecha.getDate()-1; //obteniendo dia
-        let ano = fecha.getFullYear(); //obteniendo año
-        if(dia<10)
-            dia='0'+dia; //agrega cero si el menor de 10
-        if(mes<10)
-            mes='0'+mes //agrega cero si el menor de 10
-        document.getElementById('fecha_ausentismo').value=ano+"-"+mes+"-"+dia;
-    });
-
-    $(document).on('click', '.dltInt', function (event) {
-        event.preventDefault();
-        console.log($(this).parents("tr").find(".inpDel").val());
-        $.ajax({
-            url: "{{ route('interpretaciones.delete') }}",
-            method: "POST",
-            data: {
-                _token: $("meta[name='csrf-token']").attr("content"),
-                idIntDel: $(this).parents("tr").find(".inpDel").val(),
-            },
-            success: function(data){
-                console.log(data);
-                $(this).closest('tr').remove();
-            },
-            error: function(xhr, status, error) {
-                var err = JSON.parse(xhr.responseText);
-                console.log(err.Message);
-            }
-        })
     });
     </script>
 
