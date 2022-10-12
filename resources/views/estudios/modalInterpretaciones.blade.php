@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <form>
-                    @csrf
+                    <meta name="csrf-token" content="{{ csrf_token() }}" />
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6">
