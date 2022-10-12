@@ -381,7 +381,6 @@ class CobranzaController extends Controller
     {
         //
     }
-<<<<<<< HEAD
 
     public function storeInt(Request $request){
         if (empty($request->all())) {
@@ -536,7 +535,6 @@ class CobranzaController extends Controller
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
+
 }
-=======
-}
->>>>>>> 87e93fdf36446e86ad433155076f76dadeb82dd8
+
