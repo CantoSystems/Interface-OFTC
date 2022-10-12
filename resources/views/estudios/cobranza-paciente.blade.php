@@ -19,7 +19,7 @@
                     </div>
                     @endif
                     <form action="{{ route('importarCobranza.update') }}" method="POST">
-                        <meta name="csrf-token" content="{{ csrf_token() }}" />
+                        @csrf
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-1">
@@ -91,7 +91,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Dr. Que Requiere <strong style="color:red">*</strong></label>
+                                        <label>Dr. Que Requiere<strong style="color:red">*</strong></label>
                                         <select name="drRequiere" id="drRequiere" class="custom-select combos">
                                             <option selected disabled>-- Selecciona una opción --</option>
                                             @foreach ($doctores as $dres)
@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label>Quién Realizó el Estudio <strong style="color:red">*</strong></label>
+                                        <label>Quién Realizó el Estudio<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empRealiza as $empRe)
@@ -231,16 +231,16 @@
                                     <div class="form-group">
                                         <label>Quién Realizó la Interpretación</label>
                                         <select name="drInterpreta" id="drInterpreta" class="custom-select combos">
-                                            <option disabled selected>-- Selecciona una opción --</option>
+                                            <option disabled value="1" selected>-- Selecciona una opción --</option>
                                             @foreach($doctorInter as $doc)
                                             @if($doc->id==$datosPaciente->id_empInt_fk)
                                             <option selected value="{{ $doc->id }}">
-                                                {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
+                                                {{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
                                                 {{ $doc->doctor_apellidom }}
                                             </option>
                                             @else
                                             <option value="{{ $doc->id }}">
-                                                {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
+                                                {{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
                                                 {{ $doc->doctor_apellidom }}
                                             </option>
                                             @endif
@@ -345,6 +345,9 @@
                                     </div>
                                 </div>
                             </div>
+                            @foreach($descripcionEstudios as $descripcion)
+                            @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                            ($descripcion->paquete == 'S'))
                             <div class="row">
                                 <div class="col-12">
                                     <label>Tabla de Interpretaciones</label>
@@ -372,6 +375,8 @@
                                     </table>
                                 </div>
                             </div>
+                            @endif
+                            @endforeach
                             <div class="row">
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
@@ -454,6 +459,12 @@
                         ($descripcion->paquete == 'N'))
                         <div class="card-footer">
                             <div class="row">
+                            <div class="col-6">
+                                    <a href="{{ route('importarCobranza.index')}}">
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                        class="btn btn-block btn-outline-secondary btn-xs">Regresar</button>
+                                    </a>
+                                </div>
                                 <div class="col-6">
                                     <a data-target="#modal-paciente"
                                         data-toggle="modal">
@@ -461,10 +472,6 @@
                                         class="btn btn-block btn-outline-info btn-xs">Guardar
                                         Registro</button>
                                     </a>
-                                </div>
-                                <div class="col-6">
-                                    <button type="button" class="btn btn-block btn-outline-secondary btn-xs"
-                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones</button>
                                 </div>
                             </div>
                         </div>

@@ -117,9 +117,9 @@ class EstudiosController extends Controller{
 
         }else{
             $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','id_estudio_fk')
-                            ->join('doctors','doctors.id','=','id_doctor_fk')
-                            ->join('cobranza','cobranza.folio','=','id_cobranza_fk')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('cobranza','cobranza.folio','=','intestudios.id_cobranza_fk')
                             ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
                             ->where('cobranza.id',$id)
                             ->get();
