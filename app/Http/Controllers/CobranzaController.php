@@ -535,4 +535,6 @@ class CobranzaController extends Controller
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
+
 }
+
