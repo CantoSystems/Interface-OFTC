@@ -106,7 +106,7 @@ class EstudiosController extends Controller{
                                         ['categoria_id',2]
                                     ])->get();
 
-        if($datosPaciente->estudiostemps_status == 0){
+        if($datosPaciente->estudiostemps_status != 3){
             $doctoresInt = DB::table('intestudios')
                             ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
                             ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
