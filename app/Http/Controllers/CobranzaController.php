@@ -90,7 +90,7 @@ class CobranzaController extends Controller
                 if(!is_null($estUpd)){
                     if($request->status != 1){
                         $cobranzaFolio =  DB::table('cobranza')->select('folio')
-                                        ->where('folio',$request['folioCbr'])->first();
+                                                ->where('folio',$request['folioCbr'])->first();
 
                         if(is_null($cobranzaFolio)){
                             DB::table('cobranza')->insert([
@@ -141,7 +141,6 @@ class CobranzaController extends Controller
                             }
                         }
                         
-
                         Estudiostemp::where('folio',$request['folioCbr'])
                                                 ->update([
                                                     'id_empTrans_fk' => $doctorTrans,                                                
@@ -196,7 +195,8 @@ class CobranzaController extends Controller
                                             'updated_at' => $fechaInsert
                                         ]);
                     //El registro se actualiza en estudiostemps y en cobranza 
-                    }//Fin para insertar o actualizar datos
+                    }
+                    //Fin para insertar o actualizar datos
                 //Fin del registro cuando se encuentra el estudio
                 }else{
                     //No coincide el  estudio
@@ -525,16 +525,14 @@ class CobranzaController extends Controller
                             ->get();
         }else{
             $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','id_estudio_fk')
-                            ->join('doctors','doctors.id','=','id_doctor_fk')
-                            ->join('cobranza','cobranza.folio','=','id_cobranza_fk')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
                             ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
-                            ->where('estudiostemps.folio',$folioEst->id_cobranza_fk)
+                            ->where('cobranza.folio',$folioEst->id_cobranza_fk)
                             ->get();
         }
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
-
 }
-
