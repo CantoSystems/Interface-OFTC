@@ -11,11 +11,8 @@
                 </button>
             </div>
             <div class="modal-body">
-               
                     <div class="row">
-                        <h5 style="text-align: center;" class="modalPersonalizado">¿Esta seguro que la información es correcta?
-                           
-                        </h5>
+                        <h5 style="text-align: center;" class="modalPersonalizado">¿Estás seguro que la información ingresada es correcta?</h5>
                     </div>
                     <div class="modal-footer">
                         <div class="row">
