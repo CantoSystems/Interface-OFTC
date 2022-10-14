@@ -65,17 +65,6 @@ class EstudiosController extends Controller{
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -114,7 +103,6 @@ class EstudiosController extends Controller{
                             ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
                             ->where('estudiostemps.id',$id)
                             ->get();
-
         }else{
             $doctoresInt = DB::table('intestudios')
                             ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
