@@ -46,7 +46,8 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        if($request['transRd'] == 'N'){
+        dd($request);
+        /*if($request['transRd'] == 'N'){
             $doctorTrans = '1';
         }else{
             $doctorTrans = $request["drTransc"];
@@ -287,7 +288,7 @@ class CobranzaController extends Controller
                                 ]);
         }//Fin contiene todos los datos
 
-        return redirect()->route('importarCobranza.index');
+        return redirect()->route('importarCobranza.index');*/
     }
 
     /**
