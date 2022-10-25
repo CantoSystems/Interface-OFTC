@@ -15,6 +15,7 @@
                                 <label class="info-box-text">Selecciona Dr. :</label>
                                 <select class="form-control" name="slctDoctor" id="slctDoctor">
                                     <option selected disabled>-- Selecciona una opción --</option>
+                                    <option value="TODOS">TODOS LOS DOCTORES</option>
                                     @foreach($doctores as $doc)
                                     <option value="{{ $doc->id }}">{{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }}
                                         {{ $doc->doctor_apellidop }} {{ $doc->doctor_apellidom }}
@@ -68,8 +69,17 @@
 @endcanany
             </form>
         </div>
+        
         <div class="card-body">
 @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
+@if (count($errors) > 0)
+<div class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    @foreach ($errors->all() as $error)
+    <li>{{ $error }}</li>
+    @endforeach
+</div>
+@endif
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>

@@ -69,7 +69,6 @@ class CobranzaController extends Controller
                 'intRd' => 'required',
                 'escRd' => 'required',
                 'entRd' => 'required',
-                'empEnt' => 'required',
                 'empRealiza' => 'required'
             ],[
                 'registroC.required' => 'Selecciona si el registro ya está completo.',
@@ -79,7 +78,6 @@ class CobranzaController extends Controller
                 'entRd.required' => 'Selecciona el status de entregado del estudio.',
                 'transRd.required' => 'Selecciona el status de transcripción del estudio.',
                 'intRd.required' => 'Selecciona el status de interpretación del estudio.',
-                'empEnt.required' => 'Selecciona el empleado que entregó el estudio.',
                 'empRealiza.required' => 'Selecciona el empleado que realizó el estudio.'
             ]);
 
@@ -92,7 +90,7 @@ class CobranzaController extends Controller
                 if(!is_null($estUpd)){
                     if($request->status != 1){
                         $cobranzaFolio =  DB::table('cobranza')->select('folio')
-                                        ->where('folio',$request['folioCbr'])->first();
+                                                ->where('folio',$request['folioCbr'])->first();
 
                         if(is_null($cobranzaFolio)){
                             DB::table('cobranza')->insert([
@@ -143,7 +141,6 @@ class CobranzaController extends Controller
                             }
                         }
                         
-
                         Estudiostemp::where('folio',$request['folioCbr'])
                                                 ->update([
                                                     'id_empTrans_fk' => $doctorTrans,                                                
@@ -158,6 +155,7 @@ class CobranzaController extends Controller
                                                     'entregado' => $request['entRd'],
                                                     'observaciones' => $request['obsCobranza'],
                                                     'estudiostemps_status' => 1,
+                                                    'registroC' => $request['registroC'],
                                                     'updated_at' => $fechaInsert
                                                 ]);
 
@@ -193,10 +191,12 @@ class CobranzaController extends Controller
                                             'escaneado' => $request['escRd'],
                                             'entregado' => $request['entRd'],
                                             'observaciones' => $request['obsCobranza'],
+                                            'registroC' => $request['registroC'],
                                             'updated_at' => $fechaInsert
                                         ]);
                     //El registro se actualiza en estudiostemps y en cobranza 
-                    }//Fin para insertar o actualizar datos
+                    }
+                    //Fin para insertar o actualizar datos
                 //Fin del registro cuando se encuentra el estudio
                 }else{
                     //No coincide el  estudio
@@ -242,6 +242,7 @@ class CobranzaController extends Controller
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
                                                 'estudiostemps_status' => 1,
+                                                'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
                                             ]);
                     }else{
@@ -259,6 +260,7 @@ class CobranzaController extends Controller
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
                                                 'estudiostemps_status' => 3,
+                                                'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
                                         ]);
                     }//Registro no se encuentran coincidencias
@@ -280,6 +282,7 @@ class CobranzaController extends Controller
                                     'entregado' => $request['entRd'],
                                     'observaciones' => $request['obsCobranza'],
                                     'estudiostemps_status' => 2,
+                                    'registroC' => $request['registroC'],
                                     'updated_at' => $fechaInsert
                                 ]);
         }//Fin contiene todos los datos
@@ -296,7 +299,7 @@ class CobranzaController extends Controller
     public function show(){
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                            ->select('estudios.id','descripcion','nombretipo_ojo')
+                            ->select('estudios.id','estudios.dscrpMedicosPro as descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
         
@@ -310,41 +313,41 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function showCobranza(Request $request){
-        if ( $request->estudioSelect === null) {
+        if ($request->estudioSelect === null) {
             $busquedaEstudios = [];
         }
         $busquedaEstudios = $request->estudioSelect;
         $inicio = $request->historialInicio;
         $fin    = $request->historialFinal;
 
-            $cobranza = DB::table('cobranza')
-                        ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
-                        ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
-                        ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
-                        ->join('doctors','doctors.id','=','cobranza.id_doctor_fk')
-                        ->join('empleados','empleados.id_emp','=','cobranza.id_empRea_fk')
-                        ->select('cobranza.folio'
-                                ,'cobranza.fecha'
-                                ,'cobranza.paciente'
-                                ,'cat_estudios.descripcion'
-                                ,'tipo_ojos.nombretipo_ojo'
-                                ,DB::raw("UPPER(CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)) AS EmpleadoRealiza")
-                                ,DB::raw("UPPER(CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop)) AS Doctor")
-                                ,DB::raw('(CASE WHEN transcripcion = "S" THEN "SI" ELSE "NO" END) AS Transcripcion')
-                                ,DB::raw('(CASE WHEN interpretacion = "S" THEN "SI" ELSE "NO" END) AS Interpretacion')
-                                ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
-                                ,'cobranza.cantidadCbr')
-                        ->whereIn('cobranza.id_estudio_fk', $busquedaEstudios)
-                        ->whereBetween('cobranza.fecha',[$inicio,$fin])
-                        ->orderBy('cobranza.fecha','ASC')
-                        ->get();
+        $cobranza = DB::table('cobranza')
+                    ->join('estudios','estudios.id','=','cobranza.id_estudio_fk')
+                    ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
+                    ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
+                    ->join('doctors','doctors.id','=','cobranza.id_doctor_fk')
+                    ->join('empleados','empleados.id_emp','=','cobranza.id_empRea_fk')
+                    ->select('cobranza.folio'
+                            ,'cobranza.fecha'
+                            ,'cobranza.paciente'
+                            ,'cat_estudios.descripcion'
+                            ,'tipo_ojos.nombretipo_ojo'
+                            ,DB::raw("UPPER(CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)) AS EmpleadoRealiza")
+                            ,DB::raw("UPPER(CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop)) AS Doctor")
+                            ,DB::raw('(CASE WHEN transcripcion = "S" THEN "SI" ELSE "NO" END) AS Transcripcion')
+                            ,DB::raw('(CASE WHEN interpretacion = "S" THEN "SI" ELSE "NO" END) AS Interpretacion')
+                            ,DB::raw('(CASE WHEN escaneado = "S" THEN "SI" ELSE "NO" END) AS Escaneado')
+                            ,'cobranza.cantidadCbr')
+                    ->whereIn('cobranza.id_estudio_fk', $busquedaEstudios)
+                    ->whereBetween('cobranza.fecha',[$inicio,$fin])
+                    ->orderBy('cobranza.fecha','ASC')
+                    ->get();
 
         $estudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                             ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
                             ->select('estudios.id','descripcion','nombretipo_ojo')
                             ->orderBy('estudios.id','ASC')
                             ->get();
-                                   
+
         return view('estudios.cobranzaTbl', compact('cobranza','estudios','busquedaEstudios','inicio','fin'));
     }
 
@@ -377,5 +380,159 @@ class CobranzaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function storeInt(Request $request){
+        if (empty($request->all())) {
+            return response()->json(["error" => "Sin data"]);
+        }
+
+        foreach ($request->only('info') as $value) {
+            $data = json_decode($value);
+        }
+
+        foreach ($data as $value) {
+            DB::table('intEstudios')->insert([
+                'id_cobranza_fk' => $value->folioE,
+                'id_estudio_fk' => $value->estudioI,
+                'id_doctor_fk' => $value->doctorI
+            ]);
+        }
+
+        $datosPaciente = Estudiostemp::where('folio','=',$request->folioE);
+        $descripcionEstudios = Estudios::all();  
+        $doctores = Doctor::where('id','<>','1')->get();
+        $tipoPac = TipoPaciente::all();
+        $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
+                                ->select('empleados.id_emp','empleado_nombre','empleado_apellidop','empleado_apellidom')
+                                ->where([
+                                    ['puestos.actividad','=','TRANSCRIBE'],
+                                    ['empleados.id_emp','<>','1']
+                                ])->get();
+
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $empEnt = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $doctorInter = Doctor::where([
+                                        ['id','<>','1'],
+                                        ['categoria_id',2]
+                                    ])->get();
+    }
+
+    public function showInt($id){
+        $interpretaciones = DB::table('intestudios')->where('id',$id)->first();
+        $descripcionEstudios = Estudios::all();
+        $doctorInter = Doctor::where([
+                            ['id','<>','1'],
+                            ['categoria_id',2]
+                        ])->get();
+
+        return view('estudios.editInterpretacion', compact('interpretaciones','descripcionEstudios','doctorInter'));
+    }
+
+    public function updateInt(Request $request){
+        DB::table('intestudios')->where('id',$request['idIntEst'])
+                        ->update([                                               
+                            'id_estudio_fk' => $request["estudioInt"],
+                            'id_doctor_fk' => $request['doctorInt']
+                        ]);
+
+        $datosPaciente = Estudiostemp::where('folio',$request['folioEst'])->first();
+        $doctores = Doctor::where('id','<>','1')->get();
+        $tipoPac = TipoPaciente::all();
+        $descripcionEstudios = Estudios::all(); 
+        $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
+                        ->select('empleados.id_emp','empleado_nombre','empleado_apellidop','empleado_apellidom')
+                        ->where([
+                            ['puestos.actividad','=','TRANSCRIBE'],
+                            ['empleados.id_emp','<>','1']
+                        ])->get();
+
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $empEnt = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $doctorInter = Doctor::where([
+                                        ['id','<>','1'],
+                                        ['categoria_id',2]
+                                    ])->get();
+
+        if($datosPaciente->estudiostemps_status == 0){
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('estudiostemps.folio',$request['folioEst'])
+                            ->get();
+        }else{
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','id_estudio_fk')
+                            ->join('doctors','doctors.id','=','id_doctor_fk')
+                            ->join('cobranza','cobranza.folio','=','id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('estudiostemps.folio',$request['folioEst'])
+                            ->get();
+        }
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
+    }
+
+    public function delInt($id){
+        $folioEst = DB::table('intestudios')->where('id',$id)->first();
+        $delInterpretacion = DB::table('intestudios')->where('id',$id)->delete();
+
+        $datosPaciente = Estudiostemp::where('folio',$folioEst->id_cobranza_fk)->first();
+        $doctores = Doctor::where('id','<>','1')->get();
+        $tipoPac = TipoPaciente::all();
+        $descripcionEstudios = Estudios::all(); 
+        $empTrans = Empleado::join('puestos','puestos.id','=','puesto_id')
+                        ->select('empleados.id_emp','empleado_nombre','empleado_apellidop','empleado_apellidom')
+                        ->where([
+                            ['puestos.actividad','=','TRANSCRIBE'],
+                            ['empleados.id_emp','<>','1']
+                        ])->get();
+
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $empEnt = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where('id_emp','!=',1)
+                                    ->get();
+
+        $doctorInter = Doctor::where([
+                                        ['id','<>','1'],
+                                        ['categoria_id',2]
+                                    ])->get();
+
+        if($datosPaciente->estudiostemps_status == 0){
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('estudiostemps.folio',$folioEst->id_cobranza_fk)
+                            ->get();
+        }else{
+            $doctoresInt = DB::table('intestudios')
+                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
+                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
+                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
+                            ->where('cobranza.folio',$folioEst->id_cobranza_fk)
+                            ->get();
+        }
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
 }
