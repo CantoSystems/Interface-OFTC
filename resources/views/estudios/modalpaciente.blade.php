@@ -20,7 +20,7 @@
                                 <button type="button" data-dismiss="modal" class="btn btn-block btn-outline-secondary btn-xs">Cancelar</button>
                             </div>
                             <div class="col-6">
-                                <button type="submit" class="btn btn-block btn-outline-info btn-xs">Continuar</button>
+                                <button type="submit" id="btnGuardarPaciente" class="btn btn-block btn-outline-info btn-xs">Continuar</button>
                             </div>
 
                         </div>

@@ -3,24 +3,25 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1"></div>
             <!--Inicio Card Información Paciente-->
             @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">Información Paciente: {{ $datosPaciente->paciente }}</h3>
+                        <h3 class="card-title">
+                            Información Paciente: {{ $datosPaciente->paciente }}
+                        </h3>
                     </div>
-                    @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </div>
-                    @endif
                     <form action="{{ route('importarCobranza.update') }}" method="POST">
                         @csrf
                         <div class="card-body">
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="row">
                                 <div class="col-1">
                                     <div class="form-group">
@@ -36,7 +37,7 @@
                                             value="{{ $datosPaciente->paciente }}" readonly>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <label>Fecha</label>
                                         <input type="date" id="fchCbr" name="fchCbr" class="form-control"
@@ -48,6 +49,31 @@
                                         <label>Cantidad</label>
                                         <input type="text" id="cantidadCbr" name="cantidadCbr" class="form-control"
                                             value="{{ $datosPaciente->total }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Estudio</label>
+                                        <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
+                                            value="{{ $datosPaciente->servicio }}" readonly>
+                                        @if($datosPaciente->estudiostemps_status == 3)
+                                        <select name="estudioCorregido" id="estudioCorregido"
+                                            class="custom-select combos">
+                                            <option selected disabled>-- Selecciona una opción --</option>
+                                            @foreach ($descripcionEstudios as $descripcion)
+                                            <option selected value="{{ $descripcion->id }}">
+                                                {{ $descripcion->dscrpMedicosPro }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label>Forma de Pago</label>
+                                        <input type="text" id="formaPago" name="formaPago" class="form-control"
+                                            value="{{ $datosPaciente->met_pago }}" readonly>
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -71,25 +97,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>Estudio</label>
-                                        <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
-                                            value="{{ $datosPaciente->servicio }}" readonly>
-                                        @if($datosPaciente->estudiostemps_status == 3)
-                                        <select name="estudioCorregido" id="estudioCorregido"
-                                            class="custom-select combos">
-                                            <option selected disabled>-- Selecciona una opción --</option>
-                                            @foreach ($descripcionEstudios as $descripcion)
-                                            <option selected value="{{ $descripcion->id }}">
-                                                {{ $descripcion->dscrpMedicosPro }}
-                                            </option>
-                                            @endforeach
-                                        </select>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-4">
+                                
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere<strong style="color:red">*</strong></label>
                                         <select name="drRequiere" id="drRequiere" class="custom-select combos">
@@ -110,7 +119,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label>Quién Realizó el Estudio<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
@@ -129,14 +138,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>Forma de Pago</label>
-                                        <input type="text" id="formaPago" name="formaPago" class="form-control"
-                                            value="{{ $datosPaciente->met_pago }}" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <label>Transcripción</label>
                                     <div class="form-group">
                                         @if($datosPaciente->transcripcion == 'S')
@@ -169,7 +171,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label>Quién Realizó la Transcripción</label>
                                         <select name="drTransc" id="drTransc" class="custom-select combos">
@@ -192,7 +194,29 @@
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <label>Interpretación</label>
+                                    <div class="form-group">
+                                        <label># de Transcipciones</label>
+                                        @foreach($descripcionEstudios as $descripcion)
+                                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                                                        ($descripcion->paquete == 'S'))
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="number" name="num_trascrip" value="{{ $datosPaciente->num_trascrip }}"
+                                                            min="0" max="5" step="1">
+                                                        </div>
+
+                                                @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&  ($descripcion->paquete == 'N'))
+                                                        <div>
+                                                            <input type="number" name="num_trascrip" value="{{$datosPaciente->num_trascrip ?? 1}}" disabled>
+                                                        </div>
+
+
+                                                @endif
+                                        @endforeach
+                                        
+                                    </div> 
+                                </div>
+                                <div class="col-2">
+                                    <label>Interpretación*</label>
                                     <div class="form-group">
                                         @if($datosPaciente->interpretacion == 'S')
                                         <div class="icheck-primary d-inline">
@@ -224,33 +248,44 @@
                                         @endif
                                     </div>
                                 </div>
+                            </div>
+                               
                                 @foreach($descripcionEstudios as $descripcion)
-                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                                ($descripcion->paquete == 'N'))
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>Quién Realizó la Interpretación</label>
-                                        <select name="drInterpreta" id="drInterpreta" class="custom-select combos">
-                                            <option disabled value="1" selected>-- Selecciona una opción --</option>
-                                            @foreach($doctorInter as $doc)
-                                            @if($doc->id==$datosPaciente->id_empInt_fk)
-                                            <option selected value="{{ $doc->id }}">
-                                                {{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
-                                                {{ $doc->doctor_apellidom }}
-                                            </option>
-                                            @else
-                                            <option value="{{ $doc->id }}">
-                                                {{ $doc->doctor_titulo }} {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
-                                                {{ $doc->doctor_apellidom }}
-                                            </option>
-                                            @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label>Tabla de Interpretaciones</label>
+                                                <table name="tablaInt" class="table table-bordered table-striped tablaInt">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Estudio</th>
+                                                            <th>Doctor</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($doctoresInt as $dInt)
+                                                            <tr>
+                                                                <td>
+                                                                    {{ $dInt->dscrpMedicosPro }}
+                                                                    <input type="hidden" class="identificadorInterpreta" value="{{ $dInt->id}}">
+                                                                </td>
+                                                                <td>{{ $dInt->doctor }}</td>
+                                                                <td class="elimina" style="text-align: center; width:40px; height:25px;">
+                                                                    <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
+                                                                        <i class="far fa-edit"></i>
+                                                                    </a>  
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                 @endif
                                 @endforeach
-                                <div class="col-2">
+                                <div class="row">
+                                   <div class="col-1">
                                     <label>Escaneado</label>
                                     <div class="form-group">
                                         @if($datosPaciente->escaneado == 'S')
@@ -283,7 +318,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <label>Entregado</label>
                                     <div class="form-group">
                                         @if($datosPaciente->entregado == 'S')
@@ -316,7 +351,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label>Entregado Por:</label>
                                         <select name="empEnt" id="empEnt" class="custom-select combos">
@@ -335,59 +370,25 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-7">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
                                             name="obsCobranza" class="form-control">
-                                        <input type="hidden" name="status"
+                                        <input type="hidden" name="status" id="statusPaciente"
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
                                 </div>
-                            </div>
-                            @foreach($descripcionEstudios as $descripcion)
-                            @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                            ($descripcion->paquete == 'S'))
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>Tabla de Interpretaciones</label>
-                                    <table name="tablaInt" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Estudio</th>
-                                                <th>Doctor</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($doctoresInt as $dInt)
-                                                <tr>
-                                                    <td>{{ $dInt->dscrpMedicosPro }}</td>
-                                                    <td>{{ $dInt->doctor }}</td>
-                                                    <td class="elimina" style="text-align: center; width:40px; height:25px;">
-                                                        <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
-                                                            <i class="far fa-edit"></i>
-                                                        </a>  
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            @endif
-                            @endforeach
-                            <div class="row">
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
                                     @if($datosPaciente->estudiostemps_status == 0)
                                         <div class="form-group">
                                             <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S" name="registroC">
+                                                <input type="radio" value="S1" name="registroC" class="registroC">
                                                 <label>SI</label>
                                             </div>
                                             <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N" name="registroC">
+                                                <input checked type="radio" value="N1" name="registroC" class="registroC">
                                                 <label>NO</label>
                                             </div>
                                         </div>
@@ -395,88 +396,72 @@
                                         @if($datosPaciente->registroC == 'S')
                                         <div class="form-group">
                                             <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="S" name="registroC">
+                                                <input checked type="radio" value="S" name="registroC" class="registroC">
                                                 <label>SI</label>
                                             </div>
                                             <div class="icheck-primary d-inline">
-                                                <input  type="radio" value="N" name="registroC">
+                                                <input  type="radio" value="N" name="registroC" class="registroC" >
                                                 <label>NO</label>
                                             </div>
                                         </div>
                                         @elseif($datosPaciente->registroC == 'N')
                                         <div class="form-group">
                                             <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S" name="registroC">
+                                                <input type="radio" value="S" name="registroC" class="registroC">
                                                 <label>SI</label>
                                             </div>
                                             <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N" name="registroC">
+                                                <input checked type="radio" value="N" name="registroC" class="registroC">
                                                 <label>NO</label>
                                             </div>
                                         </div>
                                         @else
                                         <div class="form-group">
                                             <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S" name="registroC">
+                                                <input type="radio" value="S" name="registroC" class="registroC">
                                                 <label>SI</label>
                                             </div>
                                             <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N" name="registroC">
+                                                <input checked type="radio" value="N" name="registroC" class="registroC">
                                                 <label>NO</label>
                                             </div>
                                         </div>
                                         @endif
                                     @endif
                                 </div>
-                            </div>
-                        </div>
-                        @foreach($descripcionEstudios as $descripcion)
-                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                        ($descripcion->paquete == 'S'))
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-4">
-                                    <a href="{{ route('importarCobranza.index')}}">
-                                        <button type="button" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-secondary btn-xs">Regresar</button>
-                                    </a>
-                                </div>
-                                <div class="col-4">
-                                    <a data-target="#modal-paciente"
+            </div><!--Cierre cuerpo del body-->
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-4">
+                        <a href="{{ route('importarCobranza.index')}}">
+                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                    class="btn btn-block btn-outline-secondary btn-xs">
+                                    Regresar
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-4">
+                        <a data-target="#modal-paciente"
                                         data-toggle="modal">
-                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                            <button type="button" id="btnGuardar" name="btnGuardar"
                                         class="btn btn-block btn-outline-info btn-xs">Guardar
-                                        Registro</button>
-                                    </a>
-                                </div>
-                                <div class="col-4">
-                                    <button type="button" class="btn btn-block btn-outline-warning btn-xs"
-                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones</button>
-                                </div>
-                            </div>
-                        </div>
-                        @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                        ($descripcion->paquete == 'N'))
-                        <div class="card-footer">
-                            <div class="row">
-                            <div class="col-6">
-                                    <a href="{{ route('importarCobranza.index')}}">
-                                        <button type="button" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-secondary btn-xs">Regresar</button>
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a data-target="#modal-paciente"
-                                        data-toggle="modal">
-                                        <button type="button" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
-                                        Registro</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                                        Registro
+                            </button>
+                        </a>
+                    </div>
+                    @foreach($descripcionEstudios as $descripcion)
+                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
+                            <div class="col-4">
+                                <button type="button" class="btn btn-block btn-outline-warning btn-xs"
+                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones
+                                </button>
+                            </div> 
+
                         @endif
-                        @endforeach
+                    @endforeach
+
+                </div>
+            </div>
                 </div>
             </div>
             <!--Fin Card Información Paciente-->

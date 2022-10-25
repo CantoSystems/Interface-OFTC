@@ -18,6 +18,7 @@ class IntEstudios extends Migration
             $table->unsignedBigInteger('id_estudio_fk');
             $table->unsignedBigInteger('id_doctor_fk');
             $table->text('id_cobranza_fk');
+            $table->boolean('intEstudios_status');
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
             $table->timestamps();
