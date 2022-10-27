@@ -513,7 +513,7 @@
             myTableArrayInt.push(filas);
         });
         let jsonStringa = JSON.stringify(myTableArrayInt);
-       
+
         $.ajax({
             url: "{{ route('interpretaciones.store') }}",
             method: "POST",
@@ -521,8 +521,9 @@
                 _token: $("meta[name='csrf-token']").attr("content"),
                 info: jsonStringa,
             },
+            console.log(jsonStringa)
             success: function(data) {
-                console.log(data);
+                //console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
                 location.reload();
             },
