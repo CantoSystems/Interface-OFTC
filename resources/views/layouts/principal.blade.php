@@ -548,7 +548,7 @@
             })
         });
 
-        if(filas != undefined){
+        if(filas != undefined or filas != null){
             //console.log(JSON.stringify(filas))
         $.ajax({
             url: "{{ route('status.interpretacion')}}",
