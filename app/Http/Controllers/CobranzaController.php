@@ -371,7 +371,8 @@ class CobranzaController extends Controller
     }
 
     public function storeInt(Request $request){
-        if (empty($request->all())) {
+        return $request::all();
+       /* if (empty($request->all())) {
             return response()->json(["error" => "Sin data"]);
         }
 
@@ -385,7 +386,7 @@ class CobranzaController extends Controller
                 'id_estudio_fk' => $value->estudioI,
                 'id_doctor_fk' => $value->doctorI,
                 'intEstudios_status' => 0
-            ]);
+            ]);*/
         }
 
         $datosPaciente = Estudiostemp::where('folio','=',$request->folioE);
