@@ -16,11 +16,11 @@
                         @csrf
                         <div class="card-body">
                             @if (count($errors) > 0)
-                                <div class="alert alert-danger">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </div>
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </div>
                             @endif
                             <div class="row">
                                 <div class="col-1">
@@ -79,7 +79,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>PX INT. - EXT.
-                                        <strong style="color:red">*</strong>
+                                            <strong style="color:red">*</strong>
                                         </label>
                                         <select name="tipoPaciente" id="tipoPaciente" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
@@ -97,7 +97,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere<strong style="color:red">*</strong></label>
@@ -197,26 +197,28 @@
                                     <div class="form-group">
                                         <label># de Transcipciones</label>
                                         @foreach($descripcionEstudios as $descripcion)
-                                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                                                        ($descripcion->paquete == 'S'))
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="number" name="num_trascrip" value="{{ $datosPaciente->num_trascrip }}"
-                                                            min="0" max="5" step="1">
-                                                        </div>
+                                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                                        ($descripcion->paquete == 'S'))
+                                        <div class="form-group">
+                                            <input class="form-control" type="number" name="num_trascrip"
+                                                value="{{ $datosPaciente->num_trascrip }}" min="0" max="5" step="1">
+                                        </div>
 
-                                                @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&  ($descripcion->paquete == 'N'))
-                                                        <div>
-                                                            <input type="number" name="num_trascrip" value="{{$datosPaciente->num_trascrip ?? 1}}" disabled>
-                                                        </div>
+                                        @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
+                                        ($descripcion->paquete == 'N'))
+                                        <div>
+                                            <input type="number" name="num_trascrip"
+                                                value="{{$datosPaciente->num_trascrip ?? 1}}" disabled>
+                                        </div>
 
 
-                                                @endif
+                                        @endif
                                         @endforeach
-                                        
-                                    </div> 
+
+                                    </div>
                                 </div>
                                 <div class="col-2">
-                                    <label>Interpretación*</label>
+                                    <label>Interpretación</label>
                                     <div class="form-group">
                                         @if($datosPaciente->interpretacion == 'S')
                                         <div class="icheck-primary d-inline">
@@ -249,43 +251,45 @@
                                     </div>
                                 </div>
                             </div>
-                               
-                                @foreach($descripcionEstudios as $descripcion)
-                                @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <label>Tabla de Interpretaciones</label>
-                                                <table name="tablaInt" class="table table-bordered table-striped tablaInt">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Estudio</th>
-                                                            <th>Doctor</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach($doctoresInt as $dInt)
-                                                            <tr>
-                                                                <td>
-                                                                    {{ $dInt->dscrpMedicosPro }}
-                                                                    <input type="hidden" class="identificadorInterpreta" value="{{ $dInt->id}}">
-                                                                </td>
-                                                                <td>{{ $dInt->doctor }}</td>
-                                                                <td class="elimina" style="text-align: center; width:40px; height:25px;">
-                                                                    <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
-                                                                        <i class="far fa-edit"></i>
-                                                                    </a>  
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                @endif
-                                @endforeach
-                                <div class="row">
-                                   <div class="col-1">
+
+                            @foreach($descripcionEstudios as $descripcion)
+                            @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
+                            <div class="row">
+                                <div class="col-12">
+                                    <label>Tabla de Interpretaciones</label>
+                                    <table name="tablaInt" class="table table-bordered table-striped tablaInt">
+                                        <thead>
+                                            <tr>
+                                                <th>Estudio</th>
+                                                <th>Doctor</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($doctoresInt as $dInt)
+                                            <tr>
+                                                <td>
+                                                    {{ $dInt->dscrpMedicosPro }}
+                                                    <input type="hidden" class="identificadorInterpreta"
+                                                        value="{{ $dInt->id}}">
+                                                </td>
+                                                <td>{{ $dInt->doctor }}</td>
+                                                <td class="elimina"
+                                                    style="text-align: center; width:40px; height:25px;">
+                                                    <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @endif
+                            @endforeach
+                            <div class="row">
+                                <div class="col-1">
                                     <label>Escaneado</label>
                                     <div class="form-group">
                                         @if($datosPaciente->escaneado == 'S')
@@ -382,91 +386,91 @@
                                 <div class="col-12" style="text-align: center;">
                                     <label>¿El registro contiene toda la información?</label>
                                     @if($datosPaciente->estudiostemps_status == 0)
-                                        <div class="form-group">
-                                            <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S1" name="registroC" class="registroC">
-                                                <label>SI</label>
-                                            </div>
-                                            <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N1" name="registroC" class="registroC">
-                                                <label>NO</label>
-                                            </div>
+                                    <div class="form-group">
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S1" name="registroC" class="registroC">
+                                            <label>SI</label>
                                         </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N1" name="registroC" class="registroC">
+                                            <label>NO</label>
+                                        </div>
+                                    </div>
                                     @else
-                                        @if($datosPaciente->registroC == 'S')
-                                        <div class="form-group">
-                                            <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="S" name="registroC" class="registroC">
-                                                <label>SI</label>
-                                            </div>
-                                            <div class="icheck-primary d-inline">
-                                                <input  type="radio" value="N" name="registroC" class="registroC" >
-                                                <label>NO</label>
-                                            </div>
+                                    @if($datosPaciente->registroC == 'S')
+                                    <div class="form-group">
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="registroC" class="registroC">
+                                            <label>SI</label>
                                         </div>
-                                        @elseif($datosPaciente->registroC == 'N')
-                                        <div class="form-group">
-                                            <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S" name="registroC" class="registroC">
-                                                <label>SI</label>
-                                            </div>
-                                            <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N" name="registroC" class="registroC">
-                                                <label>NO</label>
-                                            </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="registroC" class="registroC">
+                                            <label>NO</label>
                                         </div>
-                                        @else
-                                        <div class="form-group">
-                                            <div class="icheck-primary d-inline">
-                                                <input type="radio" value="S" name="registroC" class="registroC">
-                                                <label>SI</label>
-                                            </div>
-                                            <div class="icheck-primary d-inline">
-                                                <input checked type="radio" value="N" name="registroC" class="registroC">
-                                                <label>NO</label>
-                                            </div>
+                                    </div>
+                                    @elseif($datosPaciente->registroC == 'N')
+                                    <div class="form-group">
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="registroC" class="registroC">
+                                            <label>SI</label>
                                         </div>
-                                        @endif
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="registroC" class="registroC">
+                                            <label>NO</label>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="form-group">
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="registroC" class="registroC">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="registroC" class="registroC">
+                                            <label>NO</label>
+                                        </div>
+                                    </div>
+                                    @endif
                                     @endif
                                 </div>
-            </div><!--Cierre cuerpo del body-->
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-4">
-                        <a href="{{ route('importarCobranza.index')}}">
-                            <button type="button" id="btnGuardar" name="btnGuardar"
-                                    class="btn btn-block btn-outline-secondary btn-xs">
-                                    Regresar
-                            </button>
-                        </a>
-                    </div>
-                    <div class="col-4">
-                        <a data-target="#modal-paciente"
-                                        data-toggle="modal">
-                            <button type="button" id="btnGuardar" name="btnGuardar"
-                                        class="btn btn-block btn-outline-info btn-xs">Guardar
-                                        Registro
-                            </button>
-                        </a>
-                    </div>
-                    @foreach($descripcionEstudios as $descripcion)
-                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
-                            <div class="col-4">
-                                <button type="button" class="btn btn-block btn-outline-warning btn-xs"
-                                        data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones
-                                </button>
-                            </div> 
+                            </div>
+                            <!--Cierre cuerpo del body-->
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <a href="{{ route('importarCobranza.index')}}">
+                                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                                class="btn btn-block btn-outline-secondary btn-xs">
+                                                Regresar
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a data-target="#modal-paciente" data-toggle="modal">
+                                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                                class="btn btn-block btn-outline-info btn-xs">Guardar
+                                                Registro
+                                            </button>
+                                        </a>
+                                    </div>
+                                    @foreach($descripcionEstudios as $descripcion)
+                                    @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-block btn-outline-warning btn-xs"
+                                            data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones
+                                        </button>
+                                    </div>
 
-                        @endif
-                    @endforeach
+                                    @endif
+                                    @endforeach
 
+                                </div>
+                            </div>
+                        </div>
                 </div>
+                <!--Fin Card Información Paciente-->
             </div>
-                </div>
-            </div>
-            <!--Fin Card Información Paciente-->
         </div>
-    </div>
 </section>
 @include('estudios.modalpaciente')
 @include('estudios.modalInterpretaciones')
