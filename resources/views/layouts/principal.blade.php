@@ -539,8 +539,6 @@
     $('#btnGuardarPaciente').click(function(e) {
         let filas = [];
         document.querySelectorAll('.tablaInt tbody tr').forEach(function(e) {
-
-
             console.log(e.querySelector(".identificadorInterpreta").value)
 
             filas.push({
@@ -568,8 +566,6 @@
                 }
             });
         }
-
-
     });
     </script>
 
