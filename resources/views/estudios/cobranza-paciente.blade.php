@@ -195,7 +195,7 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <label># de Transcipciones</label>
+                                        <label># de Transcripciones</label>
                                         @foreach($descripcionEstudios as $descripcion)
                                         @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
                                         ($descripcion->paquete == 'S'))
@@ -207,10 +207,9 @@
                                         @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
                                         ($descripcion->paquete == 'N'))
                                         <div>
-                                            <input type="number" name="num_trascrip"
-                                                value="{{$datosPaciente->num_trascrip ?? 1}}" disabled>
+                                            <input class="form-control" type="number" name="num_trascrip"
+                                                value="{{$datosPaciente->num_trascrip ?? 0}}">
                                         </div>
-
 
                                         @endif
                                         @endforeach

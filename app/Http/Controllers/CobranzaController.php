@@ -46,17 +46,22 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
         }else{
             $doctorTrans = $request["drTransc"];
         }
 
-        if($request["intRd"] == 'N'){
+        /*if($request["intRd"] == 'N'){
             $doctorInter = '1';
         }else{
             $doctorInter = $request["drInterpreta"];
+        }*/
+
+        if($request["entRd"] == 'N'){
+            $empEntrega = '1';
+        }else{
+            $empEntrega = $request["empEnt"];
         }
 
         $fechaInsert = now();
@@ -99,7 +104,7 @@ class CobranzaController extends Controller
                                 'id_doctor_fk' => $request["drRequiere"],
                                 'id_empTrans_fk' => $doctorTrans,
                                 'id_empRea_fk' => $request['empRealiza'],
-                                'id_empEnt_fk' => $request['empEnt'],
+                                'id_empEnt_fk' => $empEntrega,
                                 'folio' => $request['folioCbr'],
                                 'fecha' => $request['fchCbr'],
                                 'paciente' => $request['pacienteCbr'],
@@ -124,7 +129,7 @@ class CobranzaController extends Controller
                                     'id_doctor_fk' => $request["drRequiere"],
                                     'id_empTrans_fk' => $doctorTrans,
                                     'id_empRea_fk' => $request['empRealiza'],
-                                    'id_empEnt_fk' => $request['empEnt'],
+                                    'id_empEnt_fk' => $empEntrega,
                                     'folio' => $request['folioCbr'],
                                     'fecha' => $request['fchCbr'],
                                     'paciente' => $request['pacienteCbr'],
@@ -148,7 +153,7 @@ class CobranzaController extends Controller
                                                 ->update([
                                                     'id_empTrans_fk' => $doctorTrans,                                   
                                                     'id_doctor_fk' => $request["drRequiere"],
-                                                    'id_empEnt_fk' => $request['empEnt'],
+                                                    'id_empEnt_fk' => $empEntrega,
                                                     'id_empRea_fk' => $request['empRealiza'],
                                                     'tipoPaciente' => $request['tipoPaciente'],
                                                     'transcripcion' => $request['transRd'],
@@ -169,7 +174,7 @@ class CobranzaController extends Controller
                                         ->update([
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
-                                                'id_empEnt_fk' => $request['empEnt'],
+                                                'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
@@ -186,7 +191,7 @@ class CobranzaController extends Controller
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
-                                            'id_empEnt_fk' => $request['empEnt'],
+                                            'id_empEnt_fk' => $empEntrega,
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'tipoPaciente' => $request['tipoPaciente'],
                                             'transcripcion' => $request['transRd'],
@@ -210,7 +215,7 @@ class CobranzaController extends Controller
                             'id_estudio_fk' => $request->estudioCorregido,
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
-                            'id_empEnt_fk' => $request['empEnt'],
+                            'id_empEnt_fk' => $empEntrega,
                             'id_empRea_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
@@ -236,7 +241,7 @@ class CobranzaController extends Controller
                                             ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                         
                                                 'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empEnt_fk' => $request['empEnt'],
+                                                'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'servicio' => $descripcion->dscrpMedicosPro,
@@ -255,7 +260,7 @@ class CobranzaController extends Controller
                                         ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empEnt_fk' => $request['empEnt'],
+                                                'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
@@ -277,7 +282,7 @@ class CobranzaController extends Controller
                                 ->update([
                                     'id_empTrans_fk' => $doctorTrans,                                                
                                     'id_doctor_fk' => $request["drRequiere"],
-                                    'id_empEnt_fk' => $request['empEnt'],
+                                    'id_empEnt_fk' => $empEntrega,
                                     'id_empRea_fk' => $request['empRealiza'],
                                     'tipoPaciente' => $request['tipoPaciente'],
                                     'transcripcion' => $request['transRd'],
@@ -293,7 +298,7 @@ class CobranzaController extends Controller
 
         }//Fin contiene todos los datos
 
-        return redirect()->route('importarCobranza.index');*/
+        return redirect()->route('importarCobranza.index');
     }
 
     /**
@@ -363,29 +368,6 @@ class CobranzaController extends Controller
         $fin = $request->fin;
     
         return Excel::download(new CobranzaExport($busqueda,$incio,$fin), 'ReporteCobranza.xlsx');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
     public function storeInt(Request $request){
@@ -543,30 +525,19 @@ class CobranzaController extends Controller
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
 
-}
-
-
-    public function statusInterpretacion(Request $request)
-    {
-         if( $request->registroC == 'S'){
-
+    public function statusInterpretacion(Request $request){
+        if( $request->registroC == 'S'){
                 foreach ($request->all()["info"] as $valor) {
                 //echo $valor["clave"];
-                     DB::table('intestudios')->where('id',$valor["clave"])
-                              ->update([
-                               'intEstudios_status' => 1,
-                            ]);
+                    DB::table('intestudios')->where('id',$valor["clave"])
+                            ->update(['intEstudios_status' => 1]);
                 }
         }elseif ($request->registroC == 'N' || $request->statusPaciente == 0 || $request->statusPaciente == 3)
-               foreach ($request->all()["info"] as $valor) {
+                foreach ($request->all()["info"] as $valor) {
                 //echo $valor["clave"];
-                     DB::table('intestudios')->where('id',$valor["clave"])
-                              ->update([
-                               'intEstudios_status' => 0,
-                            ]);
+                    DB::table('intestudios')->where('id',$valor["clave"])
+                            ->update(['intEstudios_status' => 0]);
                 }
-        
-
     }
 }
 
