@@ -46,8 +46,13 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+<<<<<<< HEAD
+        dd($request);
+        /*if($request['transRd'] == 'N'){
+=======
         
         if($request['transRd'] == 'N'){
+>>>>>>> d335289cf2e978fd937af2a526cdb9bf745847db
             $doctorTrans = '1';
         }else{
             $doctorTrans = $request["drTransc"];
@@ -293,7 +298,7 @@ class CobranzaController extends Controller
 
         }//Fin contiene todos los datos
 
-        return redirect()->route('importarCobranza.index');
+        return redirect()->route('importarCobranza.index');*/
     }
 
     /**
@@ -542,6 +547,9 @@ class CobranzaController extends Controller
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
+<<<<<<< HEAD
+}
+=======
 
     public function statusInterpretacion(Request $request)
     {
@@ -566,3 +574,4 @@ class CobranzaController extends Controller
 
     }
 }
+>>>>>>> d335289cf2e978fd937af2a526cdb9bf745847db
