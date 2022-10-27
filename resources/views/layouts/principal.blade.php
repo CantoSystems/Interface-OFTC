@@ -475,18 +475,18 @@
             "-- Selecciona una opción --" && doctorInt != "-- Selecciona una opción --") {
             let htmlTags = '<tr>' +
                 '<td>' +
-                    '<input type="hidden" class="estudioI" value="' + idEstudio + '">' +
-                    '<input type="hidden" class="folioEst" value="' + folioEst + '">' +
-                    estudioInt +
+                '<input type="hidden" class="estudioI" value="' + idEstudio + '">' +
+                '<input type="hidden" class="folioEst" value="' + folioEst + '">' +
+                estudioInt +
                 '</td>' +
                 '<td>' +
-                    '<input type="hidden" class="doctorI" value="' + idDoctor + '">' + 
-                    doctorInt + 
+                '<input type="hidden" class="doctorI" value="' + idDoctor + '">' +
+                doctorInt +
                 '</td>' +
-                '<td class="elimina" style="text-align: center; width:40px; height:25px;">' + 
-                    '<button class="borrar_int" type="button" style="width:40px; height:25px">' + 
-                        '<i class="far fa-trash-alt"></i>' +
-                    '</button>' +
+                '<td class="elimina" style="text-align: center; width:40px; height:25px;">' +
+                '<button class="borrar_int" type="button" style="width:40px; height:25px">' +
+                '<i class="far fa-trash-alt"></i>' +
+                '</button>' +
                 '</td>' +
                 '</tr>'
             $('#example13 tbody').append(htmlTags);
@@ -502,9 +502,9 @@
         }
     });
 
-    $('#grdrCompleto').click(function (e){
+    $('#grdrCompleto').click(function(e) {
         let myTableArrayInt = [];
-        document.querySelectorAll('.example13 tbody tr').forEach(function(e){
+        document.querySelectorAll('.example13 tbody tr').forEach(function(e) {
             let filas = {
                 estudioI: e.querySelector('.estudioI').value,
                 doctorI: e.querySelector('.doctorI').value,
@@ -518,9 +518,9 @@
             method: "POST",
             data: {
                 _token: $("meta[name='csrf-token']").attr("content"),
-                info : jsonStringa,
+                info: jsonStringa,
             },
-            success: function(data){
+            success: function(data) {
                 //console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
                 location.reload();
@@ -532,46 +532,45 @@
         });
     });
 
-    $(document).on('click', '.borrar_int', function (event) {
+    $(document).on('click', '.borrar_int', function(event) {
         $(this).closest('tr').remove();
     });
 
-    $('#btnGuardarPaciente').click(function(e){
+    $('#btnGuardarPaciente').click(function(e) {
         let filas = [];
-        document.querySelectorAll('.tablaInt tbody tr').forEach(function(e){
+        document.querySelectorAll('.tablaInt tbody tr').forEach(function(e) {
 
 
             console.log(e.querySelector(".identificadorInterpreta").value)
-    
+
             filas.push({
                 clave: e.querySelector(".identificadorInterpreta").value
             })
         });
 
-        if(filas != undefined or filas != null){
+        if ((filas != undefined) || (filas != null)) {
             //console.log(JSON.stringify(filas))
-        $.ajax({
-            url: "{{ route('status.interpretacion')}}",
-            method: "POST",
-            data:{
-                _token: $("meta[name='csrf-token']").attr("content"),
-                info: filas, 
-                registroC: $('.registroC').val(),
-                statusPaciente: $('#statusPaciente').val(),
-            },
-            success: function(data){
-                console.log(data);
-            },
-            error: function(xhr, status, error) {
-                var err = JSON.parse(xhr.responseText);
-                console.log(err.Message);
-            }
-        });
+            $.ajax({
+                url: "{{ route('status.interpretacion')}}",
+                method: "POST",
+                data: {
+                    _token: $("meta[name='csrf-token']").attr("content"),
+                    info: filas,
+                    registroC: $('.registroC').val(),
+                    statusPaciente: $('#statusPaciente').val(),
+                },
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(xhr, status, error) {
+                    var err = JSON.parse(xhr.responseText);
+                    console.log(err.Message);
+                }
+            });
         }
 
-        
-        });
 
+    });
     </script>
 
     <script>
