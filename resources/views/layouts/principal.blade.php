@@ -495,6 +495,7 @@
             });
             $('#doctorInt option').prop('selected', function() {
                 return this.defaultSelected;
+
             });
         } else {
             alert("Falta seleccionar estudio y/o doctor.");
@@ -532,9 +533,45 @@
     });
 
     $(document).on('click', '.borrar_int', function (event) {
-        event.preventDefault();
         $(this).closest('tr').remove();
     });
+
+    $('#btnGuardarPaciente').click(function(e){
+        let filas = [];
+        document.querySelectorAll('.tablaInt tbody tr').forEach(function(e){
+
+
+            console.log(e.querySelector(".identificadorInterpreta").value)
+    
+            filas.push({
+                clave: e.querySelector(".identificadorInterpreta").value
+            })
+        });
+
+        if(filas != undefined){
+            //console.log(JSON.stringify(filas))
+        $.ajax({
+            url: "{{ route('status.interpretacion')}}",
+            method: "POST",
+            data:{
+                _token: $("meta[name='csrf-token']").attr("content"),
+                info: filas, 
+                registroC: $('.registroC').val(),
+                statusPaciente: $('#statusPaciente').val(),
+            },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(xhr, status, error) {
+                var err = JSON.parse(xhr.responseText);
+                console.log(err.Message);
+            }
+        });
+        }
+
+        
+        });
+
     </script>
 
     <script>

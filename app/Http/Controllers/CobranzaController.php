@@ -46,8 +46,13 @@ class CobranzaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+<<<<<<< HEAD
         dd($request);
         /*if($request['transRd'] == 'N'){
+=======
+        
+        if($request['transRd'] == 'N'){
+>>>>>>> d335289cf2e978fd937af2a526cdb9bf745847db
             $doctorTrans = '1';
         }else{
             $doctorTrans = $request["drTransc"];
@@ -98,7 +103,6 @@ class CobranzaController extends Controller
                                 'id_estudio_fk' => $estUpd->id,
                                 'id_doctor_fk' => $request["drRequiere"],
                                 'id_empTrans_fk' => $doctorTrans,
-                                'id_empInt_fk' => $doctorInter,
                                 'id_empRea_fk' => $request['empRealiza'],
                                 'id_empEnt_fk' => $request['empEnt'],
                                 'folio' => $request['folioCbr'],
@@ -108,6 +112,7 @@ class CobranzaController extends Controller
                                 'formaPago' => $request['formaPago'],
                                 'transcripcion' => $request['transRd'],
                                 'interpretacion' => $request['intRd'],
+                                'num_trascrip'  => $request['num_trascrip'],
                                 'escaneado' => $request['escRd'],
                                 'cantidadCbr' => $request['cantidadCbr'],
                                 'observaciones' => $request['obsCobranza'],
@@ -115,6 +120,7 @@ class CobranzaController extends Controller
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert
                             ]);
+
                         }else if(isset($cobranzaFolio)){
                             if($cobranzaFolio->folio == $request['folioCbr']){
                                 DB::table('cobranza')->where('folio',$request['folioCbr'])
@@ -122,7 +128,6 @@ class CobranzaController extends Controller
                                     'id_estudio_fk' => $estUpd->id,
                                     'id_doctor_fk' => $request["drRequiere"],
                                     'id_empTrans_fk' => $doctorTrans,
-                                    'id_empInt_fk' => $doctorInter,
                                     'id_empRea_fk' => $request['empRealiza'],
                                     'id_empEnt_fk' => $request['empEnt'],
                                     'folio' => $request['folioCbr'],
@@ -132,6 +137,7 @@ class CobranzaController extends Controller
                                     'formaPago' => $request['formaPago'],
                                     'transcripcion' => $request['transRd'],
                                     'interpretacion' => $request['intRd'],
+                                    'num_trascrip' => $request['num_trascrip'],
                                     'escaneado' => $request['escRd'],
                                     'cantidadCbr' => $request['cantidadCbr'],
                                     'observaciones' => $request['obsCobranza'],
@@ -139,19 +145,20 @@ class CobranzaController extends Controller
                                     'created_at' => $fechaInsert,
                                     'updated_at' => $fechaInsert
                                 ]);
+
                             }
                         }
                         
                         Estudiostemp::where('folio',$request['folioCbr'])
                                                 ->update([
-                                                    'id_empTrans_fk' => $doctorTrans,                                                
+                                                    'id_empTrans_fk' => $doctorTrans,                                   
                                                     'id_doctor_fk' => $request["drRequiere"],
-                                                    'id_empInt_fk' => $doctorInter,
                                                     'id_empEnt_fk' => $request['empEnt'],
                                                     'id_empRea_fk' => $request['empRealiza'],
                                                     'tipoPaciente' => $request['tipoPaciente'],
                                                     'transcripcion' => $request['transRd'],
                                                     'interpretacion' => $request['intRd'],
+                                                    'num_trascrip' => $request['num_trascrip'],
                                                     'escaneado' => $request['escRd'],
                                                     'entregado' => $request['entRd'],
                                                     'observaciones' => $request['obsCobranza'],
@@ -160,17 +167,18 @@ class CobranzaController extends Controller
                                                     'updated_at' => $fechaInsert
                                                 ]);
 
+
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
                         DB::table('cobranza')->where('folio',$request->folioCbr)
                                         ->update([
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
-                                                'id_empInt_fk' => $doctorInter,
                                                 'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
+                                                'num_trascrip' => $request['num_trascrip'],
                                                 'interpretacion' => $request['intRd'],
                                                 'escaneado' => $request['escRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -183,18 +191,19 @@ class CobranzaController extends Controller
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
-                                            'id_empInt_fk' => $doctorInter,
                                             'id_empEnt_fk' => $request['empEnt'],
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'tipoPaciente' => $request['tipoPaciente'],
                                             'transcripcion' => $request['transRd'],
                                             'interpretacion' => $request['intRd'],
+                                            'num_trascrip'  => $request['num_trascrip'],
                                             'escaneado' => $request['escRd'],
                                             'entregado' => $request['entRd'],
                                             'observaciones' => $request['obsCobranza'],
                                             'registroC' => $request['registroC'],
                                             'updated_at' => $fechaInsert
                                         ]);
+
                     //El registro se actualiza en estudiostemps y en cobranza 
                     }
                     //Fin para insertar o actualizar datos
@@ -206,7 +215,6 @@ class CobranzaController extends Controller
                             'id_estudio_fk' => $request->estudioCorregido,
                             'id_doctor_fk' => $request["drRequiere"],
                             'id_empTrans_fk' => $doctorTrans,
-                            'id_empInt_fk' => $doctorInter,
                             'id_empEnt_fk' => $request['empEnt'],
                             'id_empRea_fk' => $request['empRealiza'],
                             'folio' => $request['folioCbr'],
@@ -215,6 +223,7 @@ class CobranzaController extends Controller
                             'tipoPaciente' => $request['tipoPaciente'],
                             'formaPago' => $request['formaPago'],
                             'transcripcion' => $request['transRd'],
+                            'num_trascrip' => $request['num_trascrip'],
                             'interpretacion' => $request['intRd'],
                             'escaneado' => $request['escRd'],
                             'cantidadCbr' => $request['cantidadCbr'],
@@ -230,15 +239,15 @@ class CobranzaController extends Controller
                         
                         Estudiostemp::where('folio',$request['folioCbr'])
                                             ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
+                                                'id_empTrans_fk' => $doctorTrans,                                         
                                                 'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $doctorInter,
                                                 'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'servicio' => $descripcion->dscrpMedicosPro,
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
+                                                'num_trascrip' => $request['num_trascrip'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -251,12 +260,12 @@ class CobranzaController extends Controller
                                         ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empInt_fk' => $doctorInter,
                                                 'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
+                                                'num_trascrip'  => $request['num_trascrip'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -273,12 +282,12 @@ class CobranzaController extends Controller
                                 ->update([
                                     'id_empTrans_fk' => $doctorTrans,                                                
                                     'id_doctor_fk' => $request["drRequiere"],
-                                    'id_empInt_fk' => $doctorInter,
                                     'id_empEnt_fk' => $request['empEnt'],
                                     'id_empRea_fk' => $request['empRealiza'],
                                     'tipoPaciente' => $request['tipoPaciente'],
                                     'transcripcion' => $request['transRd'],
                                     'interpretacion' => $request['intRd'],
+                                    'num_trascrip' => $request['num_trascrip'],
                                     'escaneado' => $request['escRd'],
                                     'entregado' => $request['entRd'],
                                     'observaciones' => $request['obsCobranza'],
@@ -286,6 +295,7 @@ class CobranzaController extends Controller
                                     'registroC' => $request['registroC'],
                                     'updated_at' => $fechaInsert
                                 ]);
+
         }//Fin contiene todos los datos
 
         return redirect()->route('importarCobranza.index');*/
@@ -396,7 +406,8 @@ class CobranzaController extends Controller
             DB::table('intEstudios')->insert([
                 'id_cobranza_fk' => $value->folioE,
                 'id_estudio_fk' => $value->estudioI,
-                'id_doctor_fk' => $value->doctorI
+                'id_doctor_fk' => $value->doctorI,
+                'intEstudios_status' => 0
             ]);
         }
 
@@ -536,4 +547,31 @@ class CobranzaController extends Controller
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
     }
+<<<<<<< HEAD
 }
+=======
+
+    public function statusInterpretacion(Request $request)
+    {
+         if( $request->registroC == 'S'){
+
+                foreach ($request->all()["info"] as $valor) {
+                //echo $valor["clave"];
+                     DB::table('intestudios')->where('id',$valor["clave"])
+                              ->update([
+                               'intEstudios_status' => 1,
+                            ]);
+                }
+        }elseif ($request->registroC == 'N' || $request->statusPaciente == 0 || $request->statusPaciente == 3)
+               foreach ($request->all()["info"] as $valor) {
+                //echo $valor["clave"];
+                     DB::table('intestudios')->where('id',$valor["clave"])
+                              ->update([
+                               'intEstudios_status' => 0,
+                            ]);
+                }
+        
+
+    }
+}
+>>>>>>> d335289cf2e978fd937af2a526cdb9bf745847db

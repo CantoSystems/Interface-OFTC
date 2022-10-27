@@ -41,6 +41,7 @@ Route::post('/agregar-interpretaciones',[CobranzaController::class,'storeInt'])-
 Route::get('/eliminar-interpretacion/{id}',[CobranzaController::class,'delInt'])->name('interpretaciones.delete')->middleware('auth');
 Route::get('/editar-interpretacion/{id}',[CobranzaController::class,'showInt'])->name('interpretaciones.showInt')->middleware('auth');
 Route::post('/guardar-interpretacion',[CobranzaController::class,'updateInt'])->name('updateInterpretacion.updateInt')->middleware('auth');
+Route::post('/status-interpretacion', [CobranzaController::class,'statusInterpretacion'])->name('status.interpretacion')->middleware('auth');
 
 //Citas
 Route::get('/subir-citas',[CitaController::class,'index'])->name('importarCitas.index')->middleware('auth');
