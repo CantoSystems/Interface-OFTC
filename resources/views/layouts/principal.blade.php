@@ -511,9 +511,10 @@
                 folioE: e.querySelector('.folioEst').value
             };
             myTableArrayInt.push(filas);
+            console.log(myTableArrayInt);
         });
         let jsonStringa = JSON.stringify(myTableArrayInt);
-        console.log(jsonStringa)
+        console.log(jsonStringa);
         $.ajax({
             url: "{{ route('interpretaciones.store') }}",
             method: "POST",
