@@ -511,10 +511,10 @@
                 folioE: e.querySelector('.folioEst').value
             };
             myTableArrayInt.push(filas);
-            console.log(myTableArrayInt);
+           // console.log(myTableArrayInt);
         });
         let jsonStringa = JSON.stringify(myTableArrayInt);
-        console.log(jsonStringa);
+        //console.log(jsonStringa);
         $.ajax({
             url: "{{ route('interpretaciones.store') }}",
             method: "POST",
@@ -523,13 +523,13 @@
                 info: jsonStringa,
             },
             success: function(data) {
-                //console.log(data);
-                $(".example13 tbody tr").closest('tr').remove();
-                location.reload();
+                console.log(data);
+                /*$(".example13 tbody tr").closest('tr').remove();
+                location.reload();*/
             },
             error: function(xhr, status, error) {
                 var err = JSON.parse(xhr.responseText);
-                console.log(err.Message);
+                //console.log(err.Message);
             }
         });
     });
