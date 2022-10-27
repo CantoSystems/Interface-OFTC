@@ -513,6 +513,7 @@
             myTableArrayInt.push(filas);
         });
         let jsonStringa = JSON.stringify(myTableArrayInt);
+        console.log(jsonStringa);
         $.ajax({
             url: "{{ route('interpretaciones.store') }}",
             method: "POST",
@@ -521,7 +522,7 @@
                 info: jsonStringa,
             },
             success: function(data) {
-                //console.log(data);
+                console.log(data);
                 $(".example13 tbody tr").closest('tr').remove();
                 location.reload();
             },
