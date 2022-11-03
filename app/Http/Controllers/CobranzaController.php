@@ -381,7 +381,7 @@ class CobranzaController extends Controller
         }
 
         foreach ($data as $value) {
-            DB::table('intEstudios')->insert([
+            DB::table('intestudios')->insert([
                 'id_cobranza_fk' => $value->folioE,
                 'id_estudio_fk' => $value->estudioI,
                 'id_doctor_fk' => $value->doctorI,
