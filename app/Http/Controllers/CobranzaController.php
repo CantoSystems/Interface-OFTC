@@ -371,7 +371,7 @@ class CobranzaController extends Controller
     }
 
     public function storeInt(Request $request){
-        return $request::all();
+        //return $request::all();
         if (empty($request->all())) {
             return response()->json(["error" => "Sin data"]);
         }
