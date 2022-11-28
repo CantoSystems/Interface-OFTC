@@ -111,7 +111,7 @@
 @include('catalogos.comisiones.modaldelete')
 @elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">
-    No cuenta con los privilegios para acceder a este módulo del sistema
+    No cuenta con los privilegios para acceder a este módulo del sistema.
 </div>
 @endcanany
 @endsection
