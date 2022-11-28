@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-            @canany(['comisiones','cobranzaReportes'])
+                @canany(['comisiones','cobranzaReportes'])
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Comisión:
@@ -23,10 +23,19 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
+                                @if($comision->puesto_id == 2)
+                                <div class="alert alert-success" style="text-align: justify;">
+                                    <h6><b>RECUERDA:</b></h6> En el caso del <b>OPTOMETRISTA</b>, el campo <b>PORCENTAJE
+                                        COMISIÓN</b> es <i><b>por la realización del estudio</b></i> y el campo
+                                    <b>PORCENTAJE
+                                        ADICIONAL</b> es <i><b>por la transcripción</b></i> del
+                                    mismo.
+                                </div>
+                                @endif
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>Estudio 
-                                        <strong style="color:red">*</strong>
+                                        <label>Estudio
+                                            <strong style="color:red">*</strong>
                                         </label>
                                         <select name="estudioGral" id="estudioGral" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
@@ -46,35 +55,36 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <label>Cantidad en MXN
-                                        <strong style="color:red">*</strong>
+                                        <label name="lblporCom">Porcentaje Comisión
+                                            <strong style="color:red">*</strong>
                                         </label>
-                                        <input type="number" step="0.01" value="{{ $comision->cantidadComision }}"
-                                            name="cantidadComision" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label>Porcentaje
-                                        <strong style="color:red">*</strong>
-                                        </label>
-                                        <input type="number" step="0.01" value="{{ $comision->porcentaje }}"
+                                        <input type="number" step="0.01" value="{{ $comision->porcentajeComision }}"
                                             name="porcentajeComision" class="form-control" required>
                                         <input type="hidden" name="idComision" id="idComision"
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
+                                @if($comision->puesto_id == 2)
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <label>Utilidad
-                                        <strong style="color:red">*</strong>
+                                        <label>Porcentaje Adicional</label>
+                                        <input type="number" step="0.01" value="{{ $comision->porcentajeAdicional }}"
+                                            name="cantidadComision" class="form-control" required>
+                                    </div>
+                                </div>
+                                @elseif($comision->puesto_id == 4)
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label>Porcentaje Utilidad
+                                            <strong style="color:red">*</strong>
                                         </label>
-                                        <input type="number" step="0.01" value="{{ $comision->cantidadUtilidad }}"
+                                        <input type="number" step="0.01" value="{{ $comision->porcentajeUtilidad }}"
                                             id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
                                         <input type="hidden" name="idComision" id="idComision"
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <div class="card-footer">
@@ -101,7 +111,7 @@
 @include('catalogos.comisiones.modaldelete')
 @elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">
-                    No cuenta con los privilegios para acceder a este módulo del sistema
+    No cuenta con los privilegios para acceder a este módulo del sistema.
 </div>
 @endcanany
 @endsection

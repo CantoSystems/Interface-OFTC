@@ -288,9 +288,17 @@
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
-                $("#divComision").css("display", "block");
+                $("#divComision").show();
+                $("#divAlerta").hide();
+                $("#porcentajeAdicional").hide();
+            } else if (texto.includes('OPTOMETRÍA')) {
+                $("#divComision").hide();
+                $("#divAlerta").show();
+                $("#porcentajeAdicional").show();
             } else {
-                $("#divComision").css("display", "none");
+                $("#porcentajeAdicional").hide();
+                $("#divAlerta").hide();
+                $("#divComision").hide();
             }
         });
 

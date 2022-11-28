@@ -17,9 +17,9 @@ class CreateComisionesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_estudio_fk');
             $table->unsignedBigInteger('id_empleado_fk');
-            $table->double('cantidadComision',10,2)->nullable();
-            $table->double('cantidadUtilidad',10,2)->nullable();
-            $table->double('porcentaje',10,2)->nullable();
+            $table->double('porcentajeComision',10,2)->nullable();
+            $table->double('porcentajeAdicional',10,2)->nullable();
+            $table->double('porcentajeUtilidad',10,2)->nullable();
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->foreign('id_empleado_fk')->references('id_emp')->on('empleados');
             $table->timestamps();
