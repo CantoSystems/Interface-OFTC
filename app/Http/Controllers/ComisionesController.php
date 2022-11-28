@@ -21,8 +21,8 @@ class ComisionesController extends Controller{
         $empleados = DB::table('empleados')
                         ->join('puestos','puestos.id','=','puesto_id')
                         ->select('id_emp',
-                                 DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
-                                 'puestos.puestos_nombre')
+                                    DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
+                                        'puestos.puestos_nombre')
                         ->where('id_emp','!=',1)
                         ->orderBy('empleado','asc')
                         ->get();
@@ -55,280 +55,92 @@ class ComisionesController extends Controller{
             return back()->withErrors($validator)->withInput();
         }
 
-        $puestoEmp = DB::table('empleados')
+        $paqueteEst = DB::table('estudios')
+                        ->select('paquete')
+                        ->where('id_estudio_fk','=',$request->slctEstudio)
+                        ->first();
+
+        if($paqueteEst->paquete == "N"){
+            $puestoEmp = DB::table('empleados')
                         ->join('puestos','puestos.id','=','empleados.puesto_id')
-                        ->select('puesto_id')
+                        ->join('doctors'
+                                ,DB::raw("CONCAT(doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom)"),'=',DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)"))
+                        ->select('empleados.puesto_id','doctors.id')
                         ->where('empleados.id_emp','=',$request->slctEmpleado)
                         ->first();
 
-        //Comisión individual
-        if($request->slctEstudio != 'TODOS'){
-            $selectEstudios = DB::table('cobranza')
-                                ->select('fecha','paciente','id_empTrans_fk','id_empRea_fk')
-                                ->where('id_estudio_fk','=',$request->slctEstudio)
-                                ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
-                                ->get();
+            $cantidadEst = DB::table('cobranza')
+                            ->select('cantidadCbr')
+                            ->where('id_estudio_fk','=',$request->slctEstudio)
+                            ->get();
 
-            if($puestoEmp->puesto_id == 2){
-                $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                ,'porcentaje'
-                                                ,'cantidadUtilidad as utilidad')
+            switch ($puestoEmp->puesto_id) {
+                case '4':
+                    $comisionEmp = DB::table('comisiones')
+                                    ->select('porcentaje','cantidadUtilidad')
+                                    ->where([
+                                        ['id_estudio_fk','=',$request->slctEstudio],
+                                        ['id_empleado_fk','=',$request->slctEmpleado]
+                                    ])->first();
+
+                    $comisionInt = DB::table('cobranza')
+                                    ->join('intestudios','intestudios.id_cobranza_fk','=','cobranza.folio')
+                                    ->where([
+                                        ['intestudios.id_estudio_fk','=',$request->slctEstudio],
+                                        ['intestudios.id_doctor_fk','=',$puestoEmp->id]
+                                    ])->get();
+
+                    $comision = 0;
+                    foreach($comisionInt as $com){
+                        $comision = ($com->cantidadCbr*$comisionEmp->porcentaje)/100;
+
+                        DB::table('comisiones_temps')->insert([
+                            'id_emp_fk' => $request->slctEmpleado,
+                            'id_estudio_fk' => $request->slctEstudio,
+                            'paciente' => $com->paciente,
+                            'fechaEstudio' => $com->fecha,
+                            'cantidad' => $comision,
+                            'porcentaje' => $comisionEmp->porcentaje,
+                            'total' => $comision,
+                            'created_at' => $fechaInsert,
+                            'updated_at' => $fechaInsert
+                        ]);
+
+                        if($comisionEmp->cantidadUtilidad != 0){
+                            $comisionesInt = DB::table('cobranza')
+                                            ->join('intestudios','intestudios.id_cobranza_fk','=','cobranza.folio')
                                             ->where([
-                                                ['id_estudio_fk','=',$request->slctEstudio],
-                                                ['id_empleado_fk','=',$request->slctEmpleado]
-                                            ])->first();
+                                                ['intestudios.id_estudio_fk','=',$request->slctEstudio],
+                                                ['intestudios.id_doctor_fk','=',$puestoEmp->id]
+                                            ])->get();
 
-                $precioEstudio = DB::table('estudios')
-                                        ->select('precioEstudio')
-                                        ->where('id','=',$request->slctEstudio)
-                                        ->first();
-                
-                $totalComisiones = 0;
-                foreach($selectEstudios as $estudios){
-                    if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
-                        $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
-                    }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        if($comisionEmp->cantidad != 0){
-                            $totalComisiones = $comisionEmp->cantidad;
-                        }else{
-                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        }
-                    }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        if($comisionEmp->porcentaje != 0){
-                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        }else{
-                            $totalComisiones = $comisionEmp->cantidad;
-                        }
-                    }else{
-                        $estudios++;
-                    }
+                            foreach($comisionesInt as $coms){
+                                if($coms->id_empRea_fk == 4){
+                                    $comisionEmp = DB::table('comisiones')
+                                                    ->select('porcentaje')
+                                                    ->where([
+                                                        ['id_estudio_fk','=',$request->slctEstudio],
+                                                        ['id_empleado_fk','=',$coms->id_empRea_fk]
+                                                    ])->first();
 
-                    DB::table('comisiones_temps')->insert([
-                        'id_emp_fk' => $request->slctEmpleado,
-                        'id_estudio_fk' => $request->slctEstudio,
-                        'paciente' => $estudios->paciente,
-                        'fechaEstudio' => $estudios->fecha,
-                        'cantidad' => $comisionEmp->cantidad,
-                        'porcentaje' => $comisionEmp->porcentaje,
-                        'total' => $totalComisiones,
-                        'created_at' => $fechaInsert,
-                        'updated_at' => $fechaInsert
-                    ]);
-                    
-                    $totalComisiones = 0;
-                }
-            }else{
-                $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                ,'porcentaje'
-                                                ,'cantidadUtilidad as utilidad')
-                                            ->where([
-                                                ['id_estudio_fk','=',$request->slctEstudio],
-                                                ['id_empleado_fk','=',$request->slctEmpleado]
-                                            ])->first();
-
-                foreach($selectEstudios as $estudios){
-                    if($comisionEmp->cantidad != 0){
-                        $totalCantidad = $comisionEmp->cantidad;
-                        $totalComisiones = $totalCantidad;
-    
-                        if($comisionEmp->porcentaje != 0){
-                            $totalPorcentaje = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                            $totalComisiones = $totalComisiones + $totalPorcentaje;
-    
-                            if($comisionEmp->utilidad != 0){
-                                $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                                $totalComisiones = $totalComisiones + $totalUtilidad;
+                                    
+                                }
                             }
-                        }else if($comisionEmp->utilidad != 0){
-                            $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                            $totalComisiones = $totalComisiones + $totalUtilidad;
                         }
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $request->slctEstudio,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    }else if($comisionEmp->porcentaje != 0){
-                        $totalPorcentaje = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        $totalComisiones = $totalPorcentaje;
-    
-                        if($comisionEmp->utilidad != 0){
-                            $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                            $totalComisiones = $totalComisiones + $totalUtilidad;
-                        }
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $request->slctEstudio,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    }else{
-                        $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                        $totalComisiones = $totalComisiones + $totalUtilidad;
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $request->slctEstudio,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
                     }
-                }
+                    break;
+                case '5':
+                    
+                    break;
+                case '6':
+                    
+                    break;
+                default:
+                    # code...
+                    break;
             }
-        //Comisión general
         }else{
-            $selectEstudios = DB::table('cobranza')
-                                    ->select('fecha','paciente','id_empTrans_fk','id_empRea_fk','id_estudio_fk')
-                                    ->whereBetween('fecha',[$request->fechaInicio,$request->fechaFin])
-                                    ->get();  
 
-            if($puestoEmp->puesto_id == 2){
-                $totalComisiones = 0;
-                foreach($selectEstudios as $estudios){
-                    $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                    ,'porcentaje'
-                                                    ,'cantidadUtilidad as utilidad')
-                                                ->where([
-                                                    ['id_estudio_fk','=',$estudios->id_estudio_fk],
-                                                    ['id_empleado_fk','=',$request->slctEmpleado]
-                                                ])->first();
-
-                    $precioEstudio = DB::table('estudios')
-                                        ->select('precioEstudio')
-                                        ->where('id','=',$estudios->id_estudio_fk)
-                                        ->first();
-                    
-                    if(($estudios->id_empTrans_fk == $request->slctEmpleado) && ($estudios->id_empRea_fk == $request->slctEmpleado)){
-                        $totalComisiones = $comisionEmp->cantidad + (($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100);
-                    }else if($estudios->id_empTrans_fk == $request->slctEmpleado){
-                        if($comisionEmp->cantidad != null){
-                            $totalComisiones = $comisionEmp->cantidad;
-                        }else{
-                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        }
-                    }else if($estudios->id_empRea_fk == $request->slctEmpleado){
-                        if($comisionEmp->cantidad != null){
-                            $totalComisiones = $comisionEmp->cantidad;
-                        }else{
-                            $totalComisiones = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        }
-                    }else{
-                        $estudios++;
-                    }
-
-                    DB::table('comisiones_temps')->insert([
-                        'id_emp_fk' => $request->slctEmpleado,
-                        'id_estudio_fk' => $estudios->id_estudio_fk,
-                        'paciente' => $estudios->paciente,
-                        'fechaEstudio' => $estudios->fecha,
-                        'cantidad' => $comisionEmp->cantidad,
-                        'porcentaje' => $comisionEmp->porcentaje,
-                        'total' => $totalComisiones,
-                        'created_at' => $fechaInsert,
-                        'updated_at' => $fechaInsert
-                    ]);
-
-                    $totalComisiones = 0;
-                }
-            }else{
-                foreach($selectEstudios as $estudios){
-                    $comisionEmp = Comisiones::select('cantidadComision as cantidad'
-                                                    ,'porcentaje'
-                                                    ,'cantidadUtilidad as utilidad')
-                                                ->where([
-                                                    ['id_estudio_fk','=',$estudios->id_estudio_fk],
-                                                    ['id_empleado_fk','=',$request->slctEmpleado]
-                                                ])->first();
-
-                    $precioEstudio = DB::table('estudios')
-                                        ->select('precioEstudio')
-                                        ->where('id','=',$estudios->id_estudio_fk)
-                                        ->first();
-
-                    if($comisionEmp->cantidad != 0){
-                        $totalCantidad = $comisionEmp->cantidad;
-                        $totalComisiones = $totalCantidad;
-    
-                        if($comisionEmp->porcentaje != 0){
-                            $totalPorcentaje = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                            $totalComisiones = $totalComisiones + $totalPorcentaje;
-    
-                            if($comisionEmp->utilidad != 0){
-                                $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                                $totalComisiones = $totalComisiones + $totalUtilidad;
-                            }
-                        }else if($comisionEmp->utilidad != 0){
-                            $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                            $totalComisiones = $totalComisiones + $totalUtilidad;
-                        }
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $estudios->id_estudio_fk,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    }else if($comisionEmp->porcentaje != 0){
-                        $totalPorcentaje = ($precioEstudio->precioEstudio*$comisionEmp->porcentaje)/100;
-                        $totalComisiones = $totalPorcentaje;
-    
-                        if($comisionEmp->utilidad != 0){
-                            $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                            $totalComisiones = $totalComisiones + $totalUtilidad;
-                        }
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $estudios->id_estudio_fk,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    }else{
-                        $totalUtilidad = ($precioEstudio->precioEstudio*$comisionEmp->utilidad)/100;
-                        $totalComisiones = $totalComisiones + $totalUtilidad;
-    
-                        DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $estudios->id_estudio_fk,
-                            'paciente' => $estudios->paciente,
-                            'fechaEstudio' => $estudios->fecha,
-                            'cantidad' => $comisionEmp->cantidad,
-                            'porcentaje' => $comisionEmp->porcentaje,
-                            'total' => $totalComisiones,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
-                    }
-                }
-            }
         }
 
         $comisiones = DB::table('comisiones_temps')
@@ -369,10 +181,9 @@ class ComisionesController extends Controller{
                                     ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
                                     ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
                                     ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
-                                             DB::raw("CONCAT(cat_estudios.descripcion,' ',tipo_ojos.nombretipo_ojo) AS Estudio")
-                                                    ,'comisiones.cantidadComision'
-                                                    ,'comisiones.porcentaje'
-                                                    ,'comisiones.cantidadUtilidad'
+                                             DB::raw("estudios.dscrpMedicosPro as Estudio")
+                                                    ,'comisiones.porcentajeComision'
+                                                    ,'comisiones.porcentajeUtilidad'
                                                     ,'comisiones.id')
                                     ->orderBy('empleados.empleado_nombre','asc')
                                     ->get();
@@ -391,6 +202,10 @@ class ComisionesController extends Controller{
         return view('catalogos.comisiones.catcomisiones',compact('lisComisiones','listEstudios','listEmpleados'));
     }
 
+    public function calculosAdicionales(){
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -400,12 +215,10 @@ class ComisionesController extends Controller{
         $validator = Validator::make($request->all(),[
             'estudioGral' => 'required',
             'empleadoComision' => 'required',
-            'cantidadComision' => 'required',
-            'porcentajeComision'      => 'required',
+            'porcentajeComision' => 'required',
         ],[
             'estudioGral.required' => 'Seleccciona el Estudio',
             'empleadoComision.required' => 'Selecciona el Empleado',
-            'cantidadComison.required' => 'Ingresa la cantidad de Comisión',
             'porcentajeComision.required' => 'Ingresa el porcentaje',
         ]);
         
@@ -426,9 +239,9 @@ class ComisionesController extends Controller{
         DB::table('comisiones')->insert([
             'id_estudio_fk' => $request->estudioGral,
             'id_empleado_fk' => $request->empleadoComision,
-            'cantidadComision' => $request->cantidadComision,
-            'cantidadUtilidad' => $request->utilidadComision,
-            'porcentaje' => $request->porcentajeComision,
+            'porcentajeComision' => $request->porcentajeComision,
+            'porcentajeAdicional' => $request->cantidadComision,
+            'porcentajeUtilidad' => $request->utilidadComision,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
         ]);
@@ -448,9 +261,10 @@ class ComisionesController extends Controller{
                                                 ,'estudios.dscrpMedicosPro'
                                                 ,'comisiones.id_estudio_fk'
                                                 ,'comisiones.id_empleado_fk'
-                                                ,'comisiones.cantidadComision'
-                                                ,'comisiones.cantidadUtilidad'
-                                                ,'comisiones.porcentaje'
+                                                ,'comisiones.porcentajeComision'
+                                                ,'comisiones.porcentajeUtilidad'
+                                                ,'comisiones.porcentajeAdicional'
+                                                ,'empleados.puesto_id'
                                                 ,'comisiones.id')
                               ->where('comisiones.id','=',$id)
                               ->first();
@@ -481,9 +295,9 @@ class ComisionesController extends Controller{
     public function update(Request $request){
         $editComision = Comisiones::find($request->idComision);
         $editComision->id_estudio_fk = $request->estudioGral;
-        $editComision->cantidadComision = $request->cantidadComision;
-        $editComision->cantidadUtilidad = $request->cantidadUtilidad;
-        $editComision->porcentaje = $request->porcentajeComision;
+        $editComision->porcentajeComision = $request->porcentajeComision;
+        $editComision->porcentajeAdicional = $request->cantidadComision;
+        $editComision->porcentajeUtilidad = $request->cantidadUtilidad;
         $editComision->save();
         
         return redirect()->route('mostrarComisiones.index');
