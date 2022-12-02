@@ -19,7 +19,7 @@
                             mismo.
                         </div>
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Estudio Específico
                                         <strong style="color:red">*</strong>
@@ -34,7 +34,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Empleado
                                         <strong style="color:red">*</strong>
@@ -49,7 +49,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Porcentaje Comisión
                                         <strong style="color:red">*</strong>
@@ -58,21 +58,21 @@
                                         class="form-control">
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-4">
                                 <div class="form-group" id="porcentajeAdicional" name="porcentajeAdicional"
                                     style="display: none">
                                     <label>Porcentaje Adicional</label>
                                     <input type="number" step="0.01" id="cantidadComision" name="cantidadComision"
-                                        class="form-control">
+                                    class="form-control porcentajeAdicionalInput">
                                 </div>
                             </div>
-                            <div class="col-3" id="divComision" name="divComision" style="display: none">
+                            <div class="col-md-4" id="divComision" name="divComision" style="display: none">
                                 <div class="form-group">
                                     <label>Porcentaje Utilidad
                                         <strong style="color:red">*</strong>
                                     </label>
                                     <input type="number" step="0.01" id="utilidadComision" name="utilidadComision"
-                                        class="form-control">
+                                        class="form-control divComisionInput">
                                 </div>
                             </div>
                         </div>

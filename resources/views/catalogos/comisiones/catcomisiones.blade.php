@@ -36,8 +36,10 @@
                 <thead>
                     <tr>
                         <th>Empleado</th>
+                        <th>Puesto</th>
                         <th>Estudio</th>
                         <th>Porcentaje Comisión</th>
+                        <th>Porcentaje Adicional</th>
                         <th>Porcentaje Utilidad</th>
                         <th></th>
                     </tr>
@@ -47,9 +49,12 @@
                     @foreach($lisComisiones as $list)
                     <tr>
                         <td>{{ $list->Empleado }}</td>
+                        <td>{{ $list->puestos_nombre }}</td>
                         <td>{{ $list->Estudio }}</td>
                         <td>{{ number_format($list->porcentajeComision,2) }} %</td>
-                        <td>{{ number_format($list->cantidadUtilidad,2) }} %</td>
+                        <td>{{ number_format($list->porcentajeAdicional,2)}}%</td>
+                        <td>{{ number_format($list->porcentajeUtilidad,2) }} %</td>
+
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('editComision.show',$list->id) }}">VER</a></th>
                     </tr>

@@ -285,20 +285,33 @@
         $('#cantidadComision').val(0);
         $('#utilidadComision').val(0);
         $('#precioEstudio').val(0);
+        $("#porcentajeAdicional").show();
+        $("#divComision").show();
+        $(".porcentajeAdicionalInput").attr("disabled", true);
+        $(".divComisionInput").attr("disabled",true);
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
                 $("#divComision").show();
                 $("#divAlerta").hide();
-                $("#porcentajeAdicional").hide();
+                $(".porcentajeAdicionalInput").attr("disabled", true);
+                $(".divComisionInput").attr("disabled",true);
+                $(".divComisionInput").attr("disabled",false);
             } else if (texto.includes('OPTOMETRÍA')) {
                 $("#divComision").hide();
                 $("#divAlerta").show();
                 $("#porcentajeAdicional").show();
+                $("#divComision").show();
+                $(".porcentajeAdicionalInput").attr("disabled", false);
+                $(".divComisionInput").attr("disabled",true);
             } else {
-                $("#porcentajeAdicional").hide();
+                //$("#porcentajeAdicional").hide();
                 $("#divAlerta").hide();
-                $("#divComision").hide();
+                $("#divComision").show();
+                $(".porcentajeAdicionalInput").attr("disabled", true);
+                $(".divComisionInput").attr("disabled",true);
+
+
             }
         });
 
