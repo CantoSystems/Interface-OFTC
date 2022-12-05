@@ -230,10 +230,13 @@ class ComisionesController extends Controller{
                                     ->join('empleados','empleados.id_emp','=','comisiones.id_empleado_fk')
                                     ->join('tipo_ojos','tipo_ojos.id','=','estudios.id_ojo_fk')
                                     ->join('cat_estudios','cat_estudios.id','=','estudios.id_estudio_fk')
+                                    ->join('puestos','puestos.id','empleados.puesto_id')
                                     ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS Empleado"),
                                              DB::raw("estudios.dscrpMedicosPro as Estudio")
                                                     ,'comisiones.porcentajeComision'
                                                     ,'comisiones.porcentajeUtilidad'
+                                                    ,'comisiones.porcentajeAdicional'
+                                                    ,'puestos.puestos_nombre'
                                                     ,'comisiones.id')
                                     ->orderBy('empleados.empleado_nombre','asc')
                                     ->get();
@@ -307,6 +310,7 @@ class ComisionesController extends Controller{
     public function show($id){
         $comision = Comisiones::join('estudios','estudios.id','=','comisiones.id_estudio_fk')
                               ->join('empleados','empleados.id_emp','=','comisiones.id_empleado_fk')
+                              ->join('puestos','puestos.id','empleados.puesto_id')
                               ->select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado")
                                                 ,'estudios.dscrpMedicosPro'
                                                 ,'comisiones.id_estudio_fk'
@@ -315,6 +319,7 @@ class ComisionesController extends Controller{
                                                 ,'comisiones.porcentajeUtilidad'
                                                 ,'comisiones.porcentajeAdicional'
                                                 ,'empleados.puesto_id'
+                                                ,'puestos.puestos_nombre'
                                                 ,'comisiones.id')
                               ->where('comisiones.id','=',$id)
                               ->first();

@@ -9,7 +9,10 @@
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Comisión:
-                            <b>{{ $comision->empleado }} - {{ $comision->dscrpMedicosPro }}</b>
+                            </br>
+                            <b> {{ $comision->empleado }} - {{ $comision->puestos_nombre}}
+                            </br>
+                                {{ $comision->dscrpMedicosPro }}</b>
                         </h3>
                     </div>
                     @if (count($errors) > 0)
@@ -32,7 +35,7 @@
                                     mismo.
                                 </div>
                                 @endif
-                                <div class="col-6">
+                                <div class="col-8">
                                     <div class="form-group">
                                         <label>Estudio
                                             <strong style="color:red">*</strong>
@@ -53,7 +56,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label name="lblporCom">Porcentaje Comisión
                                             <strong style="color:red">*</strong>
@@ -64,27 +67,44 @@
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
-                                @if($comision->puesto_id == 2)
-                                <div class="col-2">
+                               
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Porcentaje Adicional</label>
-                                        <input type="number" step="0.01" value="{{ $comision->porcentajeAdicional }}"
-                                            name="cantidadComision" class="form-control" required>
+                                        @if($comision->puesto_id == 2)
+                                                <input type="number" step="0.01" value="{{ $comision->porcentajeAdicional }}"
+                                                name="cantidadComision" class="form-control" required>
+                                        @elseif($comision->puesto_id == 4)
+                                                <input type="number" class="form-control" 
+                                                value="{{ $comision->porcentajeAdicional }}" disabled>
+                                        @else
+                                                <input type="number" class="form-control" 
+                                                value="{{ $comision->porcentajeAdicional }}" disabled>
+                                        @endif
                                     </div>
                                 </div>
-                                @elseif($comision->puesto_id == 4)
-                                <div class="col-2">
+                   
+
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Porcentaje Utilidad
                                             <strong style="color:red">*</strong>
                                         </label>
-                                        <input type="number" step="0.01" value="{{ $comision->porcentajeUtilidad }}"
-                                            id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
-                                        <input type="hidden" name="idComision" id="idComision"
-                                            value="{{ $comision->id }}">
+                                        @if($comision->puesto_id == 4)
+                                                <input type="number" step="0.01" value="{{ $comision->porcentajeUtilidad }}"
+                                                id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
+                                                <input type="hidden" name="idComision" id="idComision"
+                                                value="{{ $comision->id }}">
+                                        @elseif($comision->puesto_id == 2)
+                                                <input type="number" value="{{ $comision->porcentajeUtilidad}}" class="form-control" disabled>
+                                        @else        
+                                                <input type="number" value="{{ $comision->porcentajeUtilidad}}" class="form-control" disabled>
+                                        @endif
+                                                
+                                         
                                     </div>
                                 </div>
-                                @endif
+                                
                             </div>
                         </div>
                         <div class="card-footer">
