@@ -117,12 +117,20 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4"> 
+                                    <a href="{{ route('mostrarPorcentajes.show')}}">
+                                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                                class="btn btn-block btn-outline-secondary btn-xs">
+                                                Regresar
+                                            </button>
+                                    </a>  
+                                </div>
+                                <div class="col-4">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
                                         class="btn btn-block btn-outline-info btn-xs">Guardar
                                         Registro</button>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <button type="button" id="btnEliminar" name="btnEliminar"
                                         class="btn btn-block btn-outline-danger btn-xs"
                                         data-target="#eliminar-porcentaje" data-toggle="modal">Eliminar

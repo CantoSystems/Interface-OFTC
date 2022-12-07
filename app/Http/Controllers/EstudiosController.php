@@ -31,22 +31,36 @@ class EstudiosController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
+       // return $this->eliminarDuplicados();
         return view('estudios.import-cobranza');
     }
     
     public function importExcel(ImportCobranzaRequest $request){
+
+
+
         if($request->hasFile('file')){
             $file = $request->file('file');
+            Excel::import(new ReportesImport, $file);
+            $this->eliminarDuplicados();
             
-            try {
+            /*try {
                 Excel::import(new ReportesImport, $file);
+               
             } catch (\Illuminate\Database\QueryException $e) {
                 return back()->with('duplicados','Los Folios ya existen');
-            }
+            }*/
             
             return redirect()->route('importarCobranza.index');
         }
         
+    }
+
+    public function eliminarDuplicados(){
+       DB::delete("DELETE duplicados from estudiostemps as duplicados
+                    INNER JOIN estudiostemps as temporales
+                    WHERE duplicados.id > temporales.id and duplicados.folio = temporales.folio
+                    and duplicados.paciente = temporales.paciente and duplicados.servicio = temporales.servicio");
     }
 
     /**
