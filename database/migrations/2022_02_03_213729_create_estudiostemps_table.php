@@ -20,7 +20,7 @@ class CreateEstudiostempsTable extends Migration
             $table->char('id_empRea_fk',10)->nullable();
             $table->char('id_empEnt_fk',10)->nullable();
             $table->date('fecha');
-            $table->char('folio',10)->unique();
+            $table->char('folio',10);
             $table->text('paciente')->nullable();
             $table->char('tipoPaciente',1)->nullable();
             $table->text('servicio')->nullable();

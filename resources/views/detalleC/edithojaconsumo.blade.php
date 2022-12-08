@@ -140,12 +140,20 @@
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-4">
+                                        <a href="{{ route('viewHojas.show')}}">
+                                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                                class="btn btn-block btn-outline-secondary btn-xs">
+                                                Regresar
+                                            </button>
+                                        </a> 
+                                    </div>
+                                    <div class="col-4">
                                         <button type="submit" id="btnGuardar" name="btnGuardar"
                                             class="btn btn-block btn-outline-info btn-xs">Actualizar
                                             Registro</button>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <button type="button" data-target="#eliminar-hoja"
                                                 data-toggle="modal" id="btnGuardar" name="btnGuardar"
                                             class="btn btn-block btn-outline-danger btn-xs">Eliminar
