@@ -90,30 +90,9 @@ class EstudiosController extends Controller{
                                     ->where('id_emp','!=',1)
                                     ->get();
 
-        $doctorInter = Doctor::where([
-                                        ['id','<>','1'],
-                                        ['categoria_id',2]
-                                    ])->get();
+        $doctorInter = Doctor::where('id','<>','1')->get();
 
-        if($datosPaciente->estudiostemps_status != 3){
-            $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
-                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
-                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
-                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
-                            ->where('estudiostemps.id',$id)
-                            ->get();
-        }else{
-            $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
-                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
-                            ->join('cobranza','cobranza.folio','=','intestudios.id_cobranza_fk')
-                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
-                            ->where('cobranza.id',$id)
-                            ->get();
-        }
-
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt'));
     }
 
     /**
@@ -245,7 +224,7 @@ class EstudiosController extends Controller{
         if($duplicados->count() >= 1){
             return back()->with('duplicados','El registro ingresado ya existe');
         }
-       
+        
         $fechaInsert = now()->toDateString();
         DB::table('cat_estudios')->insert([
             'descripcion' => $request->descripcionGral,
