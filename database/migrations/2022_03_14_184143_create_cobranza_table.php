@@ -20,13 +20,13 @@ class CreateCobranzaTable extends Migration
             $table->unsignedBigInteger('id_empTrans_fk');
             $table->unsignedBigInteger('id_empRea_fk');
             $table->unsignedBigInteger('id_empEnt_fk');
+            $table->unsignedBigInteger('id_empInt_fk');
             $table->date('fecha');
             $table->char('folio',10);
             $table->text('paciente');
             $table->text('tipoPaciente');
             $table->text('formaPago');
             $table->char('transcripcion',1);
-            $table->smallInteger('num_trascrip')->nullable();
             $table->char('interpretacion',1);
             $table->char('escaneado',1);
             $table->char('entregado',1);
@@ -35,6 +35,7 @@ class CreateCobranzaTable extends Migration
             $table->text('observaciones')->nullable();
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->foreign('id_doctor_fk')->references('id')->on('doctors');
+            $table->foreign('id_empInt_fk')->references('id')->on('doctors');
             $table->foreign('id_empTrans_fk')->references('id_emp')->on('empleados');
             $table->foreign('id_empRea_fk')->references('id_emp')->on('empleados');
             $table->foreign('id_empEnt_fk')->references('id_emp')->on('empleados');
