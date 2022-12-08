@@ -36,9 +36,6 @@ class EstudiosController extends Controller{
     }
     
     public function importExcel(ImportCobranzaRequest $request){
-
-
-
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
@@ -104,30 +101,9 @@ class EstudiosController extends Controller{
                                     ->where('id_emp','!=',1)
                                     ->get();
 
-        $doctorInter = Doctor::where([
-                                        ['id','<>','1'],
-                                        ['categoria_id',2]
-                                    ])->get();
+        $doctorInter = Doctor::where('id','<>','1')->get();
 
-        if($datosPaciente->estudiostemps_status != 3){
-            $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
-                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
-                            ->join('estudiostemps','estudiostemps.folio','=','intestudios.id_cobranza_fk')
-                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
-                            ->where('estudiostemps.id',$id)
-                            ->get();
-        }else{
-            $doctoresInt = DB::table('intestudios')
-                            ->join('estudios','estudios.id','=','intestudios.id_estudio_fk')
-                            ->join('doctors','doctors.id','=','intestudios.id_doctor_fk')
-                            ->join('cobranza','cobranza.folio','=','intestudios.id_cobranza_fk')
-                            ->select('intestudios.id','estudios.dscrpMedicosPro',DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom) AS doctor"))
-                            ->where('cobranza.id',$id)
-                            ->get();
-        }
-
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt','doctoresInt'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt'));
     }
 
     /**
@@ -145,7 +121,7 @@ class EstudiosController extends Controller{
     public function showCatalogo(){
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
                                 
@@ -171,12 +147,11 @@ class EstudiosController extends Controller{
         $nvoEstudio->id_estudio_fk = $request->estudioGral;
         $nvoEstudio->id_ojo_fk = $request->tipoOjo;
         $nvoEstudio->dscrpmedicosPro = $request->dscrpMedicosPro;
-        $nvoEstudio->paquete = $request->paqEst;
         $nvoEstudio->save();
 
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
 
@@ -191,12 +166,10 @@ class EstudiosController extends Controller{
             'estudioGral' => 'required',
             'tipoOjo' => 'required',
             'dscrpMedicosPro' => 'required',
-            'paqEst' => 'required',
         ],[
             'estudioGral.required' => 'Selecccione el estudio.',
             'tipoOjo.required' => 'Seleccione el tipo de ojo.',
             'dscrpMedicosPro.required' => 'Ingrese la descripción del estudio.',
-            'paqEst.required' => 'Seleccione si el estudio es un paquete.',
         ]);
 
         if($validator->fails()){
@@ -217,14 +190,13 @@ class EstudiosController extends Controller{
             'id_estudio_fk' => $request->estudioGral,
             'id_ojo_fk' => $request->tipoOjo,
             'dscrpMedicosPro' => $request->dscrpMedicosPro,
-            'paquete' => $request->paqEst,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
         ]);
 
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
                                 
@@ -259,7 +231,7 @@ class EstudiosController extends Controller{
         if($duplicados->count() >= 1){
             return back()->with('duplicados','El registro ingresado ya existe');
         }
-       
+        
         $fechaInsert = now()->toDateString();
         DB::table('cat_estudios')->insert([
             'descripcion' => $request->descripcionGral,

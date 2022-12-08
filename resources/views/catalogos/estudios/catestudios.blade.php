@@ -39,7 +39,6 @@
                         <th>Estudio</th>
                         <th>Tipo de Ojo</th>
                         <th>Descripción</th>
-                        <th>¿Es paquete?</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -51,7 +50,6 @@
                         <td>{{ $list->descripcion }}</td>
                         <td>{{ $list->nombretipo_ojo }}</td>
                         <td>{{ $list->dscrpMedicosPro }}</td>
-                        <td>@if($list->paquete == 'S') Si @else No @endif</td>
                         <th><a class="btn btn-block btn-outline-secondary btn-xs"
                                 href="{{ route('editCatalogo.update',$list->id) }}">VER</a></th>
                     </tr>

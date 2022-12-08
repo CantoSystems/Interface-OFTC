@@ -52,11 +52,11 @@ class CobranzaController extends Controller
             $doctorTrans = $request["drTransc"];
         }
 
-        /*if($request["intRd"] == 'N'){
+        if($request["intRd"] == 'N'){
             $doctorInter = '1';
         }else{
-            $doctorInter = $request["drInterpreta"];
-        }*/
+            $doctorInter = $request["drInt"];
+        }
 
         if($request["entRd"] == 'N'){
             $empEntrega = '1';
@@ -105,6 +105,7 @@ class CobranzaController extends Controller
                                 'id_empTrans_fk' => $doctorTrans,
                                 'id_empRea_fk' => $request['empRealiza'],
                                 'id_empEnt_fk' => $empEntrega,
+                                'id_empInt_fk' => $doctorInter,
                                 'folio' => $request['folioCbr'],
                                 'fecha' => $request['fchCbr'],
                                 'paciente' => $request['pacienteCbr'],
@@ -112,7 +113,6 @@ class CobranzaController extends Controller
                                 'formaPago' => $request['formaPago'],
                                 'transcripcion' => $request['transRd'],
                                 'interpretacion' => $request['intRd'],
-                                'num_trascrip'  => $request['num_trascrip'],
                                 'escaneado' => $request['escRd'],
                                 'cantidadCbr' => $request['cantidadCbr'],
                                 'observaciones' => $request['obsCobranza'],
@@ -130,6 +130,7 @@ class CobranzaController extends Controller
                                     'id_empTrans_fk' => $doctorTrans,
                                     'id_empRea_fk' => $request['empRealiza'],
                                     'id_empEnt_fk' => $empEntrega,
+                                    'id_empInt_fk' => $doctorInter,
                                     'folio' => $request['folioCbr'],
                                     'fecha' => $request['fchCbr'],
                                     'paciente' => $request['pacienteCbr'],
@@ -137,7 +138,6 @@ class CobranzaController extends Controller
                                     'formaPago' => $request['formaPago'],
                                     'transcripcion' => $request['transRd'],
                                     'interpretacion' => $request['intRd'],
-                                    'num_trascrip' => $request['num_trascrip'],
                                     'escaneado' => $request['escRd'],
                                     'cantidadCbr' => $request['cantidadCbr'],
                                     'observaciones' => $request['obsCobranza'],
@@ -155,10 +155,10 @@ class CobranzaController extends Controller
                                                     'id_doctor_fk' => $request["drRequiere"],
                                                     'id_empEnt_fk' => $empEntrega,
                                                     'id_empRea_fk' => $request['empRealiza'],
+                                                    'id_empInt_fk' => $doctorInter,
                                                     'tipoPaciente' => $request['tipoPaciente'],
                                                     'transcripcion' => $request['transRd'],
                                                     'interpretacion' => $request['intRd'],
-                                                    'num_trascrip' => $request['num_trascrip'],
                                                     'escaneado' => $request['escRd'],
                                                     'entregado' => $request['entRd'],
                                                     'observaciones' => $request['obsCobranza'],
@@ -176,9 +176,9 @@ class CobranzaController extends Controller
                                                 'id_empTrans_fk' => $doctorTrans,
                                                 'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
+                                                'id_empInt_fk' => $doctorInter,
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
-                                                'num_trascrip' => $request['num_trascrip'],
                                                 'interpretacion' => $request['intRd'],
                                                 'escaneado' => $request['escRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -193,17 +193,16 @@ class CobranzaController extends Controller
                                             'id_doctor_fk' => $request["drRequiere"],
                                             'id_empEnt_fk' => $empEntrega,
                                             'id_empRea_fk' => $request['empRealiza'],
+                                            'id_empInt_fk' => $doctorInter,
                                             'tipoPaciente' => $request['tipoPaciente'],
                                             'transcripcion' => $request['transRd'],
                                             'interpretacion' => $request['intRd'],
-                                            'num_trascrip'  => $request['num_trascrip'],
                                             'escaneado' => $request['escRd'],
                                             'entregado' => $request['entRd'],
                                             'observaciones' => $request['obsCobranza'],
                                             'registroC' => $request['registroC'],
                                             'updated_at' => $fechaInsert
                                         ]);
-
                     //El registro se actualiza en estudiostemps y en cobranza 
                     }
                     //Fin para insertar o actualizar datos
@@ -217,13 +216,13 @@ class CobranzaController extends Controller
                             'id_empTrans_fk' => $doctorTrans,
                             'id_empEnt_fk' => $empEntrega,
                             'id_empRea_fk' => $request['empRealiza'],
+                            'id_empInt_fk' => $doctorInter,
                             'folio' => $request['folioCbr'],
                             'fecha' => $request['fchCbr'],
                             'paciente' => $request['pacienteCbr'],
                             'tipoPaciente' => $request['tipoPaciente'],
                             'formaPago' => $request['formaPago'],
                             'transcripcion' => $request['transRd'],
-                            'num_trascrip' => $request['num_trascrip'],
                             'interpretacion' => $request['intRd'],
                             'escaneado' => $request['escRd'],
                             'cantidadCbr' => $request['cantidadCbr'],
@@ -243,11 +242,11 @@ class CobranzaController extends Controller
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
+                                                'id_empInt_fk' => $doctorInter,
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'servicio' => $descripcion->dscrpMedicosPro,
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
-                                                'num_trascrip' => $request['num_trascrip'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -262,10 +261,10 @@ class CobranzaController extends Controller
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empEnt_fk' => $empEntrega,
                                                 'id_empRea_fk' => $request['empRealiza'],
+                                                'id_empInt_fk' => $doctorInter,
                                                 'tipoPaciente' => $request['tipoPaciente'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
-                                                'num_trascrip'  => $request['num_trascrip'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
@@ -284,10 +283,10 @@ class CobranzaController extends Controller
                                     'id_doctor_fk' => $request["drRequiere"],
                                     'id_empEnt_fk' => $empEntrega,
                                     'id_empRea_fk' => $request['empRealiza'],
+                                    'id_empInt_fk' => $doctorInter,
                                     'tipoPaciente' => $request['tipoPaciente'],
                                     'transcripcion' => $request['transRd'],
                                     'interpretacion' => $request['intRd'],
-                                    'num_trascrip' => $request['num_trascrip'],
                                     'escaneado' => $request['escRd'],
                                     'entregado' => $request['entRd'],
                                     'observaciones' => $request['obsCobranza'],
@@ -541,4 +540,3 @@ class CobranzaController extends Controller
                 }
     }
 }
-

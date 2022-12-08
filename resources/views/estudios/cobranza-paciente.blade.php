@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Quién Realizó la Transcripción</label>
+                                        <label>¿Quién Realizó la Transcripción?</label>
                                         <select name="drTransc" id="drTransc" class="custom-select combos">
                                             <option disabled selected id="NA" value="N/A">-- Selecciona una opción --
                                             </option>
@@ -191,29 +191,6 @@
                                             @endif
                                             @endforeach
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label># de Transcripciones</label>
-                                        @foreach($descripcionEstudios as $descripcion)
-                                        @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                                        ($descripcion->paquete == 'S'))
-                                        <div class="form-group">
-                                            <input class="form-control" type="number" name="num_trascrip"
-                                                value="{{ $datosPaciente->num_trascrip }}" min="0" max="5" step="1">
-                                        </div>
-
-                                        @elseif(($descripcion->dscrpMedicosPro == $datosPaciente->servicio) &&
-                                        ($descripcion->paquete == 'N'))
-                                        <div>
-                                            <input class="form-control" type="number" name="num_trascrip"
-                                                value="{{$datosPaciente->num_trascrip ?? 0}}">
-                                        </div>
-
-                                        @endif
-                                        @endforeach
-
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -249,44 +226,31 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div>
-
-                            @foreach($descripcionEstudios as $descripcion)
-                            @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
-                            <div class="row">
-                                <div class="col-12">
-                                    <label>Tabla de Interpretaciones</label>
-                                    <table name="tablaInt" class="table table-bordered table-striped tablaInt">
-                                        <thead>
-                                            <tr>
-                                                <th>Estudio</th>
-                                                <th>Doctor</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($doctoresInt as $dInt)
-                                            <tr>
-                                                <td>
-                                                    {{ $dInt->dscrpMedicosPro }}
-                                                    <input type="hidden" class="identificadorInterpreta"
-                                                        value="{{ $dInt->id}}">
-                                                </td>
-                                                <td>{{ $dInt->doctor }}</td>
-                                                <td class="elimina"
-                                                    style="text-align: center; width:40px; height:25px;">
-                                                    <a href="{{ route('interpretaciones.showInt',$dInt->id) }}">
-                                                        <i class="far fa-edit"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label>¿Quién Realizó la Interpretación?</label>
+                                        <select name="drInt" id="drInt" class="custom-select combos">
+                                            <option disabled selected id="NA" value="N/A">-- Selecciona una opción --
+                                            </option>
+                                            @foreach($doctorInter as $dInt)
+                                            @if($dInt->id==$datosPaciente->id_empInt_fk)
+                                            <option selected value="{{ $dInt->id }}">
+                                                {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
+                                                {{ $dInt->doctor_apellidop }}
+                                                {{ $dInt->doctor_apellidom }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $dInt->id }}">
+                                                {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
+                                                {{ $dInt->doctor_apellidop }}
+                                                {{ $dInt->doctor_apellidom }}
+                                            </option>
+                                            @endif
                                             @endforeach
-                                        </tbody>
-                                    </table>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            @endif
-                            @endforeach
                             <div class="row">
                                 <div class="col-1">
                                     <label>Escaneado</label>
@@ -436,7 +400,7 @@
                             <!--Cierre cuerpo del body-->
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <a href="{{ route('importarCobranza.index')}}">
                                             <button type="button" id="btnGuardar" name="btnGuardar"
                                                 class="btn btn-block btn-outline-secondary btn-xs">
@@ -444,7 +408,7 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <a data-target="#modal-paciente" data-toggle="modal">
                                             <button type="button" id="btnGuardar" name="btnGuardar"
                                                 class="btn btn-block btn-outline-info btn-xs">Guardar
@@ -452,17 +416,6 @@
                                             </button>
                                         </a>
                                     </div>
-                                    @foreach($descripcionEstudios as $descripcion)
-                                    @if(($descripcion->dscrpMedicosPro == $datosPaciente->servicio))
-                                    <div class="col-4">
-                                        <button type="button" class="btn btn-block btn-outline-warning btn-xs"
-                                            data-toggle="modal" data-target="#modalInt">Agregar Interpretaciones
-                                        </button>
-                                    </div>
-
-                                    @endif
-                                    @endforeach
-
                                 </div>
                             </div>
                         </div>
@@ -472,7 +425,6 @@
         </div>
 </section>
 @include('estudios.modalpaciente')
-@include('estudios.modalInterpretaciones')
 </form>
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema

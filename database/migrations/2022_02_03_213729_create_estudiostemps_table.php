@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -19,6 +18,7 @@ class CreateEstudiostempsTable extends Migration
             $table->char('id_empTrans_fk',10)->nullable();
             $table->char('id_empRea_fk',10)->nullable();
             $table->char('id_empEnt_fk',10)->nullable();
+            $table->char('id_empInt_fk',10)->nullable();
             $table->date('fecha');
             $table->char('folio',10);
             $table->text('paciente')->nullable();
@@ -38,7 +38,6 @@ class CreateEstudiostempsTable extends Migration
             $table->text('observaciones')->nullable();
             $table->boolean('estudiostemps_status')->default(0)->nullable();
             $table->char('registroC')->nullable();
-            $table->smallInteger('num_trascrip')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

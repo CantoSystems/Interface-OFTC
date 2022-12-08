@@ -288,28 +288,28 @@
         $("#porcentajeAdicional").show();
         $("#divComision").show();
         $(".porcentajeAdicionalInput").attr("disabled", true);
-        $(".divComisionInput").attr("disabled",true);
+        $(".divComisionInput").attr("disabled", true);
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
                 $("#divComision").show();
                 $("#divAlerta").hide();
                 $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled",true);
-                $(".divComisionInput").attr("disabled",false);
+                $(".divComisionInput").attr("disabled", true);
+                $(".divComisionInput").attr("disabled", false);
             } else if (texto.includes('OPTOMETRÍA')) {
                 $("#divComision").hide();
                 $("#divAlerta").show();
                 $("#porcentajeAdicional").show();
                 $("#divComision").show();
                 $(".porcentajeAdicionalInput").attr("disabled", false);
-                $(".divComisionInput").attr("disabled",true);
+                $(".divComisionInput").attr("disabled", true);
             } else {
                 //$("#porcentajeAdicional").hide();
                 $("#divAlerta").hide();
                 $("#divComision").show();
                 $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled",true);
+                $(".divComisionInput").attr("disabled", true);
 
 
             }
@@ -471,13 +471,13 @@
         });
 
         $('.interSi').click(function() {
-            $('#drInterpreta').attr("disabled", false);
+            $('#drInt').attr("disabled", false);
             $("option").remove(".nullableInterpreta");
         });
 
         $('.interNo').click(function() {
-            $('#drInterpreta').attr("disabled", true);
-            $('#drInterpreta').append($("<option class='nullableInterpreta'></option>").attr("selected",
+            $('#drInt').attr("disabled", true);
+            $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
     });
