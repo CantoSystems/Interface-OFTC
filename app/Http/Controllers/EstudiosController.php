@@ -36,9 +36,6 @@ class EstudiosController extends Controller{
     }
     
     public function importExcel(ImportCobranzaRequest $request){
-
-
-
         if($request->hasFile('file')){
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
@@ -124,7 +121,7 @@ class EstudiosController extends Controller{
     public function showCatalogo(){
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
                                 
@@ -150,12 +147,11 @@ class EstudiosController extends Controller{
         $nvoEstudio->id_estudio_fk = $request->estudioGral;
         $nvoEstudio->id_ojo_fk = $request->tipoOjo;
         $nvoEstudio->dscrpmedicosPro = $request->dscrpMedicosPro;
-        $nvoEstudio->paquete = $request->paqEst;
         $nvoEstudio->save();
 
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
 
@@ -170,12 +166,10 @@ class EstudiosController extends Controller{
             'estudioGral' => 'required',
             'tipoOjo' => 'required',
             'dscrpMedicosPro' => 'required',
-            'paqEst' => 'required',
         ],[
             'estudioGral.required' => 'Selecccione el estudio.',
             'tipoOjo.required' => 'Seleccione el tipo de ojo.',
             'dscrpMedicosPro.required' => 'Ingrese la descripción del estudio.',
-            'paqEst.required' => 'Seleccione si el estudio es un paquete.',
         ]);
 
         if($validator->fails()){
@@ -196,14 +190,13 @@ class EstudiosController extends Controller{
             'id_estudio_fk' => $request->estudioGral,
             'id_ojo_fk' => $request->tipoOjo,
             'dscrpMedicosPro' => $request->dscrpMedicosPro,
-            'paquete' => $request->paqEst,
             'created_at' => $fechaInsert,
             'updated_at' => $fechaInsert
         ]);
 
         $listEstudios = Estudios::join('cat_estudios','cat_estudios.id','=','id_estudio_fk')
                                 ->join('tipo_ojos','tipo_ojos.id','=','id_ojo_fk')
-                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro','estudios.paquete')
+                                ->select('estudios.id','cat_estudios.descripcion','tipo_ojos.nombretipo_ojo','estudios.dscrpMedicosPro')
                                 ->orderBy('estudios.id','asc')
                                 ->get();
                                 

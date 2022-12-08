@@ -38,24 +38,11 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4">
+                            <div class="col-6">
                                 <div class="form-group">
                                     <label>Descripción Medicos Pro <strong style="color:red">*</strong></label>
                                     <input type="text" id="dscrpMedicosPro" name="dscrpMedicosPro" class="form-control"
                                         onkeyup="mayus(this);">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <label>¿Es paquete?<strong style="color:red">*</strong></label>
-                                <div class="form-group">
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" value="S" name="paqEst">
-                                        <label>SI</label>
-                                    </div>
-                                    <div class="icheck-primary d-inline">
-                                        <input checked type="radio" value="N" name="paqEst">
-                                        <label>NO</label>
-                                    </div>
                                 </div>
                             </div>
                         </div>

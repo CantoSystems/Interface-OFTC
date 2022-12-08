@@ -64,7 +64,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label>Descripción Medicos Pro
                                             <strong style="color:red">*</strong>
@@ -74,49 +74,16 @@
                                             onkeyup="mayus(this);">
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <label>¿Es paquete?<strong style="color:red">*</strong></label>
-                                    <div class="form-group">
-                                        @if($estudio->paquete == 'S')
-                                        <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="paqEst">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="paqEst">
-                                            <label>NO</label>
-                                        </div>
-                                        @elseif($estudio->paquete == 'N')
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="paqEst">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="paqEst">
-                                            <label>NO</label>
-                                        </div>
-                                        @else
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="paqEst">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="paqEst">
-                                            <label>NO</label>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-4">
                                     <a href="{{ route('mostrarCatalogo.show')}}">
-                                            <button type="button" id="btnGuardar" name="btnGuardar"
-                                                class="btn btn-block btn-outline-secondary btn-xs">
-                                                Regresar
-                                            </button>
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                            Regresar
+                                        </button>
                                     </a>
                                 </div>
                                 <div class="col-4">
