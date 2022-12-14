@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstudiosActividadesTable extends Migration
+class CreateStatusCobComTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateEstudiosActividadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('estudios_actividades', function (Blueprint $table) {
+        Schema::create('status_cob_com', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_cobranza_fk');
             $table->unsignedBigInteger('id_actividad_fk');
+            $table->date('fechaActualización');
             $table->foreign('id_cobranza_fk')->references('id')->on('cobranza');
             $table->foreign('id_actividad_fk')->references('id')->on('actividades');
             $table->timestamps();
@@ -30,6 +31,6 @@ class CreateEstudiosActividadesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estudios_actividades');
+        Schema::dropIfExists('status_cob_com');
     }
 }
