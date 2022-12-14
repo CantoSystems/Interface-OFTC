@@ -17,15 +17,7 @@ class CatEstudiosSeeder extends Seeder
     public function run(){
         $catEstudios = Collect([
             ["descripcion" => "FAG"],
-            ["descripcion" => "FAG + OCT"],
             ["descripcion" => "OCT"],
-            ["descripcion" => "FAG + OCT DE N.O. + OCT DE MACULA"],
-            ["descripcion" => "OCT DE CORNEA"],
-            ["descripcion" => "OCT DE MACULA"],
-            ["descripcion" => "OCT DE NERVIO ÓPTICO"],
-            ["descripcion" => "OCT METRIX"],
-            ["descripcion" => "OCT DE N.O. + CAMPOS VISUALES"],
-            ["descripcion" => "OCT DE N.O. + OCT DE MACULA"],
             ["descripcion" => "TOPOGRAFÍA CORNEAL"],
             ["descripcion" => "CAMPIMETRIA"],
             ["descripcion" => "TOPOGRAFIA"],
@@ -33,7 +25,9 @@ class CatEstudiosSeeder extends Seeder
             ["descripcion" => "ULTRASONIDO MODO A"],
             ["descripcion" => "PAQUIMETRIA"],
             ["descripcion" => "FOTOS CLINICAS"],
-            ["descripcion" => "ANTERION"]
+            ["descripcion" => "ANTERION"],
+            ["descripcion" => "ANALISIS"],
+            ["descripcion" => "AUTOFLUORESCENCIA"]
         ]);
 
         $fechaInsert = now()->toDateString();
