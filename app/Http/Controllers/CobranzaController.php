@@ -96,7 +96,12 @@ class CobranzaController extends Controller
                 if(!is_null($estUpd)){
                     if($request->status != 1){
                         $cobranzaFolio =  DB::table('cobranza')->select('folio')
-                                                ->where('folio',$request['folioCbr'])->first();
+                                                ->select('cobranza.*')
+                                                ->where([
+                                                    ['folio',$request['folioCbr']],
+                                                    ['paciente',$request['pacienteCbr']],
+                                                    ['servicio',$request['estudioCbr']]
+                                                ])->first();
 
                         if(is_null($cobranzaFolio)){
                             DB::table('cobranza')->insert([
@@ -122,8 +127,8 @@ class CobranzaController extends Controller
                             ]);
 
                         }else if(isset($cobranzaFolio)){
-                            if($cobranzaFolio->folio == $request['folioCbr']){
-                                DB::table('cobranza')->where('folio',$request['folioCbr'])
+                            if($cobranzaFolio->id == $request['identificador']){
+                                DB::table('cobranza')->where('id',$request['identificador'])
                                 ->update([
                                     'id_estudio_fk' => $estUpd->id,
                                     'id_doctor_fk' => $request["drRequiere"],
@@ -147,9 +152,15 @@ class CobranzaController extends Controller
                                 ]);
 
                             }
+
+                            
                         }
                         
-                        Estudiostemp::where('folio',$request['folioCbr'])
+                        Estudiostemp::where([
+                                                ['folio',$request['folioCbr']],
+                                                ['paciente',$request['pacienteCbr']],
+                                                ['servicio',$request['estudioCbr']],
+                                            ])
                                                 ->update([
                                                     'id_empTrans_fk' => $doctorTrans,                                   
                                                     'id_doctor_fk' => $request["drRequiere"],

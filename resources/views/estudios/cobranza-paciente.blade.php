@@ -171,7 +171,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Transcripción?</label>
                                         <select name="drTransc" id="drTransc" class="custom-select combos">
@@ -226,7 +226,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Interpretación?</label>
                                         <select name="drInt" id="drInt" class="custom-select combos">
@@ -344,6 +344,7 @@
                                             name="obsCobranza" class="form-control">
                                         <input type="hidden" name="status" id="statusPaciente"
                                             value="{{$datosPaciente->estudiostemps_status}}">
+                                        <input type="text" name="identificador" value="{{ $datosPaciente->id}}">
                                     </div>
                                 </div>
                                 <div class="col-12" style="text-align: center;">
