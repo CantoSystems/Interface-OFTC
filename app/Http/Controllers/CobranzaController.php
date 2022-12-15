@@ -95,12 +95,11 @@ class CobranzaController extends Controller
 
                 if(!is_null($estUpd)){
                     if($request->status != 1){
-                        $cobranzaFolio =  DB::table('cobranza')->select('folio')
-                                                ->select('cobranza.*')
+                        $cobranzaFolio =  DB::table('cobranza')
                                                 ->where([
                                                     ['folio',$request['folioCbr']],
                                                     ['paciente',$request['pacienteCbr']],
-                                                    ['servicio',$request['estudioCbr']]
+                                                    ['id_estudio_fk',$estUpd->id]
                                                 ])->first();
 
                         if(is_null($cobranzaFolio)){
@@ -127,8 +126,12 @@ class CobranzaController extends Controller
                             ]);
 
                         }else if(isset($cobranzaFolio)){
-                            if($cobranzaFolio->id == $request['identificador']){
-                                DB::table('cobranza')->where('id',$request['identificador'])
+                                
+                                DB::table('cobranza')->where([
+                                                    ['folio',$request['folioCbr']],
+                                                    ['paciente',$request['pacienteCbr']],
+                                                    ['id_estudio_fk',$estUpd->id]
+                                ])
                                 ->update([
                                     'id_estudio_fk' => $estUpd->id,
                                     'id_doctor_fk' => $request["drRequiere"],
@@ -150,10 +153,6 @@ class CobranzaController extends Controller
                                     'created_at' => $fechaInsert,
                                     'updated_at' => $fechaInsert
                                 ]);
-
-                            }
-
-                            
                         }
                         
                         Estudiostemp::where([
@@ -181,7 +180,11 @@ class CobranzaController extends Controller
 
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
-                        DB::table('cobranza')->where('folio',$request->folioCbr)
+                        DB::table('cobranza')->where([
+                                                        ['folio',$request['folioCbr']],
+                                                        ['paciente',$request['pacienteCbr']],
+                                                        ['id_estudio_fk',$estUpd->id]
+                                                    ])
                                         ->update([
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empTrans_fk' => $doctorTrans,
@@ -198,7 +201,12 @@ class CobranzaController extends Controller
                                                 'updated_at' => $fechaInsert
                                         ]);
 
-                    Estudiostemp::where('folio',$request['folioCbr'])
+                    Estudiostemp::where([
+                                            ['folio',$request['folioCbr']],
+                                            ['paciente',$request['pacienteCbr']],
+                                            ['servicio',$request['estudioCbr']],
+
+                                        ])
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                                
                                             'id_doctor_fk' => $request["drRequiere"],
@@ -247,7 +255,11 @@ class CobranzaController extends Controller
                                             ->where('id',$request->estudioCorregido)
                                             ->first();
                         
-                        Estudiostemp::where('folio',$request['folioCbr'])
+                        Estudiostemp::where([
+                                                ['folio',$request['folioCbr']],
+                                                ['paciente',$request['pacienteCbr']],
+                                                ['servicio',$request['estudioCbr']]
+                                            ])
                                             ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                         
                                                 'id_doctor_fk' => $request["drRequiere"],
@@ -266,7 +278,11 @@ class CobranzaController extends Controller
                                                 'updated_at' => $fechaInsert
                                             ]);
                     }else{
-                        $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+                        $updateStatusC = Estudiostemp::where([
+                                                                ['folio',$request['folioCbr']],
+                                                                ['paciente',$request['pacienteCbr']],
+                                                                ['servicio',$request['estudioCbr']]
+                                                            ])
                                         ->update([
                                                 'id_empTrans_fk' => $doctorTrans,                                                
                                                 'id_doctor_fk' => $request["drRequiere"],
@@ -288,7 +304,12 @@ class CobranzaController extends Controller
             }//Fin registro contiene todos los datos          
         }else{
             //Registro faltante de datos
-            $updateStatusC = Estudiostemp::where('folio',$request['folioCbr'])
+            $updateStatusC = Estudiostemp::where([
+                                                    ['folio',$request['folioCbr']],
+                                                    ['paciente',$request['pacienteCbr']],
+                                                    ['servicio',$request['estudioCbr']],
+
+                                                ])
                                 ->update([
                                     'id_empTrans_fk' => $doctorTrans,                                                
                                     'id_doctor_fk' => $request["drRequiere"],

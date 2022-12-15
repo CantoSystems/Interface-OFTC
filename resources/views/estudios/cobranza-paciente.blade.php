@@ -344,7 +344,7 @@
                                             name="obsCobranza" class="form-control">
                                         <input type="hidden" name="status" id="statusPaciente"
                                             value="{{$datosPaciente->estudiostemps_status}}">
-                                        <input type="text" name="identificador" value="{{ $datosPaciente->id}}">
+                                        <input type="hidden" name="identificador" value="{{ $datosPaciente->id}}">
                                     </div>
                                 </div>
                                 <div class="col-12" style="text-align: center;">
