@@ -15,11 +15,15 @@ class CreateStatusCobComTable extends Migration
     {
         Schema::create('status_cob_com', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_cobranza_fk');
+            $table->unsignedBigInteger('id_estudio_fk');
             $table->unsignedBigInteger('id_actividad_fk');
-            $table->date('fechaActualización');
-            $table->foreign('id_cobranza_fk')->references('id')->on('cobranza');
+            $table->unsignedBigInteger('id_empleado_fk');
+            $table->text('paciente');
+            $table->text('statusComisiones');
+            $table->date('fechaCorte');
+            $table->foreign('id_estudio_fk')->references('id')->on('estudios');
             $table->foreign('id_actividad_fk')->references('id')->on('actividades');
+            $table->foreign('id_empleado_fk')->references('id_emp')->on('empleados');
             $table->timestamps();
         });
     }
