@@ -94,6 +94,7 @@ class CobranzaController extends Controller
                 $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
 
                 if(!is_null($estUpd)){
+                    //Status del registro incompleto
                     if($request->status != 1){
                         $cobranzaFolio =  DB::table('cobranza')
                                                 ->where([
@@ -102,6 +103,7 @@ class CobranzaController extends Controller
                                                     ['id_estudio_fk',$estUpd->id]
                                                 ])->first();
 
+                        //Se verifica que no se haya insertado antes
                         if(is_null($cobranzaFolio)){
                             DB::table('cobranza')->insert([
                                 'id_estudio_fk' => $estUpd->id,
@@ -124,6 +126,12 @@ class CobranzaController extends Controller
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert
                             ]);
+
+                            if($request['transRd'] == "S"){
+                                DB::table('cobranza')->insert([
+                                    'id_estudio_fk' => $estUpd->id
+                                ]);
+                            }
 
                         }else if(isset($cobranzaFolio)){
                                 
@@ -176,7 +184,6 @@ class CobranzaController extends Controller
                                                     'registroC' => $request['registroC'],
                                                     'updated_at' => $fechaInsert
                                                 ]);
-
 
                      //Insertar cobranza status completado
                     }elseif ($request->status == 1){
