@@ -20,6 +20,7 @@ class ActividadesSeeder extends Seeder
             ["nombreActividad" => "Interpretado", "statusActividad" => 'A'],
             ["nombreActividad" => "Escaneado",    "statusActividad" => 'A'],
             ["nombreActividad" => "Entregado",    "statusActividad" => 'A'],
+            ["nombreActividad" => "Realizado",    "statusActividad" => 'A'],
         ];
 
         $fechaInsert = now()->toDateString();

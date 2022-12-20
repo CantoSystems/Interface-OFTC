@@ -19,6 +19,7 @@ class CreateStatusCobComTable extends Migration
             $table->unsignedBigInteger('id_actividad_fk');
             $table->unsignedBigInteger('id_empleado_fk');
             $table->text('paciente');
+            $table->text('folio');
             $table->text('statusComisiones');
             $table->date('fechaCorte');
             $table->foreign('id_estudio_fk')->references('id')->on('estudios');
