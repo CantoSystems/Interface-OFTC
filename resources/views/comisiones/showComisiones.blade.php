@@ -9,7 +9,7 @@
         <div class="card-header col-12">
             <form action="{{ route('comisiones.show') }}" method="GET">
                 <div class="row">
-                    <div class="col-md-2 col-sm-4 col-4">
+                    <div class="col-md-3 col-sm-4 col-4">
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <label class="info-box-text">Selecciona Empleado:</label>
@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-4">
+                    <div class="col-md-3 col-sm-4 col-4">
                         <div class="info-box shadow">
                             <div class="info-box-content">
                                 <label class="info-box-text">Selecciona Estudio:</label>
@@ -35,14 +35,6 @@
                                     </option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Fecha Inicio</label>
-                                <input class="form-control" type="date" name="fechaInicio" id="fechaInicio">
                             </div>
                         </div>
                     </div>
@@ -82,6 +74,30 @@
                     @endif
                 </div>
             </form>
+
+            @if(isset($comisiones) && !empty($totalComisiones))
+                @canany(['comisiones'])
+                    <form>
+                        <div class="col-md-2 col-sm-4 col-6">
+                        <div class="info-box shadow">
+                            <div class="info-box-content">
+                                <button class="btn btn-block btn-outline-secondary btn-xs">
+                                    <span class="info-box-number">
+                                         Autorizar 
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                @endcanany
+            @endif
+            
+            
+            <form>
+                
+            </form>
+
         </div>
         <div class="card-body">
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])

@@ -42,12 +42,10 @@ class ComisionesController extends Controller{
         $validator = Validator::make($request->all(),[
             'slctEmpleado' => 'required',
             'slctEstudio'  => 'required',
-            'fechaInicio'  => 'required',
             'fechaFin'     => 'required',
         ],[
             'slctEmpleado.required' => 'Selecciona el empleado',
             'slctEstudio.required'  => 'Selecciona el estudio',
-            'fechaInicio.required'  => 'Selecciona la fecha de inicio',
             'fechaFin.required'     => 'Selecciona la fecha fin',
         ]);
 
