@@ -97,7 +97,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere<strong style="color:red">*</strong></label>
