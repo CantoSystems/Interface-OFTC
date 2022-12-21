@@ -54,7 +54,7 @@ class EstudiosController extends Controller{
     }
 
     public function eliminarDuplicados(){
-       DB::delete("DELETE duplicados from estudiostemps as duplicados
+        DB::delete("DELETE duplicados from estudiostemps as duplicados
                     INNER JOIN estudiostemps as temporales
                     WHERE duplicados.id > temporales.id and duplicados.folio = temporales.folio
                     and duplicados.paciente = temporales.paciente and duplicados.servicio = temporales.servicio");
