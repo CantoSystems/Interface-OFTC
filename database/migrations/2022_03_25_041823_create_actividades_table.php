@@ -17,6 +17,7 @@ class CreateActividadesTable extends Migration
             $table->id();
             $table->text('nombreActividad');
             $table->char('statusActividad', 1);
+            $table->string('aliasEstudiosTemps');
             $table->timestamps();
         });
     }

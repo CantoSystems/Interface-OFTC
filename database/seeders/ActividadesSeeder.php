@@ -16,18 +16,20 @@ class ActividadesSeeder extends Seeder
      */
     public function run(){
         $actividades = [
-            ["nombreActividad" => "Transcrito",   "statusActividad" => 'A'],
-            ["nombreActividad" => "Interpretado", "statusActividad" => 'A'],
-            ["nombreActividad" => "Escaneado",    "statusActividad" => 'A'],
-            ["nombreActividad" => "Entregado",    "statusActividad" => 'A'],
-            ["nombreActividad" => "Realizado",    "statusActividad" => 'A'],
+            ["nombreActividad" => "Transcrito",   "statusActividad" => 'A', "alias" => "drTransc"],
+            ["nombreActividad" => "Interpretado", "statusActividad" => 'A', "alias" => "drInt" ],
+            ["nombreActividad" => "Escaneado",    "statusActividad" => 'A', "alias" => "escRd" ],
+            ["nombreActividad" => "Entregado",    "statusActividad" => 'A', "alias" => "empEnt"],
+            ["nombreActividad" => "Realizado",    "statusActividad" => 'A', "alias" => "empRealiza"],
         ];
+        empEnt
 
         $fechaInsert = now()->toDateString();
         foreach($actividades as $act){
             DB::table('actividades')->insert([
                 'nombreActividad' => $act["nombreActividad"],
                 'statusActividad' => $act["statusActividad"],
+                'aliasEstudiosTemps' => $act["alias"],
                 'created_at' => $fechaInsert,
                 'updated_at' => $fechaInsert
             ]);

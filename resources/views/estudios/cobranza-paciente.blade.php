@@ -325,11 +325,11 @@
                                             @foreach($empEnt as $empE)
                                             @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
                                             <option selected value="{{ $empE->id_emp }}">
-                                                {{ $empE->empleado }}
+                                                {{ $empE->empleado }} {{ $empE->id_emp }}
                                             </option>
                                             @else
                                             <option value="{{ $empE->id_emp }}">
-                                                {{ $empE->empleado }}
+                                                {{ $empE->empleado }} {{ $empE->id_emp }}
                                             </option>
                                             @endif
                                             @endforeach

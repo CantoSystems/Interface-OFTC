@@ -31,7 +31,9 @@ Route::get('/inicio',[PrincipalController::class,'index'])->name('index')->middl
 Route::get('/importar-cobranza',[EstudiosController::class,'index'])->name('importarCobranza.index')->middleware('auth');
 Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name('importarCobranza.create')->middleware('auth');
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show')->middleware('auth');
+Route::get('actividad-status',[CobranzaController::class,'desactivarActividades'])->name('actividad.status')->middleware('auth');
 Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->name('importarCobranza.destroy')->middleware('auth');
+
 
 //Reportes Cobranza
 Route::post('/actualizar-data-cobranza',[CobranzaController::class,'store'])->name('importarCobranza.update')->middleware('auth');

@@ -462,6 +462,24 @@ class CobranzaController extends Controller
         return Excel::download(new CobranzaExport($busqueda,$incio,$fin), 'ReporteCobranza.xlsx');
     }
 
+    public function desactivarActividades(Request $request){
+        $servicio = Estudios::where('dscrpMedicosPro',$request->estudioCbr)
+                        ->select('id')
+                        ->first();
+       
+            $consulta = DB::table('actividades')->select('actividades.aliasEstudiosTemps','status_cob_com.folio','status_cob_com.paciente','status_cob_com.id_estudio_fk')
+                                            ->join('status_cob_com','id_actividad_fk','actividades.id')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.paciente', $request->pacienteCbr],
+                                                ['status_cob_com.id_estudio_fk',$servicio->id]
+                                            ])->get();
+
+            return $consulta;
+
+    }
+
+
     public function storeInt(Request $request){
         //return $request::all();
         if (empty($request->all())) {
