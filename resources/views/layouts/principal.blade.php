@@ -481,33 +481,37 @@
                 true).text("-- Selecciona una opción --"));
         });
 
-        let pacienteCbr = $('#pacienteCbr').val();
+        /*let pacienteCbr = $('#pacienteCbr').val();
         let folioCbr = $('#folioCbr').val();
         let estudioCbr = $('#estudioCbr').val();
 
         $.ajax({
             url: "{{ route('actividad.status') }}",
-            method:"GET",
-            data: {pacienteCbr,folioCbr,estudioCbr},
-            success: function(data){
-                
-                $.each(data, function(index){
-                    if(data[index].aliasEstudiosTemps == "drTransc"){
-                        $('#drTransc').attr("disabled", true);
-                    }else if(data[index].aliasEstudiosTemps == "drInt"){
-                        $('#drInt').attr("disabled", true);
-                    }else if(data[index].aliasEstudiosTemps == "escRd"){
-                        $('#escRd').attr("disabled", true);
-                    }else if(data[index].aliasEstudiosTemps == "empEnt"){
-                        $('#empEnt').attr("disabled", true);
-                    }else if(data[index].aliasEstudiosTemps == "empRealiza"){
-                        $('#empRealiza').attr("disabled", true);
-                    }else{
-                        $('#drTransc').attr("disabled", false);
-                        $('#drInt').attr("disabled", false);
-                        $('#escRd').attr("disabled", false);
-                        $('#empEnt').attr("disabled", false);
-                        $('#empRealiza').attr("disabled", false);
+            method: "GET",
+            data: {
+                pacienteCbr,
+                folioCbr,
+                estudioCbr
+            },
+            success: function(data) {
+
+                $.each(data, function(index) {
+                    if (data[index].aliasEstudiosTemps == "drTransc") {
+                        $('#drTransc').attr("readonly", true);
+                    } else if (data[index].aliasEstudiosTemps == "drInt") {
+                        $('#drInt').attr("readonly", true);
+                    } else if (data[index].aliasEstudiosTemps == "escRd") {
+                        $('#escRd').attr("readonly", true);
+                    } else if (data[index].aliasEstudiosTemps == "empEnt") {
+                        $('#empEnt').attr("readonly", true);
+                    } else if (data[index].aliasEstudiosTemps == "empRealiza") {
+                        $('#empRealiza').attr("readonly", true);
+                    } else {
+                        $('#drTransc').attr("readonly", false);
+                        $('#drInt').attr("readonly", false);
+                        $('#escRd').attr("readonly", false);
+                        $('#empEnt').attr("readonly", false);
+                        $('#empRealiza').attr("readonly", false);
                         console.log("TODOS");
 
                     }
@@ -516,7 +520,7 @@
             error: function(xhr, status, error) {
 
             }
-        });
+        });*/
     });
 
 
