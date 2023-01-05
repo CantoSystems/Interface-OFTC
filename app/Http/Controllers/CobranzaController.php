@@ -448,9 +448,10 @@ class CobranzaController extends Controller
                         WHERE duplicados.id > temporales.id
                         AND duplicados.folio = temporales.folio
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
+                        AND duplicados.id_empleado_fk = temporales.id_empleado_fk
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
-           
+            
         }//Fin contiene todos los datos
 
         return redirect()->route('importarCobranza.index');
@@ -529,17 +530,16 @@ class CobranzaController extends Controller
         $servicio = Estudios::where('dscrpMedicosPro',$request->estudioCbr)
                         ->select('id')
                         ->first();
-       
-            $consulta = DB::table('actividades')->select('actividades.aliasEstudiosTemps','status_cob_com.folio','status_cob_com.paciente','status_cob_com.id_estudio_fk')
-                                            ->join('status_cob_com','id_actividad_fk','actividades.id')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.paciente', $request->pacienteCbr],
-                                                ['status_cob_com.id_estudio_fk',$servicio->id]
-                                            ])->get();
+        
+        $consulta = DB::table('actividades')->select('actividades.aliasEstudiosTemps','status_cob_com.folio','status_cob_com.paciente','status_cob_com.id_estudio_fk')
+                                        ->join('status_cob_com','id_actividad_fk','actividades.id')
+                                        ->where([
+                                            ['status_cob_com.folio', $request->folioCbr],
+                                            ['status_cob_com.paciente', $request->pacienteCbr],
+                                            ['status_cob_com.id_estudio_fk',$servicio->id]
+                                        ])->get();
 
-            return $consulta;
-
+        return $consulta;
     }
 
 
