@@ -448,7 +448,6 @@ class CobranzaController extends Controller
                         WHERE duplicados.id > temporales.id
                         AND duplicados.folio = temporales.folio
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
-                        AND duplicados.id_empleado_fk = temporales.id_empleado_fk
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
             
