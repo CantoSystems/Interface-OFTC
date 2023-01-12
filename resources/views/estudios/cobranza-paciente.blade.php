@@ -28,6 +28,7 @@
                                         <label>Folio</label>
                                         <input type="text" id="folioCbr" name="folioCbr" class="form-control"
                                             value="{{ $datosPaciente->folio }}" readonly>
+                                        <input type="hidden" name="identificador" value="{{ $datosPaciente->id }}">
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -61,7 +62,7 @@
                                             class="custom-select combos">
                                             <option selected disabled>-- Selecciona una opción --</option>
                                             @foreach ($descripcionEstudios as $descripcion)
-                                            <option selected value="{{ $descripcion->id }}">
+                                            <option selected value="{{ $descripcion->dscrpMedicosPro }}">
                                                 {{ $descripcion->dscrpMedicosPro }}
                                             </option>
                                             @endforeach
@@ -78,9 +79,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>PX INT. - EXT.
-                                            <strong style="color:red">*</strong>
-                                        </label>
+                                        <label>PX INT. - EXT.<strong style="color:red">*</strong></label>
                                         <select name="tipoPaciente" id="tipoPaciente" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($tipoPac as $tpaciente)
@@ -105,12 +104,14 @@
                                             @foreach ($doctores as $dres)
                                             @if($dres->id==$datosPaciente->id_doctor_fk)
                                             <option selected value="{{ $dres->id }}">
-                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_titulo }} {{ $dres->doctor_nombre }}
+                                                {{ $dres->doctor_apellidop }}
                                                 {{ $dres->doctor_apellidom }}
                                             </option>
                                             @else
                                             <option value="{{ $dres->id }}">
-                                                {{ $dres->doctor_nombre }} {{ $dres->doctor_apellidop }}
+                                                {{ $dres->doctor_titulo }} {{ $dres->doctor_nombre }}
+                                                {{ $dres->doctor_apellidop }}
                                                 {{ $dres->doctor_apellidom }}
                                             </option>
                                             @endif
@@ -120,7 +121,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label>Quién Realizó el Estudio<strong style="color:red">*</strong></label>
+                                        <label>¿Quién Realizó el Estudio?<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empRealiza as $empRe)
@@ -138,7 +139,7 @@
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <label>Transcripción</label>
+                                    <label>Transcripción<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->transcripcion == 'S')
                                         <div class="icheck-primary d-inline">
@@ -173,27 +174,32 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Transcripción?</label>
-                                        <select name="drTransc" id="drTransc" class="custom-select combos">
-                                            <option disabled selected id="NA" value="N/A">-- Selecciona una opción --
-                                            </option>
-                                            @foreach($empTrans as $empT)
-                                            @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
-                                            <option selected value="{{ $empT->id_emp }}">
-                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                {{ $empT->empleado_apellidom }}
-                                            </option>
+                                        @if($datosPaciente->transcripcion == 'N')
+                                        <select name="drTransc" disabled id="drTransc" class="custom-select combos">
                                             @else
-                                            <option value="{{ $empT->id_emp }}">
-                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                {{ $empT->empleado_apellidom }}
-                                            </option>
-                                            @endif
-                                            @endforeach
-                                        </select>
+                                            <select name="drTransc" id="drTransc" class="custom-select combos">
+                                                @endif
+                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
+                                                    --
+                                                </option>
+                                                @foreach($empTrans as $empT)
+                                                @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
+                                                <option selected value="{{ $empT->id_emp }}">
+                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                    {{ $empT->empleado_apellidom }}
+                                                </option>
+                                                @else
+                                                <option value="{{ $empT->id_emp }}">
+                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                    {{ $empT->empleado_apellidom }}
+                                                </option>
+                                                @endif
+                                                @endforeach
+                                            </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
-                                    <label>Interpretación</label>
+                                    <label>Interpretación<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->interpretacion == 'S')
                                         <div class="icheck-primary d-inline">
@@ -228,31 +234,36 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Interpretación?</label>
-                                        <select name="drInt" id="drInt" class="custom-select combos">
-                                            <option disabled selected id="NA" value="N/A">-- Selecciona una opción --
-                                            </option>
-                                            @foreach($doctorInter as $dInt)
-                                            @if($dInt->id==$datosPaciente->id_empInt_fk)
-                                            <option selected value="{{ $dInt->id }}">
-                                                {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
-                                                {{ $dInt->doctor_apellidop }}
-                                                {{ $dInt->doctor_apellidom }}
-                                            </option>
+                                        @if($datosPaciente->interpretacion == 'N')
+                                        <select name="drInt" id="drInt" disabled class="custom-select combos">
                                             @else
-                                            <option value="{{ $dInt->id }}">
-                                                {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
-                                                {{ $dInt->doctor_apellidop }}
-                                                {{ $dInt->doctor_apellidom }}
-                                            </option>
-                                            @endif
-                                            @endforeach
-                                        </select>
+                                            <select name="drInt" id="drInt" class="custom-select combos">
+                                                @endif
+                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
+                                                    --
+                                                </option>
+                                                @foreach($doctorInter as $dInt)
+                                                @if($dInt->id==$datosPaciente->id_empInt_fk)
+                                                <option selected value="{{ $dInt->id }}">
+                                                    {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
+                                                    {{ $dInt->doctor_apellidop }}
+                                                    {{ $dInt->doctor_apellidom }}
+                                                </option>
+                                                @else
+                                                <option value="{{ $dInt->id }}">
+                                                    {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
+                                                    {{ $dInt->doctor_apellidop }}
+                                                    {{ $dInt->doctor_apellidom }}
+                                                </option>
+                                                @endif
+                                                @endforeach
+                                            </select>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-1">
-                                    <label>Escaneado</label>
+                                    <label>Escaneado<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->escaneado == 'S')
                                         <div class="icheck-primary d-inline">
@@ -285,33 +296,33 @@
                                     </div>
                                 </div>
                                 <div class="col-1">
-                                    <label>Entregado</label>
+                                    <label>Entregado<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->entregado == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="entRd">
+                                            <input checked type="radio" value="S" name="entRd" class="entSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="entRd">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->entregado == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="entRd">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="entRd">
+                                            <input checked type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="entRd">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="entRd">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -320,20 +331,24 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Entregado Por:</label>
+                                        @if($datosPaciente->entregado == 'N')
                                         <select name="empEnt" id="empEnt" class="custom-select combos">
-                                            <option disabled selected>-- Selecciona una opción --</option>
-                                            @foreach($empEnt as $empE)
-                                            @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
-                                            <option selected value="{{ $empE->id_emp }}">
-                                                {{ $empE->empleado }} 
-                                            </option>
                                             @else
-                                            <option value="{{ $empE->id_emp }}">
-                                                {{ $empE->empleado }} 
-                                            </option>
-                                            @endif
-                                            @endforeach
-                                        </select>
+                                            <select name="empEnt" id="empEnt" class="custom-select combos">
+                                                @endif
+                                                <option disabled selected>-- Selecciona una opción --</option>
+                                                @foreach($empEnt as $empE)
+                                                @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
+                                                <option selected value="{{ $empE->id_emp }}">
+                                                    {{ $empE->empleado }}
+                                                </option>
+                                                @else
+                                                <option value="{{ $empE->id_emp }}">
+                                                    {{ $empE->empleado }}
+                                                </option>
+                                                @endif
+                                                @endforeach
+                                            </select>
                                     </div>
                                 </div>
                                 <div class="col-7">
@@ -343,7 +358,6 @@
                                             name="obsCobranza" class="form-control">
                                         <input type="hidden" name="status" id="statusPaciente"
                                             value="{{$datosPaciente->estudiostemps_status}}">
-                                        <input type="hidden" name="identificador" value="{{ $datosPaciente->id}}">
                                     </div>
                                 </div>
                                 <div class="col-12" style="text-align: center;">
