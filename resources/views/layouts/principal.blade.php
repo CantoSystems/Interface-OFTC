@@ -481,6 +481,17 @@
                 true).text("-- Selecciona una opción --"));
         });
 
+        $('.entSi').click(function() {
+            $('#empEnt').attr("disabled", false);
+            $("#empEnt").remove(".nullableInterpreta");
+        });
+
+        $('.entNo').click(function() {
+            $('#empEnt').attr("disabled", true);
+            $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+                true).text("-- Selecciona una opción --"));
+        });
+
         /*let pacienteCbr = $('#pacienteCbr').val();
         let folioCbr = $('#folioCbr').val();
         let estudioCbr = $('#estudioCbr').val();

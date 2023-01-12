@@ -31,7 +31,6 @@ class EstudiosController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-       // return $this->eliminarDuplicados();
         return view('estudios.import-cobranza');
     }
     
@@ -40,13 +39,6 @@ class EstudiosController extends Controller{
             $file = $request->file('file');
             Excel::import(new ReportesImport, $file);
             $this->eliminarDuplicados();
-            
-            /*try {
-                Excel::import(new ReportesImport, $file);
-               
-            } catch (\Illuminate\Database\QueryException $e) {
-                return back()->with('duplicados','Los Folios ya existen');
-            }*/
             
             return redirect()->route('importarCobranza.index');
         }
@@ -93,14 +85,8 @@ class EstudiosController extends Controller{
                                     ['empleados.id_emp','<>','1']
                                 ])->get();
 
-        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
-                                    ->where('id_emp','!=',1)
-                                    ->get();
-
-        $empEnt = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
-                                    ->where('id_emp','!=',1)
-                                    ->get();
-
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')->where('id_emp','!=',1)->get();
+        $empEnt = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')->where('id_emp','!=',1)->get();
         $doctorInter = Doctor::where('id','<>','1')->get();
 
         return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEnt'));
@@ -208,12 +194,14 @@ class EstudiosController extends Controller{
 
     public function deleteEstudio(Request $request){
         $delEstudios = Estudios::find($request->idEstudioDel)->delete();
+        
         return redirect()->route('mostrarCatalogo.show');
     }
 
     //Funciones de catálogos generales
     public function showEstudiosGrales(){
         $listEstudiosGrales = CatEstudios::orderBy('id','asc')->get();
+        
         return view('catalogos.estudiosgenerales.catestudiosgrales',compact('listEstudiosGrales'));
     }
 

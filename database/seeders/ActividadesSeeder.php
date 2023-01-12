@@ -22,7 +22,6 @@ class ActividadesSeeder extends Seeder
             ["nombreActividad" => "Entregado",    "statusActividad" => 'A', "alias" => "empEnt"],
             ["nombreActividad" => "Realizado",    "statusActividad" => 'A', "alias" => "empRealiza"],
         ];
-        empEnt
 
         $fechaInsert = now()->toDateString();
         foreach($actividades as $act){

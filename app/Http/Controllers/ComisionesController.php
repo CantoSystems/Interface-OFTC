@@ -53,142 +53,122 @@ class ComisionesController extends Controller{
             return back()->withErrors($validator)->withInput();
         }
 
-        $paqueteEst = DB::table('estudios')
-                        ->select('paquete')
-                        ->where('id_estudio_fk','=',$request->slctEstudio)
-                        ->first();
+        //Se obtiene el puesto del empleado
+        $puestoEmp = DB::table('empleados')
+                    ->join('puestos','puestos.id','=','empleados.puesto_id')
+                    ->join('doctors'
+                            ,DB::raw("CONCAT(doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom)"),'=',DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)"))
+                    ->select('empleados.puesto_id','doctors.id')
+                    ->where('empleados.id_emp','=',$request->slctEmpleado)
+                    ->first();
 
-        //Se verifica si el estudio es paquete
-        if($paqueteEst->paquete == "N"){
-            //Se obtiene el puesto del empleado
-            $puestoEmp = DB::table('empleados')
-                        ->join('puestos','puestos.id','=','empleados.puesto_id')
-                        ->join('doctors'
-                                ,DB::raw("CONCAT(doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom)"),'=',DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)"))
-                        ->select('empleados.puesto_id','doctors.id')
-                        ->where('empleados.id_emp','=',$request->slctEmpleado)
-                        ->first();
+        switch ($puestoEmp->puesto_id) {
+            //Si es doctor
+            case '4':
+                //Se obtiene la comisión de ese estudio del catálogo
+                $comisionEmp = DB::table('comisiones')
+                                ->select('porcentajeComision','porcentajeUtilidad')
+                                ->where([
+                                    ['id_estudio_fk','=',$request->slctEstudio],
+                                    ['id_empleado_fk','=',$request->slctEmpleado]
+                                ])->first();
 
-            //Se obtiene el precio del estudio
-            $cantidadEst = DB::table('cobranza')
-                            ->select('cantidadCbr')
-                            ->where('id_estudio_fk','=',$request->slctEstudio)
-                            ->get();
+                //Se traen los registros de cobranza del estudio seleccionado
+                $comisionInt = DB::table('cobranza')
+                                    ->join('status_cob_com','')
 
-            switch ($puestoEmp->puesto_id) {
-                //Si es doctor
-                case '4':
-                    //Se obtiene la comisión de ese estudio
-                    $comisionEmp = DB::table('comisiones')
-                                    ->select('porcentajeComision','porcentajeUtilidad')
-                                    ->where([
-                                        ['id_estudio_fk','=',$request->slctEstudio],
-                                        ['id_empleado_fk','=',$request->slctEmpleado]
-                                    ])->first();
+                //Se verifica si el doctor tiene utilidad
+                /*if($comisionEmp->porcentajeUtilidad != "0"){
+                    $comisionesInt = DB::table('cobranza')
+                                        ->join('intestudios','intestudios.id_cobranza_fk','=','cobranza.folio')
+                                        ->where([
+                                            ['intestudios.id_estudio_fk','=',$request->slctEstudio],
+                                            ['intestudios.id_doctor_fk','=',$puestoEmp->id]
+                                        ])->get();
 
-                    //Se traen los registros de cobranza del estudio seleccionado
-                    $comisionInt = DB::table('cobranza')
-                                    ->join('intestudios','intestudios.id_cobranza_fk','=','cobranza.folio')
-                                    ->where([
-                                        ['intestudios.id_estudio_fk','=',$request->slctEstudio],
-                                        ['intestudios.id_doctor_fk','=',$puestoEmp->id]
-                                    ])->get();
+                    $comision = 0;
+                    foreach($comisionesInt as $coms){
+                        $comision = ($coms->cantidadCbr*$comisionEmp->porcentajeComision)/100;
 
-                    //Se verifica si el doctor tiene utilidad
-                    if($comisionEmp->porcentajeUtilidad != "0"){
-                        $comisionesInt = DB::table('cobranza')
-                                            ->join('intestudios','intestudios.id_cobranza_fk','=','cobranza.folio')
+                        DB::table('comisiones_temps')->insert([
+                            'id_emp_fk' => $request->slctEmpleado,
+                            'id_estudio_fk' => $request->slctEstudio,
+                            'paciente' => $coms->paciente,
+                            'fechaEstudio' => $coms->fecha,
+                            'cantidad' => $comision,
+                            'porcentaje' => $comisionEmp->porcentajeComision,
+                            'total' => $comision,
+                            'created_at' => $fechaInsert,
+                            'updated_at' => $fechaInsert
+                        ]);
+
+                        //Calculo de comision del empleado que realiza
+                        if($coms->id_empRea_fk == 4){
+                            $comisionEmp = DB::table('comisiones')
+                                            ->select('porcentajeComision')
                                             ->where([
-                                                ['intestudios.id_estudio_fk','=',$request->slctEstudio],
-                                                ['intestudios.id_doctor_fk','=',$puestoEmp->id]
-                                            ])->get();
+                                                ['id_estudio_fk','=',$request->slctEstudio],
+                                                ['id_empleado_fk','=',$coms->id_empRea_fk]
+                                            ])->first();
 
-                        $comision = 0;
-                        foreach($comisionesInt as $coms){
-                            $comision = ($coms->cantidadCbr*$comisionEmp->porcentajeComision)/100;
+                            $calculoAdicional = ($coms->cantidadCbr*$comisionEmp->porcentajeComision)/100;
 
-                            DB::table('comisiones_temps')->insert([
-                                'id_emp_fk' => $request->slctEmpleado,
-                                'id_estudio_fk' => $request->slctEstudio,
-                                'paciente' => $coms->paciente,
-                                'fechaEstudio' => $coms->fecha,
-                                'cantidad' => $comision,
-                                'porcentaje' => $comisionEmp->porcentajeComision,
-                                'total' => $comision,
-                                'created_at' => $fechaInsert,
-                                'updated_at' => $fechaInsert
-                            ]);
-
-                            //Calculo de comision del empleado que realiza
-                            if($coms->id_empRea_fk == 4){
-                                $comisionEmp = DB::table('comisiones')
-                                                ->select('porcentajeComision')
+                            //Calculo de comisión del empleado que transcribe
+                            if($coms->id_empTrans_fk == 4){
+                                $comisionEmpT = DB::table('comisiones')
+                                                ->select('porcentajeAdicional')
                                                 ->where([
                                                     ['id_estudio_fk','=',$request->slctEstudio],
                                                     ['id_empleado_fk','=',$coms->id_empRea_fk]
                                                 ])->first();
 
-                                $calculoAdicional = ($coms->cantidadCbr*$comisionEmp->porcentajeComision)/100;
+                                $calculoAdicionalT = $calculoAdicional + (($coms->cantidadCbr*$comisionEmpT->porcentajeAdicional)/100);
+                                
+                                $comisionEmpA = DB::table('comisiones')
+                                                ->select('porcentajeComision')
+                                                ->where([
+                                                    ['id_estudio_fk','=',$request->slctEstudio],
+                                                    ['id_empleado_fk','=',12]
+                                                ])->first();
 
-                                //Calculo de comisión del empleado que transcribe
-                                if($coms->id_empTrans_fk == 4){
-                                    $comisionEmpT = DB::table('comisiones')
-                                                    ->select('porcentajeAdicional')
-                                                    ->where([
-                                                        ['id_estudio_fk','=',$request->slctEstudio],
-                                                        ['id_empleado_fk','=',$coms->id_empRea_fk]
-                                                    ])->first();
+                                $calculoAdicTA = $calculoAdicionalT + (($coms->cantidadCbr*$comisionEmpA->porcentajeComision)/100);
+                                
+                                $calculoAdicGA = $calculoAdicTA + (($coms->cantidadCbr*13)/100);
 
-                                    $calculoAdicionalT = $calculoAdicional + (($coms->cantidadCbr*$comisionEmpT->porcentajeAdicional)/100);
-                                    
-                                    $comisionEmpA = DB::table('comisiones')
-                                                    ->select('porcentajeComision')
-                                                    ->where([
-                                                        ['id_estudio_fk','=',$request->slctEstudio],
-                                                        ['id_empleado_fk','=',12]
-                                                    ])->first();
+                                if($coms->escaneado == "S"){
+                                    $calculoAdicEsc = $calculoAdicGA + (($coms->cantidadCbr*2)/100);
+                                    if($coms->entregado == "S"){
+                                        $comisionEmp = DB::table('comisiones')
+                                                        ->select('porcentajeComision','porcentajeUtilidad')
+                                                        ->where([
+                                                            ['id_estudio_fk','=',$request->slctEstudio],
+                                                            ['id_empleado_fk','=',$request->slctEmpleado]
+                                                        ])->first();
+                                        $calculoAdicEnt = ($calculoAdicEsc + (($coms->cantidadCbr*1)/100)) + $comision;
 
-                                    $calculoAdicTA = $calculoAdicionalT + (($coms->cantidadCbr*$comisionEmpA->porcentajeComision)/100);
-                                    
-                                    $calculoAdicGA = $calculoAdicTA + (($coms->cantidadCbr*13)/100);
-
-                                    if($coms->escaneado == "S"){
-                                        $calculoAdicEsc = $calculoAdicGA + (($coms->cantidadCbr*2)/100);
-                                        if($coms->entregado == "S"){
-                                            $comisionEmp = DB::table('comisiones')
-                                                            ->select('porcentajeComision','porcentajeUtilidad')
-                                                            ->where([
-                                                                ['id_estudio_fk','=',$request->slctEstudio],
-                                                                ['id_empleado_fk','=',$request->slctEmpleado]
-                                                            ])->first();
-                                            $calculoAdicEnt = ($calculoAdicEsc + (($coms->cantidadCbr*1)/100)) + $comision;
-
-                                            $calculoFinalUtilidad = $coms->cantidadCbr - $calculoAdicEnt;
-                                            dd($calculoFinalUtilidad);
-                                        }else{
-                                            
-                                        }
+                                        $calculoFinalUtilidad = $coms->cantidadCbr - $calculoAdicEnt;
+                                        dd($calculoFinalUtilidad);
                                     }else{
-
+                                        
                                     }
                                 }else{
-                                    
+
                                 }
                             }else{
-
+                                
                             }
+                        }else{
+
                         }
                     }
-                    break;
-                case '5':
-                    break;
-                case '6':
-                    break;
-                default:
-                    break;
-            }
-        }else{
-
+                }*/
+                break;
+            case '5':
+                break;
+            case '6':
+                break;
+            default:
+                break;
         }
 
         $comisiones = DB::table('comisiones_temps')
