@@ -26,7 +26,10 @@ class CobranzaController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        
+
         $fechaInsert = now();
+      
 
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
@@ -205,6 +208,56 @@ class CobranzaController extends Controller{
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+
+          $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+                                        ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                        ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                        ->where([
+                                            ['status_cob_com.folio', $request->folioCbr],
+                                            ['status_cob_com.paciente', $request->pacienteCbr],
+                                            ['status_cob_com.id_estudio_fk',$estUpd->id]
+                                        ])->get();
+
+                    foreach($matchEstudiosTemps as $match){
+                        if($match->aliasEstudiosTemps == 'drTransc'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'transcripcion' => 'S',
+                                                'id_empTrans_fk' => $match->id_empleado_fk
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'drInt'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'interpretacion' => 'S',
+                                                'id_empInt_fk' => $match->id_empleado_fk
+
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'escRd'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'escaneado' => 'S',
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'empEnt'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'entregado' => 'S',
+                                                'id_empEnt_fk' => $match->id_empleado_fk
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'empRealiza'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'id_empRea_fk' => $match->id_empleado_fk
+                                            ]);
+                        }
+                    }
+
+
+
+                                    
+
+
+
+
             
         //Registro no completado
         }else{
@@ -296,6 +349,48 @@ class CobranzaController extends Controller{
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+
+           $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+                                        ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                        ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                        ->where([
+                                            ['status_cob_com.folio', $request->folioCbr],
+                                            ['status_cob_com.paciente', $request->pacienteCbr],
+                                            ['status_cob_com.id_estudio_fk',$estUpd->id]
+                                        ])->get();
+
+                    foreach($matchEstudiosTemps as $match){
+                        if($match->aliasEstudiosTemps == 'drTransc'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'transcripcion' => 'S',
+                                                'id_empTrans_fk' => $match->id_empleado_fk
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'drInt'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'interpretacion' => 'S',
+                                                'id_empInt_fk' => $match->id_empleado_fk
+
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'escRd'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'escaneado' => 'S',
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'empEnt'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'entregado' => 'S',
+                                                'id_empEnt_fk' => $match->id_empleado_fk
+                                            ]);
+                        }else if($match->aliasEstudiosTemps == 'empRealiza'){
+                            Estudiostemp::where('id',$request['identificador'])
+                                            ->update([
+                                                'id_empRea_fk' => $match->id_empleado_fk
+                                            ]);
+                        }
+                    }
         }
 
         return redirect()->route('importarCobranza.index');
@@ -370,21 +465,6 @@ class CobranzaController extends Controller{
         return Excel::download(new CobranzaExport($busqueda,$incio,$fin), 'ReporteCobranza.xlsx');
     }
 
-    public function desactivarActividades(Request $request){
-        $servicio = Estudios::where('dscrpMedicosPro',$request->estudioCbr)
-                        ->select('id')
-                        ->first();
-        
-        $consulta = DB::table('actividades')->select('actividades.aliasEstudiosTemps','status_cob_com.folio','status_cob_com.paciente','status_cob_com.id_estudio_fk')
-                                        ->join('status_cob_com','id_actividad_fk','actividades.id')
-                                        ->where([
-                                            ['status_cob_com.folio', $request->folioCbr],
-                                            ['status_cob_com.paciente', $request->pacienteCbr],
-                                            ['status_cob_com.id_estudio_fk',$servicio->id]
-                                        ])->get();
-
-        return $consulta;
-    }
 
 
     public function storeInt(Request $request){

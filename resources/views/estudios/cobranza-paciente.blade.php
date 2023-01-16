@@ -1,4 +1,4 @@
-@extends('layouts.principal')
+@extends('layouts.plantillaEstudiosTemps')
 @section('content')
 <section class="content">
     <div class="container-fluid">
@@ -57,6 +57,7 @@
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
                                             value="{{ $datosPaciente->servicio }}" readonly>
+            
                                         @if($datosPaciente->estudiostemps_status == 3)
                                         <select name="estudioCorregido" id="estudioCorregido"
                                             class="custom-select combos">
@@ -124,7 +125,7 @@
                                         <label>¿Quién Realizó el Estudio?<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
-                                            @foreach($empRealiza as $empRe)
+                                            @foreach($empEntRealiza as $empRe)
                                             @if($empRe->id_emp==$datosPaciente->id_empRea_fk)
                                             <option selected value="{{ $empRe->id_emp }}">
                                                 {{ $empRe->empleado }}
@@ -243,18 +244,13 @@
                                                     --
                                                 </option>
                                                 @foreach($doctorInter as $dInt)
-                                                @if($dInt->id==$datosPaciente->id_empInt_fk)
-                                                <option selected value="{{ $dInt->id }}">
-                                                    {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
-                                                    {{ $dInt->doctor_apellidop }}
-                                                    {{ $dInt->doctor_apellidom }}
+                                                @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
+                                                <option selected value="{{ $dInt->id_emp }}">
+                                                    {{ $dInt->empleado }} 
                                                 </option>
                                                 @else
-                                                <option value="{{ $dInt->id }}">
-                                                    {{ $dInt->doctor_titulo }} {{ $dInt->doctor_nombre }}
-                                                    {{ $dInt->doctor_apellidop }}
-                                                    {{ $dInt->doctor_apellidom }}
-                                                </option>
+                                                <option value="{{ $dInt->id_emp }}">
+                                                    {{ $dInt->empleado }} 
                                                 @endif
                                                 @endforeach
                                             </select>
@@ -337,7 +333,7 @@
                                             <select name="empEnt" id="empEnt" class="custom-select combos">
                                                 @endif
                                                 <option disabled selected>-- Selecciona una opción --</option>
-                                                @foreach($empEnt as $empE)
+                                                @foreach($empEntRealiza as $empE)
                                                 @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
                                                 <option selected value="{{ $empE->id_emp }}">
                                                     {{ $empE->empleado }}
@@ -440,6 +436,38 @@
 </section>
 @include('estudios.modalpaciente')
 </form>
+<section class="content">
+    <div class="container-fluid">
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Status
+                        </h3>
+                    </div>
+                    <form action="{{ route('importarCobranza.update') }}" method="POST">
+                        @csrf
+                        <div class="card-body">
+                            <table id="statusComisionCobrabza" name="reporteCobranza" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Estudio</th>
+                                        <th>Actividad</th>
+                                        <th>Empleado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endcanany
+    </div>
+</section>
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
 </div>

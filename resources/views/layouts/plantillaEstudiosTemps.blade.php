@@ -281,186 +281,53 @@
     }
 
     $(document).ready(function() {
-        $('#porcentajeComision').val(0);
-        $('#cantidadComision').val(0);
-        $('#utilidadComision').val(0);
-        $('#precioEstudio').val(0);
-        $("#porcentajeAdicional").show();
-        $("#divComision").show();
-        $(".porcentajeAdicionalInput").attr("disabled", true);
-        $(".divComisionInput").attr("disabled", true);
-        $("#empleadoComision").change(function() {
-            let texto = $(this).find('option:selected').text();
-            if (texto.includes('DOCTOR')) {
-                $("#divComision").show();
-                $("#divAlerta").hide();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", false);
-            } else if (texto.includes('OPTOMETRÍA')) {
-                $("#divComision").hide();
-                $("#divAlerta").show();
-                $("#porcentajeAdicional").show();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", false);
-                $(".divComisionInput").attr("disabled", true);
-            } else {
-                //$("#porcentajeAdicional").hide();
-                $("#divAlerta").hide();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
+        
 
+        $('.transRdS').click(function() {
+            $('#drTransc').attr("disabled", false);
+            $("option").remove(".nullable");
+        });
 
+        $('.transRdN').click(function() {
+            if ($(".transRdN").is(':checked')) {
+                $('#drTransc').attr("disabled", true);
+                $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true)
+                    .text("-- Selecciona una opción --"));
             }
         });
 
-        //Datatables
-        $(function() {
-            $("#reporteCobranza").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                },
-                ajax: {
-                    url: "{{ route('importarCobranza.create') }}",
-                    dataSrc: 'data'
-                },
-                columns: [{
-                        data: 'folio'
-                    },
-                    {
-                        data: 'paciente'
-                    },
-                    {
-                        data: 'servicio'
-                    },
-                    {
-                        data: 'date'
-                    },
-                    {
-                        data: 'on-off'
-                    },
-                    {
-                        data: 'btn'
-                    }
-                ]
-            });
+        $('.interSi').click(function() {
+            $('#drInt').attr("disabled", false);
+            $("option").remove(".nullableInterpreta");
         });
 
-        $(function() {
-            $("#genReportes").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                }
-            });
+        $('.interNo').click(function() {
+            $('#drInt').attr("disabled", true);
+            $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+                true).text("-- Selecciona una opción --"));
         });
 
-        $(function() {
-            $("#catComisiones").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                }
-            });
+        $('.entSi').click(function() {
+            $('#empEnt').attr("disabled", false);
+            $("#empEnt").remove(".nullableInterpreta");
         });
 
-        $(function() {
-            $("#reporteCitas").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                }
-            });
+        $('.entNo').click(function() {
+            $('#empEnt').attr("disabled", true);
+            $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+                true).text("-- Selecciona una opción --"));
         });
 
-        $(function() {
-            $("#catComisionesGral").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                }
-            });
-        });
-
-        $(function() {
-            $("#catEstudios").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                }
-            });
-        });
-
-        $(function() {
-            $("#tableDetalle").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-                "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
-                    "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No existen registros en la tabla",
-                    "infoFiltered": "(filtrado por _MAX_ registros totales)"
-                },
-                ajax: {
-                    url: "{{ route('extraerDetalle.show') }}",
-                    dataSrc: 'data',
-                },
-                columns: [{
-                        data: 'descripcion'
-                    },
-                    {
-                        data: 'um'
-                    },
-                    {
-                        data: 'cantidad'
-                    },
-                    {
-                        data: 'precio_unitario'
-                    },
-                    {
-                        data: 'importe'
-                    }
-                ]
-            });
-        });
-
+       
+        
     });
-
-
     
+     $(function () {
+        $("#statusComisionCobrabza").DataTable({
+        "responsive": true,
+         "autoWidth": false
+            });
+    });
     </script>
 
     <script>
