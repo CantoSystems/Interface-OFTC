@@ -75,7 +75,6 @@ class EstudiosController extends Controller{
      */
     public function show($id){
         $datosPaciente = Estudiostemp::find($id);
-
         $descripcionEstudios = Estudios::all();  
         $doctores = Doctor::where('id','<>','1')->get();
         $tipoPac = TipoPaciente::all();
@@ -91,7 +90,16 @@ class EstudiosController extends Controller{
                                 ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
                                 ->where('puesto_id',4)->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empEntRealiza'));
+        $statusCobCom = DB::table('status_cob_com')
+                            ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
+                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
+                            ->select('actividades.nombreActividad'
+                                    ,'empleados.id_emp'
+                                    ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
+                            ->where('id_estudiostemps_fk',$id)
+                            ->get();
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empEntRealiza','statusCobCom'));
     }
 
     /**
