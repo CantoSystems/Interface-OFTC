@@ -461,7 +461,8 @@
                                 @foreach($statusCobCom as $status)
                                 <tr>
                                     <th>{{ $status->nombreActividad }}</th>
-                                    <th>@if($status->id_emp == 1)
+                                    <th>
+                                        @if($status->id_emp == 1)
                                         {{ 'No Aplica' }}
                                         @else
                                         {{ $status->empleado }}
