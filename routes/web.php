@@ -33,7 +33,6 @@ Route::get('/mostrar-data-cobranza',[EstudiosController::class,'create'])->name(
 Route::get('/mostrar-data-cobranza/{id}',[EstudiosController::class,'show'])->name('importarCobranza.show')->middleware('auth');
 Route::delete('/eliminar-data-cobranza',[EstudiosController::class,'destroy'])->name('importarCobranza.destroy')->middleware('auth');
 
-
 //Reportes Cobranza
 Route::post('/actualizar-data-cobranza',[CobranzaController::class,'store'])->name('importarCobranza.update')->middleware('auth');
 Route::get('/reportes-cobranza',[CobranzaController::class,'show'])->name('importarCobranza.verTabla')->middleware('auth');

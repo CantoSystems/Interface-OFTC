@@ -57,7 +57,7 @@
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
                                             value="{{ $datosPaciente->servicio }}" readonly>
-            
+
                                         @if($datosPaciente->estudiostemps_status == 3)
                                         <select name="estudioCorregido" id="estudioCorregido"
                                             class="custom-select combos">
@@ -246,13 +246,13 @@
                                                 @foreach($doctorInter as $dInt)
                                                 @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
                                                 <option selected value="{{ $dInt->id_emp }}">
-                                                    {{ $dInt->empleado }} 
+                                                    {{ $dInt->empleado }}
                                                 </option>
                                                 @else
                                                 <option value="{{ $dInt->id_emp }}">
-                                                    {{ $dInt->empleado }} 
-                                                @endif
-                                                @endforeach
+                                                    {{ $dInt->empleado }}
+                                                    @endif
+                                                    @endforeach
                                             </select>
                                     </div>
                                 </div>
@@ -439,32 +439,42 @@
 <section class="content">
     <div class="container-fluid">
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
-            <div class="col-md-12">
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Status
-                        </h3>
-                    </div>
-                    <form action="{{ route('importarCobranza.update') }}" method="POST">
-                        @csrf
-                        <div class="card-body">
-                            <table id="statusComisionCobrabza" name="reporteCobranza" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Estudio</th>
-                                        <th>Actividad</th>
-                                        <th>Empleado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
+        <div class="col-md-12">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Status
+                    </h3>
                 </div>
+                <form action="{{ route('importarCobranza.update') }}" method="POST">
+                    @csrf
+                    <div class="card-body">
+                        <table id="statusComisionCobrabza" name="reporteCobranza"
+                            class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Actividad</th>
+                                    <th>Empleado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($statusCobCom as $status)
+                                <tr>
+                                    <th>{{ $status->nombreActividad }}</th>
+                                    <th>@if($status->id_emp == 1)
+                                        {{ 'No Aplica' }}
+                                        @else
+                                        {{ $status->empleado }}
+                                        @endif
+                                    </th>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             </div>
+        </div>
         @endcanany
     </div>
 </section>
