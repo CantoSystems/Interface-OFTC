@@ -196,13 +196,13 @@ class CobranzaController extends Controller{
                     ]);
             }
 
-            /*DB::delete("DELETE duplicados from status_cob_com as duplicados
+            DB::delete("DELETE duplicados from status_cob_com as duplicados
                         INNER JOIN status_cob_com as temporales
                         WHERE duplicados.id > temporales.id
                         AND duplicados.folio = temporales.folio
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                         AND duplicados.paciente = temporales.paciente
-                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");*/
+                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
 
             $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                         ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
@@ -328,15 +328,15 @@ class CobranzaController extends Controller{
                     ]);
             }
 
-            /*DB::delete("DELETE duplicados from status_cob_com as duplicados
+            DB::delete("DELETE duplicados from status_cob_com as duplicados
                         INNER JOIN status_cob_com as temporales
                         WHERE duplicados.id > temporales.id
                         AND duplicados.folio = temporales.folio
                         AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                         AND duplicados.paciente = temporales.paciente
-                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");*/
+                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
 
-           $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+            $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                         ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
                                         ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
                                         ->where([
