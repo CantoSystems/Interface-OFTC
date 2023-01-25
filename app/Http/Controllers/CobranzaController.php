@@ -26,11 +26,8 @@ class CobranzaController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        
-
         $fechaInsert = now();
-      
-
+        
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
         }else{
@@ -100,8 +97,6 @@ class CobranzaController extends Controller{
                 }else{
                     //No coincide el  estudio
                     if($request->status == 3 && $request->estudioCorregido != null){
-                        $descripcion = Estudios::select('dscrpMedicosPro')->where('id',$request->estudioCorregido)->first();
-                        
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                         
@@ -110,7 +105,7 @@ class CobranzaController extends Controller{
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'id_empInt_fk' => $doctorInter,
                                             'tipoPaciente' => $request['tipoPaciente'],
-                                            'servicio' => $descripcion->dscrpMedicosPro,
+                                            'servicio' => $request['estudioCorregido'],
                                             'transcripcion' => $request['transRd'],
                                             'interpretacion' => $request['intRd'],
                                             'escaneado' => $request['escRd'],
@@ -209,7 +204,7 @@ class CobranzaController extends Controller{
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
 
-          $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+            $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                         ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
                                         ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
                                         ->where([
@@ -249,16 +244,7 @@ class CobranzaController extends Controller{
                                                 'id_empRea_fk' => $match->id_empleado_fk
                                             ]);
                         }
-                    }
-
-
-
-                                    
-
-
-
-
-            
+                    }  
         //Registro no completado
         }else{
             $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
@@ -351,7 +337,7 @@ class CobranzaController extends Controller{
                         AND duplicados.paciente = temporales.paciente
                         AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
 
-           $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+            $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                         ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
                                         ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
                                         ->where([
