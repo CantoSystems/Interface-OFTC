@@ -126,13 +126,13 @@
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empEntRealiza as $empRe)
-                                            @if($empRe->id_emp==$datosPaciente->id_empRea_fk)
+                                            @if($empRe->id_emp == $datosPaciente->id_empRea_fk)
                                             <option selected value="{{ $empRe->id_emp }}">
-                                                {{ $empRe->empleado }}
+                                                {{ $empRe->empleado }} {{$empRe->id_emp }} - A
                                             </option>
                                             @else
                                             <option value="{{ $empRe->id_emp }}">
-                                                {{ $empRe->empleado }}
+                                                {{ $empRe->empleado }}  {{$empRe->id_emp }} - B
                                             </option>
                                             @endif
                                             @endforeach

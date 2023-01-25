@@ -284,6 +284,7 @@ class CobranzaController extends Controller{
                                                 
 
             if(Arr::has($request,'empRealiza')){
+
                 DB::table('status_cob_com')->insert([
                         'id_estudio_fk'         => $estUpd->id,
                         'id_estudiostemps_fk'   => $request['identificador'],

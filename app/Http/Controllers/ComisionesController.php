@@ -36,6 +36,7 @@ class ComisionesController extends Controller{
     }
 
     public function calcularComision(Request $request){
+        //Eliminar datos en la tabla temporal
         DB::table('comisiones_temps')->truncate();
         $fechaInsert = now()->toDateString();
 
@@ -53,69 +54,115 @@ class ComisionesController extends Controller{
             return back()->withErrors($validator)->withInput();
         }
 
-        //Se obtiene el puesto del empleado
-        $puestoEmp = DB::table('empleados')
-                    ->join('puestos','puestos.id','=','empleados.puesto_id')
-                    ->join('doctors'
-                            ,DB::raw("CONCAT(doctors.doctor_nombre,' ',doctors.doctor_apellidop,' ',doctors.doctor_apellidom)"),'=',DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom)"))
-                    ->select('empleados.puesto_id','doctors.id')
-                    ->where('empleados.id_emp','=',$request->slctEmpleado)
-                    ->first();
+        //Obtener las actividades realizadas segun el estudio y empleado antes o igual de la fecha fin
+        $infoCalculoComision = DB::table('status_cob_com')
+                                    ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                    ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                    ->join('puestos','puestos.id','empleados.puesto_id')
+                                    ->join('estudios','estudios.id','status_cob_com.id_estudio_fk')
+                                    ->join('estudiostemps','estudiostemps.id','status_cob_com.id_estudiostemps_fk')
+                                    ->where([
+                                        ['status_cob_com.id_empleado_fk', $request->slctEmpleado],
+                                        ['status_cob_com.id_estudio_fk', $request->slctEstudio],
+                                        ['estudiostemps.fecha','<=', $request->fechaFin],
+                                        ['statusComisiones',null]
+                                    ])
+                                    ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
+                                            'estudiostemps.fecha')
+                                    ->get();
 
-        dd($puestoEmp);
-        /*switch ($puestoEmp->puesto_id) {
-            //Si es doctor
-            case '4':
-                //Se obtiene la comisión de ese estudio del catálogo
-                $comisionEmp = DB::table('comisiones')
-                                ->select('porcentajeComision','porcentajeUtilidad')
+
+
+        //Obtener los porcentajes de comisión
+        $comisionEmp = DB::table('comisiones')
+                                ->select('porcentajeComision','porcentajeUtilidad','porcentajeAdicional')
                                 ->where([
                                     ['id_estudio_fk','=',$request->slctEstudio],
                                     ['id_empleado_fk','=',$request->slctEmpleado]
                                 ])->first();
 
-                //Se traen los registros de cobranza del estudio seleccionado (Actividad: Interpretación)
-                $comisionEmp = DB::table('status_cob_com')
-                                ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
-                                ->select('status_cob_com.paciente','estudiostemps.total')
-                                ->where([
-                                    ['statusComisiones','=',null],
-                                    ['id_estudio_fk','=',$request->slctEstudio],
-                                    ['id_empleado_fk','=',$request->slctEmpleado],
-                                    ['id_actividad_fk','=',2]
-                                ])->get();
+                                
+        if(!is_null($infoCalculoComision) && !is_null($comisionEmp)){
+          foreach($infoCalculoComision as $info){
+                    if($info->nombreActividad == "Transcrito"){
+                        //porcentajeAdicional es el porcentaje de Transcripcion
+                        $comisionTrans = ($info->total * $comisionEmp->porcentajeAdicional) /100 ;
+                                //Insert en la tabla temporal
+                                DB::table('comisiones_temps')->insert([
+                                    'id_emp_fk' => $request->slctEmpleado,
+                                    'id_estudio_fk' => $request->slctEstudio,
+                                    'paciente' => $info->paciente,
+                                    'fechaEstudio' => $info->fecha,
+                                    'cantidad' => $info->total,
+                                    'porcentaje' => $comisionEmp->porcentajeAdicional,
+                                    'total' => $comisionTrans,
+                                    'created_at' => $fechaInsert,
+                                    'updated_at' => $fechaInsert
+                                ]);
 
-                dd($request);
-                /*foreach($comisionEmp as $comisionesD){
-                    DB::table('comisiones_temps')->insert([
-                            'id_emp_fk' => $request->slctEmpleado,
-                            'id_estudio_fk' => $request->slctEstudio,
-                            'paciente' => $coms->paciente,
-                            'fechaEstudio' => $coms->fecha,
-                            'cantidad' => $comision,
-                            'porcentaje' => $comisionEmp->porcentajeComision,
-                            'total' => $comision,
-                            'created_at' => $fechaInsert,
-                            'updated_at' => $fechaInsert
-                        ]);
+
+                    }else if($info->nombreActividad == "Interpretado"){
+
+                    }else if($info->nombreActividad == "Entregado"){
+                        $comisionEntrega = ($info->total * $comisionEmp->porcentajeComision)/100;
+                                //Insert en la tabla temporal
+                                DB::table('comisiones_temps')->insert([
+                                    'id_emp_fk' => $request->slctEmpleado,
+                                    'id_estudio_fk' => $request->slctEstudio,
+                                    'paciente' => $info->paciente,
+                                    'fechaEstudio' => $info->fecha,
+                                    'cantidad' => $info->total,
+                                    'porcentaje' => $comisionEmp->porcentajeComision,
+                                    'total' => $comisionEntrega,
+                                    'created_at' => $fechaInsert,
+                                    'updated_at' => $fechaInsert
+                                ]);
+
+                    }else if($info->nombreActividad == "Realizado"){
+                        $comsionRealizado = ($info->total * $comisionEmp->porcentajeComision) /100 ;
+
+                                //Insert en la tabla temporal
+                                DB::table('comisiones_temps')->insert([
+                                    'id_emp_fk' => $request->slctEmpleado,
+                                    'id_estudio_fk' => $request->slctEstudio,
+                                    'paciente' => $info->paciente,
+                                    'fechaEstudio' => $info->fecha,
+                                    'cantidad' => $info->total,
+                                    'porcentaje' => $comisionEmp->porcentajeComision,
+                                    'total' => $comsionRealizado,
+                                    'created_at' => $fechaInsert,
+                                    'updated_at' => $fechaInsert
+                                ]);
+                    }
                 }
+        }else{
+            if(is_null($infoCalculoComision)){
+                return back()->with('resultadosVacios','El empleado no cuenta con Actividades para este EStudio en el rango de fechas ingresado');
+            }else if(is_null($comisionEmp)){
+                return back()->with('resultadosVacios','El empleado no cuenta con porcentajes de comisión para este estudio');
+            }
+        }
 
-                //Se verifica si el doctor tiene utilidad. Caso "SI"
-                if($comisionEmp->porcentajeUtilidad != "0"){
-                    
-                }else{
-                    
-                }
-                break;
-            case '5':
-                break;
-            case '6':
-                break;
-            default:
-                break;
-        }*/
 
-        $comisiones = DB::table('comisiones_temps')
+        //Consultas para los valores de carga de empleado y estudios 
+        $empleados = DB::table('empleados')
+                        ->join('puestos','puestos.id','=','puesto_id')
+                        ->select('id_emp',
+                                    DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
+                                        'puestos.puestos_nombre')
+                        ->where('id_emp','!=',1)
+                        ->orderBy('empleado','asc')
+                        ->get();
+
+        $estudios = DB::table('estudios')
+                        ->select('id','dscrpMedicosPro')
+                        ->orderBy('dscrpMedicosPro','asc')
+                        ->get();
+
+        //Fin de valores de los combos de busqueda 
+
+        //Consultas para el llenado de las comisiones en el datatable
+                        $comisiones = DB::table('comisiones_temps')
                             ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
                             ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
                             ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente')
@@ -129,16 +176,8 @@ class ComisionesController extends Controller{
                                     ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
                                 ])->sum('total');
 
-        $empleados = DB::table('empleados')
-                            ->join('puestos','puestos.id','=','puesto_id')
-                            ->select('id_emp',
-                                    DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as empleado"),
-                                    'puestos.puestos_nombre')
-                            ->where('id_emp','!=',1)
-                            ->get();
-
-        $estudios = DB::table('estudios')->select('id','dscrpMedicosPro')->get();
-
+        
+       
         return view('comisiones.showComisiones',compact('empleados','estudios','comisiones','totalComisiones'));
     }
     

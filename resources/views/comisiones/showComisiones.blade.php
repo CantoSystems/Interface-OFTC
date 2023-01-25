@@ -109,6 +109,11 @@
                 @endforeach
             </div>
             @endif
+            @if(session()->has('resultadosVacios'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('resultadosVacios')}}
+                    </div>
+            @endif
             <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
