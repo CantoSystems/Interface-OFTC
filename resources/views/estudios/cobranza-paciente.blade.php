@@ -246,11 +246,11 @@
                                                 @foreach($doctorInter as $dInt)
                                                 @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
                                                 <option selected value="{{ $dInt->id_emp }}">
-                                                    {{ $dInt->empleado }}
+                                                    Dr. {{ $dInt->empleado }}
                                                 </option>
                                                 @else
                                                 <option value="{{ $dInt->id_emp }}">
-                                                    {{ $dInt->empleado }}
+                                                    Dr. {{ $dInt->empleado }}
                                                     @endif
                                                     @endforeach
                                             </select>
@@ -333,7 +333,7 @@
                                             <select name="empEnt" id="empEnt" class="custom-select combos">
                                                 @endif
                                                 <option disabled selected>-- Selecciona una opción --</option>
-                                                @foreach($empEntRealiza as $empE)
+                                                @foreach($empEntrega as $empE)
                                                 @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
                                                 <option selected value="{{ $empE->id_emp }}">
                                                     {{ $empE->empleado }}
@@ -455,6 +455,7 @@
                                 <tr>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -468,6 +469,7 @@
                                         {{ $status->empleado }}
                                         @endif
                                     </th>
+                                    <th><a class="btn btn-block btn-outline-secondary btn-xs"">VER</a></th>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -480,7 +482,7 @@
     </div>
 </section>
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
-<div class="alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
-</div>
-@endcanany
-@endsection
+<div class=" alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
+                    </div>
+                    @endcanany
+                    @endsection
