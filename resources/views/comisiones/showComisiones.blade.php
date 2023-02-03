@@ -127,8 +127,15 @@
 
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-3">
                                     <br>
+                                </div>
+                                <div class="col-3">
+                                        <a  id="cargarCobranza" type="button" 
+                                            href="{{ route('comisiones.index') }}"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                                <span class="info-box-number">Limpiar</span>
+                                         </a>
                                 </div>
                                 <div class="col-3">
                                         <a  id="cargarCobranza" type="button" 
@@ -141,7 +148,7 @@
                                         <a  id="cargarCobranza" type="button" 
                                             href="#"
                                             class="btn btn-block btn-outline-secondary btn-xs">
-                                                <span class="info-box-number">Liberar</span>
+                                                <span class="info-box-number">Autorizar</span>
                                          </a>
                                     </div>
                                 </div>

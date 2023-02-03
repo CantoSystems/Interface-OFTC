@@ -114,12 +114,12 @@ class ComisionesController extends Controller{
 
                             $excluyeEstudioTrans = DB::table('estudios')
                                                         ->join('cat_estudios','cat_estudios.id','estudios.id_estudio_fk')
-                                                        ->where([
-                                                                ['cat_estudios.descripcion',"ANTERION"],
-                                                                ['estudios.dscrpMedicosPro', $request->slctEstudio]
-                                                        ])->count();
+                                                        ->whereIn('cat_estudios.descripcion',["ANTERION"])
+                                                        ->where('estudios.id', $request->slctEstudio)
+                                                        ->count();
+                                 
 
-                                    if($excluyeEstudioTrans != 0){
+                                    if($excluyeEstudioTrans == 0){
                                         //porcentajeAdicional es el porcentaje de Transcripcion
                                             $comisionTrans = ($info->total * $comisionEmp->porcentajeAdicional) /100 ;
                                 -                //Insert en la tabla temporal
@@ -134,7 +134,7 @@ class ComisionesController extends Controller{
                                                     'created_at' => $fechaInsert,
                                                     'updated_at' => $fechaInsert
                                                 ]);
-                                    }else {
+                                    }else if($excluyeEstudioTrans == 1){
                                         DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
                                             ->update([                                               
                                                     'statusComisiones' => "Informativo"
@@ -197,13 +197,13 @@ class ComisionesController extends Controller{
 
                             //Excluir Estudios Anterion 
 
-                            $excluyeEstudioTrans = DB::table('estudios')
+                            $excluyeEstudioRealiza = DB::table('estudios')
                                                         ->join('cat_estudios','cat_estudios.id','estudios.id_estudio_fk')
                                                         ->whereIn('cat_estudios.descripcion',["ULTRASONIDO MODO B","ULTRASONIDO MODO B"])
-                                                        ->where('estudios.dscrpMedicosPro', $request->slctEstudio)
+                                                        ->where('estudios.id', $request->slctEstudio)
                                                         ->count();
 
-                                    if($excluyeEstudioTrans != 0){
+                                    if($excluyeEstudioRealiza == 0){
                                         $comsionRealizado = ($info->total * $comisionEmp->porcentajeComision) /100 ;
 
                                         //Insert en la tabla temporal
@@ -218,7 +218,7 @@ class ComisionesController extends Controller{
                                             'created_at' => $fechaInsert,
                                             'updated_at' => $fechaInsert
                                         ]);
-                                    }else{
+                                    }else if($excluyeEstudioRealiza == 1){
                                          DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
                                                         ->update([                                               
                                                                     'statusComisiones' => "Informativo"
@@ -273,8 +273,10 @@ class ComisionesController extends Controller{
 
                                 foreach($infoEscaneo as $esc){
                                     if($restriccionEscaneo->puestos_nombre == "ENFERMERÍA"){
-                                        if($esc->nombreActividad == "Escaneado" && $esc->escaneado == 'S'){
-                                            $comisionEscaneo = (($esc->total * $comisionEmp->porcentajeComision) /100)/3;
+                                        if($esc->nombreActividad == "Escaneado" ){
+
+                                            //se toma el porcentaje Adicional, para no confundir el porcentaje asignado a REalizado
+                                            $comisionEscaneo = (($esc->total * $comisionEmp->porcentajeAdicional) /100)/3;
 
 
                                                 //Insert en la tabla temporal
@@ -284,7 +286,7 @@ class ComisionesController extends Controller{
                                                     'paciente' => $esc->paciente,
                                                     'fechaEstudio' => $esc->fecha,
                                                     'cantidad' => $esc->total,
-                                                    'porcentaje' => $comisionEmp->porcentajeComision,
+                                                    'porcentaje' => $comisionEmp->porcentajeAdicional,
                                                     'total' => $comisionEscaneo,
                                                     'created_at' => $fechaInsert,
                                                     'updated_at' => $fechaInsert

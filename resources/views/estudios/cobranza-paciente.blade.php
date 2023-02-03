@@ -455,6 +455,7 @@
                                 <tr>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
+                                    <th>Estatus Comisión</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -467,6 +468,9 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
+                                    </th>
+                                    <th>
+                                        {{ $status->statusComisiones }}
                                     </th>
                                 </tr>
                                 @endforeach
