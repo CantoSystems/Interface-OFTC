@@ -85,10 +85,21 @@ class EstudiosController extends Controller{
                                     ['empleados.id_emp','<>','1']
                                 ])->get();
 
-        $empEntRealiza = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')->where('id_emp','!=',1)->get();
+        $empRealiza = Empleado::select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom,' (',puestos.puestos_nombre,')') AS empleado"),'empleados.id_emp')
+                                    ->join('puestos','puestos.id','=','puesto_id')
+                                    ->whereIn('id_emp',[14,15,13,16,4,20,8,10,2])
+                                    ->orderBy('empleado','asc')
+                                    ->get();
+                                    
+        $empEntrega = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
+                                    ->where([
+                                        ['id_emp','!=',1],
+                                        ['puesto_id','=',6]
+                                    ])->get();
+                                    
         $doctorInter = Empleado::join('puestos','puestos.id','puesto_id')
                                 ->select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado"),'id_emp')
-                                ->where('puesto_id',4)->get();
+                                ->whereIn('id_emp',[13,14,15])->get();
 
         $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
@@ -99,7 +110,7 @@ class EstudiosController extends Controller{
                             ->where('id_estudiostemps_fk',$id)
                             ->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empEntRealiza','statusCobCom'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEntrega','statusCobCom'));
     }
 
     /**
