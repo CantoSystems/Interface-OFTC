@@ -19,6 +19,7 @@ class CreateEmpleadosTable extends Migration
             $table->string('empleado_apellidom',20);
             $table->char('empleado_status',1);
             $table->unsignedBigInteger('puesto_id');
+            $table->unsignedBigInteger('actividades_fk')->nullable();
             $table->foreign('puesto_id')->references('id')->on('puestos');
             $table->timestamps();
             $table->engine = 'InnoDB';
