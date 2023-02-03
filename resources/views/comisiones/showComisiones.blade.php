@@ -3,102 +3,65 @@
 <div class="col">
     <div class="card">
         <div class="card-header modalPersonalizado">
-            <h4>Calcular Comisiones</h4>
+            <h6>Calcular Comisiones</h6>
         </div>
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
-        <div class="card-header col-12">
+
             <form action="{{ route('comisiones.show') }}" method="GET">
                 <div class="row">
-                    <div class="col-md-3 col-sm-4 col-4">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Empleado:</label>
-                                <select class="form-control" name="slctEmpleado" id="slctEmpleado">
-                                    <option selected disabled>-- Selecciona una opción --</option>
-                                    @foreach($empleados as $emp)
-                                    <option value="{{ $emp->id_emp }}">{{ $emp->empleado }} ({{ $emp->puestos_nombre }})
+                    <div class="col-3">
+                        <label class="info-box-text">Selecciona Empleado:</label>
+                        <select class="form-control" name="slctEmpleado" id="slctEmpleado">
+                            <option selected disabled>-- Selecciona una opción --</option>
+                                @foreach($empleados as $emp)
+                                    <option value="{{ $emp->id_emp }}">
+                                        {{ $emp->empleado }} ({{ $emp->puestos_nombre }})
                                     </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                                @endforeach
+                        </select> 
                     </div>
-                    <div class="col-md-3 col-sm-4 col-4">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Estudio:</label>
-                                <select class="form-control" name="slctEstudio" id="slctEstudio">
-                                    <option selected disabled>-- Selecciona una opción --</option>
-                                    <option value="TODOS">TODOS LOS ESTUDIOS</option>
-                                    @foreach($estudios as $est)
-                                    <option value="{{ $est->id }}">{{ $est->dscrpMedicosPro }}
+                    <div class="col-3">
+                        <label class="info-box-text">Selecciona Estudio:</label>
+                        <select class="form-control" name="slctEstudio" id="slctEstudio">
+                            <option selected disabled>-- Selecciona una opción --</option>
+                                @foreach($estudios as $est)
+                                    <option value="{{ $est->id }}">
+                                        {{ $est->dscrpMedicosPro }}
                                     </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                                @endforeach
+                        </select>
                     </div>
-                    <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Fecha Fin</label>
-                                <input class="form-control" type="date" name="fechaFin" id="fechaFin">
-                            </div>
-                        </div>
+                    <div class="col-2">
+                        <label class="info-box-text">Selecciona Fecha Fin:</label>
+                        <input class="form-control" type="date" name="fechaFin" id="fechaFin">
                     </div>
-                    <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <button id="cargarCobranza" type="submit"
+                    <div class="col-2">
+                        <label>Tipo de cálculo</label>
+                        <select class="form-control" name="selectCalculo" id="selectCalculo">
+                            <option selected disabled>-- Selecciona una optión--</option>
+                            <option value="comisionesEmpleados"> Comisiones empleados </option>
+                            <option value="procesoEscaneo">Cálculo Escaneo</option>
+                            <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <br>
+                        <button     id="cargarCobranza" type="submit"
                                     class="btn btn-block btn-outline-secondary btn-xs">
-                                    <span class="info-box-number">Calcular</span>
-                                </button>
-                            </div>
-                        </div>
+                            <span class="info-box-number">Calcular</span>
+                        </button>
+                    </div>
+                    
                 </div>
+            </form>            
+
         @endcanany
-        
-                    @if(isset($comisiones) && !empty($totalComisiones))
-                    @canany(['comisiones'])
-                    <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <a id="cargarCobranza" type="button" href="{{ route('exportarComisiones.export') }}"
-                                    class="btn btn-block btn-outline-secondary btn-xs">
-                                    <span class="info-box-number">Generar Excel</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    @endcanany
-                    @endif
-                </div>
-            </form>
 
-            @if(isset($comisiones) && !empty($totalComisiones))
-                @canany(['comisiones'])
-                    <form>
-                        <div class="col-md-2 col-sm-4 col-6">
-                        <div class="info-box shadow">
-                            <div class="info-box-content">
-                                <button class="btn btn-block btn-outline-secondary btn-xs">
-                                    <span class="info-box-number">
-                                         Autorizar 
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-                @endcanany
-            @endif
-            
-            
-            <form>
-                
-            </form>
 
-        </div>
+
+
+
+
         <div class="card-body">
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
             @if (count($errors) > 0)
@@ -120,7 +83,9 @@
                         <th>Fecha</th>
                         <th>Paciente</th>
                         <th>Estudio</th>
-                        <th>Comisión</th>
+                        <th>Cantidad</th>
+                        <th>Porcentaje</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,6 +95,8 @@
                         <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
                         <td>{{ $com->paciente }}</td>
                         <td>{{ $com->dscrpMedicosPro }}</td>
+                        <td>{{ $com->cantidad }}</td>
+                        <td>{{ $com->porcentaje }} %</td>
                         <td>$ {{ number_format($com->total,2) }}</td>
                     </tr>
                     @endforeach
@@ -156,6 +123,32 @@
         </div>
     </div>
 </div>
+
+
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-6">
+                                    <br>
+                                </div>
+                                <div class="col-3">
+                                        <a  id="cargarCobranza" type="button" 
+                                            href="{{ route('exportarComisiones.export') }}"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                                <span class="info-box-number">Generar Excel</span>
+                                         </a>
+                                </div>
+                                <div class="col-3">
+                                        <a  id="cargarCobranza" type="button" 
+                                            href="#"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                                <span class="info-box-number">Liberar</span>
+                                         </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
 @elsecanany('invitado','detalleConsumo','auxiliardetalleConsumo')
 <div class="alert alert-danger" role="alert">
         No cuenta con los privilegios para acceder a este módulo del sistema
