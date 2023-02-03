@@ -478,7 +478,7 @@
                                     </th>
 
                                     <th><a class="btn btn-block btn-outline-secondary btn-xs"">VER</a></th>
-
+                                    
                                 </tr>
                                 @endforeach
                             </tbody>
