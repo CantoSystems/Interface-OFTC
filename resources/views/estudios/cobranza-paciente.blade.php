@@ -126,14 +126,14 @@
                                         <label>¿Quién Realizó el Estudio?<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
-                                            @foreach($empRealiza as $empRe)
-                                            @if($empRe->id_emp==$datosPaciente->id_empRea_fk)
+                                            @foreach($empEntRealiza as $empRe)
+                                            @if($empRe->id_emp == $datosPaciente->id_empRea_fk)
                                             <option selected value="{{ $empRe->id_emp }}">
-                                                {{ $empRe->empleado }}
+                                                {{ $empRe->empleado }} {{$empRe->id_emp }} - A
                                             </option>
                                             @else
                                             <option value="{{ $empRe->id_emp }}">
-                                                {{ $empRe->empleado }}
+                                                {{ $empRe->empleado }}  {{$empRe->id_emp }} - B
                                             </option>
                                             @endif
                                             @endforeach
@@ -456,7 +456,11 @@
                                 <tr>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
+
+                                    <th>Estatus Comisión</th>
+
                                     <th></th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -469,8 +473,13 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
+
+                                    <th>
+                                        {{ $status->statusComisiones }}
                                     </th>
+
                                     <th><a class="btn btn-block btn-outline-secondary btn-xs"">VER</a></th>
+
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -104,7 +104,7 @@ class EstudiosController extends Controller{
         $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
-                            ->select('actividades.nombreActividad'
+                            ->select('actividades.nombreActividad','status_cob_com.statusComisiones'
                                     ,'empleados.id_emp'
                                     ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
                             ->where('id_estudiostemps_fk',$id)
