@@ -287,31 +287,32 @@
         $('#precioEstudio').val(0);
         $("#porcentajeAdicional").show();
         $("#divComision").show();
-        $(".porcentajeAdicionalInput").attr("disabled", true);
-        $(".divComisionInput").attr("disabled", true);
+        //$(".porcentajeAdicionalInput").attr("disabled", true);
+        //$(".divComisionInput").attr("disabled", true);
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
-                $("#divComision").show();
+                //$("#divComision").show();
                 $("#divAlerta").hide();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", false);
+                $("#divAlertaEnf").hide();
+                //$(".porcentajeAdicionalInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", false);
             } else if (texto.includes('OPTOMETRÍA')) {
-                $("#divComision").hide();
+                //$("#divComision").hide();
                 $("#divAlerta").show();
-                $("#porcentajeAdicional").show();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", false);
-                $(".divComisionInput").attr("disabled", true);
-            } else {
+                $("#divAlertaEnf").hide();
+                //$("#porcentajeAdicional").show();
+                //$("#divComision").show();
+                //$(".porcentajeAdicionalInput").attr("disabled", false);
+                //$(".divComisionInput").attr("disabled", true);
+            } else if (texto.includes('ENFERMERÍA')) {
                 //$("#porcentajeAdicional").hide();
                 $("#divAlerta").hide();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
-
-
+                //$("#divComision").hide();
+                $("#divAlertaEnf").show();
+                //$(".porcentajeAdicionalInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", true);
             }
         });
 
@@ -458,9 +459,6 @@
         });
 
     });
-
-
-    
     </script>
 
     <script>
