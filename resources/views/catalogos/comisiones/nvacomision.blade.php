@@ -18,6 +18,13 @@
                                 ADICIONAL</b> es <i><b>por la transcripción</b></i> del
                             mismo.
                         </div>
+                        <div class="alert alert-success" id="divAlertaEnf" name="divAlertaEnf"
+                            style="display: none; text-align: justify;">
+                            <h6><b>RECUERDA:</b></h6> En el caso del <b>ENFERMERÍA</b>, el campo <b>PORCENTAJE
+                                COMISIÓN</b> es <i><b>por la realización del estudio</b></i> y el campo <b>PORCENTAJE
+                                ADICIONAL</b> es <i><b>por el escaneo</b></i> del
+                            mismo.
+                        </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -63,7 +70,7 @@
                                     style="display: none">
                                     <label>Porcentaje Adicional</label>
                                     <input type="number" step="0.01" id="cantidadComision" name="cantidadComision"
-                                    class="form-control porcentajeAdicionalInput">
+                                        class="form-control porcentajeAdicionalInput">
                                 </div>
                             </div>
                             <div class="col-md-4" id="divComision" name="divComision" style="display: none">

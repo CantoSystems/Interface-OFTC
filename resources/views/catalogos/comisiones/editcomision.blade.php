@@ -11,7 +11,7 @@
                         <h3 class="card-title">Información Comisión:
                             </br>
                             <b> {{ $comision->empleado }} - {{ $comision->puestos_nombre}}
-                            </br>
+                                </br>
                                 {{ $comision->dscrpMedicosPro }}</b>
                         </h3>
                     </div>
@@ -27,11 +27,19 @@
                         <div class="card-body">
                             <div class="row">
                                 @if($comision->puesto_id == 2)
-                                <div class="alert alert-success" style="text-align: justify;">
+                                <div class="col-12 alert alert-success" style="text-align: justify;">
                                     <h6><b>RECUERDA:</b></h6> En el caso del <b>OPTOMETRISTA</b>, el campo <b>PORCENTAJE
                                         COMISIÓN</b> es <i><b>por la realización del estudio</b></i> y el campo
                                     <b>PORCENTAJE
                                         ADICIONAL</b> es <i><b>por la transcripción</b></i> del
+                                    mismo.
+                                </div>
+                                @elseif($comision->puesto_id == 8)
+                                <div class="col-12 alert alert-success" style="text-align: justify;">
+                                    <h6><b>RECUERDA:</b></h6> En el caso del <b>ENFERMERÍA</b>, el campo <b>PORCENTAJE
+                                        COMISIÓN</b> es <i><b>por la realización del estudio</b></i> y el campo
+                                    <b>PORCENTAJE
+                                        ADICIONAL</b> es <i><b>por el escaneo</b></i> del
                                     mismo.
                                 </div>
                                 @endif
@@ -67,54 +75,34 @@
                                             value="{{ $comision->id }}">
                                     </div>
                                 </div>
-                               
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Porcentaje Adicional</label>
-                                        @if($comision->puesto_id == 2)
-                                                <input type="number" step="0.01" value="{{ $comision->porcentajeAdicional }}"
-                                                name="cantidadComision" class="form-control" required>
-                                        @elseif($comision->puesto_id == 4)
-                                                <input type="number" class="form-control" 
-                                                value="{{ $comision->porcentajeAdicional }}" disabled>
-                                        @else
-                                                <input type="number" class="form-control" 
-                                                value="{{ $comision->porcentajeAdicional }}" disabled>
-                                        @endif
+                                        <input type="number" step="0.01" value="{{ $comision->porcentajeAdicional }}"
+                                            name="cantidadComision" class="form-control" required>
                                     </div>
                                 </div>
-                   
-
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Porcentaje Utilidad
                                             <strong style="color:red">*</strong>
                                         </label>
-                                        @if($comision->puesto_id == 4)
-                                                <input type="number" step="0.01" value="{{ $comision->porcentajeUtilidad }}"
-                                                id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
-                                                <input type="hidden" name="idComision" id="idComision"
-                                                value="{{ $comision->id }}">
-                                        @elseif($comision->puesto_id == 2)
-                                                <input type="number" value="{{ $comision->porcentajeUtilidad}}" class="form-control" disabled>
-                                        @else        
-                                                <input type="number" value="{{ $comision->porcentajeUtilidad}}" class="form-control" disabled>
-                                        @endif
-                                                
-                                         
+                                        <input type="number" step="0.01" value="{{ $comision->porcentajeUtilidad }}"
+                                            id="cantidadUtilidad" name="cantidadUtilidad" class="form-control" required>
+                                        <input type="hidden" name="idComision" id="idComision"
+                                            value="{{ $comision->id }}">
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-4">
                                     <a href="{{ route('mostrarComisiones.index')}}">
-                                            <button type="button" id="btnGuardar" name="btnGuardar"
-                                                class="btn btn-block btn-outline-secondary btn-xs">
-                                                Regresar
-                                            </button>
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                            Regresar
+                                        </button>
                                     </a>
                                 </div>
                                 <div class="col-4">
