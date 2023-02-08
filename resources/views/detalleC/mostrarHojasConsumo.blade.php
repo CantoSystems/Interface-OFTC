@@ -12,7 +12,7 @@
                     <div class="col-md-2 col-sm-4 col-4">
                         <div class="info-box shadow">
                             <div class="info-box-content">
-                                <label class="info-box-text">Selecciona Dr. :</label>
+                                <label class="info-box-text">Selecciona Dr.:</label>
                                 <select class="form-control" name="slctDoctor" id="slctDoctor">
                                     <option selected disabled>-- Selecciona una opción --</option>
                                     <option value="TODOS">TODOS LOS DOCTORES</option>
@@ -50,10 +50,9 @@
                                 </button>
                             </div>
                         </div>
-</div>
-@endcanany
-@canany(['comisiones','detalleConsumo'])
-
+                    </div>
+                    @endcanany
+                    @canany(['comisiones','detalleConsumo'])
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
@@ -64,22 +63,20 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-@endcanany
+                @endcanany
             </form>
         </div>
-        
         <div class="card-body">
-@canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
-@if (count($errors) > 0)
-<div class="alert alert-danger">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    @foreach ($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-</div>
-@endif
+            @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
+            @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </div>
+            @endif
             <table id="catEstudios" name="catEstudios" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -96,7 +93,6 @@
                 </thead>
                 <tbody>
                     @if(!empty($hojasConsumo))
-
                     @foreach($hojasConsumo as $hojas)
                     <tr vertical-align="middle">
                         <td style="text-align: center;">{{ $hojas->id_detalle }}</td>
@@ -111,7 +107,6 @@
                         <td>
                             <center>
                                 <div class="btn-group">
-                                   
                                     <div class="form-group">
                                         <a href="{{ route('exportPDF.create',$hojas->id_detalle) }}">
                                             <button type="button" class="btn btn-primary btn-sm">
@@ -119,8 +114,8 @@
                                             </button>
                                         </a>
                                     </div>
-                        @endcanany
-                        @canany(['comisiones','detalleConsumo'])
+                                    @endcanany
+                                    @canany(['comisiones','detalleConsumo'])
                                     <div class="form-group">
                                         <a href="{{ route('editHojaConsumo.edit',$hojas->id_detalle) }}">
                                             <button type="button" class="btn btn-warning btn-sm">
@@ -128,22 +123,10 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <!--<div class="form-group">
-                                        <input type="hidden" name="idHojaDlt" id="idHojaDlt"
-                                            value="{{ $hojas->id_detalle }}">
-                                        <input type="hidden" name="doctorHoja" id="doctorHoja"
-                                            value="{{ $hojas->Doctor }}">
-                                        <a>
-                                            <button type="button" id="btnDlt" name="btnDlt" data-target="#eliminar-hoja"
-                                                data-toggle="modal" onClick="borrarHoja();" class="btn btn-danger btn-sm">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
-                                        </a>
-                                    </div>-->
                                 </div>
                             </center>
                         </td>
-                    @endcanany
+                        @endcanany
                     </tr>
                     @endforeach
                     @endif
