@@ -254,7 +254,7 @@
         </div>
 
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+            <div class="float-right d-none d-sm-block"><b>Version</b> 2.0</div>
             <strong>Canto Contadores &copy; 2022</strong>
             All rights reserved.
         </footer>
@@ -321,6 +321,7 @@
             $("#reporteCobranza").DataTable({
                 "responsive": true,
                 "autoWidth": false,
+                "pageLength": 25,
                 "language": {
                     "lengthMenu": "Mostrando _MENU_ registros por página",
                     "zeroRecords": "No existen registros en la tabla",

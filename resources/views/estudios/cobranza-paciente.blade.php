@@ -116,7 +116,6 @@
                                             </option>
                                             @endif
                                             @endforeach
-
                                         </select>
                                     </div>
                                 </div>
@@ -453,6 +452,7 @@
                             class="table table-bordered table-hover">
                             <thead>
                                 <tr>
+                                    <th>Estudio</th>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
                                     <th>Estatus Comisión</th>
@@ -462,6 +462,7 @@
                             <tbody>
                                 @foreach($statusCobCom as $status)
                                 <tr>
+                                    <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }})</th>
                                     <th>{{ $status->nombreActividad }}</th>
                                     <th>
                                         @if($status->id_emp == 1)
@@ -469,11 +470,17 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
-                                    <th>
-                                        {{ $status->statusComisiones }}
+                                    <th style="text-align: center;">
+                                        {{ strtoupper($status->statusComisiones) }}
                                     </th>
-                                    <th><a class="btn btn-block btn-outline-secondary btn-xs"
+                                    <th style="text-align: center;">
+                                        @if($status->id_emp == 1 || $status->statusComisiones!="")
+                                        <a class="btn btn-block btn-outline-secondary btn-xs">NO
+                                            APLICA</a>
+                                        @else
+                                        <a class="btn btn-block btn-outline-secondary btn-xs"
                                             href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
+                                        @endif
                                     </th>
                                 </tr>
                                 @endforeach

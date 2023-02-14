@@ -44,6 +44,8 @@
                                         </label>
                                         <input type="hidden" id="idActividad" name="idActividad"
                                             value="{{ $statusCobCom->id }}">
+                                        <input type="hidden" id="idEstudios" name="idEstudios"
+                                            value="{{ $statusCobCom->idEstudios }}">
                                         <select name="empNuevo" id="empNuevo" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empleados as $emp)
@@ -67,11 +69,9 @@
                                     </a>
                                 </div>
                                 <div class="col-6">
-                                    <a data-target="#confirm-estudio" data-toggle="modal">
-                                        <button type="button" id="btnGuardar" name="btnGuardar"
-                                            class="btn btn-block btn-outline-primary btn-xs">Actualizar
-                                            Registro</button>
-                                    </a>
+                                    <button type="submit" id="btnGuardar" name="btnGuardar"
+                                        class="btn btn-block btn-outline-primary btn-xs">Actualizar
+                                        Registro</button>
                                 </div>
                             </div>
                         </div>
