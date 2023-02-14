@@ -18,33 +18,41 @@
                                         {{ $emp->empleado }} ({{ $emp->puestos_nombre }})
                                     </option>
                                 @endforeach
+                                @foreach($drUtilidadInterpreta as $dr)
+                                    <option value="{{ $dr->id_emp }}">
+                                         {{ $dr->empleado }} ({{ $dr->puestos_nombre }})
+                                    </option>
+                                @endforeach
                         </select> 
                     </div>
-                    <div class="col-3">
+                    <div class="col-4">
                         <label class="info-box-text">Selecciona Estudio:</label>
-                        <select class="form-control" name="slctEstudio" id="slctEstudio">
-                            <option selected disabled>-- Selecciona una opción --</option>
+                        <select class="form-control" name="slctEstudio[]" id="slctEstudio" multiple="multiple">
+                            
                                 @foreach($estudios as $est)
-                                    <option value="{{ $est->id }}">
+                                    <option value="{{ $est->id }}" selected>
                                         {{ $est->dscrpMedicosPro }}
                                     </option>
                                 @endforeach
                         </select>
                     </div>
                     <div class="col-2">
-                        <label class="info-box-text">Selecciona Fecha Fin:</label>
+                        <label class="info-box-text">Fecha Fin:</label>
                         <input class="form-control" type="date" name="fechaFin" id="fechaFin">
                     </div>
                     <div class="col-2">
                         <label>Tipo de cálculo</label>
                         <select class="form-control" name="selectCalculo" id="selectCalculo">
                             <option selected disabled>-- Selecciona una optión--</option>
-                            <option value="comisionesEmpleados"> Comisiones empleados </option>
-                            <option value="procesoEscaneo">Cálculo Escaneo</option>
+                                @foreach($actividades as $act)
+                                    <option value="{{ $act->nombreActividad }}">   
+                                        {{ $act->nombreActividad }}
+                                    </option>
+                                @endforeach
                             <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
                         </select>
                     </div>
-                    <div class="col-2">
+                    <div class="col-1">
                         <br>
                         <button     id="cargarCobranza" type="submit"
                                     class="btn btn-block btn-outline-secondary btn-xs">
@@ -72,10 +80,13 @@
                 @endforeach
             </div>
             @endif
-            @if(session()->has('resultadosVacios'))
+            @isset($fallo)
+            @foreach($fallo as $fatal)
                     <div class="alert alert-danger" role="alert">
-                        {{ session('resultadosVacios')}}
+                        El empleado {{ $fatal['empleado'] }} no tiene asignado una comisión 
+                        para el estudio {{ $fatal['descripcion']}}
                     </div>
+            @endforeach
             @endif
             <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>

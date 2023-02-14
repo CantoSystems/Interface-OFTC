@@ -126,7 +126,7 @@
                                         <label>¿Quién Realizó el Estudio?<strong style="color:red">*</strong></label>
                                         <select name="empRealiza" id="empRealiza" class="custom-select combos">
                                             <option disabled selected>-- Selecciona una opción --</option>
-                                            @foreach($empEntRealiza as $empRe)
+                                            @foreach($empRealiza as $empRe)
                                             @if($empRe->id_emp == $datosPaciente->id_empRea_fk)
                                             <option selected value="{{ $empRe->id_emp }}">
                                                 {{ $empRe->empleado }} {{$empRe->id_emp }} - A
@@ -478,8 +478,8 @@
                                         {{ $status->statusComisiones }}
                                     </th>
 
-                                    <th><a class="btn btn-block btn-outline-secondary btn-xs"">VER</a></th>
-                                    
+                                    <th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>
+
                                 </tr>
                                 @endforeach
                             </tbody>

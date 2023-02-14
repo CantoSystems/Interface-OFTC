@@ -63,7 +63,7 @@
                             <div class="info-box-content">
                                 <form action="{{ route('importarCobranza.export') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="clvEstudios" value="{{ json_encode($busquedaEstudios, true) }}" />
+                                    <input type="text" name="clvEstudios" value="{{ json_encode($busquedaEstudios, true) }}" />
                                     <input type="hidden" name="inicio" value="{{$inicio}}">
                                     <input type="hidden" name="fin" value="{{$fin}}">
                                     <input class="btn btn-block btn-outline-secondary btn-xs" type="submit"
