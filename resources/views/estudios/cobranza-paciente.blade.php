@@ -57,7 +57,6 @@
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
                                             value="{{ $datosPaciente->servicio }}" readonly>
-
                                         @if($datosPaciente->estudiostemps_status == 3)
                                         <select name="estudioCorregido" id="estudioCorregido"
                                             class="custom-select combos">
@@ -456,11 +455,8 @@
                                 <tr>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
-
                                     <th>Estatus Comisión</th>
-
                                     <th></th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -473,13 +469,12 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
-
                                     <th>
                                         {{ $status->statusComisiones }}
                                     </th>
-
-                                    <th><a class="btn btn-block btn-outline-secondary btn-xs"">VER</a></th>
-
+                                    <th><a class="btn btn-block btn-outline-secondary btn-xs"
+                                            href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
+                                    </th>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -493,6 +488,6 @@
 </section>
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class=" alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
-                    </div>
-                    @endcanany
-                    @endsection
+</div>
+@endcanany
+@endsection
