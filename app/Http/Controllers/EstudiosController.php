@@ -104,7 +104,9 @@ class EstudiosController extends Controller{
         $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
-                            ->select('actividades.nombreActividad','status_cob_com.statusComisiones'
+                            ->select('status_cob_com.id'
+                                    ,'actividades.nombreActividad'
+                                    ,'status_cob_com.statusComisiones'
                                     ,'empleados.id_emp'
                                     ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
                             ->where('id_estudiostemps_fk',$id)
@@ -184,9 +186,10 @@ class EstudiosController extends Controller{
         }
 
         $duplicados = Estudios::where([
-            ['id_estudio_fk',$request->estudioGral],
-            ['id_ojo_fk',$request->tipoOjo]
-        ])->get();
+                            ['dscrpMedicosPro',$request->dscrpMedicosPro],
+                            ['id_estudio_fk',$request->estudioGral],
+                            ['id_ojo_fk',$request->tipoOjo]
+                        ])->get();
 
         if($duplicados->count() >= 1){
             return back()->with('duplicados','El registro ingresado ya existe');
@@ -270,5 +273,35 @@ class EstudiosController extends Controller{
     public function deleteEstudioGral(Request $request){
         $delEstudios = CatEstudios::find($request->idEstudioDel)->delete();
         return redirect()->route('mostrarCatalogoGral.show');
+    }
+
+    public function showActividad($id){
+        $empleados = Empleado::select(DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom,' (',puestos.puestos_nombre,')') AS empleado"),'empleados.id_emp')
+                                    ->join('puestos','puestos.id','=','puesto_id')
+                                    ->orderBy('empleado','asc')
+                                    ->get();
+
+        $statusCobCom = DB::table('status_cob_com')
+                            ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
+                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
+                            ->select('status_cob_com.id'
+                                    ,'estudiostemps.id AS idEstudios'
+                                    ,'actividades.nombreActividad'
+                                    ,'status_cob_com.statusComisiones'
+                                    ,'empleados.id_emp'
+                                    ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
+                            ->where('status_cob_com.id',$id)
+                            ->first();
+
+        return view('estudios.editactividad',compact('statusCobCom','empleados'));
+    }
+
+    public function updateActividad(Request $request){
+        dd($request);
+        /*DB::table('status_cob_com')->where('id',$request['idActividad'])
+                        ->update([                                               
+                            'id_empleado_fk' => $request["estudioInt"]
+                        ]);*/
     }
 }
