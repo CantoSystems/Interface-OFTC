@@ -7,7 +7,7 @@
         </div>
         <div class="card-header">
             <div class="row">
-            @canany(['comisiones','cobranzaReportes'])
+                @canany(['comisiones','cobranzaReportes'])
                 <div class="col-md-3 col-sm-4 col-8">
                     <div class="info-box shadow">
                         <span class="info-box-icon bg-info"><i class="far fa-copy"></i></span>
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                 </div>
-            @endcan
+                @endcan
             </div>
         </div>
         @error('file')
@@ -40,9 +40,9 @@
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-body">
             @if(session()->has('duplicados'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('duplicados')}}
-                </div>
+            <div class="alert alert-danger" role="alert">
+                {{ session('duplicados')}}
+            </div>
             @endif
             <table id="reporteCobranza" name="reporteCobranza" class="table table-bordered table-hover">
                 <thead>
@@ -59,11 +59,11 @@
         </div>
     </div>
 </div>
-@include('estudios.reportecobranza');
-@include('estudios.eliminar-estudiostemps');
+@include('estudios.reportecobranza')
+@include('estudios.eliminar-estudiostemps')
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">
-                    No cuenta con los privilegios para acceder a este módulo del sistema
+    No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
 @endcanany
 @endsection
