@@ -192,13 +192,6 @@ class DetalleCController extends Controller{
                                 ->get();
         
                     $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
-            
-                    /*Mail::send('emails.messageReceived', compact('data'), function ($mail) use ($pdf) {
-                        $mail->to('jpom_prime@hotmail.com');
-                        //$mail->to($data->doctor_email);
-                        $mail->subject('Detalle de Consumo');
-                        $mail->attachData($pdf->output(), 'detalleConsumo.pdf');
-                    });*/
                 }
                 
                 return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
@@ -220,6 +213,8 @@ class DetalleCController extends Controller{
 
     public function viewHojas(Request $request){
         DB::table('historico_detalle_consumo')->truncate();
+        $dateInicio = Carbon::now()->format('Y-m-01');
+        $dateFin = Carbon::now()->format('Y-m-t');
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
         $hojasConsumo = DB::table('detalle_consumos')
@@ -237,8 +232,10 @@ class DetalleCController extends Controller{
                                     ,'detalle_consumos.cantidadTrans'
                                     ,'detalle_consumos.TPV'
                                     ,'detalle_consumos.statusHoja'
-                                    ,'tipo_pacientes.nombretipo_paciente')->get();
-
+                                    ,'tipo_pacientes.nombretipo_paciente')
+                        ->whereBetween('fechaElaboracion',[$dateInicio,$dateFin])
+                        ->get();
+        
         foreach($hojasConsumo as $hojas){
             DB::table('historico_detalle_consumo')->insert([
                 'id_hoja' => $hojas->id_detalle,
@@ -266,9 +263,9 @@ class DetalleCController extends Controller{
             'fechaInicio' => 'required',
             'fechaFin' => 'required',
         ],[
-            'slctDoctor.required' => 'Selecciona DR.',
-            'fechaInicio.required' => 'Selecciona fecha de inicio',
-            'fechaFin.required' => 'Selecciona fecha fin',
+            'slctDoctor.required' => 'Selecciona Dr.',
+            'fechaInicio.required' => 'Selecciona Fecha de Inicio',
+            'fechaFin.required' => 'Selecciona Fecha Fin',
         ]);
 
         if($validator->fails()){
@@ -448,7 +445,7 @@ class DetalleCController extends Controller{
                                     'tipoCirugia' => $request->registroC
                         ]);
 
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','tipoPaciente','hojasConsumo'));
+        return redirect()->route('editHojaConsumo.edit',[$request->idHoja]);
     }
 
     public function exportarPDF($id){

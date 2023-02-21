@@ -27,6 +27,8 @@ class CobranzaController extends Controller{
      */
     public function store(Request $request){
         $fechaInsert = now();
+
+        return $request->entRd;
         
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
@@ -40,8 +42,8 @@ class CobranzaController extends Controller{
             $doctorInter = $request["drInt"];
         }
 
-        if($request["entRd"] == 'N'){
-            $empEntrega = '1';
+        if($request["entRd"] == 'N' || $request["entRd"] == 'P'){
+            $empEntrega = '1'; 
         }else{
             $empEntrega = $request["empEnt"];
         }
@@ -196,6 +198,18 @@ class CobranzaController extends Controller{
                     ]);
             }
 
+            //Registro sigue pendiente de entrega
+            if($request['entRd'] == 'P'){
+                DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '4',
+                        'id_empleado_fk'        => $empEntrega,
+                        'paciente'              => $request['pacienteCbr'],
+                ]);
+            }
+
             DB::delete("DELETE duplicados from status_cob_com as duplicados
                         INNER JOIN status_cob_com as temporales
                         WHERE duplicados.id > temporales.id
@@ -327,6 +341,18 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $empEntrega,
                         'paciente'              => $request['pacienteCbr'],
                     ]);
+            }
+
+            //Registro sigue pendiente de entrega
+            if($request['entRd'] == 'P'){
+                DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '4',
+                        'id_empleado_fk'        => $empEntrega,
+                        'paciente'              => $request['pacienteCbr'],
+                ]);
             }
 
             DB::delete("DELETE duplicados from status_cob_com as duplicados

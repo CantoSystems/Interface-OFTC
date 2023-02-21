@@ -254,7 +254,7 @@
         </div>
 
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+            <div class="float-right d-none d-sm-block"><b>Version</b> 2.0</div>
             <strong>Canto Contadores &copy; 2022</strong>
             All rights reserved.
         </footer>
@@ -281,7 +281,7 @@
     }
 
     $(document).ready(function() {
-        
+
 
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
@@ -318,15 +318,21 @@
                 true).text("-- Selecciona una opción --"));
         });
 
-       
-        
+        $('.entPen').click(function() {
+            $('#empEnt').attr("disabled", true);
+            $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+                true).text("-- Selecciona una opción --"));
+        });
+
+
+
     });
-    
-     $(function () {
+
+    $(function() {
         $("#statusComisionCobrabza").DataTable({
-        "responsive": true,
-         "autoWidth": false
-            });
+            "responsive": true,
+            "autoWidth": false
+        });
     });
     </script>
 

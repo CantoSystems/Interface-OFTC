@@ -57,7 +57,6 @@
                                         <label>Estudio</label>
                                         <input type="text" id="estudioCbr" name="estudioCbr" class="form-control"
                                             value="{{ $datosPaciente->servicio }}" readonly>
-
                                         @if($datosPaciente->estudiostemps_status == 3)
                                         <select name="estudioCorregido" id="estudioCorregido"
                                             class="custom-select combos">
@@ -117,7 +116,6 @@
                                             </option>
                                             @endif
                                             @endforeach
-
                                         </select>
                                     </div>
                                 </div>
@@ -133,7 +131,7 @@
                                             </option>
                                             @else
                                             <option value="{{ $empRe->id_emp }}">
-                                                {{ $empRe->empleado }}  {{$empRe->id_emp }} - B
+                                                {{ $empRe->empleado }} {{$empRe->id_emp }} - B
                                             </option>
                                             @endif
                                             @endforeach
@@ -292,7 +290,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-1">
+                                <div class="col-2">
                                     <label>Entregado<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->entregado == 'S')
@@ -304,6 +302,11 @@
                                             <input type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+
                                         @elseif($datosPaciente->entregado == 'N')
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" value="S" name="entRd" class="entSi">
@@ -312,6 +315,23 @@
                                         <div class="icheck-primary d-inline">
                                             <input checked type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+                                        @elseif($datosPaciente->entregado == 'P')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input  type="radio" value="N" name="entRd" class="entNo">
+                                            <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
@@ -322,10 +342,14 @@
                                             <input type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <label>Entregado Por:</label>
                                         @if($datosPaciente->entregado == 'N')
@@ -348,7 +372,7 @@
                                             </select>
                                     </div>
                                 </div>
-                                <div class="col-7">
+                                <div class="col-5">
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
@@ -454,18 +478,17 @@
                             class="table table-bordered table-hover">
                             <thead>
                                 <tr>
+                                    <th>Estudio</th>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
-
                                     <th>Estatus Comisión</th>
-
                                     <th></th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($statusCobCom as $status)
                                 <tr>
+                                    <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }})</th>
                                     <th>{{ $status->nombreActividad }}</th>
                                     <th>
                                         @if($status->id_emp == 1)
@@ -473,12 +496,23 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
-
-                                    <th>
-                                        {{ $status->statusComisiones }}
+                                    <th style="text-align: center;">
+                                        {{ strtoupper($status->statusComisiones) }}
+                                    </th>
+                                    <th style="text-align: center;">
+                                        @if($status->id_emp == 1 || $status->statusComisiones!="")
+                                        <a class="btn btn-block btn-outline-secondary btn-xs">NO
+                                            APLICA</a>
+                                        @else
+                                        <a class="btn btn-block btn-outline-secondary btn-xs"
+                                            href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
+                                        @endif
                                     </th>
 
+<!--
                                     <th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>
+-->
+
 
                                 </tr>
                                 @endforeach
@@ -493,6 +527,6 @@
 </section>
 @elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class=" alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
-                    </div>
-                    @endcanany
-                    @endsection
+</div>
+@endcanany
+@endsection

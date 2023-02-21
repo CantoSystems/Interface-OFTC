@@ -254,7 +254,7 @@
         </div>
 
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+            <div class="float-right d-none d-sm-block"><b>Version</b> 2.0</div>
             <strong>Canto Contadores &copy; 2022</strong>
             All rights reserved.
         </footer>
@@ -287,31 +287,32 @@
         $('#precioEstudio').val(0);
         $("#porcentajeAdicional").show();
         $("#divComision").show();
-        $(".porcentajeAdicionalInput").attr("disabled", true);
-        $(".divComisionInput").attr("disabled", true);
+        //$(".porcentajeAdicionalInput").attr("disabled", true);
+        //$(".divComisionInput").attr("disabled", true);
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
-                $("#divComision").show();
+                //$("#divComision").show();
                 $("#divAlerta").hide();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", false);
+                $("#divAlertaEnf").hide();
+                //$(".porcentajeAdicionalInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", false);
             } else if (texto.includes('OPTOMETRÍA')) {
-                $("#divComision").hide();
+                //$("#divComision").hide();
                 $("#divAlerta").show();
-                $("#porcentajeAdicional").show();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", false);
-                $(".divComisionInput").attr("disabled", true);
-            } else {
+                $("#divAlertaEnf").hide();
+                //$("#porcentajeAdicional").show();
+                //$("#divComision").show();
+                //$(".porcentajeAdicionalInput").attr("disabled", false);
+                //$(".divComisionInput").attr("disabled", true);
+            } else if (texto.includes('ENFERMERÍA')) {
                 //$("#porcentajeAdicional").hide();
                 $("#divAlerta").hide();
-                $("#divComision").show();
-                $(".porcentajeAdicionalInput").attr("disabled", true);
-                $(".divComisionInput").attr("disabled", true);
-
-
+                //$("#divComision").hide();
+                $("#divAlertaEnf").show();
+                //$(".porcentajeAdicionalInput").attr("disabled", true);
+                //$(".divComisionInput").attr("disabled", true);
             }
         });
 
@@ -320,6 +321,7 @@
             $("#reporteCobranza").DataTable({
                 "responsive": true,
                 "autoWidth": false,
+                "pageLength": 25,
                 "language": {
                     "lengthMenu": "Mostrando _MENU_ registros por página",
                     "zeroRecords": "No existen registros en la tabla",
@@ -458,9 +460,6 @@
         });
 
     });
-
-
-    
     </script>
 
     <script>
