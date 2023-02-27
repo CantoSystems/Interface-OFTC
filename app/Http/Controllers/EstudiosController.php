@@ -284,7 +284,28 @@ class EstudiosController extends Controller{
                                     ->orderBy('empleado','asc')
                                     ->get();
 
-        $statusCobCom = DB::table('status_cob_com')
+        $nombreActividad = DB::table('status_cob_com')
+                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
+                            ->select('actividades.nombreActividad')
+                            ->where('status_cob_com.id',$id)
+                            ->first();
+
+        if($nombreActividad->nombreActividad == "Entregado"){
+            $statusCobCom = DB::table('status_cob_com')
+                            ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
+                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
+                            ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
+                            ->select('status_cob_com.id'
+                                    ,'estudiostemps.id AS idEstudios'
+                                    ,'actividades.nombreActividad'
+                                    ,'status_cob_com.statusComisiones'
+                                    ,'empleados.id_emp'
+                                    ,'estudiostemps.entregado'
+                                    ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
+                            ->where('status_cob_com.id',$id)
+                            ->first();
+        }else{
+            $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
                             ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
@@ -296,6 +317,7 @@ class EstudiosController extends Controller{
                                     ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
                             ->where('status_cob_com.id',$id)
                             ->first();
+        }
 
         return view('estudios.editactividad',compact('statusCobCom','empleados'));
     }

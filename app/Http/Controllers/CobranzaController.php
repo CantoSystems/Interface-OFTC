@@ -27,8 +27,6 @@ class CobranzaController extends Controller{
      */
     public function store(Request $request){
         $fechaInsert = now();
-
-        return $request->entRd;
         
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
@@ -196,16 +194,14 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $empEntrega,
                         'paciente'              => $request['pacienteCbr'],
                     ]);
-            }
-
-            //Registro sigue pendiente de entrega
-            if($request['entRd'] == 'P'){
+            }else if($request['entRd'] == 'P'){
                 DB::table('status_cob_com')->insert([
                         'id_estudio_fk'         => $estUpd->id,
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
                         'id_empleado_fk'        => $empEntrega,
+                        'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
                 ]);
             }
@@ -249,7 +245,7 @@ class CobranzaController extends Controller{
                         }else if($match->aliasEstudiosTemps == 'empEnt'){
                             Estudiostemp::where('id',$request['identificador'])
                                             ->update([
-                                                'entregado' => 'S',
+                                                'entregado' => $request['entRd'],
                                                 'id_empEnt_fk' => $match->id_empleado_fk
                                             ]);
                         }else if($match->aliasEstudiosTemps == 'empRealiza'){
@@ -284,7 +280,6 @@ class CobranzaController extends Controller{
                                                 
 
             if(Arr::has($request,'empRealiza')){
-
                 DB::table('status_cob_com')->insert([
                         'id_estudio_fk'         => $estUpd->id,
                         'id_estudiostemps_fk'   => $request['identificador'],
@@ -341,16 +336,14 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $empEntrega,
                         'paciente'              => $request['pacienteCbr'],
                     ]);
-            }
-
-            //Registro sigue pendiente de entrega
-            if($request['entRd'] == 'P'){
+            }else if($request['entRd'] == 'P'){
                 DB::table('status_cob_com')->insert([
                         'id_estudio_fk'         => $estUpd->id,
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
                         'id_empleado_fk'        => $empEntrega,
+                        'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
                 ]);
             }
@@ -394,7 +387,7 @@ class CobranzaController extends Controller{
                         }else if($match->aliasEstudiosTemps == 'empEnt'){
                             Estudiostemp::where('id',$request['identificador'])
                                             ->update([
-                                                'entregado' => 'S',
+                                                'entregado' => $request['entRd'],
                                                 'id_empEnt_fk' => $match->id_empleado_fk
                                             ]);
                         }else if($match->aliasEstudiosTemps == 'empRealiza'){

@@ -306,7 +306,6 @@
                                             <input type="radio" value="P" name="entRd" class="entPen">
                                             <label>PENDIENTE</label>
                                         </div>
-
                                         @elseif($datosPaciente->entregado == 'N')
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" value="S" name="entRd" class="entSi">
@@ -326,7 +325,7 @@
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input  type="radio" value="N" name="entRd" class="entNo">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
@@ -352,8 +351,8 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Entregado Por:</label>
-                                        @if($datosPaciente->entregado == 'N')
-                                        <select name="empEnt" id="empEnt" class="custom-select combos">
+                                        @if($datosPaciente->entregado == 'N' || $datosPaciente->entregado == 'P')
+                                        <select disabled name="empEnt" id="empEnt" class="custom-select combos">
                                             @else
                                             <select name="empEnt" id="empEnt" class="custom-select combos">
                                                 @endif
@@ -496,11 +495,17 @@
                                         @else
                                         {{ $status->empleado }}
                                         @endif
-                                    <th style="text-align: center;">
+                                    <th>
+                                        @if($status->statusComisiones == 'P')
+                                        {{ 'PENDIENTE POR DEFINIR' }}
+                                        @elseif($status->statusComisiones == '')
+                                        {{ 'SIN PAGAR COMISIÓN' }}
+                                        @else
                                         {{ strtoupper($status->statusComisiones) }}
+                                        @endif
                                     </th>
                                     <th style="text-align: center;">
-                                        @if($status->id_emp == 1 || $status->statusComisiones!="")
+                                        @if(($status->id_emp == 1 && $status->nombreActividad != 'Entregado'))
                                         <a class="btn btn-block btn-outline-secondary btn-xs">NO
                                             APLICA</a>
                                         @else
@@ -508,12 +513,7 @@
                                             href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
                                         @endif
                                     </th>
-
-<!--
-                                    <th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>
--->
-
-
+                                    <!--<th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>-->
                                 </tr>
                                 @endforeach
                             </tbody>
