@@ -12,8 +12,10 @@
     <table>
         <tbody>
             <tr>
-                <td style="text-align: center; font-size: 30px;" colspan="8">Oftalmo<b>Center</b></td>
+                <td style="text-align: center; font-size: 30px;" colspan="6">Oftalmo<b>Center - Cálculo de
+                        Comisiones</b></td>
             </tr>
+            <tr></tr>
             <tr>
                 <td><b>Empleado:</b></td>
                 <td>{{ $emp }}</td>
@@ -55,10 +57,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td style="text-align: right;"><b>Total:</b></td>
-                <td style="text-align: right;">$ {{ number_format($total,2) }}</td>
+                <td style="text-align: right; font-size: 13px;"><b>Total:</b></td>
+                <td style="text-align: right; font-size: 13px;"><b>$ {{ number_format($total,2) }}</b></td>
             </tr>
         </tbody>
     </table>
