@@ -31,9 +31,7 @@
                 <th><b>Paciente</b></th>
                 <th style="text-align: center;"><b>Fecha de Estudio</b></th>
                 <th style="text-align: center;"><b>Precio Estudio</b></th>
-                <th style="text-align: center;"><b>Cantidad Fija</b></th>
-                <th style="text-align: center;"><b>Porcentaje</b></th>
-                <th style="text-align: center;"><b>Importe</b></th>
+                <th style="text-align: center;"><b>Porcentaje comisión</b></th>
                 <th style="text-align: center;"><b>Total</b></th>
             </tr>
         </thead>
@@ -43,10 +41,8 @@
                 <td>{{ $dComisiones->dscrpMedicosPro }}</td>
                 <td>{{ $dComisiones->paciente }}</td>
                 <td style="text-align: center;">{{ date('d-M-Y',strtotime($dComisiones->fechaEstudio)) }}</td>
-                <td style="text-align: right;">$ {{ number_format($dComisiones->precioEstudio,2) }}</td>
                 <td style="text-align: right;">$ {{ number_format($dComisiones->cantidad,2) }}</td>
                 <td style="text-align: right;">{{ number_format($dComisiones->porcentaje,2) }} %</td>
-                <td style="text-align: right;">$ {{ number_format($dComisiones->importe,2) }}</td>
                 <td style="text-align: right;">$ {{ number_format($dComisiones->total,2) }}</td>
             </tr>
             @endforeach

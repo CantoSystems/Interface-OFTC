@@ -8,6 +8,7 @@ use App\Models\Comisiones;
 use App\Models\Empleado;
 use App\Models\Estudios;
 use App\Models\Cobranza;
+use App\Models\FechaCorte;
 
 use App\Exports\ComisionesExport;
 
@@ -108,9 +109,9 @@ class ComisionesController extends Controller{
                                         ['status_cob_com.id_empleado_fk', $request->slctEmpleado],
                                         ['estudiostemps.fecha','<=', $request->fechaFin],
                                         ['actividades.nombreActividad',$request->selectCalculo],
+                                        ['status_cob_com.id_estudio_fk',$estudiosArray],
                                         ['estudiostemps.transcripcion',"S"]
                                     ])
-                                    ->whereIn('status_cob_com.id_estudio_fk',$request->slctEstudio)
                                     ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus')
                                     ->get();
@@ -143,9 +144,9 @@ class ComisionesController extends Controller{
                                         ->where([
                                             ['estudiostemps.fecha','<=', $request->fechaFin],
                                             ['actividades.nombreActividad',$request->selectCalculo],
-                                            ['status_cob_com.id_empleado_fk',$request->slctEmpleado]
+                                            ['status_cob_com.id_empleado_fk',$request->slctEmpleado],
+                                            ['status_cob_com.id_estudio_fk',$estudiosArray]
                                         ])
-                                        ->whereIn('status_cob_com.id_estudio_fk',$request->slctEstudio)
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus','estudiostemps.interpretacion')
                                         ->get();
@@ -179,9 +180,9 @@ class ComisionesController extends Controller{
                                         ->where([
                                             ['estudiostemps.fecha','<=', $request->fechaFin],
                                             ['actividades.nombreActividad',$request->selectCalculo],
-                                            ['status_cob_com.id_empleado_fk',$request->slctEmpleado]
+                                            ['status_cob_com.id_empleado_fk',$request->slctEmpleado],
+                                            ['status_cob_com.id_estudio_fk',$estudiosArray],
                                         ])
-                                        ->whereIn('status_cob_com.id_estudio_fk',$request->slctEstudio)
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus','estudiostemps.entregado')
                                         ->get();
@@ -215,9 +216,9 @@ class ComisionesController extends Controller{
                                         ->where([
                                             ['estudiostemps.fecha','<=', $request->fechaFin],
                                             ['estudiostemps.escaneado',"S"],
-                                            ['actividades.nombreActividad',$request->selectCalculo]
+                                            ['actividades.nombreActividad',$request->selectCalculo],
+                                            ['status_cob_com.id_estudio_fk',$estudiosArray],
                                         ])
-                                        ->whereIn('status_cob_com.id_estudio_fk',$request->slctEstudio)
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus',
                                             'estudiostemps.escaneado')
@@ -261,8 +262,8 @@ class ComisionesController extends Controller{
                                         ['status_cob_com.id_empleado_fk', $request->slctEmpleado],
                                         ['estudiostemps.fecha','<=', $request->fechaFin],
                                         ['actividades.nombreActividad',$request->selectCalculo],
+                                        ['status_cob_com.id_estudio_fk',$estudiosArray],
                                     ])
-                                    ->whereIn('status_cob_com.id_estudio_fk',$request->slctEstudio)
                                     ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus')
                                     ->get();
@@ -288,6 +289,48 @@ class ComisionesController extends Controller{
 
 
                         }
+                    }else if($request->selectCalculo == "adicionales"){
+                        $infoEstudiosUnicos = DB::table('status_cob_com')
+                                                ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                                ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                                ->join('puestos','puestos.id','empleados.puesto_id')
+                                                ->join('estudios','estudios.id','status_cob_com.id_estudio_fk')
+                                                ->join('estudiostemps','estudiostemps.id','status_cob_com.id_estudiostemps_fk')
+                                                ->where([
+                                                    ['estudiostemps.fecha','<=', $request->fechaFin],
+                                                    ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                                ])
+                                                ->select('estudiostemps.id as unico')
+                                                ->distinct()->get();
+
+                                
+                            
+                            //Iteramos los estudios de forma unica, para los gastos administrativos
+
+                            foreach($infoEstudiosUnicos as $infoEstudios){
+
+                                $infoAdicional = DB::table('estudiostemps')
+                                                ->where('id',$infoEstudios->unico)
+                                                ->select('total','paciente','fecha')
+                                                ->first();
+
+                                if(!is_null($infoAdicional) && !is_null($comisionEmp) ){
+                                        $this->adicional($request->slctEmpleado,$infoAdicional->total,$comisionEmp->porcentajeComision,$estudiosArray,$infoAdicional->paciente,$infoAdicional->fecha,$fechaInsert);
+                                }else if(is_null($comisionEmp)){
+                                        $coincidenciaEstudio = DB::table('estudios')
+                                                ->select('dscrpMedicosPro')
+                                                ->where('estudios.id', $estudiosArray)
+                                                ->first();
+
+                            
+                                        $coincidenciaEmpleado = DB::table('empleados')
+                                                ->select( DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as emp"))
+                                                ->where('id_emp',$request->slctEmpleado)
+                                                ->first();
+                                }
+                            }
+
+                        
                     }
 
                    
@@ -666,6 +709,68 @@ class ComisionesController extends Controller{
                 }
         
     }
+
+    public function adicional($slctEmpleado,$total,$porcentajeComision,$slctEstudio,$paciente,$fecha,$fechaInsert){
+        //REstriccion empleados asignados para gastos administrativos
+         $restriccionAdicionales =  DB::table('empleados')
+                                        ->join('puestos','puestos.id','empleados.puesto_id')
+                                        ->whereIn('puestos_nombre',["ADMINISTRATIVO","EGRESOS","GESTIÓN"])
+                                        ->where('empleados.id_emp', $slctEmpleado)
+                                        ->select('puestos.puestos_nombre')
+                                        ->first();
+                if(!is_null($restriccionAdicionales)){
+                        if($restriccionAdicionales->puestos_nombre == "ADMINISTRATIVO"){
+                            $comisionAdministrativo = ($total * $porcentajeComision) /100;
+
+                                                DB::table('comisiones_temps')->insert([
+                                                    'id_emp_fk' => $slctEmpleado,
+                                                    'id_estudio_fk' => $slctEstudio,
+                                                    'paciente' => $paciente,
+                                                    'fechaEstudio' => $fecha,
+                                                    'cantidad' => $total,
+                                                    'porcentaje' => $porcentajeComision,
+                                                    'total' => $comisionAdministrativo,
+                                                    'created_at' => $fechaInsert,
+                                                    'updated_at' => $fechaInsert
+                                                ]);
+
+
+                        }else if($restriccionAdicionales->puestos_nombre == "EGRESOS"){
+
+                                    $comisionEgreso = ($total * $porcentajeComision) /100;
+
+                                                 DB::table('comisiones_temps')->insert([
+                                                    'id_emp_fk' => $slctEmpleado,
+                                                    'id_estudio_fk' => $slctEstudio,
+                                                    'paciente' => $paciente,
+                                                    'fechaEstudio' => $fecha,
+                                                    'cantidad' => $total,
+                                                    'porcentaje' => $porcentajeComision,
+                                                    'total' => $comisionEgreso,
+                                                    'created_at' => $fechaInsert,
+                                                    'updated_at' => $fechaInsert
+                                                ]);
+
+
+                        }else if($restriccionAdicionales->puestos_nombre == "GESTION"){
+
+                             $comisionGestion = ($total * $porcentajeComision) /100;
+
+                                                 DB::table('comisiones_temps')->insert([
+                                                    'id_emp_fk' => $slctEmpleado,
+                                                    'id_estudio_fk' => $slctEstudio,
+                                                    'paciente' => $paciente,
+                                                    'fechaEstudio' => $fecha,
+                                                    'cantidad' => $total,
+                                                    'porcentaje' => $porcentajeComision,
+                                                    'total' => $comisionGestion,
+                                                    'created_at' => $fechaInsert,
+                                                    'updated_at' => $fechaInsert
+                                                ]);
+
+                        }
+                }
+    }
     
     /**
      * Display a listing of the resource.
@@ -815,5 +920,13 @@ class ComisionesController extends Controller{
 
     public function exportExcel(){
         return Excel::download(new ComisionesExport, 'Comision.xlsx');
+    }
+
+    public function fechaCorte(Request $request){
+
+        $fecha = new FechaCorte;
+        $fecha->fechaCorte = $request->fechaCorte;
+        $fecha->save();
+
     }
 }

@@ -15,19 +15,17 @@ class ComisionesExport implements FromView, ShouldAutoSize{
 
     public function view(): View{
         $dataEmpleado = comisionesTemps::join('empleados as e','e.id_emp','=','comisiones_temps.id_emp_fk')
-                                        ->select(DB::raw("CONCAT(e.empleado_nombre,' ',e.empleado_apellidop,' ',e.empleado_apellidom) as empleado"))
+                        ->select(DB::raw("CONCAT(e.empleado_nombre,' ',e.empleado_apellidop,' ',e.empleado_apellidom) as empleado"))
                                         ->groupBy('empleado')
                                         ->first();
 
         $dataComisiones = comisionesTemps::join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
                                         ->select('estudios.dscrpMedicosPro'
-                                                ,'estudios.precioEstudio'
                                                 ,'comisiones_temps.paciente'
                                                 ,'comisiones_temps.fechaEstudio'
                                                 ,'comisiones_temps.cantidad'
                                                 ,'comisiones_temps.porcentaje'
-                                                ,'comisiones_temps.total'
-                                                ,DB::raw('(estudios.precioEstudio*comisiones_temps.porcentaje)/100 AS importe'))
+                                                ,'comisiones_temps.total')
                                         ->where('comisiones_temps.total','!=',0)
                                         ->get();
 

@@ -139,7 +139,10 @@
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col-3">
-                                    <br>
+                                    <a data-target="#modal-fechaCorte" data-toggle="modal">
+                                            <button type="button"
+                                                class="btn btn-block btn-outline-info btn-xs">Crear fecha corte
+                                            </button>
                                 </div>
                                 <div class="col-3">
                                         <a  id="cargarCobranza" type="button" 
@@ -166,7 +169,7 @@
                             </div>
                         </div>
 
-
+@include('comisiones.modalFechaCorte')
 @elsecanany('invitado','detalleConsumo','auxiliardetalleConsumo')
 <div class="alert alert-danger" role="alert">
         No cuenta con los privilegios para acceder a este módulo del sistema

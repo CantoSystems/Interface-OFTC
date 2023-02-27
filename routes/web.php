@@ -102,6 +102,7 @@ Route::post('/agregar-comision',[ComisionesController::class,'create'])->name('n
 Route::post('/guardar-comision',[ComisionesController::class,'update'])->name('updtComision.update')->middleware('auth');
 Route::get('/editar-comision/{id}',[ComisionesController::class,'show'])->name('editComision.show')->middleware('auth');
 Route::delete('/eliminar-comision',[ComisionesController::class,'destroy'])->name('dltComision.delete')->middleware('auth');
+Route::post('crear-fechaCorte',[ComisionesController::class,'fechaCorte'])->name('comisiones.fechaCorte')->middleware('auth');
 
 //Catalogo Empleados
 Route::get('/catalogo-empleados',[EmpleadoController::class,'index'])->name('mostrarEmpleados.index')->middleware('auth');
