@@ -26,6 +26,7 @@
                                         ESTE PROCESO AFECTARÁ AL
                                         REGISTRO PRINCIPAL.</b></h6>
                             </div>
+                            @if($statusCobCom->nombreActividad != 'Entregado')
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -57,6 +58,103 @@
                                     </div>
                                 </div>
                             </div>
+                            @else
+                            <div class="row">
+                                <div class="col-3">
+                                    <label>Entregado<strong style="color:red">*</strong></label>
+                                    <div class="form-group">
+                                        @if($statusCobCom->entregado == 'S')
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="entRd" class="entSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+                                        @elseif($statusCobCom->entregado == 'N')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="entRd" class="entNo">
+                                            <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+                                        @elseif($statusCobCom->entregado == 'P')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+                                        @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <label>NO</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <label>PENDIENTE</label>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>
+                                            Empleado Actual:<strong style="color:red">*</strong>
+                                        </label>
+                                        @if($statusCobCom->id_emp == 1)
+                                        <input readonly type="text" value="NO SE SELECCIONÓ EMPLEADO"
+                                            class="form-control">
+                                        @else
+                                        @foreach($empleados as $emp)
+                                        @if($statusCobCom->id_emp == $emp->id_emp)
+                                        <input readonly type="text" value="{{ $emp->empleado }}" class="form-control">
+                                        @endif
+                                        @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="form-group">
+                                        <label>Empleado Nuevo:<strong style="color:red">*</strong>
+                                        </label>
+                                        <input type="hidden" id="idActividad" name="idActividad"
+                                            value="{{ $statusCobCom->id }}">
+                                        <input type="hidden" id="idEstudios" name="idEstudios"
+                                            value="{{ $statusCobCom->idEstudios }}">
+                                        <select name="empNuevo" id="empNuevo" class="custom-select combos">
+                                            <option disabled selected>-- Selecciona una opción --</option>
+                                            @foreach($empleados as $emp)
+                                            <option value="{{ $emp->id_emp }}">
+                                                {{ $emp->empleado }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                         <div class="card-footer">
                             <div class="row">
