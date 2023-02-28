@@ -133,7 +133,7 @@
                     </ul>
                     @endcanany
 
-                    @canany(['comisiones'])
+                    @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" ole="menu"
                         data-accordion="false">
                         <li class="nav-item">

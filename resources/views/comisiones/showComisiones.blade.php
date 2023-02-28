@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h6>Calcular Comisiones</h6>
         </div>
-        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
 
         <form action="{{ route('comisiones.show') }}" method="GET">
             <div class="row">
@@ -70,7 +70,7 @@
 
 
         <div class="card-body">
-            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes'])
+            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
             @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
