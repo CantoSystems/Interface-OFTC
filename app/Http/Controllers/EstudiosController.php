@@ -294,9 +294,9 @@ class EstudiosController extends Controller{
             $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
-                            ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
+                            ->join('estudiostemps','estudiostemps.id','=','status_cob_com.id_estudiostemps_fk')
                             ->select('status_cob_com.id'
-                                    ,'estudiostemps.id AS idEstudios'
+                                    ,'status_cob_com.id_estudiostemps_fk AS idEstudios'
                                     ,'actividades.nombreActividad'
                                     ,'status_cob_com.statusComisiones'
                                     ,'empleados.id_emp'
@@ -308,9 +308,9 @@ class EstudiosController extends Controller{
             $statusCobCom = DB::table('status_cob_com')
                             ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
-                            ->join('estudiostemps','estudiostemps.folio','=','status_cob_com.folio')
+                            ->join('estudiostemps','estudiostemps.id','=','status_cob_com.id_estudiostemps_fk')
                             ->select('status_cob_com.id'
-                                    ,'estudiostemps.id AS idEstudios'
+                                    ,'status_cob_com.id_estudiostemps_fk AS idEstudios'
                                     ,'actividades.nombreActividad'
                                     ,'status_cob_com.statusComisiones'
                                     ,'empleados.id_emp'
