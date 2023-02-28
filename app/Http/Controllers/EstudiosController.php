@@ -323,57 +323,96 @@ class EstudiosController extends Controller{
     }
 
     public function updateActividad(Request $request){
-        $validator = Validator::make($request->all(),[
-            'empNuevo' => 'Required',
-        ],[
-            'empNuevo.required' => 'Seleccione el nuevo empleado.'
-        ]);
+        if($request->nombreActividad != 'Entregado'){
+            $validator = Validator::make($request->all(),[
+                    'empNuevo' => 'Required',
+                ],[
+                    'empNuevo.required' => 'Seleccione el nuevo empleado.'
+                ]);
 
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
+            if($validator->fails()){
+                return back()->withErrors($validator)->withInput();
+            }
+
+            DB::table('status_cob_com')->where('id',$request['idActividad'])
+                            ->update([                                               
+                                'id_empleado_fk' => $request["empNuevo"]
+                            ]);
+
+            $tipoAct = DB::table('status_cob_com')
+                            ->select('id_actividad_fk')
+                            ->where('id',$request['idActividad'])
+                            ->first();
+
+            switch($tipoAct->id_actividad_fk){
+                //Transcrito
+                case '1':
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empTrans_fk' => $request["empNuevo"]
+                            ]);
+                    break;
+                //Interpretado
+                case '2':
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empInt_fk' => $request["empNuevo"]
+                            ]);
+                    break;
+                //Realizado
+                case '5':
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empRea_fk' => $request["empNuevo"]
+                            ]);
+                    break;
+            }
+        }else{
+            if($request->entRd == "S"){
+                $validator = Validator::make($request->all(),[
+                    'empNuevo' => 'Required',
+                    ],[
+                        'empNuevo.required' => 'Seleccione el nuevo empleado.'
+                    ]);
+
+                if($validator->fails()){
+                    return back()->withErrors($validator)->withInput();
+                }
+
+                DB::table('status_cob_com')->where('id',$request['idActividad'])
+                            ->update([                                               
+                                'id_empleado_fk' => $request["empNuevo"],
+                                'statusComisiones'  => ''
+                            ]);
+
+                DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empEnt_fk'  => $request["empNuevo"],
+                                'entregado'     => 'S' 
+                            ]);
+            }else if($request->entRd == "P"){
+                DB::table('status_cob_com')->where('id',$request['idActividad'])
+                            ->update([                                               
+                                'id_empleado_fk'    => 1,
+                                'statusComisiones'  => 'P'
+                            ]);
+
+                DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empEnt_fk'  => 1,
+                                'entregado'     => 'P' 
+                            ]);
+            }else{
+                $delStatusCob = DB::table('status_cob_com')->where('id',$request['idActividad'])->delete();
+
+                DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                            ->update([                                               
+                                'id_empEnt_fk'  => 1,
+                                'entregado'     => 'N' 
+                            ]);
+            }
         }
-
-        DB::table('status_cob_com')->where('id',$request['idActividad'])
-                        ->update([                                               
-                            'id_empleado_fk' => $request["empNuevo"]
-                        ]);
-
-        $tipoAct = DB::table('status_cob_com')
-                        ->select('id_actividad_fk')
-                        ->where('id',$request['idActividad'])
-                        ->first();
-
-        switch($tipoAct->id_actividad_fk){
-            //Transcrito
-            case '1':
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                        ->update([                                               
-                            'id_empTrans_fk' => $request["empNuevo"]
-                        ]);
-                break;
-            //Interpretado
-            case '2':
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                        ->update([                                               
-                            'id_empInt_fk' => $request["empNuevo"]
-                        ]);
-                break;
-            //Entregado
-            case '4':
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                        ->update([                                               
-                            'id_empEnt_fk' => $request["empNuevo"]
-                        ]);
-                break;
-            //Realizado
-            case '5':
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                        ->update([                                               
-                            'id_empRea_fk' => $request["empNuevo"]
-                        ]);
-                break;
-        }
-
+        
         return redirect()->route('importarCobranza.show',[$request->idEstudios]);
     }
 }

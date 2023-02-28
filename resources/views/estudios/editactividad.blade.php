@@ -26,6 +26,7 @@
                                         ESTE PROCESO AFECTARÁ AL
                                         REGISTRO PRINCIPAL.</b></h6>
                             </div>
+                            <input type="hidden" name="nombreActividad" value="{{ $statusCobCom->nombreActividad }}">
                             @if($statusCobCom->nombreActividad != 'Entregado')
                             <div class="row">
                                 <div class="col-6">
