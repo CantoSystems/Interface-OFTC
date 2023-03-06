@@ -191,7 +191,7 @@ class CobranzaController extends Controller{
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $empEntrega,
+                        'id_empleado_fk'        => $request['empEnt'],
                         'paciente'              => $request['pacienteCbr'],
                     ]);
             }else if($request['entRd'] == 'P'){
@@ -200,7 +200,7 @@ class CobranzaController extends Controller{
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $empEntrega,
+                        'id_empleado_fk'        => $request['empEnt'],
                         'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
                 ]);
