@@ -80,7 +80,7 @@ class CobranzaController extends Controller{
                                     ->update([
                                         'id_empTrans_fk' => $doctorTrans,                                         
                                         'id_doctor_fk' => $request["drRequiere"],
-                                        'id_empEnt_fk' => $empEntrega,
+                                        'id_empEnt_fk' => $request['empEnt'],
                                         'id_empRea_fk' => $request['empRealiza'],
                                         'id_empInt_fk' => $doctorInter,
                                         'tipoPaciente' => $request['tipoPaciente'],
@@ -101,7 +101,7 @@ class CobranzaController extends Controller{
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                         
                                             'id_doctor_fk' => $request["drRequiere"],
-                                            'id_empEnt_fk' => $empEntrega,
+                                            'id_empEnt_fk' => $request['empEnt'],
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'id_empInt_fk' => $doctorInter,
                                             'tipoPaciente' => $request['tipoPaciente'],
@@ -191,7 +191,7 @@ class CobranzaController extends Controller{
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $empEntrega,
+                        'id_empleado_fk'        => $request['empEnt'],
                         'paciente'              => $request['pacienteCbr'],
                     ]);
             }else if($request['entRd'] == 'P'){
@@ -200,7 +200,7 @@ class CobranzaController extends Controller{
                         'id_estudiostemps_fk'   => $request['identificador'],
                         'folio'                 => $request['folioCbr'],
                         'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $empEntrega,
+                        'id_empleado_fk'        => $request['empEnt'],
                         'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
                 ]);
