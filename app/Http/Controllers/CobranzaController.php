@@ -80,7 +80,7 @@ class CobranzaController extends Controller{
                                     ->update([
                                         'id_empTrans_fk' => $doctorTrans,                                         
                                         'id_doctor_fk' => $request["drRequiere"],
-                                        'id_empEnt_fk' => $empEntrega,
+                                        'id_empEnt_fk' => $request['empEnt'],
                                         'id_empRea_fk' => $request['empRealiza'],
                                         'id_empInt_fk' => $doctorInter,
                                         'tipoPaciente' => $request['tipoPaciente'],
@@ -101,7 +101,7 @@ class CobranzaController extends Controller{
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                         
                                             'id_doctor_fk' => $request["drRequiere"],
-                                            'id_empEnt_fk' => $empEntrega,
+                                            'id_empEnt_fk' => $request['empEnt'],
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'id_empInt_fk' => $doctorInter,
                                             'tipoPaciente' => $request['tipoPaciente'],
