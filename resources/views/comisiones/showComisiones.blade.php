@@ -91,6 +91,7 @@
                 <thead>
                     <tr>
                         <th>Fecha</th>
+                        <th>Folio</th>
                         <th>Paciente</th>
                         <th>Estudio</th>
                         <th style="width: 40px; text-align: center;">Cantidad</th>
@@ -103,6 +104,7 @@
                     @foreach($comisiones as $com)
                     <tr>
                         <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
+                        <td>{{ $com->cobranza_folio ?? ''}}</td>
                         <td>{{ strtoupper($com->paciente) }}</td>
                         <td>{{ $com->dscrpMedicosPro }}</td>
                         <td style="text-align: right;">$ {{ number_format($com->cantidad,2) }}</td>

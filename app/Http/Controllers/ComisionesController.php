@@ -110,15 +110,15 @@ class ComisionesController extends Controller{
                                         ['estudiostemps.fecha','<=', $request->fechaFin],
                                         ['actividades.nombreActividad',$request->selectCalculo],
                                         ['status_cob_com.id_estudio_fk',$estudiosArray],
-                                        ['estudiostemps.transcripcion',"S"]
+                                        ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                     ])
                                     ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
-                                            'estudiostemps.fecha','status_cob_com.id as identificadorEstatus')
+                                            'estudiostemps.fecha','status_cob_com.id as identificadorEstatus','estudiostemps.folio as cobranzaFolio')
                                     ->get();
-
+                            
                         foreach ($infoCalculoComision as $info) {
                             if(!is_null($info) && !is_null($comisionEmp)){
-                            $this->calculoTranscrito($request->slctEmpleado,$estudiosArray,$info->identificadorEstatus,$info->total,$comisionEmp->porcentajeAdicional,$info->paciente,$info->fecha,$fechaInsert
+                            $this->calculoTranscrito($request->slctEmpleado,$estudiosArray,$info->identificadorEstatus,$info->total,$comisionEmp->porcentajeAdicional,$info->paciente,$info->fecha,$fechaInsert,$info->cobranzaFolio
                             );
                             }else if(is_null($comisionEmp)){
                             $coincidenciaEstudio = DB::table('estudios')
@@ -145,7 +145,8 @@ class ComisionesController extends Controller{
                                             ['estudiostemps.fecha','<=', $request->fechaFin],
                                             ['actividades.nombreActividad',$request->selectCalculo],
                                             ['status_cob_com.id_empleado_fk',$request->slctEmpleado],
-                                            ['status_cob_com.id_estudio_fk',$estudiosArray]
+                                            ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                            ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                         ])
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus','estudiostemps.interpretacion')
@@ -182,6 +183,7 @@ class ComisionesController extends Controller{
                                             ['actividades.nombreActividad',$request->selectCalculo],
                                             ['status_cob_com.id_empleado_fk',$request->slctEmpleado],
                                             ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                            ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                         ])
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus','estudiostemps.entregado')
@@ -218,6 +220,7 @@ class ComisionesController extends Controller{
                                             ['estudiostemps.escaneado',"S"],
                                             ['actividades.nombreActividad',$request->selectCalculo],
                                             ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                            ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                         ])
                                         ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus',
@@ -263,6 +266,7 @@ class ComisionesController extends Controller{
                                         ['estudiostemps.fecha','<=', $request->fechaFin],
                                         ['actividades.nombreActividad',$request->selectCalculo],
                                         ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                        ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                     ])
                                     ->select('actividades.nombreActividad','estudiostemps.total','estudiostemps.paciente',
                                             'estudiostemps.fecha','status_cob_com.id as identificadorEstatus')
@@ -299,6 +303,7 @@ class ComisionesController extends Controller{
                                                 ->where([
                                                     ['estudiostemps.fecha','<=', $request->fechaFin],
                                                     ['status_cob_com.id_estudio_fk',$estudiosArray],
+                                                    ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                                 ])
                                                 ->select('estudiostemps.id as unico')
                                                 ->distinct()->get();
@@ -381,10 +386,12 @@ class ComisionesController extends Controller{
         $comisiones = DB::table('comisiones_temps')
                             ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
                             ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
-                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje')
+                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje','cobranza_folio')
                             ->where([
                                 ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
-                            ])->get();
+                            ])
+                            ->orderBy('fechaEstudio')
+                            ->get();
 
         $totalComisiones = DB::table('comisiones_temps')
                                 ->where([
@@ -397,7 +404,7 @@ class ComisionesController extends Controller{
     }
 
     public function calculoTranscrito($slctEmpleado,$slctEstudio,$identificadorEstatus,$total,$porcentajeAdicional,$paciente,
-                        $fecha,$fechaInsert){
+                        $fecha,$fechaInsert,$cobranzaFolio){
                 //Verificación del empleado, realiza transcripcion y pago de la comision
             $restriccionTrans =  DB::table('empleados')
                                             ->join('puestos','puestos.id','empleados.puesto_id')
@@ -434,7 +441,16 @@ class ComisionesController extends Controller{
                                                     'porcentaje' => $porcentajeAdicional,
                                                     'total' => $comisionTrans,
                                                     'created_at' => $fechaInsert,
-                                                    'updated_at' => $fechaInsert
+                                                    'updated_at' => $fechaInsert,
+                                                    'cobranza_folio' => $cobranzaFolio
+                                                ]);
+
+                                                DB::table('status_cob_com')->where('id',$identificadorEstatus)
+                                                ->update([
+                                                    'cobranza_fecha' => $fecha,
+                                                    'cobranza_cantidad' => $total,
+                                                    'cobranza_porcentaje' =>  $porcentajeAdicional,
+                                                    'cobranza_total' => $comisionTrans
                                                 ]);
                                 }else if($excluyeEstudioTrans == 1){
                                      DB::table('status_cob_com')->where('id',$identificadorEstatus)
