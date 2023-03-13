@@ -44,12 +44,13 @@
                     <label>Tipo de cálculo</label>
                     <select class="form-control" name="selectCalculo" id="selectCalculo">
                         <option selected disabled>-- Selecciona una optión--</option>
+                        <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
                         @foreach($actividades as $act)
                         <option value="{{ $act->nombreActividad }}">
                             {{ $act->nombreActividad }}
                         </option>
                         @endforeach
-                        <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
+                        
                     </select>
                 </div>
                 <div class="col-1">
