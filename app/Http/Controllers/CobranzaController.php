@@ -46,57 +46,41 @@ class CobranzaController extends Controller{
             $empEntrega = $request["empEnt"];
         }
 
-        //Se verifica si el estudio está completo
-        if($request['registroC']=='S'){
-            $validator = Validator::make($request->all(),[
-                'registroC'  => 'required',
-                'drRequiere' => 'required',
-                'tipoPaciente' => 'required',
-                'transRd' => 'required',
-                'intRd' => 'required',
-                'escRd' => 'required',
-                'entRd' => 'required',
-                'empRealiza' => 'required'
-            ],[
-                'registroC.required'    => 'Selecciona si el registro ya está completo.',
-                'drRequiere.required'   => 'Selecciona el doctor al que requiere el estudio.',
-                'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
-                'escRd.required'        => 'Selecciona el status de escaneado del estudio.',
-                'entRd.required'        => 'Selecciona el status de entregado del estudio.',
-                'transRd.required'      => 'Selecciona el status de transcripción del estudio.',
-                'intRd.required'        => 'Selecciona el status de interpretación del estudio.',
-                'empRealiza.required'   => 'Selecciona el empleado que realizó el estudio.'
-            ]);
+        //Verifiquemos que el estudio exista
+        $checkEst = DB::table('estudios')
+                        ->where('dscrpMedicosPro','=',$request['estudioCbr'])
+                        ->count();
 
-            if($validator->fails()){
-                return back()->withErrors($validator)->withInput();
-            }else{
-                //Primera condicional encontrar la coincidencia de la descripción del estudio
-                $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
+        if($checkEst > 0){
+            if($request['registroC']=='S'){
+                $validator = Validator::make($request->all(),[
+                    'registroC'  => 'required',
+                    'drRequiere' => 'required',
+                    'tipoPaciente' => 'required',
+                    'transRd' => 'required',
+                    'intRd' => 'required',
+                    'escRd' => 'required',
+                    'entRd' => 'required',
+                    'empRealiza' => 'required'
+                ],[
+                    'registroC.required'    => 'Selecciona si el registro ya está completo.',
+                    'drRequiere.required'   => 'Selecciona el doctor al que requiere el estudio.',
+                    'tipoPaciente.required' => 'Selecciona si el paciente es interno o externo.',
+                    'escRd.required'        => 'Selecciona el status de escaneado del estudio.',
+                    'entRd.required'        => 'Selecciona el status de entregado del estudio.',
+                    'transRd.required'      => 'Selecciona el status de transcripción del estudio.',
+                    'intRd.required'        => 'Selecciona el status de interpretación del estudio.',
+                    'empRealiza.required'   => 'Selecciona el empleado que realizó el estudio.'
+                ]);
 
-                if(!is_null($estUpd)){
-                    //Actualizamos el registro
-                    Estudiostemp::where('id',$request['identificador'])
-                                    ->update([
-                                        'id_empTrans_fk' => $doctorTrans,                                         
-                                        'id_doctor_fk' => $request["drRequiere"],
-                                        'id_empEnt_fk' => $request['empEnt'],
-                                        'id_empRea_fk' => $request['empRealiza'],
-                                        'id_empInt_fk' => $doctorInter,
-                                        'tipoPaciente' => $request['tipoPaciente'],
-                                        'servicio' => $estUpd->dscrpMedicosPro,
-                                        'transcripcion' => $request['transRd'],
-                                        'interpretacion' => $request['intRd'],
-                                        'escaneado' => $request['escRd'],
-                                        'entregado' => $request['entRd'],
-                                        'observaciones' => $request['obsCobranza'],
-                                        'estudiostemps_status' => 1,
-                                        'registroC' => $request['registroC'],
-                                        'updated_at' => $fechaInsert
-                                    ]);
+                if($validator->fails()){
+                    return back()->withErrors($validator)->withInput();
                 }else{
-                    //No coincide el  estudio
-                    if($request->status == 3 && $request->estudioCorregido != null){
+                    //Primera condicional encontrar la coincidencia de la descripción del estudio
+                    $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
+
+                    if(!is_null($estUpd)){
+                        //Actualizamos el registro
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'id_empTrans_fk' => $doctorTrans,                                         
@@ -105,7 +89,7 @@ class CobranzaController extends Controller{
                                             'id_empRea_fk' => $request['empRealiza'],
                                             'id_empInt_fk' => $doctorInter,
                                             'tipoPaciente' => $request['tipoPaciente'],
-                                            'servicio' => $request['estudioCorregido'],
+                                            'servicio' => $estUpd->dscrpMedicosPro,
                                             'transcripcion' => $request['transRd'],
                                             'interpretacion' => $request['intRd'],
                                             'escaneado' => $request['escRd'],
@@ -116,289 +100,316 @@ class CobranzaController extends Controller{
                                             'updated_at' => $fechaInsert
                                         ]);
                     }else{
-                        $updateStatusC = Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
-                                                'id_doctor_fk' => $request["drRequiere"],
-                                                'id_empEnt_fk' => $empEntrega,
-                                                'id_empRea_fk' => $request['empRealiza'],
-                                                'id_empInt_fk' => $doctorInter,
-                                                'tipoPaciente' => $request['tipoPaciente'],
-                                                'transcripcion' => $request['transRd'],
-                                                'interpretacion' => $request['intRd'],
-                                                'escaneado' => $request['escRd'],
-                                                'entregado' => $request['entRd'],
-                                                'observaciones' => $request['obsCobranza'],
-                                                'estudiostemps_status' => 3,
-                                                'registroC' => $request['registroC'],
-                                                'updated_at' => $fechaInsert
-                                            ]);
-                    }
-                }
-            }  
-            
-            if(Arr::has($request,'empRealiza')){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '5',
-                        'id_empleado_fk'        => $request['empRealiza'],
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se transcribió
-            if($request['transRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '1',
-                        'id_empleado_fk'        => $doctorTrans,
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se interpretó
-            if($request['intRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '2',
-                        'id_empleado_fk'        => $doctorInter,
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se escaneó
-            if($request['escRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '3',
-                        'id_empleado_fk'        => '1',
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se entregó
-            if($request['entRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $request['empEnt'],
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }else if($request['entRd'] == 'P'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $request['empEnt'],
-                        'statusComisiones'      => 'P',
-                        'paciente'              => $request['pacienteCbr'],
-                ]);
-            }
-
-            DB::delete("DELETE duplicados from status_cob_com as duplicados
-                        INNER JOIN status_cob_com as temporales
-                        WHERE duplicados.id < temporales.id
-                        AND duplicados.folio = temporales.folio
-                        AND duplicados.id_estudio_fk = temporales.id_estudio_fk
-                        AND duplicados.paciente = temporales.paciente
-                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
-
-            $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
-                                        ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
-                                        ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
-                                        ->where([
-                                            ['status_cob_com.folio', $request->folioCbr],
-                                            ['status_cob_com.paciente', $request->pacienteCbr],
-                                            ['status_cob_com.id_estudio_fk',$estUpd->id]
-                                        ])->get();
-
-                    foreach($matchEstudiosTemps as $match){
-                        if($match->aliasEstudiosTemps == 'drTransc'){
+                        //No coincide el  estudio
+                        if($request->status == 3 && $request->estudioCorregido != null){
                             Estudiostemp::where('id',$request['identificador'])
                                             ->update([
-                                                'transcripcion' => 'S',
-                                                'id_empTrans_fk' => $match->id_empleado_fk
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'drInt'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'interpretacion' => 'S',
-                                                'id_empInt_fk' => $match->id_empleado_fk
-
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'escRd'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'escaneado' => 'S',
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'empEnt'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'entregado' => $request['entRd'],
-                                                'id_empEnt_fk' => $match->id_empleado_fk
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'empRealiza'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'id_empRea_fk' => $match->id_empleado_fk
-                                            ]);
-                        }
-                    }  
-        //Registro no completado
-        }else{
-            $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
-            
-            //Registro faltante de datos
-            $updateStatusC = Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'id_empTrans_fk' => $doctorTrans,                                                
+                                                'id_empTrans_fk' => $doctorTrans,                                         
                                                 'id_doctor_fk' => $request["drRequiere"],
                                                 'id_empEnt_fk' => $request['empEnt'],
                                                 'id_empRea_fk' => $request['empRealiza'],
                                                 'id_empInt_fk' => $doctorInter,
                                                 'tipoPaciente' => $request['tipoPaciente'],
+                                                'servicio' => $request['estudioCorregido'],
                                                 'transcripcion' => $request['transRd'],
                                                 'interpretacion' => $request['intRd'],
                                                 'escaneado' => $request['escRd'],
                                                 'entregado' => $request['entRd'],
                                                 'observaciones' => $request['obsCobranza'],
-                                                'estudiostemps_status' => 2,
+                                                'estudiostemps_status' => 1,
                                                 'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
                                             ]);
-                                                
-
-            if(Arr::has($request,'empRealiza')){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '5',
-                        'id_empleado_fk'        => $request['empRealiza'],
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se transcribió
-            if($request['transRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '1',
-                        'id_empleado_fk'        => $doctorTrans,
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se interpretó
-            if($request['intRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '2',
-                        'id_empleado_fk'        => $doctorInter,
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se escaneó
-            if($request['escRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '3',
-                        'id_empleado_fk'        => '1',
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }
-
-            //registro si se entregó
-            if($request['entRd'] == 'S'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $request['empEnt'],
-                        'paciente'              => $request['pacienteCbr'],
-                    ]);
-            }else if($request['entRd'] == 'P'){
-                DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '4',
-                        'id_empleado_fk'        => $request['empEnt'],
-                        'statusComisiones'      => 'P',
-                        'paciente'              => $request['pacienteCbr'],
-                ]);
-            }
-
-            DB::delete("DELETE duplicados from status_cob_com as duplicados
-                        INNER JOIN status_cob_com as temporales
-                        WHERE duplicados.id < temporales.id
-                        AND duplicados.folio = temporales.folio
-                        AND duplicados.id_estudio_fk = temporales.id_estudio_fk
-                        AND duplicados.paciente = temporales.paciente
-                        AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
-
-            $matchEstudiosTemps = DB::table('status_cob_com')
-                                        ->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
-                                        ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
-                                        ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
-                                        ->where([
-                                            ['status_cob_com.folio', $request->folioCbr],
-                                            ['status_cob_com.paciente', $request->pacienteCbr],
-                                            ['status_cob_com.id_estudio_fk',$estUpd->id]
-                                        ])->get();
-
-                    foreach($matchEstudiosTemps as $match){
-                        if($match->aliasEstudiosTemps == 'drTransc'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'transcripcion' => 'S',
-                                                'id_empTrans_fk' => $match->id_empleado_fk
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'drInt'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'interpretacion' => 'S',
-                                                'id_empInt_fk' => $match->id_empleado_fk
-
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'escRd'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'escaneado' => 'S',
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'empEnt'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'entregado' => $request['entRd'],
-                                                'id_empEnt_fk' => $match->id_empleado_fk
-                                            ]);
-                        }else if($match->aliasEstudiosTemps == 'empRealiza'){
-                            Estudiostemp::where('id',$request['identificador'])
-                                            ->update([
-                                                'id_empRea_fk' => $match->id_empleado_fk
-                                            ]);
+                        }else{
+                            $updateStatusC = Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'id_empTrans_fk' => $doctorTrans,                                                
+                                                    'id_doctor_fk' => $request["drRequiere"],
+                                                    'id_empEnt_fk' => $empEntrega,
+                                                    'id_empRea_fk' => $request['empRealiza'],
+                                                    'id_empInt_fk' => $doctorInter,
+                                                    'tipoPaciente' => $request['tipoPaciente'],
+                                                    'transcripcion' => $request['transRd'],
+                                                    'interpretacion' => $request['intRd'],
+                                                    'escaneado' => $request['escRd'],
+                                                    'entregado' => $request['entRd'],
+                                                    'observaciones' => $request['obsCobranza'],
+                                                    'estudiostemps_status' => 3,
+                                                    'registroC' => $request['registroC'],
+                                                    'updated_at' => $fechaInsert
+                                                ]);
                         }
                     }
+                }  
+                
+                //registro si se realiza
+                if(Arr::has($request,'empRealiza')){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => $request['empRealiza'],
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se transcribió
+                if($request['transRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '1',
+                            'id_empleado_fk'        => $doctorTrans,
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se interpretó
+                if($request['intRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '2',
+                            'id_empleado_fk'        => $doctorInter,
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se escaneó
+                if($request['escRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '3',
+                            'id_empleado_fk'        => '1',
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se entregó
+                if($request['entRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '4',
+                            'id_empleado_fk'        => $request['empEnt'],
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }else if($request['entRd'] == 'P'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '4',
+                            'id_empleado_fk'        => 1,
+                            'statusComisiones'      => 'P',
+                            'paciente'              => $request['pacienteCbr'],
+                    ]);
+                }
+
+                DB::delete("DELETE duplicados from status_cob_com as duplicados
+                            INNER JOIN status_cob_com as temporales
+                            WHERE duplicados.id < temporales.id
+                            AND duplicados.folio = temporales.folio
+                            AND duplicados.id_estudio_fk = temporales.id_estudio_fk
+                            AND duplicados.paciente = temporales.paciente
+                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+
+                $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+                                            ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                            ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.paciente', $request->pacienteCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id]
+                                            ])->get();
+
+                        foreach($matchEstudiosTemps as $match){
+                            if($match->aliasEstudiosTemps == 'drTransc'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'transcripcion' => 'S',
+                                                    'id_empTrans_fk' => $match->id_empleado_fk
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'drInt'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'interpretacion' => 'S',
+                                                    'id_empInt_fk' => $match->id_empleado_fk
+
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'escRd'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'escaneado' => 'S',
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'empEnt'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'entregado' => $request['entRd'],
+                                                    'id_empEnt_fk' => $match->id_empleado_fk
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'empRealiza'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'id_empRea_fk' => $match->id_empleado_fk
+                                                ]);
+                            }
+                        }  
+            //Registro no completado
+            }else{
+                $estUpd = Estudios::where('dscrpMedicosPro',$request['estudioCbr'])->first();
+                
+                //Registro faltante de datos
+                $updateStatusC = Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'id_empTrans_fk' => $doctorTrans,                                                
+                                                    'id_doctor_fk' => $request["drRequiere"],
+                                                    'id_empEnt_fk' => $request['empEnt'],
+                                                    'id_empRea_fk' => $request['empRealiza'],
+                                                    'id_empInt_fk' => $doctorInter,
+                                                    'tipoPaciente' => $request['tipoPaciente'],
+                                                    'transcripcion' => $request['transRd'],
+                                                    'interpretacion' => $request['intRd'],
+                                                    'escaneado' => $request['escRd'],
+                                                    'entregado' => $request['entRd'],
+                                                    'observaciones' => $request['obsCobranza'],
+                                                    'estudiostemps_status' => 2,
+                                                    'registroC' => $request['registroC'],
+                                                    'updated_at' => $fechaInsert
+                                                ]);
+                                                    
+
+                if(Arr::has($request,'empRealiza')){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => $request['empRealiza'],
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se transcribió
+                if($request['transRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '1',
+                            'id_empleado_fk'        => $doctorTrans,
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se interpretó
+                if($request['intRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '2',
+                            'id_empleado_fk'        => $doctorInter,
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se escaneó
+                if($request['escRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '3',
+                            'id_empleado_fk'        => '1',
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }
+
+                //registro si se entregó
+                if($request['entRd'] == 'S'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '4',
+                            'id_empleado_fk'        => $request['empEnt'],
+                            'paciente'              => $request['pacienteCbr'],
+                        ]);
+                }else if($request['entRd'] == 'P'){
+                    DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '4',
+                            'id_empleado_fk'        => 1,
+                            'statusComisiones'      => 'P',
+                            'paciente'              => $request['pacienteCbr'],
+                    ]);
+                }
+
+                DB::delete("DELETE duplicados from status_cob_com as duplicados
+                            INNER JOIN status_cob_com as temporales
+                            WHERE duplicados.id < temporales.id
+                            AND duplicados.folio = temporales.folio
+                            AND duplicados.id_estudio_fk = temporales.id_estudio_fk
+                            AND duplicados.paciente = temporales.paciente
+                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+
+                $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+                                            ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
+                                            ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.paciente', $request->pacienteCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id]
+                                            ])->get();
+
+                        foreach($matchEstudiosTemps as $match){
+                            if($match->aliasEstudiosTemps == 'drTransc'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'transcripcion' => 'S',
+                                                    'id_empTrans_fk' => $match->id_empleado_fk
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'drInt'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'interpretacion' => 'S',
+                                                    'id_empInt_fk' => $match->id_empleado_fk
+
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'escRd'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'escaneado' => 'S',
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'empEnt'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'entregado' => $request['entRd'],
+                                                    'id_empEnt_fk' => $match->id_empleado_fk
+                                                ]);
+                            }else if($match->aliasEstudiosTemps == 'empRealiza'){
+                                Estudiostemp::where('id',$request['identificador'])
+                                                ->update([
+                                                    'id_empRea_fk' => $match->id_empleado_fk
+                                                ]);
+                            }
+                        }
+            }
+        }else{
+            return back()->withErrors('El estudio no se encuentra registrado en el sistema.')->withInput();
         }
+        //Se verifica si el estudio está completo
+        
 
         return redirect()->route('importarCobranza.index');
     }
@@ -471,8 +482,6 @@ class CobranzaController extends Controller{
     
         return Excel::download(new CobranzaExport($busqueda,$incio,$fin), 'ReporteCobranza.xlsx');
     }
-
-
 
     public function storeInt(Request $request){
         //return $request::all();
