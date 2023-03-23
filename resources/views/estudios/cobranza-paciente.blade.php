@@ -138,7 +138,64 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-1">
+                                <div class="col-2">
+                                    <label>Interpretación<strong style="color:red">*</strong></label>
+                                    <div class="form-group">
+                                        @if($datosPaciente->interpretacion == 'S')
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="S" name="intRd" class="interSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="intRd" class="interNo">
+                                            <label>NO</label>
+                                        </div>
+                                        @elseif($datosPaciente->interpretacion == 'N')
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="intRd" class="interSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input checked type="radio" value="N" name="intRd" class="interNo">
+                                            <label>NO</label>
+                                        </div>
+                                        @else
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="S" name="intRd" class="interSi">
+                                            <label>SI</label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" value="N" name="intRd" class="interNo">
+                                            <label>NO</label>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>¿Quién Realizó la Interpretación?</label>
+                                        @if($datosPaciente->interpretacion == 'N')
+                                        <select name="drInt" id="drInt" disabled class="custom-select combos">
+                                            @else
+                                            <select name="drInt" id="drInt" class="custom-select combos">
+                                                @endif
+                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
+                                                    --
+                                                </option>
+                                                @foreach($doctorInter as $dInt)
+                                                @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
+                                                <option selected value="{{ $dInt->id_emp }}">
+                                                    Dr. {{ $dInt->empleado }}
+                                                </option>
+                                                @else
+                                                <option value="{{ $dInt->id_emp }}">
+                                                    Dr. {{ $dInt->empleado }}
+                                                    @endif
+                                                    @endforeach
+                                            </select>
+                                    </div>
+                                </div>
+                                <div class="col-2">
                                     <label>Transcripción<strong style="color:red">*</strong></label>
                                     <div class="form-group">
                                         @if($datosPaciente->transcripcion == 'S')
@@ -195,63 +252,6 @@
                                                 </option>
                                                 @endif
                                                 @endforeach
-                                            </select>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <label>Interpretación<strong style="color:red">*</strong></label>
-                                    <div class="form-group">
-                                        @if($datosPaciente->interpretacion == 'S')
-                                        <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="intRd" class="interSi">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd" class="interNo">
-                                            <label>NO</label>
-                                        </div>
-                                        @elseif($datosPaciente->interpretacion == 'N')
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd" class="interSi">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="intRd" class="interNo">
-                                            <label>NO</label>
-                                        </div>
-                                        @else
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd" class="interSi">
-                                            <label>SI</label>
-                                        </div>
-                                        <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd" class="interNo">
-                                            <label>NO</label>
-                                        </div>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <label>¿Quién Realizó la Interpretación?</label>
-                                        @if($datosPaciente->interpretacion == 'N')
-                                        <select name="drInt" id="drInt" disabled class="custom-select combos">
-                                            @else
-                                            <select name="drInt" id="drInt" class="custom-select combos">
-                                                @endif
-                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
-                                                    --
-                                                </option>
-                                                @foreach($doctorInter as $dInt)
-                                                @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
-                                                <option selected value="{{ $dInt->id_emp }}">
-                                                    Dr. {{ $dInt->empleado }}
-                                                </option>
-                                                @else
-                                                <option value="{{ $dInt->id_emp }}">
-                                                    Dr. {{ $dInt->empleado }}
-                                                    @endif
-                                                    @endforeach
                                             </select>
                                     </div>
                                 </div>

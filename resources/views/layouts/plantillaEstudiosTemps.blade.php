@@ -281,8 +281,6 @@
     }
 
     $(document).ready(function() {
-
-
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
@@ -303,8 +301,12 @@
 
         $('.interNo').click(function() {
             $('#drInt').attr("disabled", true);
-            $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected",
-                true).text("-- Selecciona una opción --"));
+            $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected", true)
+                .text("-- Selecciona una opción --"));
+            $('#drTransc').attr("disabled", true);
+            $('.transRdN').attr("checked", true);
+            $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true).text(
+                "-- Selecciona una opción --"));
         });
 
         $('.entSi').click(function() {
@@ -323,9 +325,6 @@
             $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
                 true).text("-- Selecciona una opción --"));
         });
-
-
-
     });
 
     $(function() {
