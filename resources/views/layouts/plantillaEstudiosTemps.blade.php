@@ -303,10 +303,10 @@
             $('#drInt').attr("disabled", true);
             $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected", true)
                 .text("-- Selecciona una opción --"));
-            $('#drTransc').attr("disabled", true);
+            /*$('#drTransc').attr("disabled", true);
             $('.transRdN').attr("checked", true);
             $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true).text(
-                "-- Selecciona una opción --"));
+                "-- Selecciona una opción --"));*/
         });
 
         $('.entSi').click(function() {
