@@ -151,6 +151,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '5',
                             'id_empleado_fk'        => $request['empRealiza'],
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -163,6 +164,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '1',
                             'id_empleado_fk'        => $doctorTrans,
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -175,6 +177,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '2',
                             'id_empleado_fk'        => $doctorInter,
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -187,6 +190,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '3',
                             'id_empleado_fk'        => '1',
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -199,6 +203,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '4',
                             'id_empleado_fk'        => $request['empEnt'],
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }else if($request['entRd'] == 'P'){
                     DB::table('status_cob_com')->insert([
@@ -209,6 +214,7 @@ class CobranzaController extends Controller{
                             'id_empleado_fk'        => 1,
                             'statusComisiones'      => 'P',
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                     ]);
                 }
 
@@ -233,31 +239,36 @@ class CobranzaController extends Controller{
                             if($match->aliasEstudiosTemps == 'drTransc'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'transcripcion' => 'S',
-                                                    'id_empTrans_fk' => $match->id_empleado_fk
+                                                    'transcripcion'         => 'S',
+                                                    'statusComisiones'      => 'P',
+                                                    'id_empTrans_fk'        => $match->id_empleado_fk
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'drInt'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'interpretacion' => 'S',
-                                                    'id_empInt_fk' => $match->id_empleado_fk
+                                                    'interpretacion'        => 'S',
+                                                    'statusComisiones'      => 'P',
+                                                    'id_empInt_fk'          => $match->id_empleado_fk
 
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'escRd'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'escaneado' => 'S',
+                                                    'escaneado'             => 'S',
+                                                    'statusComisiones'      => 'P',
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'empEnt'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'entregado' => $request['entRd'],
-                                                    'id_empEnt_fk' => $match->id_empleado_fk
+                                                    'entregado'             => $request['entRd'],
+                                                    'statusComisiones'      => 'P',
+                                                    'id_empEnt_fk'          => $match->id_empleado_fk
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'empRealiza'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'id_empRea_fk' => $match->id_empleado_fk
+                                                    'statusComisiones'      => 'P',
+                                                    'id_empRea_fk'          => $match->id_empleado_fk
                                                 ]);
                             }
                         }  
@@ -293,6 +304,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '5',
                             'id_empleado_fk'        => $request['empRealiza'],
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -305,6 +317,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '1',
                             'id_empleado_fk'        => $doctorTrans,
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -317,6 +330,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '2',
                             'id_empleado_fk'        => $doctorInter,
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -329,6 +343,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '3',
                             'id_empleado_fk'        => '1',
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }
 
@@ -341,6 +356,7 @@ class CobranzaController extends Controller{
                             'id_actividad_fk'       => '4',
                             'id_empleado_fk'        => $request['empEnt'],
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                         ]);
                 }else if($request['entRd'] == 'P'){
                     DB::table('status_cob_com')->insert([
@@ -351,6 +367,7 @@ class CobranzaController extends Controller{
                             'id_empleado_fk'        => 1,
                             'statusComisiones'      => 'P',
                             'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P'
                     ]);
                 }
 
@@ -376,34 +393,34 @@ class CobranzaController extends Controller{
                             if($match->aliasEstudiosTemps == 'drTransc'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'transcripcion' => 'S',
-                                                    'id_empTrans_fk' => $match->id_empleado_fk
+                                                    'transcripcion'         => 'S',
+                                                    'id_empTrans_fk'        => $match->id_empleado_fk
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'drInt'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'interpretacion' => 'S',
-                                                    'id_empInt_fk' => $match->id_empleado_fk
+                                                    'interpretacion'        => 'S',
+                                                    'id_empInt_fk'          => $match->id_empleado_fk
 
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'escRd'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'escaneado' => 'S',
+                                                    'escaneado'             => 'S',
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'empEnt'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'entregado' => $request['entRd'],
-                                                    'id_empEnt_fk' => $match->id_empleado_fk
+                                                    'entregado'             => $request['entRd'],
+                                                    'id_empEnt_fk'          => $match->id_empleado_fk
                                                 ]);
                             }else if($match->aliasEstudiosTemps == 'empRealiza'){
                                 Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
-                                                    'id_empRea_fk' => $match->id_empleado_fk
+                                                    'id_empRea_fk'          => $match->id_empleado_fk
                                                 ]);
                             }
-                        }
+                        }  
             }
         }else{
             return back()->withErrors('El estudio no se encuentra registrado en el sistema.')->withInput();
