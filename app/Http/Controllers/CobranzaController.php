@@ -423,6 +423,8 @@ class CobranzaController extends Controller{
                         }  
             }
         }else{
+            Estudiostemp::where('id',$request['identificador'])->update(['estudiostemps_status' => 3]);
+
             return back()->withErrors('El estudio no se encuentra registrado en el sistema.')->withInput();
         }
         //Se verifica si el estudio está completo
