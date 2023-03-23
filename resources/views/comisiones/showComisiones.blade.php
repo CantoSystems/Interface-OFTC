@@ -6,7 +6,7 @@
             <h6>Calcular Comisiones</h6>
         </div>
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
-
+        <!--Roles formulario de consulta PARA CÁLCULO DE COMISIONES -->
         <form action="{{ route('comisiones.show') }}" method="GET">
             <div class="row">
                 <div class="col-3">
@@ -62,32 +62,28 @@
 
             </div>
         </form>
-
+        <!-- Fin Roles formulario de consulta PARA CÁLCULO DE COMISIONES -->
         @endcanany
 
-
-
-
-
-
+        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-body">
-            @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
-            @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </div>
-            @endif
-            @isset($fallo)
-            @foreach($fallo as $fatal)
-            <div class="alert alert-danger" role="alert">
-                El empleado {{ $fatal['empleado'] }} no tiene asignado una comisión
-                para el estudio {{ $fatal['descripcion']}}
-            </div>
-            @endforeach
-            @endif
+            
+                    @if (count($errors) > 0)
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </div>
+                    @endif
+                        @isset($fallo)
+                        @foreach($fallo as $fatal)
+                        <div class="alert alert-danger" role="alert">
+                            El empleado {{ $fatal['empleado'] }} no tiene asignado una comisión
+                            para el estudio {{ $fatal['descripcion']}}
+                        </div>
+                        @endforeach
+                        @endif
             <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -134,6 +130,7 @@
             </div>
             @endif
         </div>
+        @endcanany
     </div>
 </div>
 
@@ -141,9 +138,17 @@
 <div class="card-footer">
     <div class="row">
         <div class="col-3">
+        @canany(['comisiones','cobranzaReportes'])
             <a data-target="#modal-fechaCorte" data-toggle="modal">
-                <button type="button" class="btn btn-block btn-outline-info btn-xs">Crear fecha corte
+                <button type="button" class="btn btn-block btn-outline-info btn-xs">
+                    Crear fecha corte
                 </button>
+            </a>
+        @elsecanany(['auxiliarCobranzaReportes','optometria'])
+                <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled/>
+                    Crear fecha corte
+                </button>
+        @endcanany
         </div>
         <div class="col-3">
             <a id="cargarCobranza" type="button" href="{{ route('comisiones.index') }}"
@@ -158,18 +163,25 @@
             </a>
         </div>
         <div class="col-3">
+            @canany(['comisiones','cobranzaReportes'])
             <a id="cargarCobranza" type="button" href="#" class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Autorizar</span>
             </a>
+            @elsecanany(['auxiliarCobranzaReportes','optometria'])
+            <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled/>
+                    Autorizar
+            </button>
+            @endcanany
+
+            
         </div>
     </div>
 </div>
 </div>
-
 @include('comisiones.modalFechaCorte')
-@elsecanany('invitado','detalleConsumo','auxiliardetalleConsumo')
+<!--
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
-@endcanany
+-->
 @endsection

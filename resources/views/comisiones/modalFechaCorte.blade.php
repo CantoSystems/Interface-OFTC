@@ -9,22 +9,24 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="alert alert-warning" role="alert" style="color: white;border-color: yellow;border: 1px;">
+                        Al crear un nueva fecha de corte, desactivará la anterior
+                </div>
                 <form method="POST" action="{{ route('comisiones.fechaCorte')}}">
                      @csrf
-                <div class="row">
+                <div>
                         <center>
                             <div class="col-md-12">
                             <div class="form-group">
                                 <label>Ingresa la fecha de Corte</label>
                                 <input  type="date" 
-                                        id="folioCbr" name="fechaCorte" class="form-control"
+                                        id="folioCbr" name="fechaCorte" 
+                                        class="form-control"
                                         >
                             </div>
                         </div>
                         </center>
                 </div>
-
-
 
                 <div class="modal-footer">
                     <div class="row">
