@@ -22,7 +22,7 @@
                                 <input  type="date" 
                                         id="folioCbr" name="fechaCorte" 
                                         class="form-control"
-                                        >
+                                >
                             </div>
                         </div>
                         </center>

@@ -81,6 +81,7 @@ Route::post('/usuario-invitado',[UserController::class,'registroInvitado'])->nam
 //Calculo de Comisiones
 Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index')->middleware('auth');
 Route::get('/generar-comisiones',[ComisionesController::class,'calcularComision'])->name('comisiones.show')->middleware('auth');
+Route::post('/update-comisiones',[ComisionesController::class,'actualizarComision'])->name('comisiones.actualiza')->middleware('auth');
 
 //Catálogo Estudios inviduales
 Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');

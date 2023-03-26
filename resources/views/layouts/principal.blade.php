@@ -459,6 +459,36 @@
             });
         });
 
+        $('#autorizaComisiones').click(function(e){
+            e.preventDefault()
+            let actualizarStatus = [];
+            document.querySelectorAll('#catComisionesGral tbody tr').forEach(function(e){
+                let recorrido = {
+                    status: parseInt(e.querySelector('.id_status').value),
+                };
+                actualizarStatus.push(recorrido);
+            });
+            let jsonString = JSON.stringify(actualizarStatus);
+            console.log(jsonString);
+            $.ajax({
+                url:"{{ route('comisiones.actualiza')}}",
+                method: "POST",
+                data:{
+                    _token: document.getElementById("_token_").value,
+                    info: jsonString
+                },
+                success: function(data){
+                    console.log(data);
+                    //console.log(1);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.text)
+                // var err = JSON.parse(xhr.responseText);
+                // console.log(err.Message);
+            }
+            });
+        });
+
     });
     </script>
 
@@ -466,6 +496,7 @@
     //Función para convertir en texto en mayusculas
     function mayus(e) {
         e.value = e.value.toUpperCase();
+
     }
     </script>
 </body>

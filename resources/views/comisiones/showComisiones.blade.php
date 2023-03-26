@@ -46,9 +46,9 @@
                         <option selected disabled>-- Selecciona una optión--</option>
                         <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
                         @foreach($actividades as $act)
-                        <option value="{{ $act->nombreActividad }}">
-                            {{ $act->nombreActividad }}
-                        </option>
+                            <option value="{{ $act->nombreActividad }}">
+                                {{ $act->nombreActividad }}
+                            </option>
                         @endforeach
                         
                     </select>
@@ -84,11 +84,16 @@
                         </div>
                         @endforeach
                         @endif
+        <form method="POST">
+            <input type="hidden" name="_token" id="_token_" value="{{ csrf_token() }}" />
             <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Fecha</th>
-                        <th>Folio</th>
+                        <th>
+                        Folio
+
+                        </th>
                         <th>Paciente</th>
                         <th>Estudio</th>
                         <th style="width: 40px; text-align: center;">Cantidad</th>
@@ -101,7 +106,10 @@
                     @foreach($comisiones as $com)
                     <tr>
                         <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
-                        <td>{{ $com->cobranza_folio ?? ''}}</td>
+                        <td>
+                            {{ $com->cobranza_folio ?? ''}}
+                            <input type="number" value="{{ $com->id_status_fk }}" class="id_status">
+                        </td>
                         <td>{{ strtoupper($com->paciente) }}</td>
                         <td>{{ $com->dscrpMedicosPro }}</td>
                         <td style="text-align: right;">$ {{ number_format($com->cantidad,2) }}</td>
@@ -151,22 +159,28 @@
         @endcanany
         </div>
         <div class="col-3">
-            <a id="cargarCobranza" type="button" href="{{ route('comisiones.index') }}"
+            <a id="limpiarVista" type="button" href="{{ route('comisiones.index') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Limpiar</span>
             </a>
         </div>
         <div class="col-3">
-            <a id="cargarCobranza" type="button" href="{{ route('exportarComisiones.export') }}"
+            <a id="generaExcel" type="button" href="{{ route('exportarComisiones.export') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Generar Excel</span>
             </a>
         </div>
         <div class="col-3">
             @canany(['comisiones','cobranzaReportes'])
-            <a id="cargarCobranza" type="button" href="#" class="btn btn-block btn-outline-secondary btn-xs">
-                <span class="info-box-number">Autorizar</span>
-            </a>
+            @if(isset($totalComisiones) && !empty($totalComisiones))
+                <button id="autorizaComisiones" type="button" class="btn btn-block btn-outline-secondary btn-xs">
+                    <span class="info-box-number">Autorizar</span>
+                </button>
+            @else
+                <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled/>
+                    Autorizar
+            </button>
+            @endif
             @elsecanany(['auxiliarCobranzaReportes','optometria'])
             <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled/>
                     Autorizar
@@ -177,6 +191,7 @@
         </div>
     </div>
 </div>
+</form>
 </div>
 @include('comisiones.modalFechaCorte')
 <!--

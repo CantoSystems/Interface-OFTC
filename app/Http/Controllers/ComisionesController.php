@@ -133,7 +133,7 @@ class ComisionesController extends Controller{
                                                 ->where('id_emp',$request->slctEmpleado)
                                                 ->first();
 
-                                 DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
+                                DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
                                         ->update([                                               
                                                 'statusComisiones' => "INFORMATIVO",
                                                 'cobranza_fecha' => $info->fecha,
@@ -467,7 +467,7 @@ class ComisionesController extends Controller{
         $comisiones = DB::table('comisiones_temps')
                             ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
                             ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
-                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje','cobranza_folio')
+                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje','cobranza_folio','id_status_fk')
                             ->where([
                                 ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
                             ])
@@ -775,7 +775,8 @@ class ComisionesController extends Controller{
                                                 'id_status_fk' => $identificadorEstatus
                                             ]);
 
-                                            DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
+                                            DB::table('status_cob_com')->where('id',
+                                                $identificadorEstatus)
                                                     ->update([                                   
                                                             'cobranza_fecha' => $fecha,
                                                             'cobranza_cantidad' => $total,
@@ -1311,6 +1312,12 @@ class ComisionesController extends Controller{
 
     public function fechaCorte(Request $request){
 
+        $validator = Validator::make($request->all(),[
+            'fechaCorte' => 'required|unique:fechacorte',
+        ],[
+            'fechaCorte.required' => 'Ingrese la fecha de corte',
+            'fechaCorte.unique' => 'La fecha ingresada ya existe',
+        ]);
         $desactivarCorte = DB::table('fechacorte')
                 ->select('id')
                 ->where('status_fechacorte',1)
@@ -1336,6 +1343,38 @@ class ComisionesController extends Controller{
             }
 
        return redirect()->route('comisiones.index');
+
+    }
+
+    public function actualizarComision(Request $request){
+        if (!$request->all()) {
+            return response()->json(["error" => "Sin data"]);
+        }
+
+        foreach ($request->only('info') as $value) {
+            $data = json_decode($value);
+        }
+
+        $fechaCorte = DB::table('fechacorte')
+                ->select('id')
+                ->where('status_fechacorte',1)
+                ->latest('id')->first();
+
+            if(!is_null($fechaCorte)){
+
+                foreach($data as $status){
+                    
+                    DB::table('status_cob_com')->where('id',$status->status)
+                            ->update([                                               
+                                    'statusComisiones' => "PAGADO",
+                                    'id_fcorte_fk' => $fechaCorte->id,
+
+                    ]);
+                }
+
+            }
+
+        
 
     }
 }
