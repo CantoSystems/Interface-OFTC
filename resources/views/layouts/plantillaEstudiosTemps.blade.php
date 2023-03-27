@@ -284,6 +284,7 @@
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
+            $('#drTransc option:eq(0)').prop('selected', true);
         });
 
         $('.transRdN').click(function() {
@@ -297,16 +298,15 @@
         $('.interSi').click(function() {
             $('#drInt').attr("disabled", false);
             $("option").remove(".nullableInterpreta");
+            $('#drTransc').attr("disabled", false);
+            $(".transRdN").removeAttr('disabled');
+            $(".transRdS").removeAttr('disabled');
         });
 
         $('.interNo').click(function() {
             $('#drInt').attr("disabled", true);
             $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected", true)
                 .text("-- Selecciona una opción --"));
-            /*$('#drTransc').attr("disabled", true);
-            $('.transRdN').attr("checked", true);
-            $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true).text(
-                "-- Selecciona una opción --"));*/
         });
 
         $('.entSi').click(function() {

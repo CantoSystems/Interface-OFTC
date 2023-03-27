@@ -218,11 +218,12 @@
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="transRd" class="transRdS">
+                                            <input disabled type="radio" value="S" name="transRd" class="transRdS">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="transRd" class="transRdN">
+                                            <input disabled checked type="radio" value="N" name="transRd"
+                                                class="transRdN">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -231,28 +232,24 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Transcripción?</label>
-                                        @if($datosPaciente->transcripcion == 'N')
                                         <select name="drTransc" disabled id="drTransc" class="custom-select combos">
+                                            <option disabled selected id="NA" value="N/A">-- Selecciona una opción
+                                                --
+                                            </option>
+                                            @foreach($empTrans as $empT)
+                                            @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
+                                            <option selected value="{{ $empT->id_emp }}">
+                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                {{ $empT->empleado_apellidom }}
+                                            </option>
                                             @else
-                                            <select name="drTransc" id="drTransc" class="custom-select combos">
-                                                @endif
-                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
-                                                    --
-                                                </option>
-                                                @foreach($empTrans as $empT)
-                                                @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
-                                                <option selected value="{{ $empT->id_emp }}">
-                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                    {{ $empT->empleado_apellidom }}
-                                                </option>
-                                                @else
-                                                <option value="{{ $empT->id_emp }}">
-                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                    {{ $empT->empleado_apellidom }}
-                                                </option>
-                                                @endif
-                                                @endforeach
-                                            </select>
+                                            <option value="{{ $empT->id_emp }}">
+                                                {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
+                                                {{ $empT->empleado_apellidom }}
+                                            </option>
+                                            @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
