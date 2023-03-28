@@ -28,7 +28,6 @@
                 <div class="col-4">
                     <label class="info-box-text">Selecciona Estudio:</label>
                     <select class="form-control" name="slctEstudio[]" id="slctEstudio" multiple="multiple">
-
                         @foreach($estudios as $est)
                         <option value="{{ $est->id }}" selected>
                             {{ $est->dscrpMedicosPro }}
@@ -50,7 +49,6 @@
                             {{ $act->nombreActividad }}
                         </option>
                         @endforeach
-
                     </select>
                 </div>
                 <div class="col-1">
@@ -59,7 +57,6 @@
                         <span class="info-box-number">Calcular</span>
                     </button>
                 </div>
-
             </div>
         </form>
         <!-- Fin Roles formulario de consulta PARA CÁLCULO DE COMISIONES -->
@@ -67,7 +64,6 @@
 
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-body">
-
             @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -90,10 +86,7 @@
                     <thead>
                         <tr>
                             <th>Fecha</th>
-                            <th>
-                                Folio
-
-                            </th>
+                            <th>Folio</th>
                             <th>Paciente</th>
                             <th>Estudio</th>
                             <th style="width: 40px; text-align: center;">Cantidad</th>
@@ -142,7 +135,6 @@
     </div>
 </div>
 
-
 <div class="card-footer">
     <div class="row">
         <div class="col-3">
@@ -186,8 +178,6 @@
             Autorizar
             </button>
             @endcanany
-
-
         </div>
     </div>
 </div>
