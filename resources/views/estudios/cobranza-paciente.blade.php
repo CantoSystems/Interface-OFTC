@@ -339,7 +339,7 @@
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <input checked type="radio" value="P" name="entRd" class="entPen">
                                             <label>PENDIENTE</label>
                                         </div>
                                         @endif
@@ -502,7 +502,10 @@
                                         @endif
                                     </th>
                                     <th style="text-align: center;">
-                                        @if(($status->id_emp == 1 && $status->nombreActividad != 'Entregado'))
+                                        @if(($status->id_emp == 1 && $status->nombreActividad != 'Entregado') ||
+                                        ($status->nombreActividad == 'Adicional Gestion') || ($status->nombreActividad
+                                        == 'Adicional Egresos') || ($status->nombreActividad == 'Adicional
+                                        Administrativo'))
                                         <a class="btn btn-block btn-outline-secondary btn-xs">NO
                                             APLICA</a>
                                         @else

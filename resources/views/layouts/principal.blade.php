@@ -401,10 +401,11 @@
             $("#catComisionesGral").DataTable({
                 "responsive": true,
                 "autoWidth": false,
+                "lengthMenu": [
+                    ["All"]
+                ],
                 "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por página",
                     "zeroRecords": "No existen registros en la tabla",
-                    "info": "Mostrando página _PAGE_ de _PAGES_",
                     "infoEmpty": "No existen registros en la tabla",
                     "infoFiltered": "(filtrado por _MAX_ registros totales)"
                 }
@@ -459,10 +460,10 @@
             });
         });
 
-        $('#autorizaComisiones').click(function(e){
+        $('#autorizaComisiones').click(function(e) {
             e.preventDefault()
             let actualizarStatus = [];
-            document.querySelectorAll('#catComisionesGral tbody tr').forEach(function(e){
+            document.querySelectorAll('#catComisionesGral tbody tr').forEach(function(e) {
                 let recorrido = {
                     status: parseInt(e.querySelector('.id_status').value),
                 };
@@ -471,21 +472,21 @@
             let jsonString = JSON.stringify(actualizarStatus);
             console.log(jsonString);
             $.ajax({
-                url:"{{ route('comisiones.actualiza')}}",
+                url: "{{ route('comisiones.actualiza')}}",
                 method: "POST",
-                data:{
+                data: {
                     _token: document.getElementById("_token_").value,
                     info: jsonString
                 },
-                success: function(data){
+                success: function(data) {
                     console.log(data);
                     //console.log(1);
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.text)
-                // var err = JSON.parse(xhr.responseText);
-                // console.log(err.Message);
-            }
+                    // var err = JSON.parse(xhr.responseText);
+                    // console.log(err.Message);
+                }
             });
         });
 
