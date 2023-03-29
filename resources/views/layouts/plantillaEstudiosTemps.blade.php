@@ -285,6 +285,10 @@
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
             $('#drTransc option:eq(0)').prop('selected', true);
+            $('#drInt').attr("disabled", false);
+            $(".interSi").removeAttr('disabled');
+            $(".interNo").removeAttr('checked');
+            $(".interNo").removeAttr('disabled');
         });
 
         $('.transRdN').click(function() {
@@ -299,19 +303,11 @@
             $('#drInt').attr("disabled", false);
             $('#drInt option:eq(0)').prop('selected', true);
             $("option").remove(".nullableInterpreta");
-            $('#drTransc').attr("disabled", false);
-            $(".transRdN").removeAttr('disabled');
-            $(".transRdN").removeAttr('checked');
-            $(".transRdS").removeAttr('disabled');
         });
 
         $('.interNo').click(function() {
             $('#drInt').attr("disabled", true);
             $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected", true)
-                .text("-- Selecciona una opción --"));
-            $('.transRdN').attr("checked", true);
-            $('#drTransc').attr("disabled", true);
-            $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true)
                 .text("-- Selecciona una opción --"));
         });
 

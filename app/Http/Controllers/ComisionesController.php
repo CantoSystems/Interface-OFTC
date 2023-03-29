@@ -262,7 +262,7 @@ class ComisionesController extends Controller{
                         ]);        
                     }
                 }
-            }else if ($request->selectCalculo == "Escaneado") {
+            }else if($request->selectCalculo == "Escaneado") {
                 //Obtener los registros que tienen actividad de Escaneo
                 $infoCalculoComisionEscaneo  = DB::table('status_cob_com')
                     ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
@@ -321,7 +321,7 @@ class ComisionesController extends Controller{
                         ]);
                     }
                 }
-            }else if ($request->selectCalculo == "Realizado") {
+            }else if($request->selectCalculo == "Realizado") {
                 //Obtener las actividades que Realizo por el estudio y empleado antes o igual de la fecha fin
                 $infoCalculoComisionRealiza = DB::table('status_cob_com')
                             ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
@@ -872,6 +872,7 @@ class ComisionesController extends Controller{
                                                 ['id_empleado_fk',$slctEmpleado],
                                                 ['id_estudiostemps_fk',$unico]
                                         ])->first();
+                                        
                 if(is_null($actDuplicada)){
                     $registroReciente = DB::table('status_cob_com')->insertGetId([
                         'id_estudio_fk' => $slctEstudio,
