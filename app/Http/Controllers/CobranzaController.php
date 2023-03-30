@@ -160,7 +160,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $request['empRealiza'],
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -175,7 +175,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $doctorTrans,
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -190,7 +190,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $doctorInter,
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -205,7 +205,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => '1',
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -220,7 +220,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $request['empEnt'],
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }else if($request['entRd'] == 'P'){
@@ -232,7 +232,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => 1,
                         'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -246,7 +246,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '12',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -259,7 +259,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '30',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -272,7 +272,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '31',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -379,7 +379,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $request['empRealiza'],
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -394,7 +394,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $doctorTrans,
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -409,7 +409,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $doctorInter,
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -424,7 +424,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => '1',
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -439,7 +439,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $request['empEnt'],
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                         ]);
                 }else if($request['entRd'] == 'P'){
@@ -451,7 +451,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => 1,
                         'statusComisiones'      => 'P',
                         'paciente'              => $request['pacienteCbr'],
-                        'cobrabnza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -465,7 +465,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '12',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -478,7 +478,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '30',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -491,7 +491,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '31',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobrabnza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'       => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
