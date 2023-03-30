@@ -43,7 +43,6 @@
                     <label>Tipo de cálculo</label>
                     <select class="form-control" name="selectCalculo" id="selectCalculo">
                         <option selected disabled>-- Selecciona una optión--</option>
-                        <option value="adicionales">Cálculos Adicionales y Gastos Administrativos</option>
                         @foreach($actividades as $act)
                         <option value="{{ $act->nombreActividad }}">
                             {{ $act->nombreActividad }}
@@ -101,7 +100,7 @@
                             <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
                             <td>
                                 {{ $com->cobranza_folio ?? ''}}
-                                <input type="hidden" value="{{ $com->id_status_fk }}" class="id_status">
+                                <input type="text" value="{{ $com->id_status_fk }}" class="id_status">
                             </td>
                             <td>{{ strtoupper($com->paciente) }}</td>
                             <td>{{ $com->dscrpMedicosPro }}</td>
