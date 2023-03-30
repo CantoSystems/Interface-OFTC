@@ -497,16 +497,18 @@
                                         @endif
                                     </th>
                                     <th style="text-align: center;">
-                                        @if(($status->id_emp == 1 && $status->nombreActividad != 'Entregado') ||
-                                        ($status->nombreActividad == 'Adicional Gestion') || ($status->nombreActividad
-                                        == 'Adicional Egresos') || ($status->nombreActividad == 'Adicional
-                                        Administrativo'))
+                                        @switch($status->nombreActividad)
+                                        @case('Adicional Administrativo')
+                                        @case('Adicional Egresos')
+                                        @case('Adicional Gestion')
                                         <a class="btn btn-block btn-outline-secondary btn-xs">NO
                                             APLICA</a>
-                                        @else
+                                        @break
+                                        @default
                                         <a class="btn btn-block btn-outline-secondary btn-xs"
                                             href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
-                                        @endif
+                                        @break
+                                        @endswitch
                                     </th>
                                     <!--<th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>-->
                                 </tr>
