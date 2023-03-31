@@ -820,7 +820,7 @@ class ComisionesController extends Controller{
             if($excluyeEstudioTransEntrega === 0){
                 if($entregado === 'S'){
                     if($statusComisiones === 'RESERVADO'){
-                        $datosReservados = DB::table('comisiones_temps')
+                        $datosReservados = DB::table('status_cob_com')
                                             ->select('id_empleado_fk',
                                                 'id_estudio_fk','paciente',
                                                 'cobranza_fecha',

@@ -294,7 +294,8 @@
         $('.transRdN').click(function() {
             if ($(".transRdN").is(':checked')) {
                 $('#drTransc').attr("disabled", true);
-                $('#drTransc').append($("<option class='nullable'></option>").attr("selected", true)
+                $('#drTransc').append($("<option value='N/A' class='nullable'></option>").attr(
+                        "selected", true)
                     .text("-- Selecciona una opción --"));
             }
         });
@@ -307,7 +308,8 @@
 
         $('.interNo').click(function() {
             $('#drInt').attr("disabled", true);
-            $('#drInt').append($("<option class='nullableInterpreta'></option>").attr("selected", true)
+            $('#drInt').append($("<option value='N/A' class='nullableInterpreta'></option>").attr(
+                    "selected", true)
                 .text("-- Selecciona una opción --"));
         });
 
@@ -318,13 +320,15 @@
 
         $('.entNo').click(function() {
             $('#empEnt').attr("disabled", true);
-            $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+            $('#empEnt').append($("<option value='N/A' class='nullableInterpreta'></option>").attr(
+                "selected",
                 true).text("-- Selecciona una opción --"));
         });
 
         $('.entPen').click(function() {
             $('#empEnt').attr("disabled", true);
-            $('#empEnt').append($("<option class='nullableInterpreta'></option>").attr("selected",
+            $('#empEnt').append($("<option value='N/A' class='nullableInterpreta'></option>").attr(
+                "selected",
                 true).text("-- Selecciona una opción --"));
         });
     });
