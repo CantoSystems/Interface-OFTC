@@ -2,10 +2,20 @@
 @section('content')
 <div class="col">
     <div class="card">
+         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-header modalPersonalizado">
-            <h6>Calcular Comisiones</h6>
+            <h4> Calcular Comisiones </h4>
+            <h6 class="alert alert-warning" role="alert" style="color: white;border-color: yellow;border: 1px;">Fecha vigente de corte: 
+                @isset($fechaCorte)
+                {{ date('d-m-Y',strtotime($fechaCorte->fechaCorte)); }}
+                @endisset
+                @empty($fechaCorte)
+                    Registrar fecha de corte
+                @endempty
+
+            </h6>
+
         </div>
-        @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <!--Roles formulario de consulta PARA CÁLCULO DE COMISIONES -->
         <form action="{{ route('comisiones.show') }}" method="GET">
             <div class="row">
@@ -100,7 +110,7 @@
                             <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
                             <td>
                                 {{ $com->cobranza_folio ?? ''}}
-                                <input type="text" value="{{ $com->id_status_fk }}" class="id_status">
+                                <input type="hidden" value="{{ $com->id_status_fk }}" class="id_status">
                             </td>
                             <td>{{ strtoupper($com->paciente) }}</td>
                             <td>{{ $com->dscrpMedicosPro }}</td>
@@ -136,6 +146,9 @@
 
 <div class="card-footer">
     <div class="row">
+        <div class="col-12 alert alert-success" id="autorizacionExitosa" role="alert" style="color: white;text-align:center;">   
+
+        </div>
         <div class="col-3">
             @canany(['comisiones','cobranzaReportes'])
             <a data-target="#modal-fechaCorte" data-toggle="modal">
@@ -163,7 +176,7 @@
         </div>
         <div class="col-3">
             @canany(['comisiones','cobranzaReportes'])
-            @if(isset($totalComisiones) && !empty($totalComisiones))
+            @if(isset($totalComisiones) && !empty($totalComisiones) && !empty($fechaCorte))
             <button id="autorizaComisiones" type="button" class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Autorizar</span>
             </button>

@@ -48,7 +48,12 @@ class ComisionesController extends Controller{
                         ->select('id','nombreActividad')
                         ->get();
 
-        return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta'));
+        $fechaCorte =    DB::table('fechacorte')
+                            ->select('fechaCorte')
+                            ->where('status_fechacorte',1)
+                            ->latest('id')->first();
+
+        return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta','fechaCorte'));
     }
 
     public function calcularComision(Request $request){
@@ -292,7 +297,8 @@ class ComisionesController extends Controller{
                                              ,$infoEscaneo->paciente
                                              ,$infoEscaneo->fecha
                                              ,$fechaInsert
-                                             ,$infoEscaneo->cobranzaFolio);
+                                             ,$infoEscaneo->cobranzaFolio
+                                             ,$infoEscaneo->identificadorEstatus);
                                              
                     }else if(is_null($comisionEmp)){
                         $coincidenciaEstudio = DB::table('estudios')
@@ -594,7 +600,12 @@ class ComisionesController extends Controller{
                                     ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
                                 ])->sum('total');
 
-        return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta','fallo','comisiones','totalComisiones'));
+        $fechaCorte =    DB::table('fechacorte')
+                            ->select('fechaCorte')
+                            ->where('status_fechacorte',1)
+                            ->latest('id')->first();
+
+        return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta','fallo','comisiones','totalComisiones','fechaCorte'));
     }
 
     public function calculoTranscrito($slctEmpleado,$slctEstudio,$identificadorEstatus,$total,$porcentajeAdicional,$paciente,$fecha,$fechaInsert,$cobranzaFolio){
@@ -664,7 +675,7 @@ class ComisionesController extends Controller{
         }
     }
 
-    public function calculoRealiza($slctEmpleado,$identificadorEstatus,$slctEstudio,$total,$paciente,$fecha,$porcentajeComision,$fechaInsert){
+    public function calculoRealiza($slctEmpleado,$identificadorEstatus,$slctEstudio,$total,$paciente,$fecha,$porcentajeComision,$fechaInsert,$cobranzaFolio){
         //Restriccion si se debe realizar el pago por la actividad realizada
         $restriccionRealiza =  DB::table('empleados')
                                         ->join('puestos','puestos.id','empleados.puesto_id')
@@ -694,7 +705,9 @@ class ComisionesController extends Controller{
                                 'porcentaje' => $porcentajeComision,
                                 'total' => $comsionRealizado,
                                 'created_at' => $fechaInsert,
-                                'updated_at' => $fechaInsert
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk' => $identificadorEstatus
                             ]);
                     }else if($excluyeEstudioRealiza == 1){
                             DB::table('status_cob_com')->where('id',$identificadorEstatus)
@@ -723,7 +736,9 @@ class ComisionesController extends Controller{
                         'porcentaje' => $porcentajeComision,
                         'total' => $comsionRealizado,
                         'created_at' => $fechaInsert,
-                        'updated_at' => $fechaInsert
+                        'updated_at' => $fechaInsert,
+                        'cobranza_folio' => $cobranzaFolio,
+                        'id_status_fk' => $identificadorEstatus
                     ]);
 
                 }else if($excluyeEstudioRealizaEnfermeria == 1){
@@ -741,7 +756,7 @@ class ComisionesController extends Controller{
         }
     }
 
-    public function calculoEscaneo($slctEmpleado,$slctEstudio,$total,$porcentajeAdicional,$paciente,$fecha,$fechaInsert,$cobranzaFolio){
+    public function calculoEscaneo($slctEmpleado,$slctEstudio,$total,$porcentajeAdicional,$paciente,$fecha,$fechaInsert,$cobranzaFolio,$identificadorEstatus){
         //Restriccion Escaneo para Enfermeras
         $restriccionEscaneo =  DB::table('empleados')
                                     ->join('puestos','puestos.id','empleados.puesto_id')
@@ -776,7 +791,7 @@ class ComisionesController extends Controller{
                     'id_status_fk'  => $identificadorEstatus
                 ]);
 
-                DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
+                DB::table('status_cob_com')->where('id',$identificadorEstatus)
                     ->update([
                         'cobranza_porcentaje' =>  $porcentajeAdicional,
                         'cobranza_total' => $comisionEscaneo,
@@ -942,12 +957,13 @@ class ComisionesController extends Controller{
                         'total' => $comisionInterpreta,
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert,
-                        'cobranza_folio' => $cobranzaFolio
+                        'cobranza_folio' => $cobranzaFolio,
+                        'id_status_fk' => $identificadorEstatus
                     ]);
 
                     DB::table('status_cob_com')->where('id',$identificadorEstatus)
                         ->update([
-                            'cobranza_porcentaje' =>  $porcentajeComision,
+                            'cobranza_porcentaje' =>  0,
                             'cobranza_total' => 0,
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert,
@@ -967,8 +983,8 @@ class ComisionesController extends Controller{
             DB::table('status_cob_com')->where('id',$identificadorEstatus)
                 ->update([                                               
                     'statusComisiones' => "INFORMATIVO",
-                    'cobranza_porcentaje' =>  $porcentajeComision,
-                    'cobranza_total' => $comisionInterpreta,
+                    'cobranza_porcentaje' =>  0,
+                    'cobranza_total' => 0,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
             ]);
@@ -1312,15 +1328,28 @@ class ComisionesController extends Controller{
                 ->latest('id')->first();
 
         if(!is_null($fechaCorte)){
+
             foreach($data as $status){
-                DB::table('status_cob_com')->where('id',$status->status)
+
+                $actividad = DB::table('status_cob_com')
+                    ->select('id_actividad_fk','id_empleado_fk')
+                    ->where('id',$status->status)
+                    ->first();
+
+                if($actividad->id_actividad_fk === 4 && $actividad->id_empleado_fk === 1 ){
+                    DB::table('status_cob_com')->where('id',$status->status)
+                        ->update([                                               
+                                'id_fcorte_fk' => $fechaCorte->id,
+                    ]);
+                }else{
+                    DB::table('status_cob_com')->where('id',$status->status)
                         ->update([                                               
                                 'statusComisiones' => "PAGADO",
                                 'id_fcorte_fk' => $fechaCorte->id,
-                ]);
+                    ]);
+                }
+                
             }
         }
-
-        return $fechaCorte->id;
     }
 }

@@ -287,6 +287,7 @@
         $('#precioEstudio').val(0);
         $("#porcentajeAdicional").show();
         $("#divComision").show();
+        $('#autorizacionExitosa').hide();
         //$(".porcentajeAdicionalInput").attr("disabled", true);
         //$(".divComisionInput").attr("disabled", true);
         $("#empleadoComision").change(function() {
@@ -480,7 +481,8 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    //console.log(1);
+                    $('#autorizacionExitosa').show();
+                    $('#autorizacionExitosa').text('Autorización Exitosa');
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.text)
