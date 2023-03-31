@@ -1323,14 +1323,12 @@ class ComisionesController extends Controller{
         }
 
         $fechaCorte = DB::table('fechacorte')
-                ->select('id')
-                ->where('status_fechacorte',1)
-                ->latest('id')->first();
+                            ->select('id')
+                            ->where('status_fechacorte',1)
+                            ->latest('id')->first();
 
         if(!is_null($fechaCorte)){
-
             foreach($data as $status){
-
                 $actividad = DB::table('status_cob_com')
                     ->select('id_actividad_fk','id_empleado_fk')
                     ->where('id',$status->status)
@@ -1339,16 +1337,15 @@ class ComisionesController extends Controller{
                 if($actividad->id_actividad_fk === 4 && $actividad->id_empleado_fk === 1 ){
                     DB::table('status_cob_com')->where('id',$status->status)
                         ->update([                                               
-                                'id_fcorte_fk' => $fechaCorte->id,
+                            'id_fcorte_fk' => $fechaCorte->id,
                     ]);
                 }else{
                     DB::table('status_cob_com')->where('id',$status->status)
                         ->update([                                               
-                                'statusComisiones' => "PAGADO",
-                                'id_fcorte_fk' => $fechaCorte->id,
+                            'statusComisiones' => "PAGADO",
+                            'id_fcorte_fk' => $fechaCorte->id,
                     ]);
                 }
-                
             }
         }
     }

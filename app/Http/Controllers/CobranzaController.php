@@ -62,14 +62,14 @@ class CobranzaController extends Controller{
         if($checkEst > 0){
             if($request['registroC']=='S'){
                 $validator = Validator::make($request->all(),[
-                    'registroC'  => 'required',
-                    'drRequiere' => 'required',
+                    'registroC'    => 'required',
+                    'drRequiere'   => 'required',
                     'tipoPaciente' => 'required',
-                    'transRd' => 'required',
-                    'intRd' => 'required',
-                    'escRd' => 'required',
-                    'entRd' => 'required',
-                    'empRealiza' => 'required'
+                    'transRd'      => 'required',
+                    'intRd'        => 'required',
+                    'escRd'        => 'required',
+                    'entRd'        => 'required',
+                    'empRealiza'   => 'required'
                 ],[
                     'registroC.required'    => 'Selecciona si el registro ya está completo.',
                     'drRequiere.required'   => 'Selecciona el doctor al que requiere el estudio.',
@@ -106,7 +106,7 @@ class CobranzaController extends Controller{
                                             'estudiostemps_status' => 1,
                                             'registroC' => $request['registroC'],
                                             'updated_at' => $fechaInsert
-                                        ]);
+                        ]);
                     }else{
                         //No coincide el  estudio
                         if($request->status == 3 && $request->estudioCorregido != null){
@@ -127,7 +127,7 @@ class CobranzaController extends Controller{
                                                 'estudiostemps_status' => 1,
                                                 'registroC' => $request['registroC'],
                                                 'updated_at' => $fechaInsert
-                                            ]);
+                                ]);
                         }else{
                             $updateStatusC = Estudiostemp::where('id',$request['identificador'])
                                                 ->update([
@@ -145,7 +145,7 @@ class CobranzaController extends Controller{
                                                     'estudiostemps_status' => 3,
                                                     'registroC' => $request['registroC'],
                                                     'updated_at' => $fechaInsert
-                                                ]);
+                            ]);
                         }
                     }
                 }  
@@ -160,7 +160,7 @@ class CobranzaController extends Controller{
                         'id_empleado_fk'        => $request['empRealiza'],
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
-                        'cobranza_fecha'       => $request["fchCbr"],
+                        'cobranza_fecha'        => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
                 }
@@ -178,6 +178,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',1]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',1]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se interpretó
@@ -193,6 +211,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',2]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',2]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se escaneó
@@ -208,6 +244,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',3]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',3]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se entregó
@@ -222,7 +276,7 @@ class CobranzaController extends Controller{
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
+                        ]);
                 }else if($request['entRd'] == 'P'){
                     DB::table('status_cob_com')->insert([
                         'id_estudio_fk'         => $estUpd->id,
@@ -235,6 +289,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->delete();
+                    }
                 }
 
                 //registro "Adicional Administrativo"
@@ -246,7 +318,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '12',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobranza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'        => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -259,7 +331,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '30',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobranza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'        => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -272,7 +344,7 @@ class CobranzaController extends Controller{
                     'id_empleado_fk'        => '31',
                     'paciente'              => $request['pacienteCbr'],
                     'statusComisiones'      => 'P',
-                    'cobranza_fecha'       => $request["fchCbr"],
+                    'cobranza_fecha'        => $request["fchCbr"],
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
@@ -397,6 +469,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',1]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',1]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se interpretó
@@ -412,6 +502,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',2]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',2]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se escaneó
@@ -427,6 +535,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',3]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',3]
+                                            ])->delete();
+                    }
                 }
 
                 //registro si se entregó
@@ -454,6 +580,24 @@ class CobranzaController extends Controller{
                         'cobranza_fecha'       => $request["fchCbr"],
                         'cobranza_cantidad'     => $request["cantidadCbr"]
                     ]);
+                }else{
+                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->count();
+
+                    if($matchEstudiosTemps == 1){
+                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                            ->where([
+                                                ['status_cob_com.folio',$request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->delete();
+                    }
                 }
 
                 //registro "Adicional Administrativo"
