@@ -368,48 +368,99 @@ class EstudiosController extends Controller{
                 break;
             }
         }else{
-            if($request->entRd == "S"){
-                $validator = Validator::make($request->all(),[
-                    'empNuevo' => 'Required',
-                ],[
-                    'empNuevo.required' => 'Seleccione el nuevo empleado.'
-                ]);
+            dd($request);
 
-                if($validator->fails()){
-                    return back()->withErrors($validator)->withInput();
+            $datosEnt = DB::table('status_cob_com')
+                            ->select('statusComisiones')
+                            ->where('id',$request["idActividad"])
+                            ->first();
+
+            if($datosEnt->statusComisiones != "RESERVADO"){
+                if($request->entRd == "S"){
+                    $validator = Validator::make($request->all(),[
+                        'empNuevo' => 'Required',
+                    ],[
+                        'empNuevo.required' => 'Seleccione el nuevo empleado.'
+                    ]);
+
+                    if($validator->fails()){
+                        return back()->withErrors($validator)->withInput();
+                    }
+
+                    DB::table('status_cob_com')->where('id',$request['idActividad'])
+                        ->update([                                               
+                            'id_empleado_fk' => $request["empNuevo"],
+                            'statusComisiones'  => 'P'
+                    ]);
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => $request["empNuevo"],
+                            'entregado'     => 'S' 
+                    ]);
+                }else if($request->entRd == "P"){
+                    DB::table('status_cob_com')->where('id',$request['idActividad'])
+                        ->update([                                               
+                            'id_empleado_fk'    => 1,
+                            'statusComisiones'  => 'P'
+                    ]);
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => 1,
+                            'entregado'     => 'P' 
+                    ]);
+                }else{
+                    $delStatusCob = DB::table('status_cob_com')->where('id',$request['idActividad'])->delete();
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => 1,
+                            'entregado'     => 'N' 
+                    ]);
                 }
-
-                DB::table('status_cob_com')->where('id',$request['idActividad'])
-                    ->update([                                               
-                        'id_empleado_fk' => $request["empNuevo"],
-                        'statusComisiones'  => ''
-                ]);
-
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                    ->update([                                               
-                        'id_empEnt_fk'  => $request["empNuevo"],
-                        'entregado'     => 'S' 
-                ]);
-            }else if($request->entRd == "P"){
-                DB::table('status_cob_com')->where('id',$request['idActividad'])
-                    ->update([                                               
-                        'id_empleado_fk'    => 1,
-                        'statusComisiones'  => 'P'
-                ]);
-
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                    ->update([                                               
-                        'id_empEnt_fk'  => 1,
-                        'entregado'     => 'P' 
-                ]);
             }else{
-                $delStatusCob = DB::table('status_cob_com')->where('id',$request['idActividad'])->delete();
+                if($request->entRd == "S"){
+                    $validator = Validator::make($request->all(),[
+                        'empNuevo' => 'Required',
+                    ],[
+                        'empNuevo.required' => 'Seleccione el nuevo empleado.'
+                    ]);
 
-                DB::table('estudiostemps')->where('id',$request['idEstudios'])
-                    ->update([                                               
-                        'id_empEnt_fk'  => 1,
-                        'entregado'     => 'N' 
-                ]);
+                    if($validator->fails()){
+                        return back()->withErrors($validator)->withInput();
+                    }
+
+                    DB::table('status_cob_com')->where('id',$request['idActividad'])
+                        ->update([                                               
+                            'id_empleado_fk' => $request["empNuevo"]
+                    ]);
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => $request["empNuevo"],
+                            'entregado'     => 'S' 
+                    ]);
+                }else if($request->entRd == "P"){
+                    DB::table('status_cob_com')->where('id',$request['idActividad'])
+                        ->update([                                               
+                            'id_empleado_fk'    => 1
+                    ]);
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => 1,
+                            'entregado'     => 'P' 
+                    ]);
+                }else{
+                    $delStatusCob = DB::table('status_cob_com')->where('id',$request['idActividad'])->delete();
+
+                    DB::table('estudiostemps')->where('id',$request['idEstudios'])
+                        ->update([                                               
+                            'id_empEnt_fk'  => 1,
+                            'entregado'     => 'N' 
+                    ]);
+                }
             }
         }
         
