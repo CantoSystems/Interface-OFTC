@@ -878,7 +878,7 @@ class ComisionesController extends Controller{
                                 ]);
                         }
                     }else if($entregado === 'P'){
-                        if($statusComisiones === 'P'){
+                        if($statusComisiones === 'P' || $statusComisiones === 'RESERVADO'){
                         $comisionEntrega = ($total * $porcentajeComision)/100;
                     
                         //Insert en la tabla temporal
