@@ -19,6 +19,8 @@ use App\Models\Doctor;
 use App\Models\TipoPaciente;
 use App\Mail\MessageReceived;
 
+session_start();
+
 class DetalleCController extends Controller{
     /**
      * Display a listing of the resource.
@@ -256,6 +258,10 @@ class DetalleCController extends Controller{
     }
 
     public function mostrarHojas(Request $request){
+        $_SESSION["slctDoctor"] = $request->slctDoctor;
+        $_SESSION["fechaInicio"] = $request->fechaInicio;
+        $_SESSION["fechaFin"] = $request->fechaFin;
+        
         DB::table('historico_detalle_consumo')->truncate();
 
         $validator = Validator::make($request->all(),[
@@ -344,6 +350,12 @@ class DetalleCController extends Controller{
     }
 
     public function updtHoja(Request $request){
+        $arregloSesion = new Request(array(
+            "slctDoctor" => $_SESSION["slctDoctor"],
+            "fechaInicio" => $_SESSION["fechaInicio"],
+            "fechaFin" => $_SESSION["fechaFin"],
+        ));
+        
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
 
@@ -352,16 +364,14 @@ class DetalleCController extends Controller{
                                     ->where([
                                         ['id_doctor_fk','=',$request->doctorHoja],
                                         ['tipoPorcentaje','=','S'],
-                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
-                                    ])
+                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]])
                                     ->select('porcentaje','id_metodoPago_fk')
                                     ->get();
         }else{
             $porcentajeComision = DB::table('comisiones_doctores')
                                     ->where([
                                         ['id_doctor_fk','=',$request->doctorHoja],
-                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]
-                                    ])
+                                        ['id_tipoPaciente_fk','=',$request->tipoPacienteHoja]])
                                     ->select('porcentaje','id_metodoPago_fk')
                                     ->get();
         }
@@ -432,20 +442,20 @@ class DetalleCController extends Controller{
                             ->get();
 
         $updtHistorico = DB::table('historico_detalle_consumo')
-                                ->where('id_hoja','=',$request->idHoja)
-                                ->update(['id_doctor_fk' => $request->doctorHoja,
-                                    'fechaElaboracion' => $request->fechaHoja,
-                                    'paciente' => $request->pacienteHoja,
-                                    'tipoPaciente' => $request->tipoPacienteHoja,
-                                    'cirugia' => $request->cirugia,
-                                    'statusHoja' => $request->statusHoja,
-                                    'cantidadEfe' => $totalEfectivo,
-                                    'cantidadTrans' => $totalTrans,
-                                    'TPV' => $totalTPV,
-                                    'tipoCirugia' => $request->registroC
+                            ->where('id_hoja','=',$request->idHoja)
+                            ->update(['id_doctor_fk' => $request->doctorHoja,
+                                'fechaElaboracion' => $request->fechaHoja,
+                                'paciente' => $request->pacienteHoja,
+                                'tipoPaciente' => $request->tipoPacienteHoja,
+                                'cirugia' => $request->cirugia,
+                                'statusHoja' => $request->statusHoja,
+                                'cantidadEfe' => $totalEfectivo,
+                                'cantidadTrans' => $totalTrans,
+                                'TPV' => $totalTPV,
+                                'tipoCirugia' => $request->registroC
                         ]);
 
-        return redirect()->route('editHojaConsumo.edit',[$request->idHoja]);
+        return $this->mostrarHojas($arregloSesion);
     }
 
     public function exportarPDF($id){
