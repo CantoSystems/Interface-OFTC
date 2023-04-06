@@ -53,7 +53,7 @@
                                 <label>Tipo Paciente</label>
                                 <select class="custom-select rounded-0 combos" id="tipoPacienteHoja"
                                     name="tipoPacienteHoja">
-                                    <option disabled selected>Seleccionar una opción...</option>
+                                    <option disabled selected>-- Seleccionar una opción --</option>
                                     @foreach($tipoPaciente as $tipoP)
                                     <option value="{{ $tipoP->id }}">
                                         {{ $tipoP->nombretipo_paciente }}

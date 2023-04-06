@@ -5,7 +5,7 @@
         <div class="card-header modalPersonalizado">
             <h4>Catálogo Porcentajes</h4>
         </div>
-    @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
+        @canany(['comisiones','detalleConsumo','auxiliardetalleConsumo'])
         <div class="col-md-3 col-sm-4 col-8">
             <div class="info-box shadow">
                 <span class="info-box-icon bg-info"><i class="fas fa-user-plus"></i></span>
@@ -50,7 +50,7 @@
                         <td>{{ $porDoc->Doctor }}</td>
                         <td>{{ $porDoc->nombretipo_paciente }}</td>
                         <td>{{ $porDoc->descripcion }}</td>
-                        <td>{{ number_format($porDoc->porcentaje,2) }} %</td>
+                        <td style="text-align: right;">{{ number_format($porDoc->porcentaje,2) }} %</td>
                         <td>@if($porDoc->tipoPorcentaje == "S")
                             Especial
                             @else
@@ -72,7 +72,7 @@
 @include('catalogos.porcentajes.nvoporcentaje');
 @elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','invitado'])
 <div class="alert alert-danger" role="alert">
-        No cuenta con los privilegios para acceder a este módulo del sistema
+    No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
 @endcanany
 @endsection
