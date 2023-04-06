@@ -6,7 +6,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
                 <div class="card card-info">
-        @canany(['comisiones','detalleConsumo'])
+                    @canany(['comisiones','detalleConsumo'])
                     <div class="card-header">
                         <h3 class="card-title">Información Porcentaje:
                             <b>{{ $porcentajeInfo->Doctor }}</b>
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label>Porcentaje</label>
+                                        <label>Porcentaje (%)</label>
                                         <input type="number" step="0.01" value="{{ $porcentajeInfo->porcentaje }}"
                                             id="porcentajeDoctor" name="porcentajeDoctor" class="form-control">
                                         <input type="hidden" value="{{ $porcentajeInfo->id }}" id="idComision"
@@ -117,13 +117,13 @@
                         </div>
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-4"> 
+                                <div class="col-4">
                                     <a href="{{ route('mostrarPorcentajes.show')}}">
-                                            <button type="button" id="btnGuardar" name="btnGuardar"
-                                                class="btn btn-block btn-outline-secondary btn-xs">
-                                                Regresar
-                                            </button>
-                                    </a>  
+                                        <button type="button" id="btnGuardar" name="btnGuardar"
+                                            class="btn btn-block btn-outline-secondary btn-xs">
+                                            Regresar
+                                        </button>
+                                    </a>
                                 </div>
                                 <div class="col-4">
                                     <button type="submit" id="btnGuardar" name="btnGuardar"
@@ -146,8 +146,8 @@
 </section>
 @include('catalogos.porcentajes.modaldelete')
 @elsecanany(['cobranzaReportes','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
-    <div class="alert alert-danger" role="alert">
-                    No cuenta con los privilegios para acceder a este módulo del sistema
-    </div>
+<div class="alert alert-danger" role="alert">
+    No cuenta con los privilegios para acceder a este módulo del sistema
+</div>
 @endcanany
 @endsection
