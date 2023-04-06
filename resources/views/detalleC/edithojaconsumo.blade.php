@@ -162,11 +162,10 @@
                                 </div>
                             </div>
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
-    </div>
     </div>
 </section>
 @include('detalleC.modaldeletehoja')
