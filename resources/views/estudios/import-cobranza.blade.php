@@ -53,6 +53,7 @@
                         <th>Fecha</th>
                         <th>Status</th>
                         <th>Ver</th>
+                        <th>Eliminar Registro</th>
                     </tr>
                 </thead>
             </table>

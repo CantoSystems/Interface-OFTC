@@ -63,7 +63,8 @@ class EstudiosController extends Controller{
                 ->addColumn('date','estudios.columnaFecha')
                 ->addColumn('btn','estudios.btnCobranza-ver')
                 ->addColumn('on-off','estudios.btnCobranza-status')
-                ->rawColumns(['date','btn','on-off'])
+                ->addColumn('eliminar','estudios.delete-registro')
+                ->rawColumns(['date','btn','on-off','eliminar'])
                 ->toJson();
     }
 
@@ -465,5 +466,25 @@ class EstudiosController extends Controller{
         }
         
         return redirect()->route('importarCobranza.show',[$request->idEstudios]);
+    }
+
+    public function eliminar($id){
+
+
+        $registrosExistentes = DB::table('status_cob_com')
+                            ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
+                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
+                            ->join('estudios','estudios.id','=','status_cob_com.id_estudio_fk')
+                            ->select('status_cob_com.id'
+                                    ,'estudios.dscrpMedicosPro'
+                                    ,'status_cob_com.folio'
+                                    ,'actividades.nombreActividad'
+                                    ,'status_cob_com.statusComisiones'
+                                    ,'empleados.id_emp'
+                                    ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
+                            ->where('id_estudiostemps_fk',$id)
+                            ->get();
+
+        return view('estudios.deleteCobranza',compact('registrosExistentes'));
     }
 }
