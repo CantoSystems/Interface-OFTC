@@ -221,11 +221,11 @@
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input disabled type="radio" value="S" name="intRd" class="interSi">
+                                            <input type="radio" value="S" name="intRd" class="interSi">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input disabled checked type="radio" value="N" name="intRd" class="interNo">
+                                            <input checked type="radio" value="N" name="intRd" class="interNo">
                                             <label>NO</label>
                                         </div>
                                         @endif
