@@ -499,7 +499,6 @@
     //Función para convertir en texto en mayusculas
     function mayus(e) {
         e.value = e.value.toUpperCase();
-
     }
     </script>
 </body>
