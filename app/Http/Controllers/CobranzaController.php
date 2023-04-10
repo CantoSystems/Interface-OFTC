@@ -26,8 +26,7 @@ class CobranzaController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        dd($request);
-        /*$fechaInsert = now();
+        $fechaInsert = now();
         
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
@@ -843,7 +842,7 @@ class CobranzaController extends Controller{
             return back()->withErrors('El estudio no se encuentra registrado en el sistema.')->withInput();
         }//Se verifica si el estudio está completo
         
-        return redirect()->route('importarCobranza.index');*/
+        return redirect()->route('importarCobranza.index');
     }
 
     /**
