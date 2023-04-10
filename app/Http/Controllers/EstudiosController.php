@@ -370,7 +370,6 @@ class EstudiosController extends Controller{
             }
         }else{
            //dd($request);
- 
             $datosEnt = DB::table('status_cob_com')
                             ->select('statusComisiones')
                             ->where('id',$request["idActividad"])

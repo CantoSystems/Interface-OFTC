@@ -26,7 +26,8 @@ class CobranzaController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        $fechaInsert = now();
+        dd($request);
+        /*$fechaInsert = now();
         
         if($request['transRd'] == 'N'){
             $doctorTrans = '1';
@@ -271,9 +272,9 @@ class CobranzaController extends Controller{
                                     ['status_cob_com.id_estudio_fk',$estUpd->id],
                                     ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                     ['status_cob_com.id_actividad_fk',4]
-                                ])->get();
+                                ])->first();
 
-                if($datosRegEnt["statusComisiones"] != "RESERVADO"){
+                if($datosRegEnt->statusComisiones != "RESERVADO"){
                     if($request['entRd'] == 'S'){
                         DB::table('status_cob_com')->insert([
                             'id_estudio_fk'         => $estUpd->id,
@@ -842,7 +843,7 @@ class CobranzaController extends Controller{
             return back()->withErrors('El estudio no se encuentra registrado en el sistema.')->withInput();
         }//Se verifica si el estudio está completo
         
-        return redirect()->route('importarCobranza.index');
+        return redirect()->route('importarCobranza.index');*/
     }
 
     /**
