@@ -9,5 +9,5 @@ class FechaCorte extends Model
 {
     use HasFactory;
 
-     protected $table = 'fechacorte';
+     protected $table = 'fechaCorte';
 }
