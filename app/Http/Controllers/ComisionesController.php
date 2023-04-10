@@ -48,10 +48,10 @@ class ComisionesController extends Controller{
                         ->select('id','nombreActividad')
                         ->get();
 
-        $fechaCorte =    DB::table('fechacorte')
-                            ->select('fechaCorte')
-                            ->where('status_fechacorte',1)
-                            ->latest('id')->first();
+        $fechaCorte = DB::table('fechaCorte')
+                        ->select('fechaCorte')
+                        ->where('status_fechacorte',1)
+                        ->latest('id')->first();
 
         return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta','fechaCorte'));
     }
@@ -603,10 +603,10 @@ class ComisionesController extends Controller{
                                     ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
                                 ])->sum('total');
 
-        $fechaCorte =    DB::table('fechacorte')
-                            ->select('fechaCorte')
-                            ->where('status_fechacorte',1)
-                            ->latest('id')->first();
+        $fechaCorte = DB::table('fechaCorte')
+                        ->select('fechaCorte')
+                        ->where('status_fechacorte',1)
+                        ->latest('id')->first();
 
         return view('comisiones.showComisiones',compact('empleados','estudios','actividades','drUtilidadInterpreta','fallo','comisiones','totalComisiones','fechaCorte'));
     }
@@ -1291,7 +1291,7 @@ class ComisionesController extends Controller{
             'fechaCorte.unique' => 'La fecha ingresada ya existe',
         ]);
         
-        $desactivarCorte = DB::table('fechacorte')
+        $desactivarCorte = DB::table('fechaCorte')
                 ->select('id')
                 ->where('status_fechacorte',1)
                 ->latest('id')->first();
@@ -1303,7 +1303,7 @@ class ComisionesController extends Controller{
             $fecha->save(); 
             
         }else if(!is_null($desactivarCorte)){
-            DB::table('fechacorte')
+            DB::table('fechaCorte')
                 ->where('id',$desactivarCorte->id)
                 ->update([  
                     'status_fechacorte'=>0,
@@ -1327,10 +1327,10 @@ class ComisionesController extends Controller{
             $data = json_decode($value);
         }
 
-        $fechaCorte = DB::table('fechacorte')
-                            ->select('id')
-                            ->where('status_fechacorte',1)
-                            ->latest('id')->first();
+        $fechaCorte = DB::table('fechaCorte')
+                        ->select('id')
+                        ->where('status_fechacorte',1)
+                        ->latest('id')->first();
 
         if(!is_null($fechaCorte)){
             foreach($data as $status){
