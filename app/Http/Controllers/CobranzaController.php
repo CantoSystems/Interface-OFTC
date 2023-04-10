@@ -271,9 +271,9 @@ class CobranzaController extends Controller{
                                     ['status_cob_com.id_estudio_fk',$estUpd->id],
                                     ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                     ['status_cob_com.id_actividad_fk',4]
-                                ])->get();
+                                ])->first();
 
-                if($datosRegEnt["statusComisiones"] != "RESERVADO"){
+                if($datosRegEnt->statusComisiones != "RESERVADO"){
                     if($request['entRd'] == 'S'){
                         DB::table('status_cob_com')->insert([
                             'id_estudio_fk'         => $estUpd->id,
