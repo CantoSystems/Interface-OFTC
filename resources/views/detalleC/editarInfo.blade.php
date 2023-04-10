@@ -2,7 +2,7 @@
     <div class="modal-dialog  modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Informacion
+                <h1 class="modal-title modalPersonalizado" id="exampleModalLabel" class="modalPersonalizado">Información
                     Adicional Detalle de Consumo</h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -22,7 +22,7 @@
                             <div class="form-group">
                                 <label>Seleccionar Doctor</label>
                                 <select class="custom-select rounded-0 combos" id="doctorHoja" name="doctorHoja">
-                                    <option disabled selected>Seleccionar una opción...</option>
+                                    <option disabled selected>-- Seleccionar una opción --</option>
                                     @foreach($doctores as $doc)
                                     <option value="{{ $doc->id }}">{{ $doc->doctor_titulo }}
                                         {{ $doc->doctor_nombre }} {{ $doc->doctor_apellidop }}
@@ -35,8 +35,8 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Tipo de Cirugía</label>
-                                <input class="form-control " type="text" name="cirugia" id="cirugia" 
-                                onkeyup="mayus(this);">
+                                <input class="form-control " type="text" name="cirugia" id="cirugia"
+                                    onkeyup="mayus(this);">
                             </div>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Nombre Paciente</label>
-                                <input type="text" class="form-control" id="pacienteHoja" name="pacienteHoja" 
-                                onkeyup="mayus(this);">
+                                <input type="text" class="form-control" id="pacienteHoja" name="pacienteHoja"
+                                    onkeyup="mayus(this);">
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -53,7 +53,7 @@
                                 <label>Tipo Paciente</label>
                                 <select class="custom-select rounded-0 combos" id="tipoPacienteHoja"
                                     name="tipoPacienteHoja">
-                                    <option disabled selected>Seleccionar una opción...</option>
+                                    <option disabled selected>-- Seleccionar una opción --</option>
                                     @foreach($tipoPaciente as $tipoP)
                                     <option value="{{ $tipoP->id }}">
                                         {{ $tipoP->nombretipo_paciente }}

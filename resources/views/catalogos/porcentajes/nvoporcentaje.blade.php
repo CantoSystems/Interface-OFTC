@@ -53,7 +53,7 @@
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Porcentaje</label>
+                                    <label>Porcentaje (%)</label>
                                     <input type="number" step="0.01" id="porcentajeDoctor" name="porcentajeDoctor"
                                         class="form-control">
                                 </div>
