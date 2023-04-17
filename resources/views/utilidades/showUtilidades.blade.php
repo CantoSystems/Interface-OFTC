@@ -4,7 +4,7 @@
     <div class="card">
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-header modalPersonalizado">
-            <h4> Calcular Comisiones </h4>
+            <h4> Calcular Utilidades </h4>
             <h6 class="alert alert-warning" role="alert" style="color: white;border-color: yellow;border: 1px;">Fecha
                 vigente de corte:
                 @isset($fechaCorte)
@@ -19,7 +19,7 @@
         <form action="{{ route('comisiones.show') }}" method="GET">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-4">
                         <label class="info-box-text">Selecciona Empleado:</label>
                         <select class="form-control" name="slctEmpleado" id="slctEmpleado">
                             <option selected disabled>-- Selecciona una opción --</option>
@@ -50,17 +50,6 @@
                         <input class="form-control" type="date" name="fechaFin" id="fechaFin">
                     </div>
                     <div class="col-2">
-                        <label>Tipo de Cálculo:</label>
-                        <select class="form-control" name="selectCalculo" id="selectCalculo">
-                            <option selected disabled>-- Selecciona una optión--</option>
-                            @foreach($actividades as $act)
-                            <option value="{{ $act->nombreActividad }}">
-                                {{ $act->nombreActividad }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-1">
                         <br>
                         <button id="cargarCobranza" type="submit" class="btn btn-block btn-outline-secondary btn-xs">
                             <span class="info-box-number">Calcular</span>
@@ -147,6 +136,7 @@
     <div class="row">
         <div class="col-12 alert alert-success" id="autorizacionExitosa" role="alert"
             style="color: white;text-align:center;">
+
         </div>
         <div class="col-3">
             @canany(['comisiones','cobranzaReportes'])
@@ -194,7 +184,7 @@
 </div>
 </form>
 </div>
-@include('comisiones.modalFechaCorte')
+@include('utilidades.modalFechaCorteU')
 <!--
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
