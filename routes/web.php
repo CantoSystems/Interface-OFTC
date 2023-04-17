@@ -9,6 +9,7 @@ use App\Http\Controllers\DetalleCController;
 use App\Http\Controllers\CobranzaController;
 use App\Http\Controllers\ComisionesController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\UtilidadesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +83,9 @@ Route::post('/usuario-invitado',[UserController::class,'registroInvitado'])->nam
 Route::get('/comisiones',[ComisionesController::class,'showComisiones'])->name('comisiones.index')->middleware('auth');
 Route::get('/generar-comisiones',[ComisionesController::class,'calcularComision'])->name('comisiones.show')->middleware('auth');
 Route::post('/update-comisiones',[ComisionesController::class,'actualizarComision'])->name('comisiones.actualiza')->middleware('auth');
+
+//Cálculo de Utilidades
+Route::get('/utilidades',[UtilidadesController::class,'showUtilidades'])->name('utilidades.index')->middleware('auth');
 
 //Catálogo Estudios inviduales
 Route::get('/catalogo-estudios',[EstudiosController::class,'showCatalogo'])->name('mostrarCatalogo.show')->middleware('auth');
