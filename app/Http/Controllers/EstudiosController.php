@@ -63,8 +63,7 @@ class EstudiosController extends Controller{
                 ->addColumn('date','estudios.columnaFecha')
                 ->addColumn('btn','estudios.btnCobranza-ver')
                 ->addColumn('on-off','estudios.btnCobranza-status')
-                ->addColumn('eliminar','estudios.delete-registro')
-                ->rawColumns(['date','btn','on-off','eliminar'])
+                ->rawColumns(['date','btn','on-off'])
                 ->toJson();
     }
 
@@ -116,7 +115,14 @@ class EstudiosController extends Controller{
                             ->where('id_estudiostemps_fk',$id)
                             ->get();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEntrega','statusCobCom'));
+         $totalStatusPagado = DB::table('status_cob_com')
+                                    ->where('id_estudiostemps_fk',$id)
+                                    ->whereIn('statusComisiones',["PAGADO","RESERVADO"])
+                                    ->count('statusComisiones');
+
+                                   
+
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEntrega','statusCobCom','totalStatusPagado'));
     }
 
     /**
@@ -468,22 +474,27 @@ class EstudiosController extends Controller{
     }
 
     public function eliminar($id){
-
-
-        $registrosExistentes = DB::table('status_cob_com')
-                            ->join('empleados','empleados.id_emp','=','status_cob_com.id_empleado_fk')
-                            ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
-                            ->join('estudios','estudios.id','=','status_cob_com.id_estudio_fk')
-                            ->select('status_cob_com.id'
-                                    ,'estudios.dscrpMedicosPro'
-                                    ,'status_cob_com.folio'
-                                    ,'actividades.nombreActividad'
-                                    ,'status_cob_com.statusComisiones'
-                                    ,'empleados.id_emp'
-                                    ,DB::raw("CONCAT(empleados.empleado_nombre,' ',empleados.empleado_apellidop,' ',empleados.empleado_apellidom) AS empleado"))
+        $statusExistencias = DB::table('status_cob_com')
                             ->where('id_estudiostemps_fk',$id)
+                            ->select('id')
                             ->get();
+       
 
-        return view('estudios.deleteCobranza',compact('registrosExistentes'));
+        if(!is_null($statusExistencias)){
+            foreach($statusExistencias as $existencias){
+                DB::table('status_cob_com')
+                    ->where('id',$existencias->id)
+                    ->delete();
+            }
+                DB::table('estudiostemps')
+                    ->where('id',$id)
+                    ->delete();
+        }else if(is_null($statusExistencias)){
+            DB::table('estudiostemps')
+                    ->where('id',$id)
+                    ->delete();
+        }
+
+        return redirect()->route('importarCobranza.index');
     }
 }

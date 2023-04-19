@@ -352,12 +352,10 @@
                     {
                         data: 'btn'
                     },
-                    {
-                        data: 'eliminar'
-                    },
                 ]
             });
         });
+
 
         $(function() {
             $("#genReportes").DataTable({
@@ -415,6 +413,8 @@
                 }
             });
         });
+
+        
 
         $(function() {
             $("#catEstudios").DataTable({

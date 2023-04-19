@@ -534,4 +534,22 @@
 <div class=" alert alert-danger" role="alert">No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
 @endcanany
+@canany(['comisiones','cobranzaReportes'])
+<section class="content">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"></div>
+        <div class="col-4">
+            @if($totalStatusPagado >= 1 || $datosPaciente->estudiostemps_status === 1)
+                 <button class="btn btn-block btn-outline-danger btn-xs" disabled>Eliminar</button>
+
+            @else
+                <button class="btn btn-block btn-outline-danger btn-xs" type="button" data-target="#eliminar-{{$datosPaciente->id}}" data-toggle="modal">Eliminar</button>
+            @endif
+        </div>
+    </div>
+</section>
+@include('estudios.modalCobranzaDelete')
+@endcanany
+
 @endsection
