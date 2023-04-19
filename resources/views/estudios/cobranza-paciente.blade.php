@@ -509,6 +509,7 @@
                                         @case('Adicional Administrativo')
                                         @case('Adicional Egresos')
                                         @case('Adicional Gestion')
+                                        @case('Utilidad')
                                         <a class="btn btn-block btn-outline-secondary btn-xs">NO
                                             APLICA</a>
                                         @break

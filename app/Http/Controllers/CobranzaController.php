@@ -265,7 +265,6 @@ class CobranzaController extends Controller{
                 }
 
                 //registro si se entregó
-                //registro si se entregó
                 $datosRegEnt = DB::table('status_cob_com')
                                 ->select('statusComisiones')
                                 ->where([
@@ -441,13 +440,46 @@ class CobranzaController extends Controller{
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
+                //registro(s) de utilidad
+                $checkutilidades = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_actividad_fk',10],
+                                        ['status_cob_com.paciente',$request['pacienteCbr']],
+                                        ['status_cob_com.folio',$request['folioCbr']],
+                                        ['status_cob_com.id_estudiostemps_fk',$request['identificador']],
+                                    ])->count();
+                                    
+                if($checkutilidades <= 0){
+                    $datosUtilidades = DB::table('comisiones')
+                                    ->where([
+                                        ['comisiones.id_estudio_fk',$estUpd->id],
+                                        ['comisiones.porcentajeUtilidad','<>',0],
+                                    ])->get();
+
+                    foreach ($datosUtilidades as $dUt){
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '10',
+                            'id_empleado_fk'        => $dUt->id_empleado_fk,
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                        ]);
+                    }
+                }
+
                 DB::delete("DELETE duplicados from status_cob_com as duplicados
                             INNER JOIN status_cob_com as temporales
                             WHERE duplicados.id < temporales.id
                             AND duplicados.folio = temporales.folio
                             AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                             AND duplicados.paciente = temporales.paciente
-                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk
+                            AND duplicados.id_actividaD_fk <> 10");
 
                 $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                             ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
@@ -824,13 +856,46 @@ class CobranzaController extends Controller{
                     'cobranza_cantidad'     => $request["cantidadCbr"]
                 ]);
 
+                //registro(s) de utilidad
+                $checkutilidades = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_actividad_fk',10],
+                                        ['status_cob_com.paciente',$request['pacienteCbr']],
+                                        ['status_cob_com.folio',$request['folioCbr']],
+                                        ['status_cob_com.id_estudiostemps_fk',$request['identificador']],
+                                    ])->count();
+
+                if($checkutilidades <= 0){
+                    $datosUtilidades = DB::table('comisiones')
+                                    ->where([
+                                        ['comisiones.id_estudio_fk',$estUpd->id],
+                                        ['comisiones.porcentajeUtilidad','<>',0],
+                                    ])->get();
+
+                    foreach ($datosUtilidades as $dUt){
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '10',
+                            'id_empleado_fk'        => $dUt->id_empleado_fk,
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                        ]);
+                    }
+                }
+
                 DB::delete("DELETE duplicados from status_cob_com as duplicados
                             INNER JOIN status_cob_com as temporales
                             WHERE duplicados.id < temporales.id
                             AND duplicados.folio = temporales.folio
                             AND duplicados.id_estudio_fk = temporales.id_estudio_fk
                             AND duplicados.paciente = temporales.paciente
-                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk");
+                            AND duplicados.id_actividad_fk = temporales.id_actividad_fk
+                            AND duplicados.id_actividaD_fk <> 10");
 
                 $matchEstudiosTemps = DB::table('status_cob_com')
                                             ->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
@@ -854,7 +919,6 @@ class CobranzaController extends Controller{
                                         ->update([
                                             'interpretacion'        => 'S',
                                             'id_empInt_fk'          => $match->id_empleado_fk
-
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'escRd'){
                         Estudiostemp::where('id',$request['identificador'])
