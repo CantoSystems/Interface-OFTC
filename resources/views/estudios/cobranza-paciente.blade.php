@@ -225,7 +225,7 @@
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="intRd" class="interNo">
+                                            <input type="radio" value="N" name="intRd" class="interNo">
                                             <label>NO</label>
                                         </div>
                                         @endif
