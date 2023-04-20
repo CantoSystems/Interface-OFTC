@@ -148,169 +148,189 @@ class CobranzaController extends Controller{
                             ]);
                         }
                     }
-                }  
-                
-                //registro si se realiza
-                if(Arr::has($request,'empRealiza')){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '5',
-                        'id_empleado_fk'        => $request['empRealiza'],
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
                 }
 
-                //registro si se transcribió
-                if($request['transRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '1',
-                        'id_empleado_fk'        => $doctorTrans,
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',1]
-                                            ])->count();
+                //registro si se realiza
+                $datosStatus5 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',5]
+                                ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',1]
-                                            ])->delete();
+                if($datosStatus5->statusComisiones != "PAGADO"){
+                    if(Arr::has($request,'empRealiza')){
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => $request['empRealiza'],
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                        ]);
+                    }
+                }
+
+                //registro si se transcribe
+                if($request['transRd'] != "N"){
+                    $datosStatus = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',1]
+                                    ])->first();
+
+                    if($datosStatus->statusComisiones != "PAGADO"){
+                        if($request['transRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '1',
+                                'id_empleado_fk'        => $doctorTrans,
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',1]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',1]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
 
                 //registro si se interpretó
-                if($request['intRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '2',
-                        'id_empleado_fk'        => $doctorInter,
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',2]
-                                            ])->count();
+                if($request['intRd'] != "N"){
+                    $datosStatus2 = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',2]
+                                    ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',2]
-                                            ])->delete();
+                    if($datosStatus2->statusComisiones != "PAGADO"){
+                        if($request['intRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '2',
+                                'id_empleado_fk'        => $doctorInter,
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',2]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',2]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
-
+                
                 //registro si se escaneó
-                if($request['escRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '3',
-                        'id_empleado_fk'        => '1',
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',3]
-                                            ])->count();
+                if($request['escRd'] != "N"){
+                    $datosStatus3 = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',3]
+                                    ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',3]
-                                            ])->delete();
+                    if($datosStatus3->statusComisiones != "PAGADO"){
+                        if($request['escRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '3',
+                                'id_empleado_fk'        => '1',
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'       => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',3]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',3]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
 
                 //registro si se entregó
-                $datosRegEnt = DB::table('status_cob_com')
-                                ->select('statusComisiones')
+                if($request['entRd'] != "N"){
+                    $datosStatus4 = DB::table('status_cob_com')
                                 ->where([
                                     ['status_cob_com.folio', $request->folioCbr],
                                     ['status_cob_com.id_estudio_fk',$estUpd->id],
                                     ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                     ['status_cob_com.id_actividad_fk',4]
-                                ])->count();
+                                ])->first();
 
-                if($datosRegEnt == 0){
-                    if($request['entRd'] == 'S'){
-                        DB::table('status_cob_com')->insert([
-                            'id_estudio_fk'         => $estUpd->id,
-                            'id_estudiostemps_fk'   => $request['identificador'],
-                            'folio'                 => $request['folioCbr'],
-                            'id_actividad_fk'       => '4',
-                            'id_empleado_fk'        => $request['empEnt'],
-                            'paciente'              => $request['pacienteCbr'],
-                            'statusComisiones'      => 'P',
-                            'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
-                            ]);
-                    }else if($request['entRd'] == 'P'){
-                        DB::table('status_cob_com')->insert([
-                            'id_estudio_fk'         => $estUpd->id,
-                            'id_estudiostemps_fk'   => $request['identificador'],
-                            'folio'                 => $request['folioCbr'],
-                            'id_actividad_fk'       => '4',
-                            'id_empleado_fk'        => 1,
-                            'statusComisiones'      => 'P',
-                            'paciente'              => $request['pacienteCbr'],
-                            'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
-                        ]);
-                    }
-                }else{
-                    $datosRegEnt2 = DB::table('status_cob_com')
+                if($datosStatus4->statusComisiones != "PAGADO"){
+                    $datosRegEnt = DB::table('status_cob_com')
                                     ->select('statusComisiones')
                                     ->where([
                                         ['status_cob_com.folio', $request->folioCbr],
                                         ['status_cob_com.id_estudio_fk',$estUpd->id],
                                         ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                         ['status_cob_com.id_actividad_fk',4]
-                                    ])->first();
+                                    ])->count();
 
-                    if($datosRegEnt2->statusComisiones != "RESERVADO"){
+                    if($datosRegEnt == 0){
                         if($request['entRd'] == 'S'){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
@@ -335,110 +355,178 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                             ]);
-                        }else{
-                            $matchEstudiosTemps = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio', $request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->count();
-
-                            if($matchEstudiosTemps == 1){
-                                $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio',$request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->delete();
-                            }
                         }
                     }else{
-                        if($request['entRd'] == 'S'){
-                            DB::table('status_cob_com')->insert([
-                                'id_estudio_fk'         => $estUpd->id,
-                                'id_estudiostemps_fk'   => $request['identificador'],
-                                'folio'                 => $request['folioCbr'],
-                                'id_actividad_fk'       => '4',
-                                'id_empleado_fk'        => $request['empEnt'],
-                                'paciente'              => $request['pacienteCbr'],
-                                'statusComisiones'      => 'RESERVADO',
-                                'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
-                                ]);
-                        }else if($request['entRd'] == 'P'){
-                            DB::table('status_cob_com')->insert([
-                                'id_estudio_fk'         => $estUpd->id,
-                                'id_estudiostemps_fk'   => $request['identificador'],
-                                'folio'                 => $request['folioCbr'],
-                                'id_actividad_fk'       => '4',
-                                'id_empleado_fk'        => 1,
-                                'statusComisiones'      => 'RESERVADO',
-                                'paciente'              => $request['pacienteCbr'],
-                                'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
-                            ]);
-                        }else{
-                            $matchEstudiosTemps = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio', $request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->count();
+                        $datosRegEnt2 = DB::table('status_cob_com')
+                                            ->select('statusComisiones')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->first();
 
-                            if($matchEstudiosTemps == 1){
-                                $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio',$request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->delete();
+                            if($datosRegEnt2->statusComisiones != "RESERVADO"){
+                                if($request['entRd'] == 'S'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => $request['empEnt'],
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'statusComisiones'      => 'P',
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                        ]);
+                                }else if($request['entRd'] == 'P'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => 1,
+                                        'statusComisiones'      => 'P',
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                    ]);
+                                }else{
+                                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio', $request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->count();
+
+                                    if($matchEstudiosTemps == 1){
+                                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio',$request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->delete();
+                                    }
+                                }
+                            }else{
+                                if($request['entRd'] == 'S'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => $request['empEnt'],
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'statusComisiones'      => 'RESERVADO',
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                        ]);
+                                }else if($request['entRd'] == 'P'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => 1,
+                                        'statusComisiones'      => 'RESERVADO',
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                    ]);
+                                }else{
+                                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio', $request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->count();
+
+                                    if($matchEstudiosTemps == 1){
+                                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio',$request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->delete();
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
                 //registro "Adicional Administrativo"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '7',
-                    'id_empleado_fk'        => '12',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'        => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus7 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',7]
+                                ])->first();
+
+                if($datosStatus7->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '7',
+                        'id_empleado_fk'        => '12',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'        => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro "Adicional Egresos"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '8',
-                    'id_empleado_fk'        => '30',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'        => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus8 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',8]
+                                ])->first();
+
+                if($datosStatus8->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '8',
+                        'id_empleado_fk'        => '30',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'       => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro "Adicional Gestion"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '9',
-                    'id_empleado_fk'        => '31',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'        => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus9 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',9]
+                                ])->first();
+
+                if($datosStatus9->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '9',
+                        'id_empleado_fk'        => '31',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'       => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro(s) de utilidad
                 $checkutilidades = DB::table('status_cob_com')
@@ -449,7 +537,7 @@ class CobranzaController extends Controller{
                                         ['status_cob_com.folio',$request['folioCbr']],
                                         ['status_cob_com.id_estudiostemps_fk',$request['identificador']],
                                     ])->count();
-                                    
+
                 if($checkutilidades <= 0){
                     $datosUtilidades = DB::table('comisiones')
                                     ->where([
@@ -481,7 +569,8 @@ class CobranzaController extends Controller{
                             AND duplicados.id_actividad_fk = temporales.id_actividad_fk
                             AND duplicados.id_actividaD_fk <> 10");
 
-                $matchEstudiosTemps = DB::table('status_cob_com')->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
+                $matchEstudiosTemps = DB::table('status_cob_com')
+                                            ->select('status_cob_com.id_empleado_fk','actividades.aliasEstudiosTemps')
                                             ->join('empleados','empleados.id_emp','status_cob_com.id_empleado_fk')
                                             ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
                                             ->where([
@@ -502,7 +591,6 @@ class CobranzaController extends Controller{
                                         ->update([
                                             'interpretacion'        => 'S',
                                             'id_empInt_fk'          => $match->id_empleado_fk
-
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'escRd'){
                         Estudiostemp::where('id',$request['identificador'])
@@ -564,169 +652,189 @@ class CobranzaController extends Controller{
                                                     'registroC' => $request['registroC'],
                                                     'updated_at' => $fechaInsert
                                                 ]);
-                }                             
-
+                }
+                
                 //registro si se realiza
-                if(Arr::has($request,'empRealiza')){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '5',
-                        'id_empleado_fk'        => $request['empRealiza'],
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
+                $datosStatus5 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',5]
+                                ])->first();
+
+                if($datosStatus5->statusComisiones != "PAGADO"){
+                    if(Arr::has($request,'empRealiza')){
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => $request['empRealiza'],
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                        ]);
+                    }
                 }
 
-                //registro si se transcribió
-                if($request['transRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '1',
-                        'id_empleado_fk'        => $doctorTrans,
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',1]
-                                            ])->count();
+                //registro si se transcribe
+                if($request['transRd'] != "N"){
+                    $datosStatus = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',1]
+                                    ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',1]
-                                            ])->delete();
+                    if($datosStatus->statusComisiones != "PAGADO"){
+                        if($request['transRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '1',
+                                'id_empleado_fk'        => $doctorTrans,
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',1]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',1]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
 
                 //registro si se interpretó
-                if($request['intRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '2',
-                        'id_empleado_fk'        => $doctorInter,
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',2]
-                                            ])->count();
+                if($request['intRd'] != "N"){
+                    $datosStatus2 = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',2]
+                                    ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',2]
-                                            ])->delete();
+                    if($datosStatus2->statusComisiones != "PAGADO"){
+                        if($request['intRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '2',
+                                'id_empleado_fk'        => $doctorInter,
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',2]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',2]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
-
+                
                 //registro si se escaneó
-                if($request['escRd'] == 'S'){
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '3',
-                        'id_empleado_fk'        => '1',
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'       => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
-                    ]);
-                }else{
-                    $matchEstudiosTemps = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio', $request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',3]
-                                            ])->count();
+                if($request['escRd'] != "N"){
+                    $datosStatus3 = DB::table('status_cob_com')
+                                    ->where([
+                                        ['status_cob_com.folio', $request->folioCbr],
+                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                        ['status_cob_com.id_actividad_fk',3]
+                                    ])->first();
 
-                    if($matchEstudiosTemps == 1){
-                        $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                            ->where([
-                                                ['status_cob_com.folio',$request->folioCbr],
-                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                ['status_cob_com.id_actividad_fk',3]
-                                            ])->delete();
+                    if($datosStatus3->statusComisiones != "PAGADO"){
+                        if($request['escRd'] == 'S'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '3',
+                                'id_empleado_fk'        => '1',
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'P',
+                                'cobranza_fecha'       => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
+                        }else{
+                            $matchEstudiosTemps = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio', $request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',3]
+                                                    ])->count();
+
+                            if($matchEstudiosTemps == 1){
+                                $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                    ->where([
+                                                        ['status_cob_com.folio',$request->folioCbr],
+                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                        ['status_cob_com.id_actividad_fk',3]
+                                                    ])->delete();
+                            }
+                        }
                     }
                 }
 
                 //registro si se entregó
-                $datosRegEnt = DB::table('status_cob_com')
-                                ->select('statusComisiones')
+                if($request['entRd'] != "N"){
+                    $datosStatus4 = DB::table('status_cob_com')
                                 ->where([
                                     ['status_cob_com.folio', $request->folioCbr],
                                     ['status_cob_com.id_estudio_fk',$estUpd->id],
                                     ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                     ['status_cob_com.id_actividad_fk',4]
-                                ])->count();
+                                ])->first();
 
-                if($datosRegEnt == 0){
-                    if($request['entRd'] == 'S'){
-                        DB::table('status_cob_com')->insert([
-                            'id_estudio_fk'         => $estUpd->id,
-                            'id_estudiostemps_fk'   => $request['identificador'],
-                            'folio'                 => $request['folioCbr'],
-                            'id_actividad_fk'       => '4',
-                            'id_empleado_fk'        => $request['empEnt'],
-                            'paciente'              => $request['pacienteCbr'],
-                            'statusComisiones'      => 'P',
-                            'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
-                            ]);
-                    }else if($request['entRd'] == 'P'){
-                        DB::table('status_cob_com')->insert([
-                            'id_estudio_fk'         => $estUpd->id,
-                            'id_estudiostemps_fk'   => $request['identificador'],
-                            'folio'                 => $request['folioCbr'],
-                            'id_actividad_fk'       => '4',
-                            'id_empleado_fk'        => 1,
-                            'statusComisiones'      => 'P',
-                            'paciente'              => $request['pacienteCbr'],
-                            'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
-                        ]);
-                    }
-                }else{
-                    $datosRegEnt2 = DB::table('status_cob_com')
+                if($datosStatus4->statusComisiones != "PAGADO"){
+                    $datosRegEnt = DB::table('status_cob_com')
                                     ->select('statusComisiones')
                                     ->where([
                                         ['status_cob_com.folio', $request->folioCbr],
                                         ['status_cob_com.id_estudio_fk',$estUpd->id],
                                         ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                         ['status_cob_com.id_actividad_fk',4]
-                                    ])->first();
+                                    ])->count();
 
-                    if($datosRegEnt2->statusComisiones != "RESERVADO"){
+                    if($datosRegEnt == 0){
                         if($request['entRd'] == 'S'){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
@@ -751,110 +859,178 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                             ]);
-                        }else{
-                            $matchEstudiosTemps = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio', $request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->count();
-
-                            if($matchEstudiosTemps == 1){
-                                $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio',$request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->delete();
-                            }
                         }
                     }else{
-                        if($request['entRd'] == 'S'){
-                            DB::table('status_cob_com')->insert([
-                                'id_estudio_fk'         => $estUpd->id,
-                                'id_estudiostemps_fk'   => $request['identificador'],
-                                'folio'                 => $request['folioCbr'],
-                                'id_actividad_fk'       => '4',
-                                'id_empleado_fk'        => $request['empEnt'],
-                                'paciente'              => $request['pacienteCbr'],
-                                'statusComisiones'      => 'RESERVADO',
-                                'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
-                                ]);
-                        }else if($request['entRd'] == 'P'){
-                            DB::table('status_cob_com')->insert([
-                                'id_estudio_fk'         => $estUpd->id,
-                                'id_estudiostemps_fk'   => $request['identificador'],
-                                'folio'                 => $request['folioCbr'],
-                                'id_actividad_fk'       => '4',
-                                'id_empleado_fk'        => 1,
-                                'statusComisiones'      => 'RESERVADO',
-                                'paciente'              => $request['pacienteCbr'],
-                                'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
-                            ]);
-                        }else{
-                            $matchEstudiosTemps = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio', $request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->count();
+                        $datosRegEnt2 = DB::table('status_cob_com')
+                                            ->select('statusComisiones')
+                                            ->where([
+                                                ['status_cob_com.folio', $request->folioCbr],
+                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                ['status_cob_com.id_actividad_fk',4]
+                                            ])->first();
 
-                            if($matchEstudiosTemps == 1){
-                                $matchEstudiosTemps2 = DB::table('status_cob_com')
-                                                    ->where([
-                                                        ['status_cob_com.folio',$request->folioCbr],
-                                                        ['status_cob_com.id_estudio_fk',$estUpd->id],
-                                                        ['status_cob_com.id_estudiostemps_fk',$request->identificador],
-                                                        ['status_cob_com.id_actividad_fk',4]
-                                                    ])->delete();
+                            if($datosRegEnt2->statusComisiones != "RESERVADO"){
+                                if($request['entRd'] == 'S'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => $request['empEnt'],
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'statusComisiones'      => 'P',
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                        ]);
+                                }else if($request['entRd'] == 'P'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => 1,
+                                        'statusComisiones'      => 'P',
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                    ]);
+                                }else{
+                                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio', $request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->count();
+
+                                    if($matchEstudiosTemps == 1){
+                                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio',$request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->delete();
+                                    }
+                                }
+                            }else{
+                                if($request['entRd'] == 'S'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => $request['empEnt'],
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'statusComisiones'      => 'RESERVADO',
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                        ]);
+                                }else if($request['entRd'] == 'P'){
+                                    DB::table('status_cob_com')->insert([
+                                        'id_estudio_fk'         => $estUpd->id,
+                                        'id_estudiostemps_fk'   => $request['identificador'],
+                                        'folio'                 => $request['folioCbr'],
+                                        'id_actividad_fk'       => '4',
+                                        'id_empleado_fk'        => 1,
+                                        'statusComisiones'      => 'RESERVADO',
+                                        'paciente'              => $request['pacienteCbr'],
+                                        'cobranza_fecha'        => $request["fchCbr"],
+                                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                                    ]);
+                                }else{
+                                    $matchEstudiosTemps = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio', $request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->count();
+
+                                    if($matchEstudiosTemps == 1){
+                                        $matchEstudiosTemps2 = DB::table('status_cob_com')
+                                                            ->where([
+                                                                ['status_cob_com.folio',$request->folioCbr],
+                                                                ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                                                ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                                                ['status_cob_com.id_actividad_fk',4]
+                                                            ])->delete();
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
                 //registro "Adicional Administrativo"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '7',
-                    'id_empleado_fk'        => '12',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'        => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus7 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',7]
+                                ])->first();
+
+                if($datosStatus7->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '7',
+                        'id_empleado_fk'        => '12',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'        => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro "Adicional Egresos"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '8',
-                    'id_empleado_fk'        => '30',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'       => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus8 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',8]
+                                ])->first();
+
+                if($datosStatus8->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '8',
+                        'id_empleado_fk'        => '30',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'       => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro "Adicional Gestion"
-                DB::table('status_cob_com')->insert([
-                    'id_estudio_fk'         => $estUpd->id,
-                    'id_estudiostemps_fk'   => $request['identificador'],
-                    'folio'                 => $request['folioCbr'],
-                    'id_actividad_fk'       => '9',
-                    'id_empleado_fk'        => '31',
-                    'paciente'              => $request['pacienteCbr'],
-                    'statusComisiones'      => 'P',
-                    'cobranza_fecha'       => $request["fchCbr"],
-                    'cobranza_cantidad'     => $request["cantidadCbr"]
-                ]);
+                $datosStatus9 = DB::table('status_cob_com')
+                                ->where([
+                                    ['status_cob_com.folio', $request->folioCbr],
+                                    ['status_cob_com.id_estudio_fk',$estUpd->id],
+                                    ['status_cob_com.id_estudiostemps_fk',$request->identificador],
+                                    ['status_cob_com.id_actividad_fk',9]
+                                ])->first();
+
+                if($datosStatus9->statusComisiones != "PAGADO"){
+                    DB::table('status_cob_com')->insert([
+                        'id_estudio_fk'         => $estUpd->id,
+                        'id_estudiostemps_fk'   => $request['identificador'],
+                        'folio'                 => $request['folioCbr'],
+                        'id_actividad_fk'       => '9',
+                        'id_empleado_fk'        => '31',
+                        'paciente'              => $request['pacienteCbr'],
+                        'statusComisiones'      => 'P',
+                        'cobranza_fecha'       => $request["fchCbr"],
+                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                    ]);
+                }
 
                 //registro(s) de utilidad
                 $checkutilidades = DB::table('status_cob_com')
