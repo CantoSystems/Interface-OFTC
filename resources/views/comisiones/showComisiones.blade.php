@@ -5,13 +5,13 @@
         @canany(['comisiones','cobranzaReportes','auxiliarCobranzaReportes','optometria'])
         <div class="card-header modalPersonalizado">
             <h4> Calcular Comisiones </h4>
-            <h6 class="alert alert-warning" role="alert" style="color: white;border-color: yellow;border: 1px;">Fecha
-                vigente de corte:
+            <h6 class="alert alert-warning" role="alert" style="color: white;border-color: yellow;border: 1px;"><b>Fecha
+                    Vigente de Corte:</b>
                 @isset($fechaCorte)
                 {{ date('d-m-Y',strtotime($fechaCorte->fechaCorte)); }}
                 @endisset
                 @empty($fechaCorte)
-                Registrar fecha de corte
+                Registrar Fecha de Corte
                 @endempty
             </h6>
         </div>
@@ -47,17 +47,17 @@
                     </div>
                     <div class="col-2">
                         <label class="info-box-text">Fecha Fin:</label>
+                        @if($fechaCorte != null)
+                        <input class="form-control" value="{{ date('Y-m-d',strtotime($fechaCorte->fechaCorte)); }}"
+                            type="date" name="fechaFin" id="fechaFin">
+                        @else
                         <input class="form-control" type="date" name="fechaFin" id="fechaFin">
+                        @endif
                     </div>
                     <div class="col-2">
                         <label>Tipo de Cálculo:</label>
                         <select class="form-control" name="selectCalculo" id="selectCalculo">
-                            <option selected disabled>-- Selecciona una optión--</option>
-                            @foreach($actividades as $act)
-                            <option value="{{ $act->nombreActividad }}">
-                                {{ $act->nombreActividad }}
-                            </option>
-                            @endforeach
+                            <option selected disabled>-- Selecciona una opción--</option>
                         </select>
                     </div>
                     <div class="col-1">
