@@ -46,6 +46,7 @@ class ComisionesController extends Controller{
 
         $actividades = DB::table('actividades')
                         ->select('id','nombreActividad')
+                        ->where('statusActividad', '!=', "C")
                         ->get();
 
         $fechaCorte = DB::table('fechaCorte')
@@ -585,6 +586,7 @@ class ComisionesController extends Controller{
 
         $actividades = DB::table('actividades')
                         ->select('id','nombreActividad')
+                        ->where('statusActividad',"!=","C")
                         ->get();
 
         //Consultas para el llenado de las comisiones en el datatable

@@ -16,18 +16,14 @@
             </h6>
         </div>
         <!--Roles formulario de consulta PARA CÁLCULO DE COMISIONES -->
-        <form action="{{ route('comisiones.show') }}" method="GET">
+        <form action="{{ route('utilidades.calcular') }}" method="POST">
+            @csrf
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
                         <label class="info-box-text">Selecciona Empleado:</label>
                         <select class="form-control" name="slctEmpleado" id="slctEmpleado">
                             <option selected disabled>-- Selecciona una opción --</option>
-                            @foreach($empleados as $emp)
-                            <option value="{{ $emp->id_emp }}">
-                                {{ $emp->empleado }} ({{ $emp->puestos_nombre }})
-                            </option>
-                            @endforeach
                             @foreach($drUtilidadInterpreta as $dr)
                             <option value="{{ $dr->id_emp }}">
                                 {{ $dr->empleado }} ({{ $dr->puestos_nombre }})
@@ -35,7 +31,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <label class="info-box-text">Selecciona Estudio:</label>
                         <select class="form-control" name="slctEstudio[]" id="slctEstudio" multiple="multiple">
                             @foreach($estudios as $est)
@@ -45,10 +41,10 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-2">
+                    <!--<div class="col-2">
                         <label class="info-box-text">Fecha Fin:</label>
                         <input class="form-control" type="date" name="fechaFin" id="fechaFin">
-                    </div>
+                    </div>-->
                     <div class="col-2">
                         <br>
                         <button id="cargarCobranza" type="submit" class="btn btn-block btn-outline-secondary btn-xs">
@@ -138,32 +134,19 @@
             style="color: white;text-align:center;">
 
         </div>
-        <div class="col-3">
-            @canany(['comisiones','cobranzaReportes'])
-            <a data-target="#modal-fechaCorte" data-toggle="modal">
-                <button type="button" class="btn btn-block btn-outline-info btn-xs">
-                    Crear fecha corte
-                </button>
-            </a>
-            @elsecanany(['auxiliarCobranzaReportes','optometria'])
-            <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled />
-            Crear fecha corte
-            </button>
-            @endcanany
-        </div>
-        <div class="col-3">
-            <a id="limpiarVista" type="button" href="{{ route('comisiones.index') }}"
+        <div class="col-4">
+            <a id="limpiarVista" type="button" href="{{ route('utilidades.index') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Limpiar</span>
             </a>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <a id="generaExcel" type="button" href="{{ route('exportarComisiones.export') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Generar Excel</span>
             </a>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             @canany(['comisiones','cobranzaReportes'])
             @if(isset($totalComisiones) && !empty($totalComisiones) && !empty($fechaCorte))
             <button id="autorizaComisiones" type="button" class="btn btn-block btn-outline-secondary btn-xs">
