@@ -296,32 +296,17 @@
         $("#porcentajeAdicional").show();
         $("#divComision").show();
         $('#autorizacionExitosa').hide();
-        //$(".porcentajeAdicionalInput").attr("disabled", true);
-        //$(".divComisionInput").attr("disabled", true);
         $("#empleadoComision").change(function() {
             let texto = $(this).find('option:selected').text();
             if (texto.includes('DOCTOR')) {
-                //$("#divComision").show();
                 $("#divAlerta").hide();
                 $("#divAlertaEnf").hide();
-                //$(".porcentajeAdicionalInput").attr("disabled", true);
-                //$(".divComisionInput").attr("disabled", true);
-                //$(".divComisionInput").attr("disabled", false);
             } else if (texto.includes('OPTOMETRÍA')) {
-                //$("#divComision").hide();
                 $("#divAlerta").show();
                 $("#divAlertaEnf").hide();
-                //$("#porcentajeAdicional").show();
-                //$("#divComision").show();
-                //$(".porcentajeAdicionalInput").attr("disabled", false);
-                //$(".divComisionInput").attr("disabled", true);
             } else if (texto.includes('ENFERMERÍA')) {
-                //$("#porcentajeAdicional").hide();
                 $("#divAlerta").hide();
-                //$("#divComision").hide();
                 $("#divAlertaEnf").show();
-                //$(".porcentajeAdicionalInput").attr("disabled", true);
-                //$(".divComisionInput").attr("disabled", true);
             }
         });
 
@@ -496,13 +481,41 @@
                     $('#autorizacionExitosa').text('Autorización Exitosa');
                 },
                 error: function(xhr, status, error) {
-                    console.log(xhr.text)
-                    // var err = JSON.parse(xhr.responseText);
-                    // console.log(err.Message);
+                    console.log(xhr.text);
                 }
             });
         });
 
+        $("#slctEmpleado").change(function() {
+            var texto = $(this).find('option:selected').text();
+            if (texto.includes('OPTOMETRÍA')) {
+                $('#selectCalculo').append($("<option value='Transcrito'></option>").attr("selected",
+                    true).text("Transcrito")).append($("<option value='Realizado'></option>").text(
+                    "Realizado"));
+            } else if (texto.includes('RECEPCIÓN') || texto.includes('N/A')) {
+                $('#selectCalculo').append($("<option value='Entregado'></option>").attr("selected",
+                    true).text("Entregado"));
+            } else if (texto.includes('ENFERMERÍA')) {
+                $('#selectCalculo').append($("<option value='Realizado'></option>").attr("selected",
+                    true).text("Realizado")).append($("<option value='Escaneado'></option>").text(
+                    "Escaneado"));
+            } else if (texto.includes('DOCTOR')) {
+                $('#selectCalculo').append($("<option value='Interpretado'></option>").attr("selected",
+                    true).text("Interpretado"));
+            } else if (texto.includes('GESTION')) {
+                $('#selectCalculo').append($("<option value='Adicional Gestion'></option>").attr(
+                    "selected",
+                    true).text("Adicional Gestion"));
+            } else if (texto.includes('ADMINISTRATIVO')) {
+                $('#selectCalculo').append($("<option value='Adicional Administrativo'></option>").attr(
+                    "selected",
+                    true).text("Adicional Administrativo"));
+            } else if (texto.includes('EGRESOS')) {
+                $('#selectCalculo').append($("<option value='Adicional Egresos'></option>").attr(
+                    "selected",
+                    true).text("Adicional Egresos"));
+            }
+        });
     });
     </script>
 
