@@ -263,7 +263,7 @@
 
         <footer class="main-footer">
             <div class="float-right d-none d-sm-block"><b>Version</b> 2.0</div>
-            <strong>Canto Contadores &copy; 2022</strong>
+            <strong>Canto Contadores &copy; 2023</strong>
             All rights reserved.
         </footer>
     </div>
@@ -344,7 +344,8 @@
     $(function() {
         $("#statusComisionCobrabza").DataTable({
             "responsive": true,
-            "autoWidth": false
+            "autoWidth": false,
+            "pageLength": 25
         });
     });
     </script>

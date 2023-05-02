@@ -480,7 +480,7 @@
                                     <th>Estudio</th>
                                     <th>Actividad</th>
                                     <th>Empleado</th>
-                                    <th>Estatus Comisión</th>
+                                    <th>Status Comisión</th>
                                     <th></th>
                                 </tr>
                             </thead>
