@@ -840,6 +840,9 @@ class ComisionesController extends Controller{
                                             ->where('id',$identificadorEstatus)
                                             ->first();
 
+                                            dd($datosReservados);
+
+
                                 DB::table('comisiones_temps')->insert([
                                     'id_emp_fk' => $datosReservados->id_empleado_fk,
                                     'id_estudio_fk' => $datosReservados->id_estudio_fk,

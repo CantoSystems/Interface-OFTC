@@ -73,7 +73,15 @@
                 para el estudio {{ $fatal['descripcion']}}
             </div>
             @endforeach
-            @endif
+            @endisset
+            @isset($result)
+            @foreach($result as $result)
+            <div class="alert alert-danger" role="alert">
+              El folio {{ $result->folio }} asignado al estudio {{ $result->estudios}} no cuenta con todas las actividades autorizadas
+            </div>
+            @endforeach
+            @endisset
+
             <form method="POST">
                 <input type="hidden" name="_token" id="_token_" value="{{ csrf_token() }}" />
                 <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
@@ -81,34 +89,40 @@
                         <tr>
                             <th>Fecha</th>
                             <th>Folio</th>
-                            <th>Paciente</th>
                             <th>Estudio</th>
                             <th style="width: 40px; text-align: center;">Cantidad</th>
+                            <th style="width: 40px; text-align: center;">Suma Actividades</th>
+                            <th style="width: 40px; text-align: center;">Cantidad restante</th>
                             <th style="width: 40px; text-align: center;">Porcentaje</th>
                             <th style="width: 40px; text-align: center;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($comisiones) && !empty($totalComisiones))
-                        @foreach($comisiones as $com)
+                        @if(isset($utilidadesDoctores) && !empty($totalComisionesUtilidades))
+                        @foreach($utilidadesDoctores as $utilidad)
                         <tr>
-                            <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
+                            <td>{{ date('d-M-Y',strtotime($utilidad->fechaEstudio)) }}</td>
                             <td>
-                                {{ $com->cobranza_folio ?? ''}}
-                                <input type="hidden" value="{{ $com->id_status_fk }}" class="id_status">
+                                {{ $utilidad->cobranza_folio ?? ''}}
+                                <input type="hidden" value="{{ $utilidad->id_status_fk }}" class="id_status">
                             </td>
-                            <td>{{ strtoupper($com->paciente) }}</td>
-                            <td>{{ $com->dscrpMedicosPro }}</td>
-                            <td style="text-align: right;">$ {{ number_format($com->cantidad,2) }}</td>
-                            <td style="text-align: right;">{{ $com->porcentaje }} %</td>
-                            <td style="text-align: right;">$ {{ number_format($com->total,2) }}</td>
+                            <td>{{ $utilidad->dscrpMedicosPro }}</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->cantidad,2) }}</td>
+                            
+                            <td style="text-align: right;">$ {{ number_format($utilidad->totalsum_actividades,2) }}</td>
+
+                            <td style="text-align: right;">$ {{ number_format($utilidad->cantidad - $utilidad->totalsum_actividades,2) }}</td>
+
+
+                            <td style="text-align: right;">{{ $utilidad->porcentaje }} %</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->total,2) }}</td>
                         </tr>
                         @endforeach
                         @endif
                     </tbody>
                 </table>
                 <br>
-                @if(isset($totalComisiones) && !empty($totalComisiones))
+                @if(isset($utilidadesDoctores) && !empty($totalComisionesUtilidades))
                 <div class="row">
                     <div class="col-md-9">
                     </div>
@@ -117,7 +131,7 @@
                             <tbody>
                                 <tr style="font-size: 15px;">
                                     <td><b>Total:</b></td>
-                                    <td style="text-align: right;"><b>$ {{ number_format($totalComisiones,2) }}</b></td>
+                                    <td style="text-align: right;"><b>$ {{ number_format($totalComisionesUtilidades,2) }}</b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -148,7 +162,7 @@
         </div>
         <div class="col-4">
             @canany(['comisiones','cobranzaReportes'])
-            @if(isset($totalComisiones) && !empty($totalComisiones) && !empty($fechaCorte))
+            @if(isset($utilidadesDoctores) && !empty($totalComisionesUtilidades) && !empty($fechaCorte))
             <button id="autorizaComisiones" type="button" class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Autorizar</span>
             </button>
