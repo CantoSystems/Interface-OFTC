@@ -537,13 +537,13 @@ class CobranzaController extends Controller{
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'transcripcion'         => $request['transRd'],
-                                            'id_empTrans_fk'        => $request['drTransc']
+                                            'id_empTrans_fk'        => $doctorTrans
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'drInt'){
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'interpretacion'        => $request['intRd'],
-                                            'id_empInt_fk'          => $request['drInt']
+                                            'id_empInt_fk'          => $doctoresInt
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'escRd'){
                         Estudiostemp::where('id',$request['identificador'])
@@ -1005,13 +1005,13 @@ class CobranzaController extends Controller{
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'transcripcion'         => $request['transRd'],
-                                            'id_empTrans_fk'        => $request['drTransc']
+                                            'id_empTrans_fk'        => $doctorTrans
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'drInt'){
                         Estudiostemp::where('id',$request['identificador'])
                                         ->update([
                                             'interpretacion'        => $request['intRd'],
-                                            'id_empInt_fk'          => $request['drInt']
+                                            'id_empInt_fk'          => $doctoresInt
                                         ]);
                     }else if($match->aliasEstudiosTemps == 'escRd'){
                         Estudiostemp::where('id',$request['identificador'])
