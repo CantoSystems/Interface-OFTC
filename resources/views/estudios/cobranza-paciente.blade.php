@@ -542,10 +542,10 @@
         <div class="col-4"></div>
         <div class="col-4">
             @if($totalStatusPagado >= 1 || $datosPaciente->estudiostemps_status === 1)
-                 <button class="btn btn-block btn-outline-danger btn-xs" disabled>Eliminar</button>
-
+            <button class="btn btn-block btn-outline-danger btn-xs" disabled>Eliminar</button>
             @else
-                <button class="btn btn-block btn-outline-danger btn-xs" type="button" data-target="#eliminar-{{$datosPaciente->id}}" data-toggle="modal">Eliminar</button>
+            <button class="btn btn-block btn-outline-danger btn-xs" type="button"
+                data-target="#eliminar-{{$datosPaciente->id}}" data-toggle="modal">Eliminar</button>
             @endif
         </div>
     </div>
