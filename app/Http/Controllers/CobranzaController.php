@@ -324,6 +324,7 @@ class CobranzaController extends Controller{
                 }
 
                 //registro si se entregó
+                //registro si se entregó
                 $datosStatus4 = DB::table('status_cob_com')
                                 ->where([
                                     ['status_cob_com.folio', $request->folioCbr],
@@ -358,6 +359,18 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                             ]);
+                        }else if($datosStatus4->statusComisiones == 'RESERVADO'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '4',
+                                'id_empleado_fk'        => $request['empEnt'],
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'RESERVADO',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
                         }
                     }
                 }else if($request['entRd'] == "P"){
@@ -374,7 +387,7 @@ class CobranzaController extends Controller{
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                         ]);
                     }else{
-                        if($datosStatus4->statusComisiones == 'S'){
+                        if(($datosStatus4->statusComisiones == 'P') || ($datosStatus4->statusComisiones == 'S')){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
                                 'id_estudiostemps_fk'   => $request['identificador'],
@@ -802,6 +815,18 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                             ]);
+                        }else if($datosStatus4->statusComisiones == 'RESERVADO'){
+                            DB::table('status_cob_com')->insert([
+                                'id_estudio_fk'         => $estUpd->id,
+                                'id_estudiostemps_fk'   => $request['identificador'],
+                                'folio'                 => $request['folioCbr'],
+                                'id_actividad_fk'       => '4',
+                                'id_empleado_fk'        => $request['empEnt'],
+                                'paciente'              => $request['pacienteCbr'],
+                                'statusComisiones'      => 'RESERVADO',
+                                'cobranza_fecha'        => $request["fchCbr"],
+                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                            ]);
                         }
                     }
                 }else if($request['entRd'] == "P"){
@@ -818,7 +843,7 @@ class CobranzaController extends Controller{
                                 'cobranza_cantidad'     => $request["cantidadCbr"]
                         ]);
                     }else{
-                        if($datosStatus4->statusComisiones == 'S'){
+                        if(($datosStatus4->statusComisiones == 'P') || ($datosStatus4->statusComisiones == 'S')){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
                                 'id_estudiostemps_fk'   => $request['identificador'],
