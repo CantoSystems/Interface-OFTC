@@ -115,14 +115,20 @@ class EstudiosController extends Controller{
                             ->where('id_estudiostemps_fk',$id)
                             ->get();
 
-         $totalStatusPagado = DB::table('status_cob_com')
-                                    ->where('id_estudiostemps_fk',$id)
-                                    ->whereIn('statusComisiones',["PAGADO","RESERVADO"])
-                                    ->count('statusComisiones');
+        $totalStatusPagado = DB::table('status_cob_com')
+                                ->where('id_estudiostemps_fk',$id)
+                                ->whereIn('statusComisiones',["PAGADO","RESERVADO"])
+                                ->count('statusComisiones');
 
-                                   
+        $totalStatusUtilidades = DB::table('status_cob_com')
+                                    ->where([
+                                        ['id_estudiostemps_fk',$id],
+                                        ['id_actividad_fk',10],
+                                        ['statusComisiones','PAGADO']
+                                    ])
+                                    ->count();
 
-        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEntrega','statusCobCom','totalStatusPagado'));
+        return view('estudios.cobranza-paciente',compact('datosPaciente','doctores','tipoPac','empTrans','doctorInter','descripcionEstudios','empRealiza','empEntrega','statusCobCom','totalStatusPagado','totalStatusUtilidades'));
     }
 
     /**
