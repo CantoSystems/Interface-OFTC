@@ -247,7 +247,7 @@ class CobranzaController extends Controller{
                             'cobranza_cantidad'     => $request["cantidadCbr"]
                         ]);
                     }else{
-                        if($datosStatus->statusComisiones == "P"){
+                        if($datosStatus2->statusComisiones == "P"){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
                                 'id_estudiostemps_fk'   => $request['identificador'],
@@ -262,7 +262,7 @@ class CobranzaController extends Controller{
                         }
                     }
                 }else{
-                    if(!is_null($datosStatus) && $datosStatus == "P"){
+                    if(!is_null($datosStatus2) && $datosStatus2 == "P"){
                         $matchEstudiosTemps2 = DB::table('status_cob_com')
                                                         ->where([
                                                             ['status_cob_com.folio',$request->folioCbr],
@@ -312,7 +312,7 @@ class CobranzaController extends Controller{
                         }
                     }
                 }else{
-                    if(!is_null($datosStatus3) && $datosStatus == "P"){
+                    if(!is_null($datosStatus3) && $datosStatus3 == "P"){
                         $matchEstudiosTemps2 = DB::table('status_cob_com')
                                                         ->where([
                                                             ['status_cob_com.folio',$request->folioCbr],
@@ -692,7 +692,7 @@ class CobranzaController extends Controller{
                             'cobranza_cantidad'     => $request["cantidadCbr"]
                         ]);
                     }else{
-                        if($datosStatus->statusComisiones == "P"){
+                        if($datosStatus2->statusComisiones == "P"){
                             DB::table('status_cob_com')->insert([
                                 'id_estudio_fk'         => $estUpd->id,
                                 'id_estudiostemps_fk'   => $request['identificador'],
@@ -707,7 +707,7 @@ class CobranzaController extends Controller{
                         }
                     }
                 }else{
-                    if(!is_null($datosStatus) && $datosStatus == "P"){
+                    if(!is_null($datosStatus2) && $datosStatus2 == "P"){
                         $matchEstudiosTemps2 = DB::table('status_cob_com')
                                                         ->where([
                                                             ['status_cob_com.folio',$request->folioCbr],
@@ -753,11 +753,10 @@ class CobranzaController extends Controller{
                                     'cobranza_fecha'       => $request["fchCbr"],
                                     'cobranza_cantidad'     => $request["cantidadCbr"]
                                 ]);
-
                         }
                     }
                 }else{
-                    if(!is_null($datosStatus3) && $datosStatus == "P"){
+                    if(!is_null($datosStatus3) && $datosStatus3 == "P"){
                         $matchEstudiosTemps2 = DB::table('status_cob_com')
                                                         ->where([
                                                             ['status_cob_com.folio',$request->folioCbr],
