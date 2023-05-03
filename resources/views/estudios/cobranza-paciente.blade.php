@@ -29,6 +29,8 @@
                                         <input type="text" id="folioCbr" name="folioCbr" class="form-control"
                                             value="{{ $datosPaciente->folio }}" readonly>
                                         <input type="hidden" name="identificador" value="{{ $datosPaciente->id }}">
+                                        <input type="hidden" name="countUtilidades" id="countUtilidades"
+                                            value="{{ $totalStatusUtilidades }}">
                                     </div>
                                 </div>
                                 <div class="col-4">
@@ -537,16 +539,16 @@
 @endcanany
 @canany(['comisiones','cobranzaReportes'])
 <section class="content">
-    <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4"></div>
-        <div class="col-4">
-            @if($totalStatusPagado >= 1 || $datosPaciente->estudiostemps_status === 1)
-            <button class="btn btn-block btn-outline-danger btn-xs" disabled>Eliminar</button>
-            @else
-            <button class="btn btn-block btn-outline-danger btn-xs" type="button"
-                data-target="#eliminar-{{$datosPaciente->id}}" data-toggle="modal">Eliminar</button>
-            @endif
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12" style="text-align: center;">
+                @if($totalStatusPagado >= 1 || $datosPaciente->estudiostemps_status === 1)
+                <button class="btn btn-block btn-outline-danger btn-xs" disabled>Eliminar Registro</button>
+                @else
+                <button class="btn btn-block btn-outline-danger btn-xs" type="button"
+                    data-target="#eliminar-{{$datosPaciente->id}}" data-toggle="modal">Eliminar Registro</button>
+                @endif
+            </div>
         </div>
     </div>
 </section>

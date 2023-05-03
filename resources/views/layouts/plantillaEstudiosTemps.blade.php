@@ -289,6 +289,11 @@
     }
 
     $(document).ready(function() {
+        countUtilidades = $('#countUtilidades').val();
+        if (countUtilidades > 0) {
+
+        }
+
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
