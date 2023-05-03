@@ -840,10 +840,10 @@ class ComisionesController extends Controller{
                                             ->where('id',$identificadorEstatus)
                                             ->first();
 
-                                            dd($datosReservados);
-
-
-                                DB::table('comisiones_temps')->insert([
+                                if(!is_null($datosReservados->cobranza_cantidad) && 
+                                    !is_null($datosReservados->cobranza_porcentaje) &&
+                                    !is_null($datosReservados->cobranza_total)){
+                                    DB::table('comisiones_temps')->insert([
                                     'id_emp_fk' => $datosReservados->id_empleado_fk,
                                     'id_estudio_fk' => $datosReservados->id_estudio_fk,
                                     'paciente' => $paciente,
@@ -856,6 +856,7 @@ class ComisionesController extends Controller{
                                     'cobranza_folio' => $datosReservados->folio,
                                     'id_status_fk' => $datosReservados->id
                                 ]);  
+                                }        
                         }else{
                             $comisionEntrega = ($total * $porcentajeComision)/100;
                     
@@ -1290,34 +1291,44 @@ class ComisionesController extends Controller{
 
     public function fechaCorte(Request $request){
         $validator = Validator::make($request->all(),[
-            'fechaCorte' => 'required|unique:fechacorte',
+            'fechaCorte' => 'required',
         ],[
             'fechaCorte.required' => 'Ingrese la fecha de corte',
             'fechaCorte.unique' => 'La fecha ingresada ya existe',
         ]);
         
-        $desactivarCorte = DB::table('fechaCorte')
+        $duplicados = DB::table('fechaCorte')
+                        ->where('fechaCorte',$request->fechaCorte)
+                        ->first();
+
+                       
+
+        if(is_null($duplicados)){
+
+            $desactivarCorte = DB::table('fechaCorte')
                 ->select('id')
                 ->where('status_fechacorte',1)
                 ->latest('id')->first();
 
-        if(is_null($desactivarCorte)){
-            $fecha = new FechaCorte;
-            $fecha->fechaCorte = $request->fechaCorte;
-            $fecha->status_fechacorte = 1;
-            $fecha->save(); 
-            
-        }else if(!is_null($desactivarCorte)){
-            DB::table('fechaCorte')
-                ->where('id',$desactivarCorte->id)
-                ->update([  
-                    'status_fechacorte'=>0,
-            ]);
+                if(is_null($desactivarCorte)){
+                    $fecha = new FechaCorte;
+                    $fecha->fechaCorte = $request->fechaCorte;
+                    $fecha->status_fechacorte = 1;
+                    $fecha->save(); 
+                    
+                }else if(!is_null($desactivarCorte)){
+                    DB::table('fechaCorte')
+                        ->where('id',$desactivarCorte->id)
+                        ->update([  
+                            'status_fechacorte'=>0,
+                    ]);
 
-            $fecha = new FechaCorte;
-            $fecha->fechaCorte = $request->fechaCorte;
-            $fecha->status_fechacorte = 1;
-            $fecha->save(); 
+                    $fecha = new FechaCorte;
+                    $fecha->fechaCorte = $request->fechaCorte;
+                    $fecha->status_fechacorte = 1;
+                    $fecha->save(); 
+                }
+
         }
 
         return redirect()->route('comisiones.index');

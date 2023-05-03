@@ -202,7 +202,7 @@ class UtilidadesController extends Controller
                                                             
 
                                                         }else if(is_null($actividadEntrega)){
-                                                            dd($inf->cobranzaFolio);
+                                                            //dd($inf->cobranzaFolio);
                                                             $pagoUtilidad = ($totalEstudiosTemps->total - $sumaActividades) * $comisionUtilidad->porcentajeUtilidad/100;
 
 
