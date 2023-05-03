@@ -709,7 +709,7 @@ class CobranzaController extends Controller{
                                 'id_estudio_fk'         => $estUpd->id,
                                 'id_estudiostemps_fk'   => $request['identificador'],
                                 'folio'                 => $request['folioCbr'],
-                                'id_actividad_fk'       => '1',
+                                'id_actividad_fk'       => '2',
                                 'id_empleado_fk'        => $request['drInt'],
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'P',
