@@ -115,7 +115,7 @@ class UtilidadesController extends Controller
 
                             foreach($infoUtilidad as $inf){
 
-                                if(!is_null($comisionUtilidad)){
+                                if(is_null($comisionUtilidad)){
 
 
                                     /*Verificación sí todas las actividades de status_cob_com están pagadas*/
@@ -131,7 +131,7 @@ class UtilidadesController extends Controller
 
                                                                    
 
-                                            if(!is_null($conteoPendientes)){
+                                            if(is_null($conteoPendientes)){
                                                     /*solo en caso de que no existan actividades pendientes
                                                     Se hace lam sumatoria excluyendo las actividad de entrega
                                                     */
@@ -229,7 +229,7 @@ class UtilidadesController extends Controller
                                                             ]);
 
                                                         }
-                                            }else if(is_null($conteoPendientes)){
+                                            }else if(!is_null($conteoPendientes)){
                                                     foreach($conteoPendientes as $pendientes){
                                                      $coincidenciaEstudio = DB::table('estudios')
                                                                         ->select('dscrpMedicosPro')
@@ -241,7 +241,7 @@ class UtilidadesController extends Controller
 
                                                     }
                                             }
-                                }else if(is_null($comisionUtilidaddad)){
+                                }else if(!is_null($comisionUtilidad)){
                                     $coincidenciaEstudio = DB::table('estudios')
                                                     ->select('dscrpMedicosPro')
                                                     ->where('estudios.id', $arrayEstudios)
