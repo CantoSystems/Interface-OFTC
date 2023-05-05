@@ -511,7 +511,9 @@
                 $(".opAct").remove();
                 $('#selectCalculo').append($("<option class='opAct' value='Interpretado'></option>")
                     .attr("selected",
-                        true).text("Interpretado"));
+                        true).text("Interpretado")).append($(
+                    "<option class='opAct' value='Realizado'></option>").text(
+                    "Realizado"));
             } else if (texto.includes('GESTION')) {
                 $(".opAct").remove();
                 $('#selectCalculo').append($(

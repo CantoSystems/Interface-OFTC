@@ -738,6 +738,7 @@ class ComisionesController extends Controller{
                                         'cobranza_porcentaje' =>  $porcentajeComision,
                                         'cobranza_total' => $comsionRealizado,
                                         'cobranza_cantidad' => $total,
+                                        'cobranza_fecha' => $fecha,
                                         'created_at' => $fechaInsert,
                                         'updated_at' => $fechaInsert,
                                     ]);

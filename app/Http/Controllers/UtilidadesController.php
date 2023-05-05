@@ -131,7 +131,7 @@ class UtilidadesController extends Controller
 
                                                                    
 
-                                            if(is_null($conteoPendientes)){
+                                            if(!is_null($conteoPendientes)){
                                                     /*solo en caso de que no existan actividades pendientes
                                                     Se hace lam sumatoria excluyendo las actividad de entrega
                                                     */
@@ -229,7 +229,7 @@ class UtilidadesController extends Controller
                                                             ]);
 
                                                         }
-                                            }else if(!is_null($conteoPendientes)){
+                                            }else if(is_null($conteoPendientes)){
                                                     foreach($conteoPendientes as $pendientes){
                                                      $coincidenciaEstudio = DB::table('estudios')
                                                                         ->select('dscrpMedicosPro')
