@@ -150,8 +150,6 @@ class CobranzaController extends Controller{
                     }
                 }
 
-                dd($request);
-
                 //registro si se realiza
                 $datosStatus5 = DB::table('status_cob_com')
                                 ->where([
@@ -698,8 +696,6 @@ class CobranzaController extends Controller{
                                     ['status_cob_com.id_estudiostemps_fk',$request->identificador],
                                     ['status_cob_com.id_actividad_fk',5]
                                 ])->first();
-
-                dd($request);
 
                 if(!is_null($datosStatus5)){
                     if($datosStatus5->statusComisiones == "P"){
