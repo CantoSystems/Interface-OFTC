@@ -36,13 +36,14 @@ class UtilidadesController extends Controller
 
     public function fechaVigente(){
         $vigente =  DB::table('fechaCorte')
-                        ->select('fechaCorte')
+                        ->select('fechaCorte','id')
                         ->where('status_fechacorte',1)
                         ->latest('id')->first();
             return $vigente;
     }
    
     public function calcularUtilidades(Request $request){
+
         /* La tabla temporal ComisionesTemps se eliminará para insertar los nuevos datos calculos*/
         DB::table('comisiones_temps')->truncate();
 
@@ -70,7 +71,6 @@ class UtilidadesController extends Controller
         $corteVigente =  $this->fechaVigente();
 
         
-
             
             if(!is_null($corteVigente)){
 
@@ -85,9 +85,6 @@ class UtilidadesController extends Controller
                                     ['id_empleado_fk','=',$request->slctEmpleado]
                                 ])->first();
 
-
-                    
-
                     /*Se obtienen las utilidades hasta la fecha de corte*/
                     $infoUtilidad = DB::table('status_cob_com')
                                             ->join('actividades','actividades.id','status_cob_com.id_actividad_fk')
@@ -99,7 +96,8 @@ class UtilidadesController extends Controller
                                                 ['status_cob_com.id_empleado_fk', $request->slctEmpleado],
                                                 ['estudiostemps.fecha','<=', $corteVigente->fechaCorte],
                                                 ['actividades.nombreActividad',"Utilidad"],
-                                                ['status_cob_com.id_estudio_fk',$arrayEstudios]
+                                                ['status_cob_com.id_estudio_fk',$arrayEstudios],
+                                                ['status_cob_com.statusComisiones','!=',"PAGADO"]
                                             ])
                                             ->select('actividades.nombreActividad',
                                                         'estudiostemps.paciente',
@@ -109,17 +107,11 @@ class UtilidadesController extends Controller
                                                         'status_cob_com.id_estudiostemps_fk as identificadorEstudio'
                                                     )
                                             ->get();
-
-
-                        if(!is_null($infoUtilidad)){
-
-                            foreach($infoUtilidad as $inf){
-
-                                if(is_null($comisionUtilidad)){
-
-
-                                    /*Verificación sí todas las actividades de status_cob_com están pagadas*/
-                                        $conteoPendientes = DB::table('status_cob_com')
+                        /*Se recorren los registros resultados de infoUtilidad */
+                        foreach($infoUtilidad as $inf){
+                            if(!is_null($inf) && !is_null($comisionUtilidad)){
+                                /*Verificación sí todas las actividades de status_cob_com están pagadas*/
+                                    $conteoPendientes = DB::table('status_cob_com')
                                                                     ->select('folio','id_estudio_fk')
                                                                     ->where([
                                                                             ['id_estudiostemps_fk',$inf->identificadorEstudio],
@@ -127,13 +119,11 @@ class UtilidadesController extends Controller
                                                                             ['statusComisiones',"P"]
                                                                     ])
                                                                     ->orderBy('folio','desc')
-                                                                    ->get();
+                                                                    ->get(); 
 
-                                                                   
-
-                                            if(!is_null($conteoPendientes)){
-                                                    /*solo en caso de que no existan actividades pendientes
-                                                    Se hace lam sumatoria excluyendo las actividad de entrega
+                                        if($conteoPendientes->count() === 0){
+                                            /*solo en caso de que no existan actividades pendientes
+                                                    Se hace la sumatoria excluyendo las actividad de entrega
                                                     */
                                                     $sumaActividades = DB::table('status_cob_com')
                                                                         ->where([
@@ -142,7 +132,12 @@ class UtilidadesController extends Controller
                                                                             ['id_estudiostemps_fk',$inf->identificadorEstudio]
                                                                         ])
                                                                         ->sum('cobranza_total');
-                                                                        
+
+                                                    $totalEstudiosTemps = DB::table('estudiostemps')
+                                                                        ->select('total')
+                                                                        ->where('id',$inf->identificadorEstudio)
+                                                                        ->first();
+
 
                                                     /*Verificamos que el registro tenga entrega*/
                                                     $actividadEntrega = DB::table('status_cob_com')
@@ -153,26 +148,19 @@ class UtilidadesController extends Controller
                                                                         ])
                                                                         ->first();
 
-                                                                        
-
-                                                    $totalEstudiosTemps = DB::table('estudiostemps')
-                                                                        ->select('total')
-                                                                        ->where('id',$inf->identificadorEstudio)
-                                                                        ->first();
-
-
                                                         if(!is_null($actividadEntrega)){
                                                             /*Consulta para el conteo de enfermeria*/
                                                             $conteoEnfermeras = DB::table('empleados')
                                                                                 ->where('puesto_id',8)
                                                                                 ->count();
-                                                                                
 
                                                             if(!is_null($conteoEnfermeras)){
                                                                 $totalActividades = $sumaActividades+($actividadEntrega->cobranza_total*$conteoEnfermeras);
 
 
-                                                            $pagoUtilidad = ($totalEstudiosTemps->total - $totalActividades) * $comisionUtilidad->porcentajeUtilidad/100;
+                                                            $restante = ($totalEstudiosTemps->total - $totalActividades);
+
+                                                           $pagoUtilidad = $restante* $comisionUtilidad->porcentajeUtilidad/100;
 
                                                             DB::table('status_cob_com')->where('id',$inf->identificadorEstatus)
                                                                 ->update([
@@ -193,17 +181,15 @@ class UtilidadesController extends Controller
                                                                 'updated_at' => $fechaInsert,
                                                                 'id_status_fk' => $inf->identificadorEstatus,
                                                                 'cobranza_folio' => $inf->cobranzaFolio,
-                                                                'totalsum_actividades' => $totalActividades
+                                                                'totalsum_actividades' => $totalActividades,
+                                                                'restanteUtilidad' => $restante,
                                                             ]);
 
                                                             }
-                                                           
-
-                                                            
-
                                                         }else if(is_null($actividadEntrega)){
-                                                            //dd($inf->cobranzaFolio);
-                                                            $pagoUtilidad = ($totalEstudiosTemps->total - $sumaActividades) * $comisionUtilidad->porcentajeUtilidad/100;
+
+                                                            $restante = ($totalEstudiosTemps->total - $sumaActividades);
+                                                            $pagoUtilidad = $restante  * $comisionUtilidad->porcentajeUtilidad/100;
 
 
                                                             DB::table('status_cob_com')->where('id',$inf->identificadorEstatus)
@@ -225,45 +211,48 @@ class UtilidadesController extends Controller
                                                                 'updated_at' => $fechaInsert,
                                                                 'id_status_fk' => $inf->identificadorEstatus,
                                                                 'cobranza_folio' => $inf->cobranzaFolio,
-                                                                'totalsum_actividades' => $sumaActividades
+                                                                'totalsum_actividades' => $sumaActividades,
+                                                                'restanteUtilidad' => $restante,
                                                             ]);
-
                                                         }
-                                            }else if(is_null($conteoPendientes)){
-                                                    foreach($conteoPendientes as $pendientes){
-                                                     $coincidenciaEstudio = DB::table('estudios')
+
+
+
+
+                                        }else if(!is_null($conteoPendientes)){
+                                            foreach($conteoPendientes as $pendientes){
+                                                
+                                                $coincidenciaEstudio = DB::table('estudios')
                                                                         ->select('dscrpMedicosPro')
                                                                         ->where('estudios.id', $pendientes->id_estudio_fk)
                                                                         ->first(); 
 
-                                                        $resultPendientes->push(["folio" => $pendientes->folio,
-                                                            "estudios" => $coincidenciaEstudio->dscrpMedicosPro]);
+                                                $resultPendientes->push(["folio" => $pendientes->folio,"estudios" => $coincidenciaEstudio->dscrpMedicosPro]);
 
-                                                    }
                                             }
-                                }else if(!is_null($comisionUtilidad)){
-                                    $coincidenciaEstudio = DB::table('estudios')
+                                        }  
+                            }else if(is_null($comisionUtilidad)){
+                                $coincidenciaEstudio = DB::table('estudios')
                                                     ->select('dscrpMedicosPro')
                                                     ->where('estudios.id', $arrayEstudios)
                                                     ->first();
 
-                                    $coincidenciaEmpleado = DB::table('empleados')
+                                $coincidenciaEmpleado = DB::table('empleados')
                                                     ->select( DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) as emp"))
                                                     ->where('id_emp',$request->slctEmpleado)
                                                     ->first();
 
-                                        DB::table('status_cob_com')->where('id',$inf->identificadorEstatus)
-                                             ->update([                                               
-                                                'statusComisiones' => "INFORMATIVO",
+                                DB::table('status_cob_com')->where('id',$inf->identificadorEstatus)
+                                             ->update([ 'statusComisiones' => "INFORMATIVO",
                                                 'cobranza_porcentaje' =>  0,
                                                 'cobranza_total' => 0,
                                                 'created_at' => $fechaInsert,
                                                 'updated_at' => $fechaInsert,
                                         ]);
-                                }
 
                             }
-                        }
+
+                        }/*Cierre foreach infoUtilidad*/
                 }/*Fin del cierre foreach del estudio*/
 
             }
@@ -295,7 +284,7 @@ class UtilidadesController extends Controller
             $utilidadesDoctores = DB::table('comisiones_temps')
                             ->join('empleados','empleados.id_emp','=','comisiones_temps.id_emp_fk')
                             ->join('estudios','estudios.id','=','comisiones_temps.id_estudio_fk')
-                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje','cobranza_folio','id_status_fk','totalsum_actividades')
+                            ->select('estudios.dscrpMedicosPro','fechaEstudio','total','paciente','cantidad','porcentaje','cobranza_folio','id_status_fk','totalsum_actividades','restanteUtilidad')
                             ->where([
                                 ['comisiones_temps.id_emp_fk','=',$request->slctEmpleado]
                             ])
@@ -312,6 +301,33 @@ class UtilidadesController extends Controller
                         
         return view('utilidades.showUtilidades',compact('estudios','actividades','drUtilidadInterpreta','fechaCorte','utilidadesDoctores','fallo','result','totalComisionesUtilidades'));
 
+
+    }
+
+
+    public function autorizarUtilidad(Request $request){
+        if (!$request->all()) {
+            return response()->json(["error" => "Sin data"]);
+        }
+
+        foreach ($request->only('info') as $value) {
+            $data = json_decode($value);
+        }
+
+         /*Comprobación de una fecha de corte activa*/
+        $corteVigente =  $this->fechaVigente();
+
+        if(!is_null($corteVigente)){
+            
+            foreach ($data as $autorizar) {
+
+               DB::table('status_cob_com')->where('id',$autorizar->status)
+                        ->update([                                               
+                            'statusComisiones' => "PAGADO",
+                            'id_fcorte_fk' => $corteVigente->id,
+                    ]);
+            }
+        }
 
     }
 }

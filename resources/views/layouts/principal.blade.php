@@ -534,6 +534,35 @@
                     true).text("Adicional Egresos"));
             }
         });
+
+        $('#autorizaUtilidades').click(function(e){
+            e.preventDefault();
+            let updateStatus = [];
+            document.querySelectorAll('#catUtilidadesGral tbody tr').forEach(function(e) {
+                let iteracion = {
+                    status: parseInt(e.querySelector('.id_status').value),
+                };
+                updateStatus.push(iteracion);
+            });
+            let jsonString = JSON.stringify(updateStatus);
+            console.log(jsonString);
+            $.ajax({
+                url: "{{ route('utilidades.autoriza')}}",
+                method: "POST",
+                data: {
+                    _token: document.getElementById("_token_").value,
+                    info: jsonString
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('#autorizacionExitosa').show();
+                    $('#autorizacionExitosa').text('Autorización Exitosa');
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.text);
+                }
+            });
+        });
     });
     </script>
 

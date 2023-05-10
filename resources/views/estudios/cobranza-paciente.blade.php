@@ -490,7 +490,7 @@
                                 @foreach($statusCobCom as $status)
                                 <tr>
                                     <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }})</th>
-                                    <th>{{ $status->nombreActividad }}</th>
+                                    <th>{{ $status->nombreActividad }} {{$status->cobranza_total}}</th>
                                     <th>
                                         @if($status->id_emp == 1)
                                         {{ 'No Aplica' }}
