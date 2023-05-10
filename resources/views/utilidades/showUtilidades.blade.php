@@ -84,7 +84,7 @@
 
             <form method="POST">
                 <input type="hidden" name="_token" id="_token_" value="{{ csrf_token() }}" />
-                <table id="catComisionesGral" name="catComisionesGral" class="table table-bordered table-hover">
+                <table id="catUtilidadesGral" name="catComisionesGral" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th>Fecha</th>
@@ -107,15 +107,15 @@
                                 <input type="hidden" value="{{ $utilidad->id_status_fk }}" class="id_status">
                             </td>
                             <td>{{ $utilidad->dscrpMedicosPro }}</td>
-                            <td style="text-align: right;">$ {{ number_format($utilidad->cantidad,2) }}</td>
+                            <td style="text-align: right;">$ {{ $utilidad->cantidad,2 }}</td>
                             
-                            <td style="text-align: right;">$ {{ number_format($utilidad->totalsum_actividades,2) }}</td>
+                            <td style="text-align: right;">$ {{ $utilidad->totalsum_actividades }}</td>
 
-                            <td style="text-align: right;">$ {{ number_format($utilidad->cantidad - $utilidad->totalsum_actividades,2) }}</td>
+                            <td style="text-align: right;">{{$utilidad->restanteUtilidad}}</td>
 
 
                             <td style="text-align: right;">{{ $utilidad->porcentaje }} %</td>
-                            <td style="text-align: right;">$ {{ number_format($utilidad->total,2) }}</td>
+                            <td style="text-align: right;">$ {{ $utilidad->total }}</td>
                         </tr>
                         @endforeach
                         @endif
@@ -163,7 +163,7 @@
         <div class="col-4">
             @canany(['comisiones','cobranzaReportes'])
             @if(isset($utilidadesDoctores) && !empty($totalComisionesUtilidades) && !empty($fechaCorte))
-            <button id="autorizaComisiones" type="button" class="btn btn-block btn-outline-secondary btn-xs">
+            <button id="autorizaUtilidades" type="button" class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Autorizar</span>
             </button>
             @else

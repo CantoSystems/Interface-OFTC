@@ -106,6 +106,7 @@ class EstudiosController extends Controller{
                             ->join('actividades','actividades.id','=','status_cob_com.id_actividad_fk')
                             ->join('estudios','estudios.id','=','status_cob_com.id_estudio_fk')
                             ->select('status_cob_com.id'
+                                    ,'cobranza_total'
                                     ,'estudios.dscrpMedicosPro'
                                     ,'status_cob_com.folio'
                                     ,'actividades.nombreActividad'
