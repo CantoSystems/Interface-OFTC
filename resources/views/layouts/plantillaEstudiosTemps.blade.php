@@ -289,10 +289,12 @@
     }
 
     $(document).ready(function() {
-        countUtilidades = $('#countUtilidades').val();
+        /*countUtilidades = $('#countUtilidades').val();
         if (countUtilidades > 0) {
-
-        }
+            $(".chckUtilidad").prop("disabled", true);
+        } else {
+            alert("No se ha pagado");
+        }*/
 
         $('.transRdS').click(function() {
             $('#drTransc').attr("disabled", false);
