@@ -127,7 +127,7 @@ class UtilidadesController extends Controller
                                                     */
                                                     $sumaActividades = DB::table('status_cob_com')
                                                                         ->where([
-                                                                            ['id_actividad_fk','!=',4],
+                                                                            ['id_actividad_fk','!=',3],
                                                                             ['id_actividad_fk','!=',10],
                                                                             ['id_estudiostemps_fk',$inf->identificadorEstudio]
                                                                         ])
@@ -140,22 +140,22 @@ class UtilidadesController extends Controller
 
 
                                                     /*Verificamos que el registro tenga entrega*/
-                                                    $actividadEntrega = DB::table('status_cob_com')
+                                                    $actividadEscaneo = DB::table('status_cob_com')
                                                                         ->select('cobranza_total')
                                                                         ->where([
-                                                                            ['id_actividad_fk',4],
+                                                                            ['id_actividad_fk',3],
                                                                             ['id_estudiostemps_fk',$inf->identificadorEstudio]
                                                                         ])
                                                                         ->first();
 
-                                                        if(!is_null($actividadEntrega)){
+                                                        if(!is_null($actividadEscaneo)){
                                                             /*Consulta para el conteo de enfermeria*/
                                                             $conteoEnfermeras = DB::table('empleados')
                                                                                 ->where('puesto_id',8)
                                                                                 ->count();
 
                                                             if(!is_null($conteoEnfermeras)){
-                                                                $totalActividades = $sumaActividades+($actividadEntrega->cobranza_total*$conteoEnfermeras);
+                                                                $totalActividades = $sumaActividades+($actividadEscaneo->cobranza_total*$conteoEnfermeras);
 
 
                                                             $restante = ($totalEstudiosTemps->total - $totalActividades);
@@ -186,7 +186,7 @@ class UtilidadesController extends Controller
                                                             ]);
 
                                                             }
-                                                        }else if(is_null($actividadEntrega)){
+                                                        }else if(is_null($actividadEscaneo)){
 
                                                             $restante = ($totalEstudiosTemps->total - $sumaActividades);
                                                             $pagoUtilidad = $restante  * $comisionUtilidad->porcentajeUtilidad/100;
