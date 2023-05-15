@@ -13,12 +13,12 @@
         <tbody>
             <tr>
                 <td style="text-align: center; font-size: 30px;" colspan="6">Oftalmo<b>Center - Cálculo de
-                        Comisiones</b></td>
+                        Utilidades</b></td>
             </tr>
             <tr></tr>
             <tr>
                 <td><b>Empleado:</b></td>
-                <td>{{ $emp }}</td>
+                <td>Dr. {{ $emp }}</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -33,7 +33,7 @@
                 <th><b>Paciente</b></th>
                 <th style="text-align: center;"><b>Fecha de Estudio</b></th>
                 <th style="text-align: center;"><b>Precio Estudio</b></th>
-                <th style="text-align: center;"><b>Porcentaje Comisión</b></th>
+                <th style="text-align: center;"><b>Porcentaje Utilidad</b></th>
                 <th style="text-align: center;"><b>Total</b></th>
             </tr>
         </thead>

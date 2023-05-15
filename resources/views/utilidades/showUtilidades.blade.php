@@ -77,11 +77,11 @@
             @isset($result)
             @foreach($result as $result)
             <div class="alert alert-danger" role="alert">
-              El folio {{ $result->folio }} asignado al estudio {{ $result->estudios}} no cuenta con todas las actividades autorizadas
+                El folio {{ $result->folio }} asignado al estudio {{ $result->estudios}} no cuenta con todas las
+                actividades autorizadas
             </div>
             @endforeach
             @endisset
-
             <form method="POST">
                 <input type="hidden" name="_token" id="_token_" value="{{ csrf_token() }}" />
                 <table id="catUtilidadesGral" name="catComisionesGral" class="table table-bordered table-hover">
@@ -92,7 +92,7 @@
                             <th>Estudio</th>
                             <th style="width: 40px; text-align: center;">Cantidad</th>
                             <th style="width: 40px; text-align: center;">Suma Actividades</th>
-                            <th style="width: 40px; text-align: center;">Cantidad restante</th>
+                            <th style="width: 40px; text-align: center;">Cantidad Restante</th>
                             <th style="width: 40px; text-align: center;">Porcentaje</th>
                             <th style="width: 40px; text-align: center;">Total</th>
                         </tr>
@@ -107,15 +107,11 @@
                                 <input type="hidden" value="{{ $utilidad->id_status_fk }}" class="id_status">
                             </td>
                             <td>{{ $utilidad->dscrpMedicosPro }}</td>
-                            <td style="text-align: right;">$ {{ $utilidad->cantidad,2 }}</td>
-                            
-                            <td style="text-align: right;">$ {{ $utilidad->totalsum_actividades }}</td>
-
-                            <td style="text-align: right;">{{$utilidad->restanteUtilidad}}</td>
-
-
-                            <td style="text-align: right;">{{ $utilidad->porcentaje }} %</td>
-                            <td style="text-align: right;">$ {{ $utilidad->total }}</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->cantidad,2) }}</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->totalsum_actividades,2) }}</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->restanteUtilidad,2) }}</td>
+                            <td style="text-align: right;">{{ number_format($utilidad->porcentaje,2) }} %</td>
+                            <td style="text-align: right;">$ {{ number_format($utilidad->total,2) }}</td>
                         </tr>
                         @endforeach
                         @endif
@@ -131,7 +127,8 @@
                             <tbody>
                                 <tr style="font-size: 15px;">
                                     <td><b>Total:</b></td>
-                                    <td style="text-align: right;"><b>$ {{ number_format($totalComisionesUtilidades,2) }}</b></td>
+                                    <td style="text-align: right;"><b>$
+                                            {{ number_format($totalComisionesUtilidades,2) }}</b></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -146,7 +143,6 @@
     <div class="row">
         <div class="col-12 alert alert-success" id="autorizacionExitosa" role="alert"
             style="color: white;text-align:center;">
-
         </div>
         <div class="col-4">
             <a id="limpiarVista" type="button" href="{{ route('utilidades.index') }}"
@@ -155,7 +151,7 @@
             </a>
         </div>
         <div class="col-4">
-            <a id="generaExcel" type="button" href="{{ route('exportarComisiones.export') }}"
+            <a id="generaExcel" type="button" href="{{ route('exportarUtilidades.export') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Generar Excel</span>
             </a>
