@@ -291,7 +291,7 @@
     $(document).ready(function() {
         countUtilidades = $('#countUtilidades').val();
         if (countUtilidades > 0) {
-
+            $(".chckUtilidad").prop("disabled", true);
         }
 
         $('.transRdS').click(function() {

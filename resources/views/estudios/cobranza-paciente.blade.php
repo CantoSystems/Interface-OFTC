@@ -82,7 +82,8 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>PX INT. - EXT.<strong style="color:red">*</strong></label>
-                                        <select name="tipoPaciente" id="tipoPaciente" class="custom-select combos">
+                                        <select name="tipoPaciente" id="tipoPaciente"
+                                            class="custom-select combos chckUtilidad">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($tipoPac as $tpaciente)
                                             @if($tpaciente->id==$datosPaciente->tipoPaciente)
@@ -101,7 +102,8 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>Dr. Que Requiere<strong style="color:red">*</strong></label>
-                                        <select name="drRequiere" id="drRequiere" class="custom-select combos">
+                                        <select name="drRequiere" id="drRequiere"
+                                            class="custom-select combos chckUtilidad">
                                             <option selected disabled>-- Selecciona una opción --</option>
                                             @foreach ($doctores as $dres)
                                             @if($dres->id==$datosPaciente->id_doctor_fk)
@@ -124,7 +126,8 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label>¿Quién Realizó el Estudio?<strong style="color:red">*</strong></label>
-                                        <select name="empRealiza" id="empRealiza" class="custom-select combos">
+                                        <select name="empRealiza" id="empRealiza"
+                                            class="custom-select combos chckUtilidad">
                                             <option disabled selected>-- Selecciona una opción --</option>
                                             @foreach($empRealiza as $empRe)
                                             @if($empRe->id_emp == $datosPaciente->id_empRea_fk)
@@ -145,29 +148,31 @@
                                     <div class="form-group">
                                         @if($datosPaciente->transcripcion == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="transRd" class="transRdS">
+                                            <input checked type="radio" value="S" name="transRd"
+                                                class="transRdS chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="transRd" class="transRdN">
+                                            <input type="radio" value="N" name="transRd" class="transRdN chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->transcripcion == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="transRd" class="transRdS">
+                                            <input type="radio" value="S" name="transRd" class="transRdS chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="transRd" class="transRdN">
+                                            <input checked type="radio" value="N" name="transRd"
+                                                class="transRdN chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="transRd" class="transRdS">
+                                            <input type="radio" value="S" name="transRd" class="transRdS chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="transRd" class="transRdN">
+                                            <input type="radio" value="N" name="transRd" class="transRdN chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -177,7 +182,7 @@
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Transcripción?</label>
                                         @if($datosPaciente->transcripcion == 'S')
-                                        <select name="drTransc" id="drTransc" class="custom-select combos">
+                                        <select name="drTransc" id="drTransc" class="custom-select combos chckUtilidad">
                                             @else
                                             <select name="drTransc" disabled id="drTransc" class="custom-select combos">
                                                 <option selected id="NA" value="N/A">-- Selecciona una opción
@@ -205,29 +210,31 @@
                                     <div class="form-group">
                                         @if($datosPaciente->interpretacion == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="intRd" class="interSi">
+                                            <input checked type="radio" value="S" name="intRd"
+                                                class="interSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd" class="interNo">
+                                            <input type="radio" value="N" name="intRd" class="interNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->interpretacion == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd" class="interSi">
+                                            <input type="radio" value="S" name="intRd" class="interSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="intRd" class="interNo">
+                                            <input checked type="radio" value="N" name="intRd"
+                                                class="interNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="intRd" class="interSi">
+                                            <input type="radio" value="S" name="intRd" class="interSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="intRd" class="interNo">
+                                            <input type="radio" value="N" name="intRd" class="interNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -239,7 +246,8 @@
                                         @if($datosPaciente->interpretacion == 'S')
                                         <select name="drInt" id="drInt" class="custom-select combos">
                                             @else
-                                            <select name="drInt" id="drInt" disabled class="custom-select combos">
+                                            <select name="drInt" id="drInt" disabled
+                                                class="custom-select combos chckUtilidad">
                                                 <option disabled selected id="NA" value="N/A">-- Selecciona una opción
                                                     --
                                                 </option>
@@ -264,29 +272,29 @@
                                     <div class="form-group">
                                         @if($datosPaciente->escaneado == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="escRd">
+                                            <input checked type="radio" value="S" name="escRd" class="chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="escRd">
+                                            <input type="radio" value="N" name="escRd" class="chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @elseif($datosPaciente->escaneado == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="escRd">
+                                            <input type="radio" value="S" name="escRd" class="chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="escRd">
+                                            <input checked type="radio" value="N" name="escRd" class="chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @else
                                         <div class="icheck-info d-inline">
-                                            <input type="radio" value="S" name="escRd">
+                                            <input type="radio" value="S" name="escRd" class="chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="escRd">
+                                            <input type="radio" value="N" name="escRd" class="chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         @endif
@@ -297,54 +305,58 @@
                                     <div class="form-group">
                                         @if($datosPaciente->entregado == 'S')
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="entRd" class="entSi">
+                                            <input checked type="radio" value="S" name="entRd"
+                                                class="entSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <input type="radio" value="N" name="entRd" class="entNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <input type="radio" value="P" name="entRd" class="entPen chckUtilidad">
                                             <label>PENDIENTE</label>
                                         </div>
                                         @elseif($datosPaciente->entregado == 'N')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <input type="radio" value="S" name="entRd" class="entSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="entRd" class="entNo">
+                                            <input checked type="radio" value="N" name="entRd"
+                                                class="entNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="P" name="entRd" class="entPen">
+                                            <input type="radio" value="P" name="entRd" class="entPen chckUtilidad">
                                             <label>PENDIENTE</label>
                                         </div>
                                         @elseif($datosPaciente->entregado == 'P')
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <input type="radio" value="S" name="entRd" class="entSi chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <input type="radio" value="N" name="entRd" class="entNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="P" name="entRd" class="entPen">
+                                            <input checked type="radio" value="P" name="entRd"
+                                                class="entPen chckUtilidad">
                                             <label>PENDIENTE</label>
                                         </div>
                                         @else
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="entRd" class="entSi">
+                                            <input type="radio" value="S" name="entRd" class="entSi chckUtilidad ">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="entRd" class="entNo">
+                                            <input type="radio" value="N" name="entRd" class="entNo chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="P" name="entRd" class="entPen">
+                                            <input checked type="radio" value="P" name="entRd"
+                                                class="entPen chckUtilidad">
                                             <label>PENDIENTE</label>
                                         </div>
                                         @endif
@@ -356,7 +368,7 @@
                                         @if($datosPaciente->entregado == 'N' || $datosPaciente->entregado == 'P')
                                         <select disabled name="empEnt" id="empEnt" class="custom-select combos">
                                             @else
-                                            <select name="empEnt" id="empEnt" class="custom-select combos">
+                                            <select name="empEnt" id="empEnt" class="custom-select combos chckUtilidad">
                                                 @endif
                                                 <option disabled selected>-- Selecciona una opción --</option>
                                                 @foreach($empEntrega as $empE)
@@ -377,7 +389,7 @@
                                     <div class="form-group">
                                         <label>Observaciones</label>
                                         <input type="text" value="{{ $datosPaciente->observaciones }}" id="obsCobranza"
-                                            name="obsCobranza" class="form-control">
+                                            name="obsCobranza" class="form-control chckUtilidad">
                                         <input type="hidden" name="status" id="statusPaciente"
                                             value="{{$datosPaciente->estudiostemps_status}}">
                                     </div>
@@ -387,11 +399,13 @@
                                     @if($datosPaciente->estudiostemps_status == 0)
                                     <div class="form-group">
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S1" name="registroC" class="registroC">
+                                            <input type="radio" value="S1" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N1" name="registroC" class="registroC">
+                                            <input checked type="radio" value="N1" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                     </div>
@@ -399,33 +413,39 @@
                                     @if($datosPaciente->registroC == 'S')
                                     <div class="form-group">
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="S" name="registroC" class="registroC">
+                                            <input checked type="radio" value="S" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="N" name="registroC" class="registroC">
+                                            <input type="radio" value="N" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                     </div>
                                     @elseif($datosPaciente->registroC == 'N')
                                     <div class="form-group">
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="registroC" class="registroC">
+                                            <input type="radio" value="S" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="registroC" class="registroC">
+                                            <input checked type="radio" value="N" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                     </div>
                                     @else
                                     <div class="form-group">
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" value="S" name="registroC" class="registroC">
+                                            <input type="radio" value="S" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>SI</label>
                                         </div>
                                         <div class="icheck-primary d-inline">
-                                            <input checked type="radio" value="N" name="registroC" class="registroC">
+                                            <input checked type="radio" value="N" name="registroC"
+                                                class="registroC chckUtilidad">
                                             <label>NO</label>
                                         </div>
                                     </div>
@@ -490,7 +510,9 @@
                                 @foreach($statusCobCom as $status)
                                 <tr>
                                     <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }})</th>
-                                    <th>{{ $status->nombreActividad }} {{$status->cobranza_total}}</th>
+                                    <!--<th>{{ $status->nombreActividad }} ($ {{number_format($status->cobranza_total,2)}})
+                                    </th>-->
+                                    <th>{{ $status->nombreActividad }}</th>
                                     <th>
                                         @if($status->id_emp == 1)
                                         {{ 'No Aplica' }}

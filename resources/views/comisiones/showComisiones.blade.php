@@ -115,7 +115,7 @@
                             <td>{{ strtoupper($com->paciente) }}</td>
                             <td>{{ $com->dscrpMedicosPro }}</td>
                             <td style="text-align: right;">$ {{ number_format($com->cantidad,2) }}</td>
-                            <td style="text-align: right;">{{ $com->porcentaje }} %</td>
+                            <td style="text-align: right;">{{ number_format($com->porcentaje,2) }} %</td>
                             <td style="text-align: right;">$ {{ number_format($com->total,2) }}</td>
                         </tr>
                         @endforeach
