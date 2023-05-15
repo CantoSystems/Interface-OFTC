@@ -150,6 +150,20 @@ class ComisionesController extends Controller{
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                         ]);
+
+                        DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $info->paciente,
+                                'fechaEstudio' => $info->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $info->cobranzaFolio,
+                                'id_status_fk'  => $info->identificadorEstatus
+                ]);
                     }
                 }
             }else if($request->selectCalculo == "Interpretado"){
