@@ -25,7 +25,9 @@ class UtilidadesExport implements FromView, ShouldAutoSize{
                                     ,'comisiones_temps.fechaEstudio'
                                     ,'comisiones_temps.cantidad'
                                     ,'comisiones_temps.porcentaje'
-                                    ,'comisiones_temps.total')
+                                    ,'comisiones_temps.total'
+                                    ,'comisiones_temps.totalsum_actividades'
+                                    ,'comisiones_temps.restanteUtilidad')
                             ->where('comisiones_temps.total','!=',0)
                             ->get();
 

@@ -244,7 +244,7 @@
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Interpretación?</label>
                                         @if($datosPaciente->interpretacion == 'S')
-                                        <select name="drInt" id="drInt" class="custom-select combos">
+                                        <select name="drInt" id="drInt" class="custom-select combos chckUtilidad">
                                             @else
                                             <select name="drInt" id="drInt" disabled
                                                 class="custom-select combos chckUtilidad">
@@ -458,7 +458,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <a href="{{ route('importarCobranza.index')}}">
-                                            <button type="button" id="btnGuardar" name="btnGuardar"
+                                            <button type="button" id="btnRegresar" name="btnRegresar"
                                                 class="btn btn-block btn-outline-secondary btn-xs">
                                                 Regresar
                                             </button>
