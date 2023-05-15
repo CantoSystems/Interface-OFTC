@@ -168,10 +168,16 @@
             </a>
         </div>
         <div class="col-3">
+            @if(isset($totalComisiones) && !empty($totalComisiones) && !empty($fechaCorte))
             <a id="generaExcel" type="button" href="{{ route('exportarComisiones.export') }}"
                 class="btn btn-block btn-outline-secondary btn-xs">
                 <span class="info-box-number">Generar Excel</span>
             </a>
+            @else
+            <button type="button" class="btn btn-block btn-outline-info btn-xs" disabled />
+            Generar Excel
+            </button>
+            @endif
         </div>
         <div class="col-3">
             @canany(['comisiones','cobranzaReportes'])

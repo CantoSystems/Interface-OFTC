@@ -163,7 +163,7 @@ class ComisionesController extends Controller{
                                 'updated_at' => $fechaInsert,
                                 'cobranza_folio' => $info->cobranzaFolio,
                                 'id_status_fk'  => $info->identificadorEstatus
-                ]);
+                        ]);
                     }
                 }
             }else if($request->selectCalculo == "Interpretado"){
@@ -219,6 +219,20 @@ class ComisionesController extends Controller{
                                 'cobranza_fecha' => $infoInterpreta->fecha,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
+                        ]);
+
+                        DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $info->paciente,
+                                'fechaEstudio' => $info->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $info->cobranzaFolio,
+                                'id_status_fk'  => $info->identificadorEstatus
                         ]);
                     }
                 }
@@ -283,6 +297,20 @@ class ComisionesController extends Controller{
                                 'cobranza_fecha' => $infoEntrega->fecha,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
+                        ]);
+
+                        DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoEntrega->paciente,
+                                'fechaEstudio' => $infoEntrega->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoEntrega->cobranzaFolio,
+                                'id_status_fk'  => $infoEntrega->identificadorEstatus
                         ]);        
                     }
                 }
@@ -344,6 +372,20 @@ class ComisionesController extends Controller{
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                         ]);
+
+                        DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoEscaneo->paciente,
+                                'fechaEstudio' => $infoEscaneo->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoEscaneo->cobranzaFolio,
+                                'id_status_fk'  => $infoEscaneo->identificadorEstatus
+                        ]);
                     }
                 }
             }else if($request->selectCalculo == "Realizado") {
@@ -400,6 +442,20 @@ class ComisionesController extends Controller{
                                 'cobranza_cantidad' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
+                        ]);
+
+                        DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoRealiza->paciente,
+                                'fechaEstudio' => $infoRealiza->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoRealiza->cobranzaFolio,
+                                'id_status_fk'  => $infoRealiza->identificadorEstatus
                         ]);
                     }
                 }
@@ -460,6 +516,20 @@ class ComisionesController extends Controller{
                                     'updated_at' => $fechaInsert,
                             ]);
 
+                            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoAdministrativo->paciente,
+                                'fechaEstudio' => $infoAdministrativo->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoAdministrativo->cobranzaFolio,
+                                'id_status_fk'  => $infoAdministrativo->identificadorEstatus
+                        ]);
+
                         }
                     }
             }else if($request->selectCalculo == "Adicional Egresos"){
@@ -518,6 +588,20 @@ class ComisionesController extends Controller{
                                     'updated_at' => $fechaInsert,
                             ]);
 
+                            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoEgresos->paciente,
+                                'fechaEstudio' => $infoEgresos->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoEgresos->cobranzaFolio,
+                                'id_status_fk'  => $infoEgresos->identificadorEstatus
+                        ]);
+
                         }
                     } 
             }elseif($request->selectCalculo == "Adicional Gestion"){
@@ -574,6 +658,20 @@ class ComisionesController extends Controller{
                                     'created_at' => $fechaInsert,
                                     'updated_at' => $fechaInsert,
                             ]);
+
+                            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $request->slctEmpleado,
+                                'id_estudio_fk' => $estudiosArray,
+                                'paciente' => $infoGestion->paciente,
+                                'fechaEstudio' => $infoGestion->fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $infoGestion->cobranzaFolio,
+                                'id_status_fk'  => $infoGestion->identificadorEstatus
+                        ]);
 
                         }
                     } 
@@ -696,6 +794,20 @@ class ComisionesController extends Controller{
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert,
                 ]);
+
+                DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
+                ]);
             }
         }else if($restriccionTrans == 0){
             DB::table('status_cob_com')->where('id',$identificadorEstatus)
@@ -707,6 +819,20 @@ class ComisionesController extends Controller{
                     'cobranza_fecha' => $fecha,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+            ]);
+
+            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
             ]);
         }
     }
@@ -767,6 +893,20 @@ class ComisionesController extends Controller{
                                         'created_at' => $fechaInsert,
                                         'updated_at' => $fechaInsert,
                                     ]);
+
+                            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
+                            ]);
                     }
             }else if($restriccionRealiza->puestos_nombre = "ENFERMERÍA"){
                 //Excluir estudios Generales FAG, OCT, CAMPIMETRIA, ULTRASONIDO
@@ -815,6 +955,21 @@ class ComisionesController extends Controller{
                             'created_at' => $fechaInsert,
                             'updated_at' => $fechaInsert,
                         ]);
+
+
+                    DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
+                    ]);
                 }
             }
         }else if(is_null($restriccionRealiza)){
@@ -827,6 +982,20 @@ class ComisionesController extends Controller{
                     'cobranza_fecha' => $fecha,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+            ]);
+
+            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
             ]);
         }
     }
@@ -1000,6 +1169,20 @@ class ComisionesController extends Controller{
                         'cobranza_fecha' => $fecha,
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert,
+                    ]);
+
+                    DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
                 ]);
                 }
         }else if(is_null($restriccionEntrega)){
@@ -1013,6 +1196,20 @@ class ComisionesController extends Controller{
                     'cobranza_fecha' => $fecha,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+            ]);
+
+            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
             ]);
         }
     }
@@ -1075,6 +1272,20 @@ class ComisionesController extends Controller{
                         'created_at' => $fechaInsert,
                         'updated_at' => $fechaInsert,
                 ]);
+
+                DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
+                ]);
             }
         }else if($restriccionInterpreta == 0){
             DB::table('status_cob_com')->where('id',$identificadorEstatus)
@@ -1086,6 +1297,20 @@ class ComisionesController extends Controller{
                     'cobranza_fecha' => $fecha,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+            ]);
+
+            DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
             ]);
         }
     }
@@ -1139,6 +1364,20 @@ class ComisionesController extends Controller{
                     'updated_at' => $fechaInsert,
                 ]);
 
+                DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
+                ]);
+
             }   
     }
     public function calculoEgresos($slctEmpleado,$slctEstudio,$identificadorEstatus,$total,$paciente,$fecha,$cobranzaFolio,$fechaInsert,$porcentajeComision){
@@ -1183,7 +1422,22 @@ class ComisionesController extends Controller{
                     'cobranza_cantidad' => 0.00,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+                    ]);
+
+                    DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
                 ]);
+
 
                 }
 
@@ -1230,6 +1484,20 @@ class ComisionesController extends Controller{
                     'cobranza_cantidad' => 0.00,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
+                ]);
+
+                DB::table('comisiones_temps')->insert([
+                                'id_emp_fk' => $slctEmpleado,
+                                'id_estudio_fk' => $slctEstudio,
+                                'paciente' => $paciente,
+                                'fechaEstudio' => $fecha,
+                                'cantidad' => 0.00,
+                                'porcentaje' => 0.00,
+                                'total' => 0.00,
+                                'created_at' => $fechaInsert,
+                                'updated_at' => $fechaInsert,
+                                'cobranza_folio' => $cobranzaFolio,
+                                'id_status_fk'  => $identificadorEstatus
                 ]);
 
     }
