@@ -529,19 +529,23 @@
                                         @endif
                                     </th>
                                     <th style="text-align: center;">
-                                        @switch($status->nombreActividad)
-                                        @case('Adicional Administrativo')
-                                        @case('Adicional Egresos')
-                                        @case('Adicional Gestion')
-                                        @case('Utilidad')
-                                        <a class="btn btn-block btn-outline-secondary btn-xs">NO
-                                            APLICA</a>
-                                        @break
-                                        @default
-                                        <a class="btn btn-block btn-outline-secondary btn-xs"
-                                            href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
-                                        @break
-                                        @endswitch
+                                        @if($totalStatusUtilidades < 0) @switch($status->nombreActividad)
+                                            @case('Adicional Administrativo')
+                                            @case('Adicional Egresos')
+                                            @case('Adicional Gestion')
+                                            @case('Utilidad')
+                                            <a class="btn btn-block btn-outline-secondary btn-xs">NO
+                                                APLICA</a>
+                                            @break
+                                            @default
+                                            <a class="btn btn-block btn-outline-secondary btn-xs"
+                                                href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
+                                            @break
+                                            @endswitch
+                                            @else
+                                            <a class="btn btn-block btn-outline-secondary btn-xs">NO
+                                                APLICA</a>
+                                            @endif
                                     </th>
                                     <!--<th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>-->
                                 </tr>
