@@ -292,6 +292,7 @@
         countUtilidades = $('#countUtilidades').val();
         if (countUtilidades > 0) {
             $(".chckUtilidad").prop("disabled", true);
+            $("#btnGuardar").attr("disabled", true);
         }
 
         $('.transRdS').click(function() {
