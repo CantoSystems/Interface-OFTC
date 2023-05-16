@@ -250,6 +250,7 @@ class ComisionesController extends Controller{
                                 ['estudiostemps.fecha','<=', $request->fechaFin],
                                 ['status_cob_com.id_estudio_fk',$estudiosArray],
                                 ['status_cob_com.statusComisiones','!=',"PAGADO"],
+                                ['status_cob_com.statusComisiones','!=',"RESERVADO"],
                         ])
                         ->select('actividades.nombreActividad',
                                  'estudiostemps.total','estudiostemps.paciente',
