@@ -512,7 +512,8 @@
                                     <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }}) </th>
                                     
                                     </th>
-                                    <th>{{ $status->nombreActividad }} ($ {{number_format($status->cobranza_total,2)}})</th>
+                                    <th>{{ $status->nombreActividad }} </th>
+                                    <!--($ {{number_format($status->cobranza_total,2)}})-->
                                     <th>
                                         @if($status->id_emp == 1)
                                         {{ 'No Aplica' }}
