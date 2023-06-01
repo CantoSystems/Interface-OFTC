@@ -544,8 +544,14 @@
                                             @break
                                             @endswitch
                                             @else
+                                            @if($status->nombreActividad == 'Entregado' &&
+                                            strtoupper($status->statusComisiones) != 'PAGADO')
+                                            <a class="btn btn-block btn-outline-secondary btn-xs"
+                                                href="{{ route('importarCobranza.showActividad',$status->id) }}">VER</a>
+                                            @else
                                             <a class="btn btn-block btn-outline-secondary btn-xs">NO
                                                 APLICA</a>
+                                            @endif
                                             @endif
                                     </th>
                                     <!--<th><a class="btn btn-block btn-outline-secondary btn-xs">VER</a></th>-->
