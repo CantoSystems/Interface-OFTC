@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                @canany(['comisiones','cobranzaReportes','optometria'])
+                @canany(['comisiones','cobranzaReportes','optometria','auxiliarCobranzaReportes'])
                 <div class="card card-info">
                     <div class="card-header">
                         <h3 class="card-title">Información Actividad ({{ $statusCobCom->nombreActividad }})
@@ -180,7 +180,7 @@
         </div>
     </div>
 </section>
-@elsecanany(['detalleConsumo','auxiliarCobranzaReportes','auxiliardetalleConsumo','invitado'])
+@elsecanany(['detalleConsumo','auxiliardetalleConsumo','invitado'])
 <div class="alert alert-danger" role="alert">
     No cuenta con los privilegios para acceder a este módulo del sistema
 </div>
