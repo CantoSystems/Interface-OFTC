@@ -382,6 +382,7 @@ class EstudiosController extends Controller{
                 break;
             }
         }else{
+            //Condiciones para la actividad entregado
            //dd($request);
             $datosEnt = DB::table('status_cob_com')
                             ->select('statusComisiones')
@@ -446,7 +447,8 @@ class EstudiosController extends Controller{
 
                     DB::table('status_cob_com')->where('id',$request['idActividad'])
                         ->update([                                               
-                            'id_empleado_fk' => $request["empNuevo"]
+                            'id_empleado_fk' => $request["empNuevo"],
+                            'statusComisiones' => "ASIGNADO"
                     ]);
 
                     DB::table('estudiostemps')->where('id',$request['idEstudios'])
