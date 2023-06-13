@@ -211,7 +211,7 @@ class ComisionesController extends Controller{
                                                 ->where('id_emp',$request->slctEmpleado)
                                                 ->first();
 
-                        DB::table('status_cob_com')->where('id',$info->identificadorEstatus)
+                        DB::table('status_cob_com')->where('id',$infoInterpreta->identificadorEstatus)
                             ->update(['statusComisiones' => "INFORMATIVO",
                                 'cobranza_porcentaje' =>  0.00,
                                 'cobranza_total' => 0.00,
@@ -224,15 +224,15 @@ class ComisionesController extends Controller{
                         DB::table('comisiones_temps')->insert([
                                 'id_emp_fk' => $request->slctEmpleado,
                                 'id_estudio_fk' => $estudiosArray,
-                                'paciente' => $info->paciente,
-                                'fechaEstudio' => $info->fecha,
+                                'paciente' => $infoInterpreta->paciente,
+                                'fechaEstudio' => $infoInterpreta->fecha,
                                 'cantidad' => 0.00,
                                 'porcentaje' => 0.00,
                                 'total' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
-                                'cobranza_folio' => $info->cobranzaFolio,
-                                'id_status_fk'  => $info->identificadorEstatus
+                                'cobranza_folio' => $infoInterpreta->cobranzaFolio,
+                                'id_status_fk'  => $infoInterpreta->identificadorEstatus
                         ]);
                     }
                 }
