@@ -104,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($comisiones) && !empty($totalComisiones))
+                        @if(isset($comisiones))
                         @foreach($comisiones as $com)
                         <tr>
                             <td>{{ date('d-M-Y',strtotime($com->fechaEstudio)) }}</td>
@@ -123,7 +123,7 @@
                     </tbody>
                 </table>
                 <br>
-                @if(isset($totalComisiones) && !empty($totalComisiones))
+                @if(isset($totalComisiones))
                 <div class="row">
                     <div class="col-md-9">
                     </div>
