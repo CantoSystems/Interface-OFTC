@@ -415,13 +415,15 @@ class ComisionesController extends Controller{
                                      'estudiostemps.fecha',
                                      'status_cob_com.id as identificadorEstatus',
                                      'estudiostemps.folio as cobranzaFolio')
-                            ->toSql();
+                            ->get();
 
                     
                             
                 //Iteramos los estudios que se han realizado
                 foreach($infoCalculoComisionRealiza as $infoRealiza ){
+                    
                     if(!is_null($infoRealiza) && !is_null($comisionEmp)){
+
                             $this->calculoRealiza($request->slctEmpleado
                                                  ,$infoRealiza->identificadorEstatus
                                                  ,$estudiosArray
@@ -433,6 +435,7 @@ class ComisionesController extends Controller{
                                                  ,$infoRealiza->cobranzaFolio);
 
                     }else if(is_null($comisionEmp)){
+
                         $coincidenciaEstudio = DB::table('estudios')
                                                     ->select('dscrpMedicosPro')
                                                     ->where('estudios.id', $estudiosArray)
@@ -448,7 +451,7 @@ class ComisionesController extends Controller{
                                 'statusComisiones' => "Informativo",
                                 'cobranza_porcentaje' =>  0.00,
                                 'cobranza_total' => 0.00,
-                                'cobranza_cantidad' => 0.00,
+                                'cobranza_cantidad' => $infoRealiza->total,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                         ]);
@@ -460,7 +463,7 @@ class ComisionesController extends Controller{
                                 'fechaEstudio' => $infoRealiza->fecha,
                                 'cantidad' => 0.00,
                                 'porcentaje' => 0.00,
-                                'total' => 0.00,
+                                'total' => $infoRealiza->total,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                                 'cobranza_folio' => $infoRealiza->cobranzaFolio,
@@ -855,9 +858,11 @@ class ComisionesController extends Controller{
                                         ->whereIn('puestos_nombre',["ENFERMERÍA","OPTOMETRÍA"])
                                         ->where('empleados.id_emp',$slctEmpleado)
                                         ->select('puestos_nombre')
-                                        ->get();
+                                        ->first();
+
 
         if(!is_null($restriccionRealiza)){
+        
             if($restriccionRealiza->puestos_nombre = "OPTOMETRÍA"){
                 //Excluir Estudios Anterion y ultrasonido
                 $excluyeEstudioRealiza = DB::table('estudios')
@@ -984,6 +989,7 @@ class ComisionesController extends Controller{
                 }
             }
         }else if(is_null($restriccionRealiza)){
+        
             DB::table('status_cob_com')->where('id',$identificadorEstatus)
                 ->update([                                               
                     'statusComisiones' => "INFORMATIVO",
