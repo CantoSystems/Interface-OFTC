@@ -41,6 +41,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-2 col-sm-4 col-4">
+                        <div class="info-box shadow">
+                            <div class="info-box-content">
+                                <label class="info-box-text">Selecciona Status</label>
+                                <select class="form-control" name="slctStatus" id="slctStatus">
+                                    <option selected disabled>-- Selecciona una opción --</option>
+                                    <option value="TODOS">TODAS LAS HOJAS DE CONSUMO</option>
+                                    <option value="PENDIENTE">PENDIENTE DE PAGO</option>
+                                    <option value="PAGADO">PAGADAS</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-2 col-sm-4 col-6">
                         <div class="info-box shadow">
                             <div class="info-box-content">
