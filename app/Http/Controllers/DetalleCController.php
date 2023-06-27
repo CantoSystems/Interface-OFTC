@@ -214,6 +214,7 @@ class DetalleCController extends Controller{
     }
 
     public function viewHojas(Request $request){
+        session_destroy();
         DB::table('historico_detalle_consumo')->truncate();
         $dateInicio = Carbon::now()->format('Y-m-01');
         $dateFin = Carbon::now()->format('Y-m-t');
@@ -258,6 +259,8 @@ class DetalleCController extends Controller{
     }
 
     public function mostrarHojas(Request $request){
+        session_destroy();
+        session_start();
         $_SESSION["slctDoctor"] = $request->slctDoctor;
         $_SESSION["fechaInicio"] = $request->fechaInicio;
         $_SESSION["fechaFin"] = $request->fechaFin;
@@ -269,12 +272,10 @@ class DetalleCController extends Controller{
             'slctDoctor' => 'required',
             'fechaInicio' => 'required',
             'fechaFin' => 'required',
-            'slctStatus' => 'required',
         ],[
             'slctDoctor.required' => 'Selecciona Dr.',
             'fechaInicio.required' => 'Selecciona Fecha de Inicio',
             'fechaFin.required' => 'Selecciona Fecha Fin',
-            'slctStatus.required' => 'Selecciona Status',
         ]);
 
         if($validator->fails()){
@@ -421,23 +422,41 @@ class DetalleCController extends Controller{
                             ->get();
                     break;
             }
+
+            foreach($hojasConsumo as $hojas){
+                DB::table('historico_detalle_consumo')->insert([
+                    'id_hoja' => $hojas->id_detalle,
+                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                    'paciente' => $hojas->paciente,
+                    'cirugia' => $hojas->cirugia,
+                    'tipoCirugia' => $hojas->tipoCirugia,
+                    'tipoPaciente' => $hojas->tipoPaciente,
+                    'cantidadEfe' => $hojas->cantidadEfe,
+                    'cantidadTrans' => $hojas->cantidadTrans,
+                    'TPV' => $hojas->TPV,
+                    'statusHoja' => $hojas->statusHoja
+                ]);
+            }
         }
 
-        foreach($hojasConsumo as $hojas){
-            DB::table('historico_detalle_consumo')->insert([
-                'id_hoja' => $hojas->id_detalle,
-                'id_doctor_fk' => $hojas->id_doctor_fk,
-                'fechaElaboracion' => $hojas->fechaElaboracion,
-                'paciente' => $hojas->paciente,
-                'cirugia' => $hojas->cirugia,
-                'tipoCirugia' => $hojas->tipoCirugia,
-                'tipoPaciente' => $hojas->tipoPaciente,
-                'cantidadEfe' => $hojas->cantidadEfe,
-                'cantidadTrans' => $hojas->cantidadTrans,
-                'TPV' => $hojas->TPV,
-                'statusHoja' => $hojas->statusHoja
-            ]);
-        }
+        $hojasConsumo = DB::table('historico_detalle_consumo')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'historico_detalle_consumo.id_hoja as id_detalle'
+                                    ,'historico_detalle_consumo.id_doctor_fk'
+                                    ,'historico_detalle_consumo.fechaElaboracion'
+                                    ,'historico_detalle_consumo.paciente'
+                                    ,'historico_detalle_consumo.cirugia'
+                                    ,'historico_detalle_consumo.tipoCirugia'
+                                    ,'historico_detalle_consumo.tipoPaciente'
+                                    ,'historico_detalle_consumo.cantidadEfe'
+                                    ,'historico_detalle_consumo.cantidadTrans'
+                                    ,'historico_detalle_consumo.TPV'
+                                    ,'historico_detalle_consumo.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')
+                        ->get();
         
         return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo','tipoPaciente'));
     }
@@ -451,12 +470,6 @@ class DetalleCController extends Controller{
     }
 
     public function updtHoja(Request $request){
-        $arregloSesion = new Request(array(
-            "slctDoctor" => $_SESSION["slctDoctor"],
-            "fechaInicio" => $_SESSION["fechaInicio"],
-            "fechaFin" => $_SESSION["fechaFin"],
-        ));
-        
         $doctores = Doctor::where('id','!=',1)->get();
         $tipoPaciente = TipoPaciente::all();
 
@@ -556,7 +569,18 @@ class DetalleCController extends Controller{
                                 'tipoCirugia' => $request->registroC
                         ]);
 
-        return $this->mostrarHojas($arregloSesion);
+        if(isset($_SESSION["slctDoctor"])){
+            $arregloSesion = new Request(array(
+                "slctDoctor" => $_SESSION["slctDoctor"],
+                "fechaInicio" => $_SESSION["fechaInicio"],
+                "fechaFin" => $_SESSION["fechaFin"],
+                "statusHoja" => $_SESSION["statusHoja"],
+            ));
+
+            return $this->mostrarHojas($arregloSesion);
+        }else{
+            return redirect()->route('viewHojas.show');
+        }
     }
 
     public function exportarPDF($id){
