@@ -349,7 +349,6 @@
             });
         });
 
-
         $(function() {
             $("#genReportes").DataTable({
                 "responsive": true,
@@ -406,8 +405,6 @@
                 }
             });
         });
-
-        
 
         $(function() {
             $("#catEstudios").DataTable({
@@ -535,7 +532,7 @@
             }
         });
 
-        $('#autorizaUtilidades').click(function(e){
+        $('#autorizaUtilidades').click(function(e) {
             e.preventDefault();
             let updateStatus = [];
             document.querySelectorAll('#catUtilidadesGral tbody tr').forEach(function(e) {
