@@ -105,8 +105,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(!empty($hojasConsumo))
-                    @foreach($hojasConsumo as $hojas)
+                    @if(!empty($hojasConsumo2))
+                    @foreach($hojasConsumo2 as $hojas)
                     <tr vertical-align="middle">
                         <td style="text-align: center;">{{ $hojas->id_detalle }}</td>
                         <td style="text-align: center;">{{ date('d-M-Y',strtotime($hojas->fechaElaboracion)) }}</td>
