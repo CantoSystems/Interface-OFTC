@@ -267,7 +267,6 @@ class DetalleCController extends Controller{
         $_SESSION["statusHoja"] = $request->slctStatus;
         
         DB::table('historico_detalle_consumo')->truncate();
-
         $validator = Validator::make($request->all(),[
             'slctDoctor' => 'required',
             'fechaInicio' => 'required',
@@ -307,6 +306,22 @@ class DetalleCController extends Controller{
                             ->where('doctors.id','=',$request->slctDoctor)
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
+
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
                     break;
                 case 'PENDIENTE':
                     $hojasConsumo = DB::table('detalle_consumos')
@@ -331,6 +346,22 @@ class DetalleCController extends Controller{
                             ])
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
+
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
                     break;
                 case 'PAGADO':
                     $hojasConsumo = DB::table('detalle_consumos')
@@ -355,6 +386,22 @@ class DetalleCController extends Controller{
                             ])
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
+
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
                     break;
             }
         }else{
@@ -378,6 +425,22 @@ class DetalleCController extends Controller{
                                         ,'tipo_pacientes.nombretipo_paciente')
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
+
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
                     break;
                 case 'PENDIENTE':
                     $hojasConsumo = DB::table('detalle_consumos')
@@ -399,6 +462,22 @@ class DetalleCController extends Controller{
                             ->where('detalle_consumos.statusHoja','=','Pendiente')
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
+
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
                     break;
                 case 'PAGADO';
                     $hojasConsumo = DB::table('detalle_consumos')
@@ -420,27 +499,27 @@ class DetalleCController extends Controller{
                             ->where('detalle_consumos.statusHoja','=','Pagado')
                             ->whereBetween('fechaElaboracion',[$request->fechaInicio,$request->fechaFin])
                             ->get();
-                    break;
-            }
 
-            foreach($hojasConsumo as $hojas){
-                DB::table('historico_detalle_consumo')->insert([
-                    'id_hoja' => $hojas->id_detalle,
-                    'id_doctor_fk' => $hojas->id_doctor_fk,
-                    'fechaElaboracion' => $hojas->fechaElaboracion,
-                    'paciente' => $hojas->paciente,
-                    'cirugia' => $hojas->cirugia,
-                    'tipoCirugia' => $hojas->tipoCirugia,
-                    'tipoPaciente' => $hojas->tipoPaciente,
-                    'cantidadEfe' => $hojas->cantidadEfe,
-                    'cantidadTrans' => $hojas->cantidadTrans,
-                    'TPV' => $hojas->TPV,
-                    'statusHoja' => $hojas->statusHoja
-                ]);
+                            foreach($hojasConsumo as $hojas){
+                                DB::table('historico_detalle_consumo')->insert([
+                                    'id_hoja' => $hojas->id_detalle,
+                                    'id_doctor_fk' => $hojas->id_doctor_fk,
+                                    'fechaElaboracion' => $hojas->fechaElaboracion,
+                                    'paciente' => $hojas->paciente,
+                                    'cirugia' => $hojas->cirugia,
+                                    'tipoCirugia' => $hojas->tipoCirugia,
+                                    'tipoPaciente' => $hojas->tipoPaciente,
+                                    'cantidadEfe' => $hojas->cantidadEfe,
+                                    'cantidadTrans' => $hojas->cantidadTrans,
+                                    'TPV' => $hojas->TPV,
+                                    'statusHoja' => $hojas->statusHoja
+                                ]);
+                            }
+                    break;
             }
         }
 
-        $hojasConsumo = DB::table('historico_detalle_consumo')
+        $hojasConsumo2 = DB::table('historico_detalle_consumo')
                         ->join('doctors','doctors.id','=','id_doctor_fk')
                         ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
                         ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
@@ -458,7 +537,7 @@ class DetalleCController extends Controller{
                                     ,'tipo_pacientes.nombretipo_paciente')
                         ->get();
         
-        return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo','tipoPaciente'));
+        return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo2','tipoPaciente'));
     }
 
     public function editHojaConsumo($id){
