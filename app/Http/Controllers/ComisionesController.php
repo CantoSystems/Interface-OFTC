@@ -1434,13 +1434,13 @@ class ComisionesController extends Controller{
                         'id_status_fk' => $identificadorEstatus,
                         'cobranza_folio' => $cobranzaFolio
                     ]);
-                }else if(is_null($restriccionEgresos))
+                }else if(is_null($restriccionEgresos)){
                     DB::table('status_cob_com')->where('id',$identificadorEstatus)
                     ->update([                                               
                     'statusComisiones' => "INFORMATIVO",
                     'cobranza_porcentaje' =>  0.00,
                     'cobranza_total' => 0.00,
-                    'cobranza_cantidad' =>$total,
+                    'cobranza_cantidad' => $total,
                     'created_at' => $fechaInsert,
                     'updated_at' => $fechaInsert,
                     ]);
@@ -1450,16 +1450,16 @@ class ComisionesController extends Controller{
                                 'id_estudio_fk' => $slctEstudio,
                                 'paciente' => $paciente,
                                 'fechaEstudio' => $fecha,
-                                'cantidad' => 0.00,
+                                'cantidad' => $total,
                                 'porcentaje' => 0.00,
-                                'total' => $total,
+                                'total' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                                 'cobranza_folio' => $cobranzaFolio,
                                 'id_status_fk'  => $identificadorEstatus
                 ]);
 
-
+                }
                 }
 
 
@@ -1473,7 +1473,10 @@ class ComisionesController extends Controller{
                                             ['empleados.id_emp',$slctEmpleado]
                                         ])->count();
 
-                if(!is_null($restricciongestion)){
+                
+
+                if($restricciongestion === 1){
+                   
                     $comisionGestion = ($total * $porcentajeComision) /100;
                     DB::table('status_cob_com')->where('id',$identificadorEstatus)
                         ->update([
@@ -1496,7 +1499,8 @@ class ComisionesController extends Controller{
                         'id_status_fk' => $identificadorEstatus,
                         'cobranza_folio' => $cobranzaFolio
                     ]);
-                }else if(is_null($restricciongestion))
+                }else if($restricciongestion === 0){
+                    
                     DB::table('status_cob_com')->where('id',$identificadorEstatus)
                     ->update([                                               
                     'statusComisiones' => "INFORMATIVO",
@@ -1512,14 +1516,15 @@ class ComisionesController extends Controller{
                                 'id_estudio_fk' => $slctEstudio,
                                 'paciente' => $paciente,
                                 'fechaEstudio' => $fecha,
-                                'cantidad' => 0.00,
+                                'cantidad' => $total,
                                 'porcentaje' => 0.00,
-                                'total' =>$total,
+                                'total' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                                 'cobranza_folio' => $cobranzaFolio,
                                 'id_status_fk'  => $identificadorEstatus
                 ]);
+            }
 
     }
 

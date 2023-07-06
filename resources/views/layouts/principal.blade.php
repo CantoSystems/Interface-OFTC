@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="nav nav-treeview">
+                            <!--<ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('importarCobranza.verTabla')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -87,7 +87,7 @@
                                         <p>Subir Archivo Citas</p>
                                     </a>
                                 </li>
-                            </ul>
+                            </ul>-->
 
                         </li>
                     </ul>
@@ -467,7 +467,7 @@
                 actualizarStatus.push(recorrido);
             });
             let jsonString = JSON.stringify(actualizarStatus);
-            console.log(jsonString);
+            
             $.ajax({
                 url: "{{ route('comisiones.actualiza')}}",
                 method: "POST",
@@ -476,7 +476,7 @@
                     info: jsonString
                 },
                 success: function(data) {
-                    console.log(data);
+                    
                     $('#autorizacionExitosa').show();
                     $('#autorizacionExitosa').text('Autorización Exitosa');
                 },
@@ -545,7 +545,7 @@
                 updateStatus.push(iteracion);
             });
             let jsonString = JSON.stringify(updateStatus);
-            console.log(jsonString);
+            
             $.ajax({
                 url: "{{ route('utilidades.autoriza')}}",
                 method: "POST",
@@ -554,7 +554,7 @@
                     info: jsonString
                 },
                 success: function(data) {
-                    console.log(data);
+                    
                     $('#autorizacionExitosa').show();
                     $('#autorizacionExitosa').text('Autorización Exitosa');
                 },
