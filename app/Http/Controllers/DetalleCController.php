@@ -259,8 +259,6 @@ class DetalleCController extends Controller{
     }
 
     public function mostrarHojas(Request $request){
-        session_destroy();
-        session_start();
         $_SESSION["slctDoctor"] = $request->slctDoctor;
         $_SESSION["fechaInicio"] = $request->fechaInicio;
         $_SESSION["fechaFin"] = $request->fechaFin;
@@ -649,14 +647,28 @@ class DetalleCController extends Controller{
                         ]);
 
         if(isset($_SESSION["slctDoctor"])){
-            $arregloSesion = new Request(array(
-                "slctDoctor" => $_SESSION["slctDoctor"],
-                "fechaInicio" => $_SESSION["fechaInicio"],
-                "fechaFin" => $_SESSION["fechaFin"],
-                "statusHoja" => $_SESSION["statusHoja"],
-            ));
+            $doctores = Doctor::where('id','!=',1)->get();
+            $tipoPaciente = TipoPaciente::all();
+            
+            $hojasConsumo2 = DB::table('historico_detalle_consumo')
+                        ->join('doctors','doctors.id','=','id_doctor_fk')
+                        ->join('tipo_pacientes','tipo_pacientes.id','=','tipoPaciente')
+                        ->select(DB::raw("CONCAT(doctors.doctor_titulo,' ',doctors.doctor_nombre,' ',doctors.doctor_apellidop) AS Doctor")
+                                    ,'historico_detalle_consumo.id_hoja as id_detalle'
+                                    ,'historico_detalle_consumo.id_doctor_fk'
+                                    ,'historico_detalle_consumo.fechaElaboracion'
+                                    ,'historico_detalle_consumo.paciente'
+                                    ,'historico_detalle_consumo.cirugia'
+                                    ,'historico_detalle_consumo.tipoCirugia'
+                                    ,'historico_detalle_consumo.tipoPaciente'
+                                    ,'historico_detalle_consumo.cantidadEfe'
+                                    ,'historico_detalle_consumo.cantidadTrans'
+                                    ,'historico_detalle_consumo.TPV'
+                                    ,'historico_detalle_consumo.statusHoja'
+                                    ,'tipo_pacientes.nombretipo_paciente')
+                        ->get();
 
-            return $this->mostrarHojas($arregloSesion);
+            return view('detalleC.mostrarHojasConsumo', compact('doctores','hojasConsumo2','tipoPaciente'));
         }else{
             return redirect()->route('viewHojas.show');
         }
