@@ -240,7 +240,6 @@
                 </nav>
             </div>
         </aside>
-
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -349,7 +348,6 @@
             });
         });
 
-
         $(function() {
             $("#genReportes").DataTable({
                 "responsive": true,
@@ -406,8 +404,6 @@
                 }
             });
         });
-
-        
 
         $(function() {
             $("#catEstudios").DataTable({
@@ -535,7 +531,7 @@
             }
         });
 
-        $('#autorizaUtilidades').click(function(e){
+        $('#autorizaUtilidades').click(function(e) {
             e.preventDefault();
             let updateStatus = [];
             document.querySelectorAll('#catUtilidadesGral tbody tr').forEach(function(e) {
