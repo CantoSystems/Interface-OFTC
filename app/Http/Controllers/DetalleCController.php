@@ -19,7 +19,7 @@ use App\Models\Doctor;
 use App\Models\TipoPaciente;
 use App\Mail\MessageReceived;
 
-session_start();
+//session_start();
 
 class DetalleCController extends Controller{
     /**
@@ -214,7 +214,7 @@ class DetalleCController extends Controller{
     }
 
     public function viewHojas(Request $request){
-        session_destroy();
+        //session_destroy();
         DB::table('historico_detalle_consumo')->truncate();
         $dateInicio = Carbon::now()->format('Y-m-01');
         $dateFin = Carbon::now()->format('Y-m-t');
@@ -259,10 +259,10 @@ class DetalleCController extends Controller{
     }
 
     public function mostrarHojas(Request $request){
-        $_SESSION["slctDoctor"] = $request->slctDoctor;
+        /*$_SESSION["slctDoctor"] = $request->slctDoctor;
         $_SESSION["fechaInicio"] = $request->fechaInicio;
         $_SESSION["fechaFin"] = $request->fechaFin;
-        $_SESSION["statusHoja"] = $request->slctStatus;
+        $_SESSION["statusHoja"] = $request->slctStatus;*/
         
         DB::table('historico_detalle_consumo')->truncate();
         $validator = Validator::make($request->all(),[
@@ -646,7 +646,7 @@ class DetalleCController extends Controller{
                                 'tipoCirugia' => $request->registroC
                         ]);
 
-        if(isset($_SESSION["slctDoctor"])){
+        if(isset($request->doctorHoja)){
             $doctores = Doctor::where('id','!=',1)->get();
             $tipoPaciente = TipoPaciente::all();
             
