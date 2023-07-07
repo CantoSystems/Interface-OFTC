@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            <!--<ul class="nav nav-treeview">
+                            <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ route('importarCobranza.verTabla')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -87,7 +87,7 @@
                                         <p>Subir Archivo Citas</p>
                                     </a>
                                 </li>
-                            </ul>-->
+                            </ul>
 
                         </li>
                     </ul>
