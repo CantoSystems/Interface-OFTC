@@ -41,11 +41,6 @@ Route::delete('/eliminar-cobranza/{id}',[EstudiosController::class,'eliminar'])-
 Route::post('/actualizar-data-cobranza',[CobranzaController::class,'store'])->name('importarCobranza.update')->middleware('auth');
 Route::get('/reportes-cobranza',[CobranzaController::class,'show'])->name('importarCobranza.verTabla')->middleware('auth');
 Route::get('/reportes-cobranza-info',[CobranzaController::class,'showCobranza'])->name('importarCobranza.showData')->middleware('auth');
-Route::post('/agregar-interpretaciones',[CobranzaController::class,'storeInt'])->name('interpretaciones.store')->middleware('auth');
-Route::get('/eliminar-interpretacion/{id}',[CobranzaController::class,'delInt'])->name('interpretaciones.delete')->middleware('auth');
-Route::get('/editar-interpretacion/{id}',[CobranzaController::class,'showInt'])->name('interpretaciones.showInt')->middleware('auth');
-Route::post('/guardar-interpretacion',[CobranzaController::class,'updateInt'])->name('updateInterpretacion.updateInt')->middleware('auth');
-Route::post('/status-interpretacion', [CobranzaController::class,'statusInterpretacion'])->name('status.interpretacion')->middleware('auth');
 
 //Citas
 Route::get('/subir-citas',[CitaController::class,'index'])->name('importarCitas.index')->middleware('auth');

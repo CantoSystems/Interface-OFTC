@@ -90,23 +90,7 @@ class EmpleadoController extends Controller{
         return $this->index();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Empleado  $empleado
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id){
         $listPuestos = Puesto::where('id','!=',1)->get();
         $empleado = Empleado::select(DB::raw("CONCAT(empleado_nombre,' ',empleado_apellidop,' ',empleado_apellidom) AS empleado")
@@ -120,23 +104,7 @@ class EmpleadoController extends Controller{
         return view('catalogos.empleados.editempleado',compact('empleado','listPuestos'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Empleado  $empleado
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Empleado $empleado){
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Empleado  $empleado
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request){
         $listPuestos = Puesto::where('id','!=',1)->get();
         $nvoEmpleado = Empleado::where('id_emp','=',$request->idEmpleado)
@@ -159,12 +127,7 @@ class EmpleadoController extends Controller{
         return view('catalogos.empleados.catempleados',compact('empleados','listPuestos'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Empleado  $empleado
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Request $request){
         $delEmpleado = Empleado::where('id_emp','=',$request->idEmpleadoDel)->update(['empleado_status' => 'N']);
         $listPuestos = Puesto::where('id','!=',1)->get();
