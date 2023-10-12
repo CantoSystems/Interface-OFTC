@@ -105,7 +105,9 @@ class DetalleCController extends Controller{
                                                 ->get();
                     }
 
-                    $sumImporte = DB::table('detalletemps')->sum('importe');
+                    dd($porcentajeComision);
+
+                    /*$sumImporte = DB::table('detalletemps')->sum('importe');
 
                     foreach($porcentajeComision as $porcentajeComision){
                         if($porcentajeComision->id_metodoPago_fk == 1){
@@ -193,7 +195,7 @@ class DetalleCController extends Controller{
                                 ->where('id_detalleConsumo_FK','=',$select2->id)
                                 ->get();
         
-                    $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));
+                    $pdf = \PDF::loadView('pdf.vista-pdf', compact('data','data2'));*/
                 }
                 
                 return view('detalleC.subirarchivoD', compact('doctores','tipoPaciente'));
