@@ -28,7 +28,7 @@ class DetalleCController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function index(){
-        $doctores = Doctor::whereNotIn('id',[1,2])->get();
+        $doctores = Doctor::whereNotIn('id',[1])->get();
         $metodoPago = DB::table('cat_metodo_pago')->where('statusMetodoPago','=','A')->get();
         $tipoPaciente = TipoPaciente::all();
 
@@ -539,7 +539,7 @@ class DetalleCController extends Controller{
     }
 
     public function editHojaConsumo($id){
-        $doctores = Doctor::whereNotIn('id',[1,2])->get();
+        $doctores = Doctor::whereNotIn('id',[1])->get();
         $tipoPaciente = TipoPaciente::all();
         $data = DB::table('detalle_consumos')->where('detalle_consumos.id','=',$id)->first();
 
