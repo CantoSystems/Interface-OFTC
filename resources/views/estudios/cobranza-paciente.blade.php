@@ -509,7 +509,9 @@
                             <tbody>
                                 @foreach($statusCobCom as $status)
                                 <tr>
-                                    <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }}) </th>
+                                    <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }}) 
+                                        {{ $status->cobranza_total}}
+                                    </th>
                                     
                                     </th>
                                     <th>{{ $status->nombreActividad }} </th>

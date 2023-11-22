@@ -451,7 +451,7 @@ class ComisionesController extends Controller{
                                 'statusComisiones' => "Informativo",
                                 'cobranza_porcentaje' =>  0.00,
                                 'cobranza_total' => 0.00,
-                                'cobranza_cantidad' => $infoRealiza->total,
+                                'cobranza_cantidad' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                         ]);
@@ -463,7 +463,7 @@ class ComisionesController extends Controller{
                                 'fechaEstudio' => $infoRealiza->fecha,
                                 'cantidad' => 0.00,
                                 'porcentaje' => 0.00,
-                                'total' => $infoRealiza->total,
+                                'total' => 0.00,
                                 'created_at' => $fechaInsert,
                                 'updated_at' => $fechaInsert,
                                 'cobranza_folio' => $infoRealiza->cobranzaFolio,
