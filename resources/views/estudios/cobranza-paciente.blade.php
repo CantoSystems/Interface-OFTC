@@ -510,7 +510,7 @@
                                 @foreach($statusCobCom as $status)
                                 <tr>
                                     <th>{{ $status->dscrpMedicosPro }} ({{ $status->folio }}) 
-                                        {{ $status->cobranza_total}}
+                                        
                                     </th>
                                     
                                     </th>
