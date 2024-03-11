@@ -23,9 +23,13 @@
                 <div class="col-md-2 col-sm-4 col-6">
                     <div class="info-box shadow">
                         <div class="info-box-content">
-                            <span class="info-box-text">Status: Actualizado</span>
-                            <button type="button" class="btn btn-block btn-outline-secondary btn-xs" data-toggle="modal"
-                                data-target="#eliminar-estudiostemps">
+                            <span class="info-box-text">
+                            <button type="button" id="activar" class="btn btn-block btn-outline-secondary btn-xs">
+                                <span class="info-box-number">Activar Eliminar</span>
+                            </button>
+                            </span>
+                            <button type="button" id="desactivartemps" class="btn btn-block btn-outline-secondary btn-xs" data-toggle="modal"
+                                data-target="#eliminar-estudiostemps" disabled>
                                 <span class="info-box-number">Eliminar</span>
                             </button>
                         </div>

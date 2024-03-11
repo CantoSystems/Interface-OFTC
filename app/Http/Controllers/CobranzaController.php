@@ -173,7 +173,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus5->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus5->cobranza_total
+                                'cobranza_total'        => $datosStatus5->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -187,7 +188,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -211,7 +213,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus->statusComisiones == "P"){
@@ -226,7 +229,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus->cobranza_total
+                                'cobranza_total'        => $datosStatus->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -262,7 +266,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus2->statusComisiones == "P"){
@@ -277,7 +282,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus2->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus2->cobranza_total
+                                'cobranza_total'        => $datosStatus2->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -313,7 +319,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus3->statusComisiones == "P"){
@@ -328,7 +335,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus3->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus3->cobranza_total
+                                'cobranza_total'        => $datosStatus3->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -364,7 +372,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'P',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus4->statusComisiones == 'P'){
@@ -379,7 +388,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus4->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus4->cobranza_total
+                                'cobranza_total'        => $datosStatus4->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }else if($datosStatus4->statusComisiones == 'RESERVADO'){
                             DB::table('status_cob_com')->insert([
@@ -391,7 +401,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'RESERVADO',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -406,7 +417,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'P',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if(($datosStatus4->statusComisiones == 'P') || ($datosStatus4->statusComisiones == 'S')){
@@ -421,7 +433,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus4->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus4->cobranza_total
+                                'cobranza_total'        => $datosStatus4->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -459,7 +472,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus7->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus7->cobranza_total
+                            'cobranza_total'        => $datosStatus7->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -472,7 +486,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -498,7 +513,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus8->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus8->cobranza_total
+                            'cobranza_total'        => $datosStatus8->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -511,7 +527,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -537,7 +554,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus9->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus9->cobranza_total
+                            'cobranza_total'        => $datosStatus9->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -550,7 +568,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -581,7 +600,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }
@@ -703,7 +723,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus5->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus5->cobranza_total
+                                'cobranza_total'        => $datosStatus5->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -717,7 +738,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -741,7 +763,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus->statusComisiones == "P"){
@@ -756,7 +779,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus->cobranza_total
+                                'cobranza_total'        => $datosStatus->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -792,7 +816,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus2->statusComisiones == "P"){
@@ -807,7 +832,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus2->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus2->cobranza_total
+                                'cobranza_total'        => $datosStatus2->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -843,7 +869,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus3->statusComisiones == "P"){
@@ -858,7 +885,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus3->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus3->cobranza_total
+                                'cobranza_total'        => $datosStatus3->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -894,7 +922,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'P',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if($datosStatus4->statusComisiones == 'P'){
@@ -909,7 +938,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus4->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus4->cobranza_total
+                                'cobranza_total'        => $datosStatus4->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }else if($datosStatus4->statusComisiones == 'RESERVADO'){
                             DB::table('status_cob_com')->insert([
@@ -921,7 +951,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'RESERVADO',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -936,7 +967,8 @@ class CobranzaController extends Controller{
                                 'paciente'              => $request['pacienteCbr'],
                                 'statusComisiones'      => 'P',
                                 'cobranza_fecha'        => $request["fchCbr"],
-                                'cobranza_cantidad'     => $request["cantidadCbr"]
+                                'cobranza_cantidad'     => $request["cantidadCbr"],
+                                'updated_at' => $fechaInsert
                         ]);
                     }else{
                         if(($datosStatus4->statusComisiones == 'P') || ($datosStatus4->statusComisiones == 'S')){
@@ -951,7 +983,8 @@ class CobranzaController extends Controller{
                                 'cobranza_fecha'        => $request["fchCbr"],
                                 'cobranza_cantidad'     => $request["cantidadCbr"],
                                 'cobranza_porcentaje'   => $datosStatus4->cobranza_porcentaje,
-                                'cobranza_total'        => $datosStatus4->cobranza_total
+                                'cobranza_total'        => $datosStatus4->cobranza_total,
+                                'updated_at' => $fechaInsert
                             ]);
                         }
                     }
@@ -989,7 +1022,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus7->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus7->cobranza_total
+                            'cobranza_total'        => $datosStatus7->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -1002,7 +1036,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -1028,7 +1063,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus8->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus8->cobranza_total
+                            'cobranza_total'        => $datosStatus8->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -1041,7 +1077,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -1067,7 +1104,8 @@ class CobranzaController extends Controller{
                             'cobranza_fecha'        => $request["fchCbr"],
                             'cobranza_cantidad'     => $request["cantidadCbr"],
                             'cobranza_porcentaje'   => $datosStatus9->cobranza_porcentaje,
-                            'cobranza_total'        => $datosStatus9->cobranza_total
+                            'cobranza_total'        => $datosStatus9->cobranza_total,
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }else{
@@ -1080,7 +1118,8 @@ class CobranzaController extends Controller{
                         'paciente'              => $request['pacienteCbr'],
                         'statusComisiones'      => 'P',
                         'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"]
+                        'cobranza_cantidad'     => $request["cantidadCbr"],
+                        'updated_at' => $fechaInsert
                     ]);
                 }
 
@@ -1111,7 +1150,8 @@ class CobranzaController extends Controller{
                             'paciente'              => $request['pacienteCbr'],
                             'statusComisiones'      => 'P',
                             'cobranza_fecha'        => $request["fchCbr"],
-                            'cobranza_cantidad'     => $request["cantidadCbr"]
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
                         ]);
                     }
                 }

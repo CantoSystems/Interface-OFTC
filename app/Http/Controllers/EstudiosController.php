@@ -58,8 +58,12 @@ class EstudiosController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request){
-        return datatables()
-                ->eloquent(Estudiostemp::query())
+
+        $consulta = Estudiostemp::where('estudiostemps_status','!=',5)->get();
+
+        //->eloquent(Estudiostemp::query())       
+
+        return datatables::of($consulta)
                 ->addColumn('date','estudios.columnaFecha')
                 ->addColumn('btn','estudios.btnCobranza-ver')
                 ->addColumn('on-off','estudios.btnCobranza-status')
@@ -139,7 +143,13 @@ class EstudiosController extends Controller{
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request){
-        $dataCobranza = Estudiostemp::where('estudiostemps_status',1)->delete();
+
+        DB::table('estudiostemps')->where('estudiostemps_status',1)
+                ->update([                                               
+                    'estudiostemps_status' => 5
+        ]);
+
+        //$dataCobranza = Estudiostemp::where('',1)->delete();
         return redirect()->route('importarCobranza.index');
     }
 

@@ -453,6 +453,11 @@
             });
         });
 
+        $('#activar').click(function(e){
+            e.preventDefault()
+            $('#desactivartemps').attr("disabled", false);
+        });
+
         $('#autorizaComisiones').click(function(e) {
             e.preventDefault()
             let actualizarStatus = [];

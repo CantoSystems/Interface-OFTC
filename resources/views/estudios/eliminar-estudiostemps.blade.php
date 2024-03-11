@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title modalPersonalizado">Default Modal</h6>
+                <h6 class="modal-title modalPersonalizado">Eliminar</h6>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,7 +12,7 @@
                     @method('DELETE')
                     @csrf
 
-                    <p>¿Desea eliminar los registros con status: Actualizado?</p>
+                    <p>¿Desea eliminar los registros con status: Completado?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-outline-secondary btn-xs">Cancelar</button>
