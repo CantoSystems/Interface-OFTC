@@ -11,8 +11,10 @@
                 <form action="{{ route('importarCobranza.destroy') }}" method="POST">
                     @method('DELETE')
                     @csrf
-
+                    <p>Para completar la acción Elimininar, confirme escribiendo la palabra 
+                    <strong>OFTALMOCENTER</strong></p>   
                     <p>¿Desea eliminar los registros con status: Completado?</p>
+                    <P><input type="text" class="form-control" name="palabra_clave" placeholder="Ingrese la palabra clave" required></P>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-outline-secondary btn-xs">Cancelar</button>

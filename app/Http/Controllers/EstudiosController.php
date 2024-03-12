@@ -144,10 +144,12 @@ class EstudiosController extends Controller{
      */
     public function destroy(Request $request){
 
-        DB::table('estudiostemps')->where('estudiostemps_status',1)
+        if($request->palabra_clave === "OFTALMOCENTER"){
+            DB::table('estudiostemps')->where('estudiostemps_status',1)
                 ->update([                                               
                     'estudiostemps_status' => 5
         ]);
+        }
 
         //$dataCobranza = Estudiostemp::where('',1)->delete();
         return redirect()->route('importarCobranza.index');
