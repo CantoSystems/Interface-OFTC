@@ -148,7 +148,7 @@ class EstudiosController extends Controller{
             DB::table('estudiostemps')->where('estudiostemps_status',1)
                 ->update([                                               
                     'estudiostemps_status' => 5
-        ]);
+                ]);
         }
 
         //$dataCobranza = Estudiostemp::where('',1)->delete();

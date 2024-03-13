@@ -25,7 +25,7 @@
                         <div class="info-box-content">
                             <button type="button" id="desactivartemps" class="btn btn-block btn-outline-secondary btn-xs" data-toggle="modal"
                                 data-target="#eliminar-estudiostemps">
-                                <span class="info-box-number">Eliminar</span>
+                                <span class="info-box-number">Eliminar Registros "Completado"</span>
                             </button>
                         </div>
                     </div>

@@ -287,6 +287,16 @@
         return patron.test(te);
     }
 
+    $('#palabra_clave').keyup(function(){
+        if($('#palabra_clave').val() != 'OFTALMOCENTER'){
+            $("#palabraClaveDiv").show();
+            $("#btnCheck").attr('disabled','disabled');
+        }else{
+            $("#palabraClaveDiv").hide();
+            $('#btnCheck').removeAttr('disabled');
+        }
+    });
+
     $(document).ready(function() {
         $('#porcentajeComision').val(0);
         $('#cantidadComision').val(0);
