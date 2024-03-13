@@ -79,11 +79,11 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                               <div class="row">
+                                <div class="row">
                                     <div class="col">
-                                    <button class="btn btn-block btn-outline-info btn-xs">Guardar</button>
+                                        <button class="btn btn-block btn-outline-info btn-xs">Guardar</button>
                                     </div>
-                               </div>
+                                </div>
                             </div>
                         </div>
                     </div>

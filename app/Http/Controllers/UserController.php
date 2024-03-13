@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\InicioSesion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,6 @@ class UserController extends Controller
         return view('login.registro',compact('roles'));
     }
 
-
     public function registroUsuario()
     {
         return view('login.inicio');
@@ -35,8 +35,6 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-
-       
         $credentials =  $request->validate([
             'usuario_email' => ['required', 'email'],
             'password' => ['required'],
@@ -47,12 +45,19 @@ class UserController extends Controller
         ]);
 
          //request()->only('usuario_email','password');
-        $status = User::select('usuario_status')
-                    ->where('usuario_email',$request->usuario_email)
-                    ->first();
+        $status = User::select('id', 'usuario_status')
+                        ->where('usuario_email',$request->usuario_email)
+                        ->first();
 
-       if (Auth::attempt($credentials) && $status->usuario_status === 1) {
+        if (Auth::attempt($credentials) && $status->usuario_status === 1) {
             request()->session()->regenerate();
+
+            $inicioSesion = new InicioSesion;
+            $inicioSesion->id_usuario_fk = $status->id;
+            $inicioSesion->fecha = $fechaInsert = now();
+            $inicioSesion->updated_at = $fechaInsert = now();
+            $inicioSesion->created_at = $fechaInsert = now();
+            $inicioSesion->save();
  
             return redirect()->route('index');
             //redirect()->intended('dashboard');
@@ -228,7 +233,6 @@ class UserController extends Controller
                     'updated_at' => $fechaInsert
                 ]);
             }
-           
         }
 
         return redirect()->route('index');
