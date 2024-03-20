@@ -729,18 +729,33 @@ class CobranzaController extends Controller{
                         }
                     }
                 }else{
-                    DB::table('status_cob_com')->insert([
-                        'id_estudio_fk'         => $estUpd->id,
-                        'id_estudiostemps_fk'   => $request['identificador'],
-                        'folio'                 => $request['folioCbr'],
-                        'id_actividad_fk'       => '5',
-                        'id_empleado_fk'        => $request['empRealiza'],
-                        'paciente'              => $request['pacienteCbr'],
-                        'statusComisiones'      => 'P',
-                        'cobranza_fecha'        => $request["fchCbr"],
-                        'cobranza_cantidad'     => $request["cantidadCbr"],
-                        'updated_at' => $fechaInsert
-                    ]);
+                    if(is_null($request['empRealiza']) || !Arr::has($request,'empRealiza')){
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => '1',
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
+                        ]);
+                    }else{
+                        DB::table('status_cob_com')->insert([
+                            'id_estudio_fk'         => $estUpd->id,
+                            'id_estudiostemps_fk'   => $request['identificador'],
+                            'folio'                 => $request['folioCbr'],
+                            'id_actividad_fk'       => '5',
+                            'id_empleado_fk'        => $request['empRealiza'],
+                            'paciente'              => $request['pacienteCbr'],
+                            'statusComisiones'      => 'P',
+                            'cobranza_fecha'        => $request["fchCbr"],
+                            'cobranza_cantidad'     => $request["cantidadCbr"],
+                            'updated_at' => $fechaInsert
+                        ]);
+                    }
                 }
 
                 //registro si se transcribe

@@ -181,28 +181,20 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Transcripción?</label>
-                                        @if($datosPaciente->transcripcion == 'S')
-                                        <select name="drTransc" id="drTransc" class="custom-select combos chckUtilidad">
-                                            @else
-                                            <select name="drTransc" disabled id="drTransc" class="custom-select combos">
-                                                <option selected id="NA" value="N/A">-- Selecciona una opción
-                                                    --
-                                                </option>
-                                                @endif
-                                                @foreach($empTrans as $empT)
-                                                @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
-                                                <option selected value="{{ $empT->id_emp }}">
-                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                    {{ $empT->empleado_apellidom }}
-                                                </option>
-                                                @else
-                                                <option value="{{ $empT->id_emp }}">
-                                                    {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }}
-                                                    {{ $empT->empleado_apellidom }}
-                                                </option>
-                                                @endif
-                                                @endforeach
-                                            </select>
+                                        <select name="drTransc" <?php if(($datosPaciente->transcripcion == 'N') || (is_null($datosPaciente->transcripcion))){ echo 'disabled'; } ?> id="drTransc" class="custom-select combos">
+                                        <option selected disabled id="NA" value="N/A">-- Selecciona una opción --</option>
+                                        @foreach($empTrans as $empT)
+                                        @if($empT->id_emp==$datosPaciente->id_empTrans_fk)
+                                        <option selected value="{{ $empT->id_emp }}">
+                                            {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }} {{ $empT->empleado_apellidom }}
+                                        </option>
+                                        @else
+                                        <option value="{{ $empT->id_emp }}">
+                                            {{ $empT->empleado_nombre }} {{ $empT->empleado_apellidop }} {{ $empT->empleado_apellidom }}
+                                        </option>
+                                        @endif
+                                        @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -243,26 +235,16 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>¿Quién Realizó la Interpretación?</label>
-                                        @if($datosPaciente->interpretacion == 'S')
-                                        <select name="drInt" id="drInt" class="custom-select combos chckUtilidad">
-                                            @else
-                                            <select name="drInt" id="drInt" disabled
-                                                class="custom-select combos chckUtilidad">
-                                                <option disabled selected id="NA" value="N/A">-- Selecciona una opción
-                                                    --
-                                                </option>
-                                                @endif
-                                                @foreach($doctorInter as $dInt)
-                                                @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
-                                                <option selected value="{{ $dInt->id_emp }}">
-                                                    Dr. {{ $dInt->empleado }}
-                                                </option>
-                                                @else
-                                                <option value="{{ $dInt->id_emp }}">
-                                                    Dr. {{ $dInt->empleado }}
-                                                    @endif
-                                                    @endforeach
-                                            </select>
+                                        <select <?php if(($datosPaciente->interpretacion === 'N') || (is_null($datosPaciente->interpretacion))){ echo 'disabled'; } ?> name="drInt" id="drInt" class="custom-select combos chckUtilidad">
+                                            <option disabled selected id="NA" value="N/A">-- Selecciona una opción --</option>
+                                        @foreach($doctorInter as $dInt)
+                                        @if($dInt->id_emp==$datosPaciente->id_empInt_fk)
+                                            <option selected value="{{ $dInt->id_emp }}">Dr. {{ $dInt->empleado }}</option>
+                                        @else
+                                            <option value="{{ $dInt->id_emp }}">Dr. {{ $dInt->empleado }}</option>
+                                        @endif
+                                        @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
