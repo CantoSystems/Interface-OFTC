@@ -348,23 +348,23 @@
                                     <div class="form-group">
                                         <label>Entregado Por:</label>
                                         @if($datosPaciente->entregado == 'N' || $datosPaciente->entregado == 'P')
-                                        <select disabled name="empEnt" id="empEnt" class="custom-select combos">
-                                            @else
+                                            <select disabled name="empEnt" id="empEnt" class="custom-select combos">
+                                        @else
                                             <select name="empEnt" id="empEnt" class="custom-select combos chckUtilidad">
-                                                @endif
-                                                <option disabled selected>-- Selecciona una opción --</option>
-                                                @foreach($empEntrega as $empE)
-                                                @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
-                                                <option selected value="{{ $empE->id_emp }}">
-                                                    {{ $empE->empleado }}
-                                                </option>
-                                                @else
-                                                <option value="{{ $empE->id_emp }}">
-                                                    {{ $empE->empleado }}
-                                                </option>
-                                                @endif
-                                                @endforeach
-                                            </select>
+                                        @endif
+                                        <option disabled selected>-- Selecciona una opción --</option>
+                                        @foreach($empEntrega as $empE)
+                                        @if($empE->id_emp==$datosPaciente->id_empEnt_fk)
+                                            <option selected value="{{ $empE->id_emp }}">
+                                                {{ $empE->empleado }}
+                                            </option>
+                                        @else
+                                            <option value="{{ $empE->id_emp }}">
+                                                {{ $empE->empleado }}
+                                            </option>
+                                        @endif
+                                        @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-5">

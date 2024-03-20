@@ -299,10 +299,6 @@
             $('#drTransc').attr("disabled", false);
             $("option").remove(".nullable");
             $('#drTransc option:eq(0)').prop('selected', true);
-            $('#drInt').attr("disabled", false);
-            $(".interSi").removeAttr('disabled');
-            $(".interNo").removeAttr('checked');
-            $(".interNo").removeAttr('disabled');
         });
 
         $('.transRdN').click(function() {
